@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.overdue.dao.SalesCheckLogDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.overdue.model.SalesCheckLog" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="role" property="role"/><!-- 跟进人角色 -->
+	<result column="follow_uid" property="followUid"/><!-- 跟进人id -->
+	<result column="contract_id" property="contractId"/><!-- 合同id -->
+	<result column="remark" property="remark"/><!-- 情况跟进 -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="read_flag" property="readFlag"/><!-- 1全部 2稽查部自己查看 -->
+	<result column="check_state" property="checkState"/><!-- 稽查标识 -->
+</resultMap>
+       
+<!-- T_SALES_CHECK_LOG table all fields -->
+<sql id="Column_List" >
+	 id,contract_id,remark,create_time,read_flag,check_state,loan_id,
+	 (select t_user.name from t_user where t_sales_check_log.follow_uid=t_user.login_id)follow_uid,
+	 (select t_org.org_name from t_org where t_org.org_id=t_sales_check_log.org_id)org_id,
+	 role
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="role != null and role != ''" >
+	    and role =  #{role}
+	</if>
+<if test="followUid != null and followUid != ''" >
+	    and follow_uid =  #{followUid}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and contract_id =  #{contractId}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="readFlag != null and readFlag != ''" >
+	    and read_flag =  #{readFlag}
+	</if>
+<if test="checkState != null and checkState != ''" >
+	    and check_state =  #{checkState}
+	</if>
+<if test="loanId != null and loanId != ''" >
+    and loan_id =  #{loanId}
+</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_SALES_CHECK_LOG_SEQ') From dual -->
+			Select T_SALES_CHECK_LOG_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_SALES_CHECK_LOG(id,org_id,role,follow_uid,contract_id,remark,create_time,read_flag,check_state,loan_id)
+ values( #{id, jdbcType=INTEGER},#{orgId, jdbcType=INTEGER},#{role, jdbcType=VARCHAR},#{followUid, jdbcType=VARCHAR},#{contractId, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{readFlag, jdbcType=VARCHAR},#{checkState, jdbcType=VARCHAR},#{loanId, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_SALES_CHECK_LOG set 
+	<trim  suffixOverrides="," >
+	org_id =  #{orgId, jdbcType=INTEGER},
+	role =  #{role, jdbcType=VARCHAR},
+	follow_uid =  #{followUid, jdbcType=VARCHAR},
+	contract_id =  #{contractId, jdbcType=VARCHAR},
+	remark =  #{remark, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	read_flag =  #{readFlag, jdbcType=VARCHAR},
+	check_state =  #{checkState, jdbcType=VARCHAR},
+	loan_id =  #{loanId, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_SALES_CHECK_LOG  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_SALES_CHECK_LOG set 
+	<trim  suffixOverrides="," >
+
+	<if test="orgId != null and orgId != ''  or orgId==0" >
+	    org_id =  #{orgId, jdbcType=INTEGER},
+	</if>
+
+	<if test="role != null and role != '' " >
+	    role =  #{role, jdbcType=VARCHAR},
+	</if>
+
+	<if test="followUid != null and followUid != '' " >
+	    follow_uid =  #{followUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractId != null and contractId != '' " >
+	    contract_id =  #{contractId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="readFlag != null and readFlag != '' " >
+	    read_flag =  #{readFlag, jdbcType=VARCHAR},
+	</if>
+
+	<if test="checkState != null and checkState != '' " >
+	    check_state =  #{checkState, jdbcType=VARCHAR},
+	</if>
+	<if test="loanId != null and loanId != '' " >
+	    loan_id =  #{loanId, jdbcType=VARCHAR},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 业务员，稽查人员催收跟进记录表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_SALES_CHECK_LOG  where id = #{id}
+</select>
+
+<!-- 业务员，稽查人员催收跟进记录表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_SALES_CHECK_LOG 
+	<include refid="Where_Clause"/> and read_flag ='1'
+</select>
+  	
+<!-- 查询业务员，稽查人员催收跟进记录表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_SALES_CHECK_LOG 
+	<include refid="Where_Clause"/> and read_flag ='1'
+	order by create_time desc
+</select>
+  	
+</mapper>   

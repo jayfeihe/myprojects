@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">
+ <tlib-version>1.0</tlib-version>
+ <short-name>ta</short-name>
+ <uri>http://www.teratech-soft.com</uri>
+ 
+ <tag>
+  <name>formToken</name>
+  <tag-class>com.tera.sys.tag.FormTokenTag</tag-class>
+  <body-content>empty</body-content>
+ </tag>
+ 
+  <tag>
+    <name>dataDictionaryValue</name>
+    <tag-class>com.tera.sys.tag.DataDictionaryValueTag</tag-class>
+    <body-content>empty</body-content>
+    <attribute>
+    <!-- 字典属性 -->
+      <name>keyProp</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+    <!-- 字典名称 -->
+      <name>keyName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+ 
+  <tag>
+    <name>dataDictionaryType</name>
+    <tag-class>com.tera.sys.tag.DataDictionaryTypeTag</tag-class>
+    <body-content>empty</body-content>
+    <attribute>
+    <!-- 字段名称 -->
+      <name>name</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+    <!-- 字段名称 -->
+      <name>value</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+    <!-- 字典名称 -->
+      <name>keyName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+    <!-- 是否需要onChange方法：true、false -->
+      <name>isOnChange</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+    <!-- 联动字段名称 -->
+      <name>linkageName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+    <!-- 联动字典名称 -->
+      <name>linkageKeyName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+</taglib>

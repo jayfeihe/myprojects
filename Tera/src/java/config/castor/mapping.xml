@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+<mapping>
+	<class name="com.tera.huatai.core.model.CoreCaseInfo" auto-complete="true">
+		<map-to xml="Packet" />
+		<field name="insuredname" type="string">
+			<bind-xml name="INSUREDNAME" node="element"/>
+		</field>
+		<field name="modelcode" type="string">
+			<bind-xml name="MODELCODE" node="element"/>
+		</field>
+		<field name="licenseno" type="string">
+			<bind-xml name="LICENSENO" node="element"/>
+		</field>
+		<field name="enrolldate" type="string">
+			<bind-xml name="ENROLLDATE" node="element"/>
+		</field>
+		<field name="accidenttime" type="string">
+			<bind-xml name="ACCIDENTTIME" node="element"/>
+		</field>
+		<field name="startdate" type="string">
+			<bind-xml name="STARTDATE" node="element"/>
+		</field>
+		<field name="enddate" type="string">
+			<bind-xml name="ENDDATE" node="element"/>
+		</field>
+		<field name="registdesc" type="string">
+			<bind-xml name="REGISTDESC" node="element"/>
+		</field>
+		<field name="compelflag" type="string">
+			<bind-xml name="COMPELFLAG" node="element"/>
+		</field>
+		<field name="claimType" type="string">
+			<bind-xml name="CLAIMTYPE" node="element"/>
+		</field>
+	</class>
+</mapping>

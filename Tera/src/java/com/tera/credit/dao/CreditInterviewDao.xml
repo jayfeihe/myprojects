@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.credit.dao.CreditInterviewDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.credit.model.CreditInterview" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="is_add" property="isAdd"/><!-- 是否新增 -->
+	<result column="type" property="type"/><!-- 类型 -->
+	<result column="relation" property="relation"/><!-- 关系 -->
+	<result column="source" property="source"/><!-- 来源 -->
+	<result column="name" property="name"/><!-- 名字 -->
+	<result column="phone" property="phone"/><!-- 号码 -->
+	<result column="survey_state" property="surveyState"/><!-- 调查状态 -->
+	<result column="survey_flag" property="surveyFlag"/><!-- 调查标志 -->
+	<result column="com_name" property="comName"/><!-- 单位名称 -->
+	<result column="com_name_flag" property="comNameFlag"/><!-- 单位名称是否一致 -->
+	<result column="com_address" property="comAddress"/><!-- 单位地址 -->
+	<result column="com_address_flag" property="comAddressFlag"/><!-- 单位地址是否一致 -->
+	<result column="is_job" property="isJob"/><!-- 客户是否在职 -->
+	<result column="address" property="address"/><!-- 居住地址 -->
+	<result column="address_flag" property="addressFlag"/><!-- 居住地址是否一致 -->
+	<result column="tel" property="tel"/><!-- 家庭固话 -->
+	<result column="tel_flag" property="telFlag"/><!-- 家庭固话是否一致 -->
+	<result column="period" property="period"/><!-- 期限 -->
+	<result column="monthly_payments" property="monthlyPayments"/><!-- 月还款额 -->
+	<result column="amount" property="amount"/><!-- 借款金额 -->
+	<result column="useage1" property="useage1"/><!-- 借款用途1 -->
+	<result column="useage2" property="useage2"/><!-- 借款用途2 -->
+	<result column="industry1" property="industry1"/><!-- 行业代码1 -->
+	<result column="industry2" property="industry2"/><!-- 行业代码2 -->
+	<result column="industry3" property="industry3"/><!-- 行业代码3 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_CREDIT_INTERVIEW table all fields -->
+<sql id="Column_List" >
+	 id,app_id,is_add,type,relation,source,name,phone,survey_state,survey_flag,com_name,com_name_flag,com_address,com_address_flag,is_job,address,address_flag,tel,tel_flag,period,monthly_payments,amount,useage1,useage2,industry1,industry2,industry3,state,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="isAdd != null and isAdd != ''" >
+	    and is_add =  #{isAdd}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="relation != null and relation != ''" >
+	    and relation =  #{relation}
+	</if>
+<if test="source != null and source != ''" >
+	    and source =  #{source}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="phone != null and phone != ''" >
+	    and phone =  #{phone}
+	</if>
+<if test="surveyState != null and surveyState != ''" >
+	    and survey_state =  #{surveyState}
+	</if>
+<if test="surveyFlag != null and surveyFlag != ''" >
+	    and survey_flag =  #{surveyFlag}
+	</if>
+<if test="comName != null and comName != ''" >
+	    and com_name =  #{comName}
+	</if>
+<if test="comNameFlag != null and comNameFlag != ''" >
+	    and com_name_flag =  #{comNameFlag}
+	</if>
+<if test="comAddress != null and comAddress != ''" >
+	    and com_address =  #{comAddress}
+	</if>
+<if test="comAddressFlag != null and comAddressFlag != ''" >
+	    and com_address_flag =  #{comAddressFlag}
+	</if>
+<if test="isJob != null and isJob != ''" >
+	    and is_job =  #{isJob}
+	</if>
+<if test="address != null and address != ''" >
+	    and address =  #{address}
+	</if>
+<if test="addressFlag != null and addressFlag != ''" >
+	    and address_flag =  #{addressFlag}
+	</if>
+<if test="tel != null and tel != ''" >
+	    and tel =  #{tel}
+	</if>
+<if test="telFlag != null and telFlag != ''" >
+	    and tel_flag =  #{telFlag}
+	</if>
+<if test="period != null and period != ''" >
+	    and period =  #{period}
+	</if>
+<if test="monthlyPayments != null and monthlyPayments != ''" >
+	    and monthly_payments =  #{monthlyPayments}
+	</if>
+<if test="amount != null and amount != ''" >
+	    and amount =  #{amount}
+	</if>
+<if test="useage1 != null and useage1 != ''" >
+	    and useage1 =  #{useage1}
+	</if>
+<if test="useage2 != null and useage2 != ''" >
+	    and useage2 =  #{useage2}
+	</if>
+<if test="industry1 != null and industry1 != ''" >
+	    and industry1 =  #{industry1}
+	</if>
+<if test="industry2 != null and industry2 != ''" >
+	    and industry2 =  #{industry2}
+	</if>
+<if test="industry3 != null and industry3 != ''" >
+	    and industry3 =  #{industry3}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_CREDIT_INTERVIEW_SEQ') From dual
+			<!-- Select T_CREDIT_INTERVIEW_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_CREDIT_INTERVIEW(id,app_id,is_add,type,relation,source,name,phone,survey_state,survey_flag,com_name,com_name_flag,com_address,com_address_flag,is_job,address,address_flag,tel,tel_flag,period,monthly_payments,amount,useage1,useage2,industry1,industry2,industry3,state,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{isAdd, jdbcType=INTEGER},#{type, jdbcType=VARCHAR},#{relation, jdbcType=VARCHAR},#{source, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{phone, jdbcType=VARCHAR},#{surveyState, jdbcType=VARCHAR},#{surveyFlag, jdbcType=VARCHAR},#{comName, jdbcType=VARCHAR},#{comNameFlag, jdbcType=INTEGER},#{comAddress, jdbcType=VARCHAR},#{comAddressFlag, jdbcType=INTEGER},#{isJob, jdbcType=INTEGER},#{address, jdbcType=VARCHAR},#{addressFlag, jdbcType=INTEGER},#{tel, jdbcType=VARCHAR},#{telFlag, jdbcType=INTEGER},#{period, jdbcType=INTEGER},#{monthlyPayments, jdbcType=DOUBLE},#{amount, jdbcType=DOUBLE},#{useage1, jdbcType=VARCHAR},#{useage2, jdbcType=VARCHAR},#{industry1, jdbcType=VARCHAR},#{industry2, jdbcType=VARCHAR},#{industry3, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_CREDIT_INTERVIEW set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	is_add =  #{isAdd, jdbcType=INTEGER},
+	type =  #{type, jdbcType=VARCHAR},
+	relation =  #{relation, jdbcType=VARCHAR},
+	source =  #{source, jdbcType=VARCHAR},
+	name =  #{name, jdbcType=VARCHAR},
+	phone =  #{phone, jdbcType=VARCHAR},
+	survey_state =  #{surveyState, jdbcType=VARCHAR},
+	survey_flag =  #{surveyFlag, jdbcType=VARCHAR},
+	com_name =  #{comName, jdbcType=VARCHAR},
+	com_name_flag =  #{comNameFlag, jdbcType=INTEGER},
+	com_address =  #{comAddress, jdbcType=VARCHAR},
+	com_address_flag =  #{comAddressFlag, jdbcType=INTEGER},
+	is_job =  #{isJob, jdbcType=INTEGER},
+	address =  #{address, jdbcType=VARCHAR},
+	address_flag =  #{addressFlag, jdbcType=INTEGER},
+	tel =  #{tel, jdbcType=VARCHAR},
+	tel_flag =  #{telFlag, jdbcType=INTEGER},
+	period =  #{period, jdbcType=INTEGER},
+	monthly_payments =  #{monthlyPayments, jdbcType=DOUBLE},
+	amount =  #{amount, jdbcType=DOUBLE},
+	useage1 =  #{useage1, jdbcType=VARCHAR},
+	useage2 =  #{useage2, jdbcType=VARCHAR},
+	industry1 =  #{industry1, jdbcType=VARCHAR},
+	industry2 =  #{industry2, jdbcType=VARCHAR},
+	industry3 =  #{industry3, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_CREDIT_INTERVIEW  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_CREDIT_INTERVIEW set 
+	<trim  suffixOverrides="," >
+	<if test="appId != null and appId != ''" >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+	<if test="isAdd != null and isAdd != '' or isAdd == 0">
+	    is_add =  #{isAdd, jdbcType=INTEGER},
+	</if>
+	<if test="type != null and type != ''" >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+	<if test="relation != null and relation != ''" >
+	    relation =  #{relation, jdbcType=VARCHAR},
+	</if>
+	<if test="source != null and source != ''" >
+	    source =  #{source, jdbcType=VARCHAR},
+	</if>
+	<if test="name != null and name != ''" >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+	<if test="phone != null and phone != ''" >
+	    phone =  #{phone, jdbcType=VARCHAR},
+	</if>
+	<if test="surveyState != null and surveyState != ''" >
+	    survey_state =  #{surveyState, jdbcType=VARCHAR},
+	</if>
+	<if test="surveyFlag != null and surveyFlag != ''" >
+	    survey_flag =  #{surveyFlag, jdbcType=VARCHAR},
+	</if>
+	<if test="comName != null and comName != ''" >
+	    com_name =  #{comName, jdbcType=VARCHAR},
+	</if>
+	<if test="comNameFlag != null and comNameFlag != '' or comNameFlag == 0" >
+	    com_name_flag =  #{comNameFlag, jdbcType=INTEGER},
+	</if>
+	<if test="comAddress != null and comAddress != ''" >
+	    com_address =  #{comAddress, jdbcType=VARCHAR},
+	</if>
+	<if test="comAddressFlag != null and comAddressFlag != '' or comAddressFlag == 0" >
+	    com_address_flag =  #{comAddressFlag, jdbcType=INTEGER},
+	</if>
+	<if test="isJob != null and isJob != '' or isJob == 0" >
+	    is_job =  #{isJob, jdbcType=INTEGER},
+	</if>
+	<if test="address != null and address != ''" >
+	    address =  #{address, jdbcType=VARCHAR},
+	</if>
+	<if test="addressFlag != null and addressFlag != '' or addressFlag == 0" >
+	    address_flag =  #{addressFlag, jdbcType=INTEGER},
+	</if>
+	<if test="tel != null and tel != ''" >
+	    tel =  #{tel, jdbcType=VARCHAR},
+	</if>
+	<if test="telFlag != null and telFlag != '' or telFlag == 0" >
+	    tel_flag =  #{telFlag, jdbcType=INTEGER},
+	</if>
+	<if test="period != null and period != '' or period == 0" >
+	    period =  #{period, jdbcType=INTEGER},
+	</if>
+	<if test="monthlyPayments != null and monthlyPayments != '' or monthlyPayments == 0" >
+	    monthly_payments =  #{monthlyPayments, jdbcType=DOUBLE},
+	</if>
+	<if test="amount != null and amount != '' or amount == 0" >
+	    amount =  #{amount, jdbcType=DOUBLE},
+	</if>
+	<if test="useage1 != null and useage1 != ''" >
+	    useage1 =  #{useage1, jdbcType=VARCHAR},
+	</if>
+	<if test="useage2 != null and useage2 != ''" >
+	    useage2 =  #{useage2, jdbcType=VARCHAR},
+	</if>
+	<if test="industry1 != null and industry1 != ''" >
+	    industry1 =  #{industry1, jdbcType=VARCHAR},
+	</if>
+	<if test="industry2 != null and industry2 != ''" >
+	    industry2 =  #{industry2, jdbcType=VARCHAR},
+	</if>
+	<if test="industry3 != null and industry3 != ''" >
+	    industry3 =  #{industry3, jdbcType=VARCHAR},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 信用贷款面审调查表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CREDIT_INTERVIEW  where id = #{id}
+</select>
+
+<!-- 信用贷款面审调查表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CREDIT_INTERVIEW 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询信用贷款面审调查表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_CREDIT_INTERVIEW 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

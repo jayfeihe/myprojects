@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.NewStudentCreditDAO">
+
+	<resultMap type="com.hikootech.mqcash.po.DistrictInfo" id="DistrictInfoMap">
+		<result property="districtId" column="district_id" />
+		<result property="collegeId" column="college_id" />
+		<result property="collegeCode" column="college_code" />
+		<result property="districtName" column="district_name" />
+		<result property="cityCode" column="city_code" />
+		<result property="districtScore" column="district_score" />
+		<result property="city" column="city" />
+		<result property="createTime" column="create_time" />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+
+	<resultMap type="com.hikootech.mqcash.po.DepartmentInfo" id="DepartmentInfoResultMap">
+		<result property="departmentId" column="department_id" />
+		<result property="collegeId" column="college_id" />
+		<result property="collegeCode" column="college_code" />
+		<result property="departmentName" column="department_name" />
+		<result property="departmentScore" column="department_score" />
+		<result property="createTime" column="create_time" />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+
+	<select id="queryIllegalCount" resultType="java.lang.Integer">
+		select count(*) from t_illegal_name t where t.name = #{name} and status = 10
+	</select>
+
+	<select id="queryExistSchoolInfo" resultMap="DistrictInfoMap" parameterType="java.lang.String">
+		SELECT
+			district_id,
+			college_id,
+			college_code,
+			district_name,
+			city_code,
+			district_score,
+			city,
+			create_time,
+			update_time
+		FROM
+			t_district_info
+		where district_name = #{schoolName}
+	</select>
+
+	<select id="queryExistDepartmentInfo" resultMap="DepartmentInfoResultMap" parameterType="java.lang.Integer">
+		SELECT
+			department_id,
+			college_id,
+			college_code,
+			department_name,
+			department_score,
+			create_time,
+			update_time
+		FROM
+			t_department_info
+		where college_id = #{collegeId}
+	</select>
+
+</mapper>

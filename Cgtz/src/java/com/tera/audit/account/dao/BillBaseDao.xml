@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.account.dao.BillBaseDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.audit.account.model.BillBase" >
+	<result column="id" property="id"/><!--  -->
+	<result column="subject" property="subject"/><!-- 科目（1收利息，2出收本金3付出借人回款4付线上垫付5付保证金）） -->
+	<result column="type" property="type"/><!-- (1收入，2支出) -->
+	<result column="loan_id" property="loanId"/><!--  -->
+	<result column="contract_id" property="contractId"/><!-- 合同id -->
+	<result column="lend_usre_id" property="lendUsreId"/><!--  -->
+	<result column="proof" property="proof"/><!--  -->
+	<result column="num" property="num"/><!-- 垫付期数 -->
+	<result column="amt" property="amt"/><!--  -->
+	<result column="remark" property="remark"/><!--  -->
+	<result column="state" property="state"/><!-- （其他默认1）线上回款默认是2，平账后变为1 -->
+	<result column="create_time" property="createTime"/><!--  -->
+	<result column="create_uid" property="createUid"/><!--  -->
+</resultMap>
+       
+<!-- T_BILL_BASE table all fields -->
+<sql id="Column_List" >
+	 id,subject,type,loan_id,contract_id,lend_usre_id,proof,num,amt,remark,state,create_time,create_uid
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="subject != null and subject != ''" >
+	    and subject =  #{subject}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and loan_id =  #{loanId}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and contract_id =  #{contractId}
+	</if>
+<if test="lendUsreId != null and lendUsreId != ''" >
+	    and lend_usre_id =  #{lendUsreId}
+	</if>
+<if test="proof != null and proof != ''" >
+	    and proof =  #{proof}
+	</if>
+<if test="num != null and num != ''" >
+	    and num =  #{num}
+	</if>
+<if test="amt != null and amt != ''" >
+	    and amt =  #{amt}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="createUid != null and createUid != ''" >
+	    and create_uid =  #{createUid}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+<!-- 			Select nextval('T_BILL_BASE_SEQ') From dual -->
+			Select T_BILL_BASE_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_BILL_BASE(id,subject,type,loan_id,contract_id,lend_usre_id,proof,num,amt,remark,state,create_time,create_uid)
+ values( #{id, jdbcType=INTEGER},#{subject, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{loanId, jdbcType=VARCHAR},#{contractId, jdbcType=VARCHAR},#{lendUsreId, jdbcType=VARCHAR},#{proof, jdbcType=VARCHAR},#{num, jdbcType=INTEGER},#{amt, jdbcType=DOUBLE},#{remark, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{createUid, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_BILL_BASE set 
+	<trim  suffixOverrides="," >
+	subject =  #{subject, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	loan_id =  #{loanId, jdbcType=VARCHAR},
+	contract_id =  #{contractId, jdbcType=VARCHAR},
+	lend_usre_id =  #{lendUsreId, jdbcType=VARCHAR},
+	proof =  #{proof, jdbcType=VARCHAR},
+	num = #{num, jdbcType=INTEGER},
+	amt =  #{amt, jdbcType=DOUBLE},
+	remark =  #{remark, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	create_uid =  #{createUid, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_BILL_BASE  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_BILL_BASE set 
+	<trim  suffixOverrides="," >
+
+	<if test="subject != null and subject != '' " >
+	    subject =  #{subject, jdbcType=VARCHAR},
+	</if>
+
+	<if test="type != null and type != '' " >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanId != null and loanId != '' " >
+	    loan_id =  #{loanId, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="contractId != null and contractId != '' " >
+	    contract_id =  #{contractId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lendUsreId != null and lendUsreId != '' " >
+	    lend_usre_id =  #{lendUsreId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="proof != null and proof != '' " >
+	    proof =  #{proof, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="num != null and num != ''  or num == 0" >
+		num = #{num, jdbcType=INTEGER},
+	</if>
+		
+	<if test="amt != null and amt != ''  or amt==0" >
+	    amt =  #{amt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="createUid != null and createUid != '' " >
+	    create_uid =  #{createUid, jdbcType=VARCHAR},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 公司收支明细表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_BILL_BASE  where id = #{id}
+</select>
+
+<!-- 公司收支明细表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_BILL_BASE 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询公司收支明细表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_BILL_BASE 
+	<include refid="Where_Clause"/>
+</select>
+  	
+</mapper>   

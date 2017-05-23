@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.sys.dao.RoleDataRelDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.sys.model.RoleDataRel" >
+	<result column="login_id" property="loginId"/><!-- 登录名 -->
+	<result column="org_id" property="orgId"/><!-- 机构代码 -->
+	<result column="role_id" property="roleId"/><!-- 角色id -->
+</resultMap>
+       
+<!-- T_ROLE_DATA_REL table all fields -->
+<sql id="Column_List" >
+	 login_id,org_id,role_id
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="loginId != null and loginId != ''" >
+	    and login_id =  #{loginId}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="roleId != null and roleId != ''" >
+	    and role_id =  #{roleId}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+	insert into T_ROLE_DATA_REL(login_id,org_id,role_id)
+ values( #{loginId, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{roleId, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_ROLE_DATA_REL set 
+	<trim  suffixOverrides="," >
+	login_id =  #{loginId, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	role_id =  #{roleId, jdbcType=VARCHAR},
+	</trim>
+ 	where login_id = #{loginId}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_ROLE_DATA_REL  where login_id = #{loginId}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_ROLE_DATA_REL set 
+	<trim  suffixOverrides="," >
+	<if test="loginId != null and loginId != '' " >
+	    login_id =  #{loginId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="roleId != null and roleId != '' " >
+	    role_id =  #{roleId, jdbcType=VARCHAR},
+	</if>
+
+	</trim>
+	where login_id = #{loginId}
+</update>
+
+<!-- 根据id查询 机构的数据权限，和T_USER_EXT中的内容不一样 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_ROLE_DATA_REL  where login_id = #{loginId}
+</select>
+
+<!-- 机构的数据权限，和T_USER_EXT中的内容不一样 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_ROLE_DATA_REL 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询机构的数据权限，和T_USER_EXT中的内容不一样列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_ROLE_DATA_REL 
+	<include refid="Where_Clause"/>
+</select>
+
+<!-- 根据loginId查询机构的数据权限,用于下拉显示 -->
+<select id="queryOrgListByLoginId" resultMap="ResultMap"  parameterType="map">
+	select 
+	t.login_id loginId,
+	t.org_id orgId,
+	t.role_id roleId,
+	tt.org_name orgName
+	from T_ROLE_DATA_REL t
+	left join T_ORG tt
+    on t.ORG_ID=tt.ORG_ID
+	<include refid="Where_Clause"/>
+	order by tt.org_name
+</select>
+
+	
+</mapper>   

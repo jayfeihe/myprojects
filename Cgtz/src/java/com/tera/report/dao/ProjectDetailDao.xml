@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.report.dao.ProjectDetailDao">
+	
+	<select id="queryList" parameterType="map" resultType="com.tera.report.model.ProjectDetailQBean">
+		SELECT 
+			con.CONTRACT_ID AS contractId,                                                   <!-- 债权线上编号 -->
+			line.ONLINE_CON_ID AS onlineConId,                                               <!-- 线上合同编号 -->
+			line.PROJECT_NAME AS projectName,                                                <!-- 项目名称 -->
+			con.START_DATE AS startDate,                                                     <!-- 合同开始时间 -->
+			con.END_DATE AS endDate,                                                         <!-- 合同结束时间 -->
+			line.ONLINE_START_DATE AS onlineStartDate,                                       <!-- 上线时间 -->    
+			con.REAL_END_DATE AS realEndDate,                                                <!-- 合同实际结束时间 -->
+			con.DAYS AS contractDays,                                                        <!-- 合同天数，固定不变的 -->
+			con.STATE AS contractState,                                                      <!-- 合同状态 -->
+			con.LOAN_AMT AS loanAmt,                                                         <!-- 线下借款金额 -->
+			line.ONLINE_AMT AS onlineAmt,                                                    <!-- 线上借款金额 -->
+			base.NAME AS loanUser,                                                           <!-- 借款人 -->
+			lend.NAME AS lendUser,                                                           <!-- 出借人 -->
+			base.RATE AS loanRate,                                                           <!-- 线下借款利率 -->
+			line.ONLINE_RATE_IN AS onlineRate,                                               <!-- 线上利率 -->
+			line.RET_WAY AS  onlineRetway,                                                   <!-- 还款方式 -->
+			con.GET_LOAN_WAY AS getLoanWay,                                                  <!-- 融资方式 -->
+			(SELECT o.ORG_NAME FROM T_ORG o WHERE o.ORG_ID = base.ORG) AS orgName,           <!-- 分公司 -->
+			base.LOAN_TYPE AS loanType,                                                      <!-- 线下类别 -->
+			line.ONLINE_TYPE AS onlineType,                                                   <!-- 线上类别 -->
+			(SELECT d.KEY_VALUE 
+				FROM T_DATA_DICTIONARY d 
+				WHERE d.KEY_NAME = 'productType' 
+				AND d.KEY_PROP = base.PRODUCT) AS product
+		
+		FROM T_CONTRACT con
+		INNER JOIN T_LOAN_BASE base ON base.LOAN_ID=con.LOAN_ID
+		INNER JOIN T_LEND_USER lend ON con.LEND_USER_ID =LEND.ID
+		LEFT JOIN T_CONTRACT_ONLINE line ON con.LOAN_ID=line.LOAN_ID
+		
+		<where>
+			1=1
+			<if test="orgId != null and orgId != ''">
+				AND base.ORG LIKE CONCAT(#{orgId},'%')
+			</if>
+			
+			<!-- <if test="loanType != null and loanType != ''">
+				AND base.LOAN_TYPE = #{loanType}
+			</if> -->
+			
+			<if test="onlineType != null and onlineType != ''">
+				AND line.ONLINE_TYPE = #{onlineType}
+			</if>
+			<if test="startDateMin != null and startDateMin != ''">
+				<![CDATA[AND TO_CHAR(con.START_DATE,'YYYY-MM-DD') >= #{startDateMin}]]>
+			</if>
+			<if test="startDateMax != null and startDateMax != ''">
+				<![CDATA[AND TO_CHAR(con.START_DATE,'YYYY-MM-DD') <= #{startDateMax}]]>
+			</if>
+			<!--机构权限限制  -->
+			<if test="orgs != null and orgs.size() >0 " >
+			and con.org in
+			                <foreach item="item" index="index" collection="orgs" open="(" separator="," close=")">
+									#{item}
+							</foreach>	
+				</if>
+		</where>
+		ORDER BY base.ORG
+	</select>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.sys.dao.SysMenuDao">
+	
+	<insert id="add" parameterType="Object">
+		insert into t_sys_menu (<include refid="columns"/>)
+		values (#{menuId},
+				#{menuName},
+				#{menuLevel},
+				#{menuUrl},
+				#{menuDesc},
+				#{parentMenuId},
+				#{orderBy},
+				#{status},
+				#{createTime},
+				#{updateTime},
+				#{operator})
+	</insert>
+	
+	<update id="update">
+		update 
+			t_sys_menu
+		set 
+			menu_name      = #{menuName}, 
+			menu_url       = #{menuUrl}, 
+			menu_desc      = #{menuDesc}, 
+			status         = #{status}, 
+			update_time    = #{updateTime}, 
+			operator       = #{operator} 
+		where 
+			menu_id = #{menuId}
+	</update>
+	
+	<select id="queryList" resultType="com.greenkoo.sys.model.SysMenu">
+		select <include refid="columns"/> from t_sys_menu
+	</select>
+	
+	<select id="queryMenuByLevel" resultType="com.greenkoo.sys.model.SysMenu">
+		select <include refid="columns"/> from t_sys_menu  
+		where 
+			menu_level = #{level}
+			<if test="status != null">
+				and status = #{status}
+			</if>
+		order by order_by  
+	</select>
+	
+	<sql id="columns">
+		menu_id         ,
+		menu_name       ,
+		menu_level      ,
+		menu_url        ,
+		menu_desc       ,
+		parent_menu_id  ,
+		order_by        ,
+		status          ,
+		create_time     ,
+		update_time     ,
+		operator        
+	</sql>
+</mapper>

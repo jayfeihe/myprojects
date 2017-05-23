@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.renhang.dao.RhReportDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.renhang.model.RhReport" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="flag" property="flag"/><!-- 有无标记 -->
+	<result column="report_no" property="reportNo"/><!-- 报告编号 -->
+	<result column="request_time" property="requestTime"/><!-- 请求时间 -->
+	<result column="report_time" property="reportTime"/><!-- 报告时间 -->
+	<result column="name" property="name"/><!-- 姓名 -->
+	<result column="id_type" property="idType"/><!-- 证件类型 -->
+	<result column="id_no" property="idNo"/><!-- 证件号码 -->
+	<result column="query_name" property="queryName"/><!-- 查询操作员 -->
+	<result column="query_reason" property="queryReason"/><!-- 查询原因 -->
+	<result column="gender" property="gender"/><!-- 性别 -->
+	<result column="birthday" property="birthday"/><!-- 生日 -->
+	<result column="marriage" property="marriage"/><!-- 婚姻状况 -->
+	<result column="mobile" property="mobile"/><!-- 手机号 -->
+	<result column="com_phone" property="comPhone"/><!-- 单位电话 -->
+	<result column="home_phone" property="homePhone"/><!-- 住宅电话 -->
+	<result column="education" property="education"/><!-- 学历 -->
+	<result column="degree" property="degree"/><!-- 学位 -->
+	<result column="address" property="address"/><!-- 通讯地址 -->
+	<result column="hk_address" property="hkAddress"/><!-- 户籍地址 -->
+	<result column="mate_name" property="mateName"/><!-- 配偶姓名 -->
+	<result column="mate_id_type" property="mateIdType"/><!-- 配偶证件类型 -->
+	<result column="mate_id_no" property="mateIdNo"/><!-- 配偶证件号码 -->
+	<result column="mate_com" property="mateCom"/><!-- 配偶工作单位 -->
+	<result column="mate_phone" property="matePhone"/><!-- 配偶联系电话 -->
+	<result column="remarks" property="remarks"/><!-- 备注 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_RH_REPORT table all fields -->
+<sql id="Column_List" >
+	 id,app_id,flag,report_no,request_time,report_time,name,id_type,id_no,query_name,query_reason,gender,birthday,marriage,mobile,com_phone,home_phone,education,degree,address,hk_address,mate_name,mate_id_type,mate_id_no,mate_com,mate_phone,remarks,state,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="flag != null and flag != ''" >
+	    and flag =  #{flag}
+	</if>
+<if test="reportNo != null and reportNo != ''" >
+	    and report_no =  #{reportNo}
+	</if>
+<if test="requestTime != null and requestTime != ''" >
+	    and request_time =  #{requestTime}
+	</if>
+<if test="reportTime != null and reportTime != ''" >
+	    and report_time =  #{reportTime}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="queryName != null and queryName != ''" >
+	    and query_name =  #{queryName}
+	</if>
+<if test="queryReason != null and queryReason != ''" >
+	    and query_reason =  #{queryReason}
+	</if>
+<if test="gender != null and gender != ''" >
+	    and gender =  #{gender}
+	</if>
+<if test="birthday != null and birthday != ''" >
+	    and birthday =  #{birthday}
+	</if>
+<if test="marriage != null and marriage != ''" >
+	    and marriage =  #{marriage}
+	</if>
+<if test="mobile != null and mobile != ''" >
+	    and mobile =  #{mobile}
+	</if>
+<if test="comPhone != null and comPhone != ''" >
+	    and com_phone =  #{comPhone}
+	</if>
+<if test="homePhone != null and homePhone != ''" >
+	    and home_phone =  #{homePhone}
+	</if>
+<if test="education != null and education != ''" >
+	    and education =  #{education}
+	</if>
+<if test="degree != null and degree != ''" >
+	    and degree =  #{degree}
+	</if>
+<if test="address != null and address != ''" >
+	    and address =  #{address}
+	</if>
+<if test="hkAddress != null and hkAddress != ''" >
+	    and hk_address =  #{hkAddress}
+	</if>
+<if test="mateName != null and mateName != ''" >
+	    and mate_name =  #{mateName}
+	</if>
+<if test="mateIdType != null and mateIdType != ''" >
+	    and mate_id_type =  #{mateIdType}
+	</if>
+<if test="mateIdNo != null and mateIdNo != ''" >
+	    and mate_id_no =  #{mateIdNo}
+	</if>
+<if test="mateCom != null and mateCom != ''" >
+	    and mate_com =  #{mateCom}
+	</if>
+<if test="matePhone != null and matePhone != ''" >
+	    and mate_phone =  #{matePhone}
+	</if>
+<if test="remarks != null and remarks != ''" >
+	    and remarks =  #{remarks}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_RH_REPORT_SEQ') From dual
+			<!-- Select T_RH_REPORT_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_RH_REPORT(id,app_id,flag,report_no,request_time,report_time,name,id_type,id_no,query_name,query_reason,gender,birthday,marriage,mobile,com_phone,home_phone,education,degree,address,hk_address,mate_name,mate_id_type,mate_id_no,mate_com,mate_phone,remarks,state,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{flag, jdbcType=VARCHAR},#{reportNo, jdbcType=VARCHAR},#{requestTime, jdbcType=TIMESTAMP},#{reportTime, jdbcType=TIMESTAMP},#{name, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{queryName, jdbcType=VARCHAR},#{queryReason, jdbcType=VARCHAR},#{gender, jdbcType=VARCHAR},#{birthday, jdbcType=DATE},#{marriage, jdbcType=VARCHAR},#{mobile, jdbcType=VARCHAR},#{comPhone, jdbcType=VARCHAR},#{homePhone, jdbcType=VARCHAR},#{education, jdbcType=VARCHAR},#{degree, jdbcType=VARCHAR},#{address, jdbcType=VARCHAR},#{hkAddress, jdbcType=VARCHAR},#{mateName, jdbcType=VARCHAR},#{mateIdType, jdbcType=VARCHAR},#{mateIdNo, jdbcType=VARCHAR},#{mateCom, jdbcType=VARCHAR},#{matePhone, jdbcType=VARCHAR},#{remarks, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_RH_REPORT set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	flag =  #{flag, jdbcType=VARCHAR},
+	report_no =  #{reportNo, jdbcType=VARCHAR},
+	request_time =  #{requestTime, jdbcType=TIMESTAMP},
+	report_time =  #{reportTime, jdbcType=TIMESTAMP},
+	name =  #{name, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	query_name =  #{queryName, jdbcType=VARCHAR},
+	query_reason =  #{queryReason, jdbcType=VARCHAR},
+	gender =  #{gender, jdbcType=VARCHAR},
+	birthday =  #{birthday, jdbcType=DATE},
+	marriage =  #{marriage, jdbcType=VARCHAR},
+	mobile =  #{mobile, jdbcType=VARCHAR},
+	com_phone =  #{comPhone, jdbcType=VARCHAR},
+	home_phone =  #{homePhone, jdbcType=VARCHAR},
+	education =  #{education, jdbcType=VARCHAR},
+	degree =  #{degree, jdbcType=VARCHAR},
+	address =  #{address, jdbcType=VARCHAR},
+	hk_address =  #{hkAddress, jdbcType=VARCHAR},
+	mate_name =  #{mateName, jdbcType=VARCHAR},
+	mate_id_type =  #{mateIdType, jdbcType=VARCHAR},
+	mate_id_no =  #{mateIdNo, jdbcType=VARCHAR},
+	mate_com =  #{mateCom, jdbcType=VARCHAR},
+	mate_phone =  #{matePhone, jdbcType=VARCHAR},
+	remarks =  #{remarks, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_RH_REPORT  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_RH_REPORT set 
+	<trim  suffixOverrides="," >
+
+	<if test="appId != null and appId != '' " >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="flag != null and flag != '' " >
+	    flag =  #{flag, jdbcType=VARCHAR},
+	</if>
+
+	<if test="reportNo != null and reportNo != '' " >
+	    report_no =  #{reportNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="requestTime != null and requestTime != '' " >
+	    request_time =  #{requestTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="reportTime != null and reportTime != '' " >
+	    report_time =  #{reportTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="name != null and name != '' " >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idType != null and idType != '' " >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idNo != null and idNo != '' " >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="queryName != null and queryName != '' " >
+	    query_name =  #{queryName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="queryReason != null and queryReason != '' " >
+	    query_reason =  #{queryReason, jdbcType=VARCHAR},
+	</if>
+
+	<if test="gender != null and gender != '' " >
+	    gender =  #{gender, jdbcType=VARCHAR},
+	</if>
+
+	<if test="birthday != null and birthday != '' " >
+	    birthday =  #{birthday, jdbcType=DATE},
+	</if>
+
+	<if test="marriage != null and marriage != '' " >
+	    marriage =  #{marriage, jdbcType=VARCHAR},
+	</if>
+
+	<if test="mobile != null and mobile != '' " >
+	    mobile =  #{mobile, jdbcType=VARCHAR},
+	</if>
+
+	<if test="comPhone != null and comPhone != '' " >
+	    com_phone =  #{comPhone, jdbcType=VARCHAR},
+	</if>
+
+	<if test="homePhone != null and homePhone != '' " >
+	    home_phone =  #{homePhone, jdbcType=VARCHAR},
+	</if>
+
+	<if test="education != null and education != '' " >
+	    education =  #{education, jdbcType=VARCHAR},
+	</if>
+
+	<if test="degree != null and degree != '' " >
+	    degree =  #{degree, jdbcType=VARCHAR},
+	</if>
+
+	<if test="address != null and address != '' " >
+	    address =  #{address, jdbcType=VARCHAR},
+	</if>
+
+	<if test="hkAddress != null and hkAddress != '' " >
+	    hk_address =  #{hkAddress, jdbcType=VARCHAR},
+	</if>
+
+	<if test="mateName != null and mateName != '' " >
+	    mate_name =  #{mateName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="mateIdType != null and mateIdType != '' " >
+	    mate_id_type =  #{mateIdType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="mateIdNo != null and mateIdNo != '' " >
+	    mate_id_no =  #{mateIdNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="mateCom != null and mateCom != '' " >
+	    mate_com =  #{mateCom, jdbcType=VARCHAR},
+	</if>
+
+	<if test="matePhone != null and matePhone != '' " >
+	    mate_phone =  #{matePhone, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remarks != null and remarks != '' " >
+	    remarks =  #{remarks, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operator != null and operator != '' " >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 信用贷款人行报告 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_RH_REPORT  where id = #{id}
+</select>
+
+<!-- 信用贷款人行报告 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_RH_REPORT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询信用贷款人行报告列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_RH_REPORT 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

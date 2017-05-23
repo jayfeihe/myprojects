@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.match.dao.MatchResultDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.match.model.MatchResult" >
+	<result column="id" property="id"/>
+	<result column="match_type" property="matchType"/>
+	<result column="match_time" property="matchTime"/>
+	<result column="lend_type" property="lendType"/>
+	<result column="lend_app_id" property="lendAppId"/>
+	<result column="lend_amount" property="lendAmount"/>
+	<result column="lend_product" property="lendProduct"/>
+	<result column="lend_interest_rate" property="lendInterestRate"/>
+	<result column="lend_period" property="lendPeriod"/>
+	<result column="start_date" property="startDate"/>
+	<result column="end_date" property="endDate"/>
+	<result column="invest_type" property="investType"/>
+	<result column="loan_app_id" property="loanAppId"/>
+	<result column="loan_type" property="loanType"/>
+	<result column="loan_amount" property="loanAmount"/>
+	<result column="loan_product" property="loanProduct"/>
+	<result column="loan_interest_rate" property="loanInterestRate"/>
+	<result column="loan_period" property="loanPeriod"/>
+	<result column="start_amount" property="startAmount"/>
+	<result column="company_name" property="companyName"/>
+	<result column="useage" property="useage"/>
+	<result column="contract_no" property="contractNo"/>
+	<result column="actual_start_date" property="actualStartDate"/>
+	<result column="actual_end_date" property="actualEndDate"/>
+	<result column="state" property="state"/>
+	<result column="flag" property="flag"/>
+	<result column="operator" property="operator"/>
+	<result column="org_id" property="orgId"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+	<result column="id_no" property="idNo"/>
+	<result column="name" property="name"/>
+</resultMap>
+       
+<!-- T_MATCH_RESULT table all fields -->
+<sql id="Column_List" >
+	 id,match_type,match_time,lend_type,lend_app_id,lend_amount,lend_product,lend_interest_rate,lend_period,start_date,end_date,invest_type,loan_app_id,loan_type,loan_amount,loan_product,loan_interest_rate,loan_period,start_amount,company_name,useage,contract_no,actual_start_date,actual_end_date,state,flag,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="matchType != null and matchType != ''" >
+	    and match_type =  #{matchType}
+	</if>
+<if test="matchTime != null and matchTime != ''" >
+	    and match_time =  #{matchTime}
+	</if>
+<if test="lendType != null and lendType != ''" >
+	    and lend_type =  #{lendType}
+	</if>
+<if test="lendAppId != null and lendAppId != ''" >
+	    and lend_app_id =  #{lendAppId}
+	</if>
+<if test="lendAmount != null and lendAmount != ''" >
+	    and lend_amount =  #{lendAmount}
+	</if>
+<if test="lendProduct != null and lendProduct != ''" >
+	    and lend_product =  #{lendProduct}
+	</if>
+<if test="lendInterestRate != null and lendInterestRate != ''" >
+	    and lend_interest_rate =  #{lendInterestRate}
+	</if>
+<if test="lendPeriod != null and lendPeriod != ''" >
+	    and lend_period =  #{lendPeriod}
+	</if>
+<if test="startDate != null and startDate != ''" >
+	    and start_date =  #{startDate}
+	</if>
+<if test="endDate != null and endDate != ''" >
+	    and end_date =  #{endDate}
+	</if>
+<if test="investType != null and investType != ''" >
+	    and invest_type =  #{investType}
+	</if>
+<if test="loanAppId != null and loanAppId != ''" >
+	    and loan_app_id =  #{loanAppId}
+	</if>
+<if test="loanType != null and loanType != ''" >
+	    and loan_type =  #{loanType}
+	</if>
+<if test="loanAmount != null and loanAmount != ''" >
+	    and loan_amount =  #{loanAmount}
+	</if>
+<if test="loanProduct != null and loanProduct != ''" >
+	    and loan_product =  #{loanProduct}
+	</if>
+<if test="loanInterestRate != null and loanInterestRate != ''" >
+	    and loan_interest_rate =  #{loanInterestRate}
+	</if>
+<if test="loanPeriod != null and loanPeriod != ''" >
+	    and loan_period =  #{loanPeriod}
+	</if>
+<if test="startAmount != null and startAmount != ''" >
+	    and start_amount =  #{startAmount}
+	</if>
+<if test="companyName != null and companyName != ''" >
+	    and company_name =  #{companyName}
+	</if>
+<if test="useage != null and useage != ''" >
+	    and useage =  #{useage}
+	</if>
+<if test="contractNo != null and contractNo != ''" >
+	    and contract_no =  #{contractNo}
+	</if>
+<if test="actualStartDate != null and actualStartDate != ''" >
+	    and actual_start_date =  #{actualStartDate}
+	</if>
+<if test="actualEndDate != null and actualEndDate != ''" >
+	    and actual_end_date =  #{actualEndDate}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="flag != null and flag != ''" >
+	    and flag =  #{flag}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_MATCH_RESULT_SEQ') From dual
+			<!-- Select T_MATCH_RESULT_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_MATCH_RESULT(id,match_type,match_time,lend_type,lend_app_id,lend_amount,lend_product,lend_interest_rate,lend_period,start_date,end_date,invest_type,loan_app_id,loan_type,loan_amount,loan_product,loan_interest_rate,loan_period,start_amount,company_name,useage,contract_no,actual_start_date,actual_end_date,state,flag,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{matchType, jdbcType=VARCHAR},#{matchTime, jdbcType=TIMESTAMP},#{lendType, jdbcType=VARCHAR},#{lendAppId, jdbcType=VARCHAR},#{lendAmount, jdbcType=DOUBLE},#{lendProduct, jdbcType=VARCHAR},#{lendInterestRate, jdbcType=DOUBLE},#{lendPeriod, jdbcType=INTEGER},#{startDate, jdbcType=DATE},#{endDate, jdbcType=DATE},#{investType, jdbcType=VARCHAR},#{loanAppId, jdbcType=VARCHAR},#{loanType, jdbcType=VARCHAR},#{loanAmount, jdbcType=DOUBLE},#{loanProduct, jdbcType=VARCHAR},#{loanInterestRate, jdbcType=DOUBLE},#{loanPeriod, jdbcType=INTEGER},#{startAmount, jdbcType=DOUBLE},#{companyName, jdbcType=VARCHAR},#{useage, jdbcType=VARCHAR},#{contractNo, jdbcType=VARCHAR},#{actualStartDate, jdbcType=DATE},#{actualEndDate, jdbcType=DATE},#{state, jdbcType=VARCHAR},#{flag, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_MATCH_RESULT set 
+	<trim  suffixOverrides="," >
+	id =  #{id, jdbcType=INTEGER},
+	match_type =  #{matchType, jdbcType=VARCHAR},
+	match_time =  #{matchTime, jdbcType=TIMESTAMP},
+	lend_type =  #{lendType, jdbcType=VARCHAR},
+	lend_app_id =  #{lendAppId, jdbcType=VARCHAR},
+	lend_amount =  #{lendAmount, jdbcType=DOUBLE},
+	lend_product =  #{lendProduct, jdbcType=VARCHAR},
+	lend_interest_rate =  #{lendInterestRate, jdbcType=DOUBLE},
+	lend_period =  #{lendPeriod, jdbcType=INTEGER},
+	start_date =  #{startDate, jdbcType=DATE},
+	end_date =  #{endDate, jdbcType=DATE},
+	invest_type =  #{investType, jdbcType=VARCHAR},
+	loan_app_id =  #{loanAppId, jdbcType=VARCHAR},
+	loan_type =  #{loanType, jdbcType=VARCHAR},
+	loan_amount =  #{loanAmount, jdbcType=DOUBLE},
+	loan_product =  #{loanProduct, jdbcType=VARCHAR},
+	loan_interest_rate =  #{loanInterestRate, jdbcType=DOUBLE},
+	loan_period =  #{loanPeriod, jdbcType=INTEGER},
+	start_amount =  #{startAmount, jdbcType=DOUBLE},
+	company_name =  #{companyName, jdbcType=VARCHAR},
+	useage =  #{useage, jdbcType=VARCHAR},
+	contract_no =  #{contractNo, jdbcType=VARCHAR},
+	actual_start_date =  #{actualStartDate, jdbcType=DATE},
+	actual_end_date =  #{actualEndDate, jdbcType=DATE},
+	state =  #{state, jdbcType=VARCHAR},
+	flag =  #{flag, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_MATCH_RESULT  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_MATCH_RESULT set 
+	<trim  suffixOverrides="," >
+	<if test="matchType != null and matchType != ''" >
+	    match_type =  #{matchType, jdbcType=VARCHAR},
+	</if>
+	<if test="matchTime != null and matchTime != ''" >
+	    match_time =  #{matchTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="lendType != null and lendType != ''" >
+	    lend_type =  #{lendType, jdbcType=VARCHAR},
+	</if>
+	<if test="lendAppId != null and lendAppId != ''" >
+	    lend_app_id =  #{lendAppId, jdbcType=VARCHAR},
+	</if>
+	<if test="lendAmount != null and lendAmount != ''" >
+	    lend_amount =  #{lendAmount, jdbcType=DOUBLE},
+	</if>
+	<if test="lendProduct != null and lendProduct != ''" >
+	    lend_product =  #{lendProduct, jdbcType=VARCHAR},
+	</if>
+	<if test="lendInterestRate != null and lendInterestRate != ''" >
+	    lend_interest_rate =  #{lendInterestRate, jdbcType=DOUBLE},
+	</if>
+	<if test="lendPeriod != null and lendPeriod != ''" >
+	    lend_period =  #{lendPeriod, jdbcType=INTEGER},
+	</if>
+	<if test="startDate != null and startDate != ''" >
+	    start_date =  #{startDate, jdbcType=DATE},
+	</if>
+	<if test="endDate != null and endDate != ''" >
+	    end_date =  #{endDate, jdbcType=DATE},
+	</if>
+	<if test="investType != null and investType != ''" >
+	    invest_type =  #{investType, jdbcType=VARCHAR},
+	</if>
+	<if test="loanAppId != null and loanAppId != ''" >
+	    loan_app_id =  #{loanAppId, jdbcType=VARCHAR},
+	</if>
+	<if test="loanType != null and loanType != ''" >
+	    loan_type =  #{loanType, jdbcType=VARCHAR},
+	</if>
+	<if test="loanAmount != null and loanAmount != ''" >
+	    loan_amount =  #{loanAmount, jdbcType=DOUBLE},
+	</if>
+	<if test="loanProduct != null and loanProduct != ''" >
+	    loan_product =  #{loanProduct, jdbcType=VARCHAR},
+	</if>
+	<if test="loanInterestRate != null and loanInterestRate != ''" >
+	    loan_interest_rate =  #{loanInterestRate, jdbcType=DOUBLE},
+	</if>
+	<if test="loanPeriod != null and loanPeriod != ''" >
+	    loan_period =  #{loanPeriod, jdbcType=INTEGER},
+	</if>
+	<if test="startAmount != null and startAmount != ''" >
+	    start_amount =  #{startAmount, jdbcType=DOUBLE},
+	</if>
+	<if test="companyName != null and companyName != ''" >
+	    company_name =  #{companyName, jdbcType=VARCHAR},
+	</if>
+	<if test="useage != null and useage != ''" >
+	    useage =  #{useage, jdbcType=VARCHAR},
+	</if>
+	<if test="contractNo != null and contractNo != ''" >
+	    contract_no =  #{contractNo, jdbcType=VARCHAR},
+	</if>
+	<if test="actualStartDate != null and actualStartDate != ''" >
+	    actual_start_date =  #{actualStartDate, jdbcType=DATE},
+	</if>
+	<if test="actualEndDate != null and actualEndDate != ''" >
+	    actual_end_date =  #{actualEndDate, jdbcType=DATE},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="flag != null and flag != ''" >
+	    flag =  #{flag, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 撮合结果 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_MATCH_RESULT  where id = #{id}
+</select>
+<!-- 根据appId查询 撮合结果 -->
+<select id="getResultByAppId"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_MATCH_RESULT  where  loan_app_id =  #{loanAppId}
+</select>
+
+<!-- 撮合结果 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_MATCH_RESULT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询撮合结果列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_MATCH_RESULT 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+
+<!-- 查询撮合结果列表 -->
+<select id="queryListInSign" resultMap="ResultMap"  parameterType="map">
+	select *,T_LEND_APP.ORG_ID as orgId
+	
+	from T_MATCH_RESULT,T_LEND_APP
+	where 1=1 
+	<if test="loanAppId != null and loanAppId != ''" >
+	    and loan_app_id =  #{loanAppId}
+	</if>
+	<if test="state != null and state != ''" >
+	    and T_MATCH_RESULT.state =  #{state}
+	</if>
+	AND T_MATCH_RESULT.lend_app_id=T_LEND_APP.APP_ID
+	
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 查询撮合结果列表 -->
+<select id="queryListByLoanAppId" resultMap="ResultMap"  parameterType="map">
+	select m.*,l.ID_NO as idNo,l.NAME as name
+		from T_MATCH_RESULT m,T_LEND_APP l
+		where  m.lend_app_id=l.APP_ID
+	<if test="creditAppId != null and creditAppId != ''" >
+	    and m.loan_app_id =  #{creditAppId}
+	</if>
+	<if test="state != null and state != ''" >
+	    and m.state =  #{state, jdbcType=VARCHAR}
+	</if>
+	<if test="noState != null and noState != ''" >
+	    and m.state !=  #{noState}
+	</if>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- jesse 根据lendAppId查询状态不为0的记录 -->
+<select id="queryByLendAppId" resultMap="ResultMap"  parameterType="String">
+	SELECT * FROM t_match_result WHERE state > 0 AND LEND_APP_ID = #{lendAppId}
+</select>
+
+<!-- jesse 根据loanAppId查询状态不为0的记录 -->
+<select id="queryByLoanAppId" resultMap="ResultMap"  parameterType="String">
+	SELECT * FROM t_match_result WHERE state > 0 AND LOAN_APP_ID = #{loanAppId}
+</select>
+
+</mapper>   

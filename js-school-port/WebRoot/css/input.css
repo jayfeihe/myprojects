@@ -1,0 +1,61 @@
+﻿@charset "utf-8";
+/**
+ * @author 廖艳丽（QQ:1079160717）
+ * @description 表单组件公用样式
+ */
+.pay-input-item{
+	padding-bottom: 20px;
+}
+.input-item-left{
+	float: left;
+	width: 110px;
+	padding-left: 60px;
+	line-height: 38px;
+}
+.input-item-left.lh46{
+	line-height:46px;
+}
+.input-item-left.lh56{
+	line-height:56px;
+}
+.input-item-right.lh100{
+	line-height: 100px;
+}
+.input-item-left em{
+	color: #f63069;
+}
+.input-item-right{
+	width:988px;
+	float: right;
+}
+.input-item-text{
+	line-height: 38px;
+}
+#get_code{
+	float: left;
+}
+.select-default{
+	min-height: 38px;
+	height: 38px;
+	line-height: 38px;
+	border: 1px solid #ccc;
+	color: #5e5e5e;
+	min-width: 140px;
+	margin-top:0;
+	margin-bottom:0;
+}
+
+.input-default{
+	padding: 9px 10px;
+	height: 18px;
+	line-height: 18px;
+	border: 1px solid #ccc;	
+	width: 276px;
+}
+.input-long{
+	width: 440px;
+}
+.input-short{
+	width: 143px;
+	float: left;
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.UserOrderStatusLogDAO">
+	
+	<insert id="insertUserOrderStatusLog">
+		INSERT INTO t_user_order_status_log (
+		id,
+		total_info_id,
+		instalment_id,
+		action_type,
+		start_time,
+		end_time,
+		create_time,
+		operator,
+		descp
+		)
+		VALUES
+		(
+		#{id},
+		#{totalInfoId},
+		#{instalmentId},
+		#{actionType},
+		#{startTime},
+		#{endTime},
+		#{createTime},
+		#{operator},
+		#{descp}
+		)
+	</insert>
+</mapper>

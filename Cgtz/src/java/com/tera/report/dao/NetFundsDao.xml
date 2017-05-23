@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.report.dao.NetFundsDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.report.model.NetFunds" >
+
+	<result column="get_loan_way" property="getLoanWay"/><!-- 融资方式 -->
+	<result column="contract_id" property="contractId"/><!--线下合同编号 -->
+	<result column="online_con_id" property="onlineConId"/><!--线上编号 -->
+	<result column="project_name" property="projectName"/><!--线上项目名称-->
+	<result column="loan_name" property="loanName"/><!--借款人名称-->
+	<result column="lend_name" property="lendName"/><!-- 债权人 -->
+	<result column="loan_type" property="loanType"/><!-- 贷款类型 -->
+	<result column="create_time" property="createTime"/><!--放款时间 -->
+	<result column="amt" property="amt"/><!--放款金额 -->
+	<result column="acct_code" property="acctCode"/><!--债权人卡号-->
+	<result column="acct_bank" property="acctBank"/><!--开户行-->
+	<result column="loan_acct_code" property="loanAcctCode"/><!--借款人卡号-->
+	<result column="acct_branck" property="acctBranch"/><!--借款人分行信息-->
+	<result column="remark" property="ramark"/><!-- 说明-->
+	
+</resultMap>
+       
+<!-- T_COLLATERAL table all fields -->
+<sql id="Column_List" >
+		    con.GET_LOAN_WAY,   
+			conline.CONTRACT_ID ,
+			conline.ONLINE_CON_ID ,
+			conline.PROJECT_NAME ,
+			base.NAME as loan_name, 
+			lend.NAME as lend_name, 
+			bill.CREATE_TIME ,
+			bill.AMT, 
+			lend.ACCT_CODE ,
+			lend.ACCT_BANK,
+			base.ACCT_CODE as loanAcctCode, 
+			base.ACCT_BRANCH,
+			base.loan_type,
+			bill.REMARK 
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="getLoanWay != null and getLoanWay != ''" >
+	    and con.GET_LOAN_WAY =  #{getLoanWay}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and conline.CONTRACT_ID =  #{contractId}
+	</if>
+<if test="onlineConId != null and onlineConId != ''" >
+	    and conline.ONLINE_CON_ID =  #{onlineConId}
+	</if>
+<if test="projectName != null and projectName != ''" >
+	    and conline.PROJECT_NAME =  #{projectName}
+	</if>
+<if test="loanName != null and loanName != ''" >
+	    and base.NAME =  #{loanName}
+	</if>
+<if test="loanType != null and loanType != ''" >
+	    and base.loan_type =  #{loanType}
+	</if>	
+<if test="lendName != null and lendName != ''" >
+	    and lend.NAME =  #{lendName}
+	</if>
+<!-- <if test="createTime != null and createTime != ''" >
+	    and bill.CREATE_TIME =  #{createTime}
+	</if> -->
+<if test="minCreateTime != null and minCreateTime != ''" >
+<![CDATA[and bill.CREATE_TIME >=  #{minCreateTime}]]>	    
+	</if>
+<if test="maxCreateTime != null and maxCreateTime != ''" >
+<![CDATA[and bill.CREATE_TIME <=  #{maxCreateTime}+1]]>	    
+	</if>	
+<if test="amt != null and amt != ''" >
+	    and bill.AMT =  #{amt}
+	</if>
+<if test="acctCode != null and acctCode != ''" >
+	    and lend.ACCT_CODE =  #{acctCode}
+	</if>
+<if test="acctBank != null and acctBank != ''" >
+	    and lend.ACCT_BANK =  #{acctBank}
+	</if>
+<if test="loanAcctCode != null and loanAcctCode != ''" >
+	    and base.ACCT_CODE =  #{loanAcctCode}
+	</if>
+<if test="acctBranck != null and acctBranck != ''" >
+	    and base.ACCT_BRANCH =  #{acctBranck}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and bill.REMARK =  #{remark}
+	</if>
+<if test="org != null and org != ''" >
+	    and con.org like  concat(#{org},'%')
+	</if>	
+<!--机构权限限制  -->
+<if test="orgs != null and orgs.size() >0 " >
+and con.org in
+                <foreach item="item" index="index" collection="orgs" open="(" separator="," close=")">
+						#{item}
+				</foreach>	
+	</if>	
+
+</trim>
+</sql>
+
+<!-- 质押、抵押物信息 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from (select 
+	<include refid="Column_List"/>
+	from t_bill_online bill
+	INNER JOIN t_contract con on bill.LOAN_ID=con.LOAN_ID
+	INNER JOIN t_contract_online conline on bill.CONTRACT_ID=conline.ONLINE_CON_ID
+	INNER JOIN t_loan_base base ON bill.loan_id=base.loan_id
+	LEFT JOIN t_lend_user lend on  bill.LEND_USRE_ID =lend.ID   
+	<include refid="Where_Clause"/> ) 
+</select>
+  	
+<!-- 查询质押、抵押物信息列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from t_bill_online bill
+	INNER JOIN t_contract con on bill.LOAN_ID=con.LOAN_ID
+	INNER JOIN t_contract_online conline on bill.CONTRACT_ID=conline.ONLINE_CON_ID
+	INNER JOIN t_loan_base base ON bill.loan_id=base.loan_id
+	LEFT JOIN t_lend_user lend on  bill.LEND_USRE_ID =lend.ID   
+	<include refid="Where_Clause"/>
+	order by con.contract_id,bill.create_time
+</select>
+
+</mapper>   

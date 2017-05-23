@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.customer.dao.ContactDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.customer.model.Contact" >
+	<result column="id" property="id"/>
+	<result column="customer_id" property="customerId"/>
+	<result column="type" property="type"/>
+	<result column="name" property="name"/>
+	<result column="eng_name" property="engName"/>
+	<result column="gender" property="gender"/>
+	<result column="birthday" property="birthday"/>
+	<result column="id_type" property="idType"/>
+	<result column="id_no" property="idNo"/>
+	<result column="id_issue_date" property="idIssueDate"/>
+	<result column="id_expiry_date" property="idExpiryDate"/>
+	<result column="id_issue_gov" property="idIssueGov"/>
+	<result column="mobile" property="mobile"/>
+	<result column="phone" property="phone"/>
+	<result column="email" property="email"/>
+	<result column="relation" property="relation"/>
+	<result column="add_province" property="addProvince"/>
+	<result column="add_city" property="addCity"/>
+	<result column="add_county" property="addCounty"/>
+	<result column="address" property="address"/>
+	<result column="postcode" property="postcode"/>
+	<result column="operator" property="operator"/>
+	<result column="org_id" property="orgId"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+</resultMap>
+       
+<!-- T_CONTACT table all fields -->
+<sql id="Column_List" >
+	 id,customer_id,type,name,eng_name,gender,birthday,id_type,id_no,id_issue_date,id_expiry_date,id_issue_gov,mobile,phone,email,relation,add_province,add_city,add_county,address,postcode,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="customerId != null and customerId != ''" >
+	    and customer_id =  #{customerId}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="engName != null and engName != ''" >
+	    and eng_name =  #{engName}
+	</if>
+<if test="gender != null and gender != ''" >
+	    and gender =  #{gender}
+	</if>
+<if test="birthday != null and birthday != ''" >
+	    and birthday =  #{birthday}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="idIssueDate != null and idIssueDate != ''" >
+	    and id_issue_date =  #{idIssueDate}
+	</if>
+<if test="idExpiryDate != null and idExpiryDate != ''" >
+	    and id_expiry_date =  #{idExpiryDate}
+	</if>
+<if test="idIssueGov != null and idIssueGov != ''" >
+	    and id_issue_gov =  #{idIssueGov}
+	</if>
+<if test="mobile != null and mobile != ''" >
+	    and mobile =  #{mobile}
+	</if>
+<if test="phone != null and phone != ''" >
+	    and phone =  #{phone}
+	</if>
+<if test="email != null and email != ''" >
+	    and email =  #{email}
+	</if>
+<if test="relation != null and relation != ''" >
+	    and relation =  #{relation}
+	</if>
+<if test="addProvince != null and addProvince != ''" >
+	    and add_province =  #{addProvince}
+	</if>
+<if test="addCity != null and addCity != ''" >
+	    and add_city =  #{addCity}
+	</if>
+<if test="addCounty != null and addCounty != ''" >
+	    and add_county =  #{addCounty}
+	</if>
+<if test="address != null and address != ''" >
+	    and address =  #{address}
+	</if>
+<if test="postcode != null and postcode != ''" >
+	    and postcode =  #{postcode}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_CONTACT_SEQ') From dual
+			<!-- Select T_CONTACT_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_CONTACT(id,customer_id,type,name,eng_name,gender,birthday,id_type,id_no,id_issue_date,id_expiry_date,id_issue_gov,mobile,phone,email,relation,add_province,add_city,add_county,address,postcode,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{customerId, jdbcType=INTEGER},#{type, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{engName, jdbcType=VARCHAR},#{gender, jdbcType=VARCHAR},#{birthday, jdbcType=DATE},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{idIssueDate, jdbcType=DATE},#{idExpiryDate, jdbcType=DATE},#{idIssueGov, jdbcType=VARCHAR},#{mobile, jdbcType=VARCHAR},#{phone, jdbcType=VARCHAR},#{email, jdbcType=VARCHAR},#{relation, jdbcType=VARCHAR},#{addProvince, jdbcType=VARCHAR},#{addCity, jdbcType=VARCHAR},#{addCounty, jdbcType=VARCHAR},#{address, jdbcType=VARCHAR},#{postcode, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_CONTACT set 
+	<trim  suffixOverrides="," >
+	id =  #{id, jdbcType=INTEGER},
+	customer_id =  #{customerId, jdbcType=INTEGER},
+	type =  #{type, jdbcType=VARCHAR},
+	name =  #{name, jdbcType=VARCHAR},
+	eng_name =  #{engName, jdbcType=VARCHAR},
+	gender =  #{gender, jdbcType=VARCHAR},
+	birthday =  #{birthday, jdbcType=DATE},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	id_issue_date =  #{idIssueDate, jdbcType=DATE},
+	id_expiry_date =  #{idExpiryDate, jdbcType=DATE},
+	id_issue_gov =  #{idIssueGov, jdbcType=VARCHAR},
+	mobile =  #{mobile, jdbcType=VARCHAR},
+	phone =  #{phone, jdbcType=VARCHAR},
+	email =  #{email, jdbcType=VARCHAR},
+	relation =  #{relation, jdbcType=VARCHAR},
+	add_province =  #{addProvince, jdbcType=VARCHAR},
+	add_city =  #{addCity, jdbcType=VARCHAR},
+	add_county =  #{addCounty, jdbcType=VARCHAR},
+	address =  #{address, jdbcType=VARCHAR},
+	postcode =  #{postcode, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_CONTACT  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_CONTACT set 
+	<trim  suffixOverrides="," >
+	<if test="customerId != null and customerId != ''" >
+	    customer_id =  #{customerId, jdbcType=INTEGER},
+	</if>
+	<if test="type != null and type != ''" >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+	<if test="name != null and name != ''" >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+	<if test="engName != null and engName != ''" >
+	    eng_name =  #{engName, jdbcType=VARCHAR},
+	</if>
+	<if test="gender != null and gender != ''" >
+	    gender =  #{gender, jdbcType=VARCHAR},
+	</if>
+	<if test="birthday != null and birthday != ''" >
+	    birthday =  #{birthday, jdbcType=DATE},
+	</if>
+	<if test="idType != null and idType != ''" >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+	<if test="idIssueDate != null and idIssueDate != ''" >
+	    id_issue_date =  #{idIssueDate, jdbcType=DATE},
+	</if>
+	<if test="idExpiryDate != null and idExpiryDate != ''" >
+	    id_expiry_date =  #{idExpiryDate, jdbcType=DATE},
+	</if>
+	<if test="idIssueGov != null and idIssueGov != ''" >
+	    id_issue_gov =  #{idIssueGov, jdbcType=VARCHAR},
+	</if>
+	<if test="mobile != null and mobile != ''" >
+	    mobile =  #{mobile, jdbcType=VARCHAR},
+	</if>
+	<if test="phone != null and phone != ''" >
+	    phone =  #{phone, jdbcType=VARCHAR},
+	</if>
+	<if test="email != null and email != ''" >
+	    email =  #{email, jdbcType=VARCHAR},
+	</if>
+	<if test="relation != null and relation != ''" >
+	    relation =  #{relation, jdbcType=VARCHAR},
+	</if>
+	<if test="addProvince != null and addProvince != ''" >
+	    add_province =  #{addProvince, jdbcType=VARCHAR},
+	</if>
+	<if test="addCity != null and addCity != ''" >
+	    add_city =  #{addCity, jdbcType=VARCHAR},
+	</if>
+	<if test="addCounty != null and addCounty != ''" >
+	    add_county =  #{addCounty, jdbcType=VARCHAR},
+	</if>
+	<if test="address != null and address != ''" >
+	    address =  #{address, jdbcType=VARCHAR},
+	</if>
+	<if test="postcode != null and postcode != ''" >
+	    postcode =  #{postcode, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 财富客户联系人表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CONTACT  where id = #{id}
+</select>
+
+<!-- 财富客户联系人表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CONTACT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询财富客户联系人表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_CONTACT 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

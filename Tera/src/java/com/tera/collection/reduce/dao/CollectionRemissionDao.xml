@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.collection.reduce.dao.CollectionRemissionDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.collection.reduce.model.CollectionRemission" >
+	<result column="id" property="id"/><!-- id -->
+	<result column="contract_no" property="contractNo"/><!-- 合同编号 -->
+	<result column="apply_uid" property="applyUid"/><!-- 申请人 -->
+	<result column="apply_time" property="applyTime"/><!-- 申请时间 -->
+	<result column="apply_text" property="applyText"/><!-- 申请内容 -->
+	<result column="reduced_amount" property="reducedAmount"/><!-- 减免后金额 -->
+	<result column="check_uid" property="checkUid"/><!-- 复核人 -->
+	<result column="check_time" property="checkTime"/><!-- 复核时间 -->
+	<result column="check_text" property="checkText"/><!-- 复核意见 -->
+	<result column="check_result" property="checkResult"/><!-- 复核结果 -->
+	<result column="approval_uid" property="approvalUid"/><!-- 审批人 -->
+	<result column="approval_time" property="approvalTime"/><!-- 审批时间 -->
+	<result column="approval_text" property="approvalText"/><!-- 审批意见 -->
+	<result column="approval_result" property="approvalResult"/><!-- 审批结果 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="remark" property="remark"/><!-- 备注 -->
+	<result column="create_uid" property="createUid"/><!-- 创建人 -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="update_uid" property="updateUid"/><!-- 修改人 -->
+	<result column="update_time" property="updateTime"/><!-- 修改时间 -->
+</resultMap>
+
+<resultMap id="LoanRepayPlanResultMap" type="com.tera.payment.model.LoanRepayPlan" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="contract_no" property="contractNo"/><!-- 合同号 -->
+	<result column="repay_method" property="repayMethod"/><!-- 还款方式 -->
+	<result column="repayment_date" property="repaymentDate"/><!-- 还款日 -->
+	<result column="start_date" property="startDate"/><!-- 开始日期 -->
+	<result column="end_date" property="endDate"/><!-- 结束日期 -->
+	<result column="period_num" property="periodNum"/><!-- 期数 -->
+	<result column="srevice_fee_receivable" property="sreviceFeeReceivable"/><!-- 当月应收服务费 -->
+	<result column="srevice_fee_received" property="sreviceFeeReceived"/><!-- 当月实收服务费 -->
+	<result column="interest_receivable" property="interestReceivable"/><!-- 当月应收利息 -->
+	<result column="interest_received" property="interestReceived"/><!-- 当月实收利息 -->
+	<result column="principal_receivable" property="principalReceivable"/><!-- 当月应收本金 -->
+	<result column="principal_received" property="principalReceived"/><!-- 当月实收本金 -->
+	<result column="penalty_receivable" property="penaltyReceivable"/><!-- 当月应收罚息 -->
+	<result column="penalty_received" property="penaltyReceived"/><!-- 当月实收罚息 -->
+	<result column="default_receivable" property="defaultReceivable"/><!-- 当月应收违约金 -->
+	<result column="default_received" property="defaultReceived"/><!-- 当月实收违约金 -->
+	<result column="delay_receivable" property="delayReceivable"/><!-- 应收滞纳金 -->
+	<result column="delay_received" property="delayReceived"/><!-- 实收滞纳金 -->
+	<result column="rest_principal" property="restPrincipal"/><!-- 剩余本金 -->
+	<result column="penalty_reduce" property="penaltyReduce"/><!-- 罚息减免 -->
+	<result column="delay_reduce" property="delayReduce"/><!-- 滞纳金减免 -->
+	<result column="pay_date" property="payDate"/><!-- 实际还款日期 -->
+	<result column="default_flag" property="defaultFlag"/><!-- 违约记账标志 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_COLLECTION_REMISSION table all fields -->
+<sql id="Column_List" >
+	 id,contract_no,apply_uid,apply_time,apply_text,reduced_amount,check_uid,check_time,check_text,check_result,approval_uid,approval_time,approval_text,approval_result,state,remark,create_uid,create_time,update_uid,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="contractNo != null and contractNo != ''" >
+	    and contract_no =  #{contractNo}
+	</if>
+<if test="applyUid != null and applyUid != ''" >
+	    and apply_uid =  #{applyUid}
+	</if>
+<if test="applyTime != null and applyTime != ''" >
+	    and apply_time =  #{applyTime}
+	</if>
+<if test="applyText != null and applyText != ''" >
+	    and apply_text =  #{applyText}
+	</if>
+<if test="reducedAmount != null and reducedAmount != ''" >
+	    and reduced_amount =  #{reducedAmount}
+	</if>
+<if test="checkUid != null and checkUid != ''" >
+	    and check_uid =  #{checkUid}
+	</if>
+<if test="checkTime != null and checkTime != ''" >
+	    and check_time =  #{checkTime}
+	</if>
+<if test="checkText != null and checkText != ''" >
+	    and check_text =  #{checkText}
+	</if>
+<if test="checkResult != null and checkResult != ''" >
+	    and check_result =  #{checkResult}
+	</if>
+<if test="approvalUid != null and approvalUid != ''" >
+	    and approval_uid =  #{approvalUid}
+	</if>
+<if test="approvalTime != null and approvalTime != ''" >
+	    and approval_time =  #{approvalTime}
+	</if>
+<if test="approvalText != null and approvalText != ''" >
+	    and approval_text =  #{approvalText}
+	</if>
+<if test="approvalResult != null and approvalResult != ''" >
+	    and approval_result =  #{approvalResult}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="createUid != null and createUid != ''" >
+	    and create_uid =  #{createUid}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateUid != null and updateUid != ''" >
+	    and update_uid =  #{updateUid}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_COLLECTION_REMISSION_SEQ') From dual
+			<!-- Select T_COLLECTION_REMISSION_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_COLLECTION_REMISSION(id,contract_no,apply_uid,apply_time,apply_text,reduced_amount,check_uid,check_time,check_text,check_result,approval_uid,approval_time,approval_text,approval_result,state,remark,create_uid,create_time,update_uid,update_time)
+ values( #{id, jdbcType=INTEGER},#{contractNo, jdbcType=VARCHAR},#{applyUid, jdbcType=VARCHAR},NOW(),#{applyText, jdbcType=VARCHAR},#{reducedAmount, jdbcType=DOUBLE},#{checkUid, jdbcType=VARCHAR},#{checkTime, jdbcType=TIMESTAMP},#{checkText, jdbcType=VARCHAR},#{checkResult, jdbcType=VARCHAR},#{approvalUid, jdbcType=VARCHAR},#{approvalTime, jdbcType=TIMESTAMP},#{approvalText, jdbcType=VARCHAR},#{approvalResult, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{createUid, jdbcType=VARCHAR},NOW(),#{updateUid, jdbcType=VARCHAR},NOW())
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_COLLECTION_REMISSION set 
+	<trim  suffixOverrides="," >
+	contract_no =  #{contractNo, jdbcType=VARCHAR},
+	apply_uid =  #{applyUid, jdbcType=VARCHAR},
+	apply_text =  #{applyText, jdbcType=VARCHAR},
+	reduced_amount =  #{reducedAmount, jdbcType=DOUBLE},
+	check_uid =  #{checkUid, jdbcType=VARCHAR},
+	check_time =  #{checkTime, jdbcType=TIMESTAMP},
+	check_text =  #{checkText, jdbcType=VARCHAR},
+	check_result =  #{checkResult, jdbcType=VARCHAR},
+	approval_uid =  #{approvalUid, jdbcType=VARCHAR},
+	approval_time =  #{approvalTime, jdbcType=TIMESTAMP},
+	approval_text =  #{approvalText, jdbcType=VARCHAR},
+	approval_result =  #{approvalResult, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	remark =  #{remark, jdbcType=VARCHAR},
+	update_uid =  #{updateUid, jdbcType=VARCHAR},
+	update_time =  NOW(),
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_COLLECTION_REMISSION  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_COLLECTION_REMISSION set 
+	<trim  suffixOverrides="," >
+
+	<if test="contractNo != null and contractNo != '' " >
+	    contract_no =  #{contractNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="applyUid != null and applyUid != '' " >
+	    apply_uid =  #{applyUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="applyText != null and applyText != '' " >
+	    apply_text =  #{applyText, jdbcType=VARCHAR},
+	</if>
+
+	<if test="reducedAmount != null and reducedAmount != ''  or reducedAmount==0" >
+	    reduced_amount =  #{reducedAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="checkUid != null and checkUid != '' " >
+	    check_uid =  #{checkUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="checkTime != null and checkTime != '' " >
+	    check_time =  #{checkTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="checkText != null and checkText != '' " >
+	    check_text =  #{checkText, jdbcType=VARCHAR},
+	</if>
+
+	<if test="checkResult != null and checkResult != '' " >
+	    check_result =  #{checkResult, jdbcType=VARCHAR},
+	</if>
+
+	<if test="approvalUid != null and approvalUid != '' " >
+	    approval_uid =  #{approvalUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="approvalTime != null and approvalTime != '' " >
+	    approval_time =  #{approvalTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="approvalText != null and approvalText != '' " >
+	    approval_text =  #{approvalText, jdbcType=VARCHAR},
+	</if>
+
+	<if test="approvalResult != null and approvalResult != '' " >
+	    approval_result =  #{approvalResult, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="updateUid != null and updateUid != '' " >
+	    update_uid =  #{updateUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  NOW(),
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 减免申请审批表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_COLLECTION_REMISSION  where id = #{id}
+</select>
+
+<!-- 减免申请审批表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_COLLECTION_REMISSION 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询减免申请审批表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_COLLECTION_REMISSION 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 查找最新一期的减免申请 -->
+<select id="queryLatestApplyByContractNo" parameterType="string" resultMap="ResultMap">
+	SELECT 
+	<include refid="Column_List"/>
+	FROM T_COLLECTION_REMISSION 
+	WHERE CONTRACT_NO = #{contractNo}
+	ORDER BY ID DESC 
+	LIMIT 1
+</select>
+
+<!-- 减免申请列表查询  -->
+<select id="queryRemissionApplyCount" parameterType="map" resultType="integer">
+	SELECT COUNT(1) <include refid="queryRemissionApplyListSql"/>
+</select>
+<select id="queryRemissionApplyList" parameterType="map" resultType="com.tera.collection.reduce.model.form.RemissionQBean">
+	SELECT 
+		t1.id AS id,
+		t2.CONTRACT_NO AS contractNo,
+		t2.CUSTOMER_NAME AS name,
+		REPLACE(t2.ID_NO,SUBSTRING(t2.ID_NO FROM 7 FOR 8),'****') AS idNo,
+		(SELECT o.ORG_NAME FROM t_org o WHERE o.ORG_ID = t2.ORG_ID) AS orgName,
+		t2.CONTRACT_AMOUNT AS contractAmount,
+		(t2.AMOUNT_ALL - t1.REDUCED_AMOUNT) AS remissionMount,
+		t2.REPAYMENT_DATE AS firstRepayDate,
+		t2.LATE_DAYS AS overdueDays,
+		t2.PRODUCT AS product,
+		(SELECT u.`NAME` FROM t_user u WHERE u.LOGIN_ID = t2.COLLECTION_UID_CUR) AS collectionUid,
+		t1.STATE AS currentState
+		<include refid="queryRemissionApplyListSql"/>
+	<if test="rowS != null and rowE != null " >
+      LIMIT #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 减免申请列表查询SQL -->
+<sql id="queryRemissionApplyListSql">
+	FROM t_collection_remission t1, t_collection_base t2
+	WHERE t1.CONTRACT_NO = t2.CONTRACT_NO
+	<if test="name != null and name != ''">
+		AND t2.CUSTOMER_NAME = #{name}
+	</if>
+	<if test="idNo != null and idNo != ''">
+		AND t2.ID_NO = #{idNo}
+	</if>
+	<if test="contractNo != null and contractNo != ''">
+		AND t2.CONTRACT_NO = #{contractNo}
+	</if>
+	<if test="collectionUid != null and collectionUid != ''">
+		AND t2.COLLECTION_UID_CUR = #{collectionUid}
+	</if>
+	<if test="currentState != null and currentState != ''">
+		AND t1.STATE = #{currentState}
+	</if>
+	<if test="overdueDaysStart != null and overdueDaysStart != ''">
+		<![CDATA[AND t2.LATE_DAYS >= #{overdueDaysStart}]]>
+	</if>
+	<if test="overdueDaysEnd != null and overdueDaysEnd != ''">
+		<![CDATA[AND t2.LATE_DAYS <= #{overdueDaysEnd}]]>
+	</if>
+	ORDER BY t1.APPLY_TIME DESC
+</sql>
+
+
+<!-- 减免复核列表查询  -->
+<select id="queryRemissionReviewCount" parameterType="map" resultType="integer">
+	SELECT COUNT(1) <include refid="queryRemissionReviewListSql"/>
+</select>
+<select id="queryRemissionReviewList" parameterType="map" resultType="com.tera.collection.reduce.model.form.RemissionQBean">
+	SELECT 
+		t1.id AS id,
+		t2.CONTRACT_NO AS contractNo,
+		t2.CUSTOMER_NAME AS name,
+		REPLACE(t2.ID_NO,SUBSTRING(t2.ID_NO FROM 7 FOR 8),'****') AS idNo,
+		(SELECT o.ORG_NAME FROM t_org o WHERE o.ORG_ID = t2.ORG_ID) AS orgName,
+		t2.CONTRACT_AMOUNT AS contractAmount,
+		(t2.AMOUNT_ALL - t1.REDUCED_AMOUNT) AS remissionMount,
+		t2.REPAYMENT_DATE AS firstRepayDate,
+		t2.LATE_DAYS AS overdueDays,
+		t2.PRODUCT AS product,
+		(SELECT u.`NAME` FROM t_user u WHERE u.LOGIN_ID = t2.COLLECTION_UID_CUR) AS collectionUid,
+		t1.STATE AS currentState
+	<include refid="queryRemissionReviewListSql"/>
+	<if test="rowS != null and rowE != null " >
+      LIMIT #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 减免复核列表查询SQL -->
+<sql id="queryRemissionReviewListSql">
+	FROM t_collection_remission t1 
+	INNER JOIN t_collection_base t2 ON t1.CONTRACT_NO = t2.CONTRACT_NO 
+	<!-- 待处理 -->
+	<if test="processStatus != null and processStatus == '0'.toString()">
+		INNER JOIN  t_bpm_task t3 ON t1.CONTRACT_NO = t3.BIZ_KEY
+		WHERE 1=1
+		<if test="loginId != null and loginId != ''">
+			AND t3.PROCESSER = #{loginId}
+		</if>
+		<if test="states != null and states != ''">
+			AND t1.STATE IN 
+			<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="bpmStates != null and bpmStates != ''">
+			AND t3.STATE IN
+			<foreach item="item" index="index" collection="bpmStates" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		
+	</if>
+	<!-- 已处理 -->
+	<if test="processStatus != null and processStatus == '1'.toString()">
+			WHERE 1=1
+			<if test="states != null and states != ''">
+				AND t1.STATE IN 
+			<foreach collection="states" item="item" index="index" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="loginId != null and loginId != '' ">
+			AND t1.CHECK_UID = #{loginId}
+		</if>
+	</if>
+	<if test="id != null and id != ''">
+		AND t1.ID = #{id}
+	</if>
+	<if test="name != null and name != ''">
+		AND t2.CUSTOMER_NAME = #{name}
+	</if>
+	<if test="idNo != null and idNo != ''">
+		AND t2.ID_NO = #{idNo}
+	</if>
+	<if test="contractNo != null and contractNo != ''">
+		AND t2.CONTRACT_NO = #{contractNo}
+	</if>
+	<if test="collectionUid != null and collectionUid != ''">
+		AND t2.COLLECTION_UID_CUR = #{collectionUid}
+	</if>
+	<if test="overdueDaysStart != null and overdueDaysStart != ''">
+		<![CDATA[AND t2.LATE_DAYS >= #{overdueDaysStart}]]>
+	</if>
+	<if test="overdueDaysEnd != null and overdueDaysEnd != ''">
+		<![CDATA[AND t2.LATE_DAYS <= #{overdueDaysEnd}]]>
+	</if>
+	ORDER BY t1.APPLY_TIME
+</sql>
+
+<!-- 减免审批列表查询（审批、高级审批） -->
+<select id="queryRemissionApprovalCount" parameterType="map" resultType="integer">
+	SELECT COUNT(1) <include refid="queryRemissionApprovalListSql"/>
+</select>
+<select id="queryRemissionApprovalList" parameterType="map" resultType="com.tera.collection.reduce.model.form.RemissionQBean">
+	SELECT 
+		t1.id AS id,
+		t2.CONTRACT_NO AS contractNo,
+		t2.CUSTOMER_NAME AS name,
+		REPLACE(t2.ID_NO,SUBSTRING(t2.ID_NO FROM 7 FOR 8),'****') AS idNo,
+		(SELECT o.ORG_NAME FROM t_org o WHERE o.ORG_ID = t2.ORG_ID) AS orgName,
+		t2.CONTRACT_AMOUNT AS contractAmount,
+		(t2.AMOUNT_ALL - t1.REDUCED_AMOUNT) AS remissionMount,
+		t2.REPAYMENT_DATE AS firstRepayDate,
+		t2.LATE_AGE AS accountAge,
+		t2.LATE_DAYS AS overdueDays,
+		t2.PRODUCT AS product,
+		(SELECT u.`NAME` FROM t_user u WHERE u.LOGIN_ID = t2.COLLECTION_UID_CUR) AS collectionUid,
+		t1.STATE AS currentState
+	<include refid="queryRemissionApprovalListSql"/>
+	<if test="rowS != null and rowE != null " >
+      LIMIT #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 减免审批列表查询SQL -->
+<sql id="queryRemissionApprovalListSql">
+	FROM t_collection_remission t1
+	INNER JOIN t_collection_base t2 ON t1.CONTRACT_NO = t2.CONTRACT_NO
+	<!-- 待处理 -->
+	<if test="processStatus != null and processStatus == '0'.toString()">
+		INNER JOIN  t_bpm_task t3 ON t1.CONTRACT_NO = t3.BIZ_KEY
+		WHERE 1=1
+		<if test="loginId != null and loginId != ''">
+			AND t3.PROCESSER = #{loginId}
+		</if>	
+		<if test="states != null and states != ''">
+			AND t1.STATE IN 
+			<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="bpmStates != null and bpmStates != ''">
+			AND t3.STATE IN
+			<foreach item="item" index="index" collection="bpmStates" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</if>
+	
+	<!-- 已处理 -->
+	<if test="processStatus != null and processStatus == '1'.toString()">
+		<if test="states != null and states != ''">
+			AND t1.STATE IN 
+			<foreach collection="states" item="item" index="index" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="remark != null and remark != ''">
+			AND t1.REMARK = #{remark}
+		</if>
+		<if test="loginId != null and loginId != '' ">
+			AND t1.APPROVAL_UID = #{loginId}
+		</if>
+	</if>
+	
+	<if test="id != null and id != ''">
+		AND t1.ID = #{id}
+	</if>
+	<if test="name != null and name != ''">
+		AND t2.CUSTOMER_NAME = #{name}
+	</if>
+	<if test="idNo != null and idNo != ''">
+		AND t2.ID_NO = #{idNo}
+	</if>
+	<if test="contractNo != null and contractNo != ''">
+		AND t2.CONTRACT_NO = #{contractNo}
+	</if>
+	<if test="collectionUid != null and collectionUid != ''">
+		AND t2.COLLECTION_UID_CUR = #{collectionUid}
+	</if>
+	<if test="overdueDaysStart != null and overdueDaysStart != ''">
+		<![CDATA[AND t2.LATE_DAYS >= #{overdueDaysStart}]]>
+	</if>
+	<if test="overdueDaysEnd != null and overdueDaysEnd != ''">
+		<![CDATA[AND t2.LATE_DAYS <= #{overdueDaysEnd}]]>
+	</if>
+	ORDER BY t1.CHECK_TIME 
+</sql>
+
+<sql id="LoanRepayPlan_Column_List" >
+	 id,contract_no,repay_method,repayment_date,start_date,end_date,period_num,srevice_fee_receivable,srevice_fee_received,interest_receivable,interest_received,principal_receivable,principal_received,penalty_receivable,penalty_received,default_receivable,default_received,delay_receivable,delay_received,rest_principal,penalty_reduce,delay_reduce,pay_date,default_flag,state,operator,org_id,create_time,update_time
+</sql>
+<!-- 查询借款还款计划表列表 -->
+<select id="queryLatePlanList" resultMap="LoanRepayPlanResultMap"  parameterType="map">
+	SELECT 
+	<include refid="LoanRepayPlan_Column_List"/>
+	FROM T_LOAN_REPAY_PLAN 
+	WHERE 1=1 
+	AND ID IN 
+			<foreach collection="latePlanIds" item="item" index="index" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+	ORDER BY PERIOD_NUM
+</select>
+</mapper>   

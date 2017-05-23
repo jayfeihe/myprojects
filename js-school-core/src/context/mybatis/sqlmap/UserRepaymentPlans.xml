@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.UserRepaymentPlansDAO">
+	
+	<resultMap type="com.hikootech.mqcash.dto.UserRepaymentPlansDTO" id="userRepaymentPlansDTOMap">
+		<result column="repayment_plans_id" property="repaymentPlansId" />
+		<result column="instalment_id" property="instalmentId" />
+		<result column="user_id" property="userId" />
+		<result column="instalment_number" property="instalmentNumber" />
+		<result column="instalment_count" property="instalmentCount" />
+		<result column="receivable_amount" property="receivableAmount" />
+		<result column="received_amount" property="receivedAmount" />
+		<result column="receivable_principal" property="receivablePrincipal" />
+		<result column="received_principal" property="receivedPrincipal" />
+		<result column="receivable_service" property="receivableService" />
+		<result column="received_service" property="receivedService" />
+		<result column="receivable_overdue" property="receivableOverdue" />
+		<result column="received_overdue" property="receivedOverdue" />
+		<result column="reduce_overdue" property="reduceOverdue" />
+		<result column="plans_status" property="plansStatus" />
+		<result column="repay_lock" property="repayLock" />
+		<result column="plan_repayment_time" property="planRepaymentTime" />
+		<result column="real_repayment_time" property="realRepaymentTime" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="operator" property="operator" />
+		
+		<result column="bank_card_id" property="bankCardId" />
+		<result column="third_party_bank_id" property="thirdPartyBankId" />
+		<result column="owner_id_card" property="ownerIdCard" />
+		<result column="owner_name" property="ownerName" />
+		<result column="card_type" property="cardType" />
+		<result column="card_number" property="cardNumber" />
+		<result column="bind_mobile" property="reserveMobile" />
+		
+		<result column="partner_order_amount" property="partnerOrderAmount" />
+		<result column="overdue_rate" property="overdueRate" />
+		
+		<result column="bank_name" property="bankName" />
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.dto.UserRepaymentPlansDTO" id="userRepaymentPlansInstalmentDTOMap">
+		<result column="repayment_plans_id" property="repaymentPlansId" />
+		<result column="instalment_id" property="instalmentId" />
+		<result column="user_id" property="userId" />
+		<result column="instalment_number" property="instalmentNumber" />
+		<result column="instalment_count" property="instalmentCount" />
+		<result column="receivable_amount" property="receivableAmount" />
+		<result column="received_amount" property="receivedAmount" />
+		<result column="receivable_principal" property="receivablePrincipal" />
+		<result column="received_principal" property="receivedPrincipal" />
+		<result column="receivable_service" property="receivableService" />
+		<result column="received_service" property="receivedService" />
+		<result column="receivable_overdue" property="receivableOverdue" />
+		<result column="received_overdue" property="receivedOverdue" />
+		<result column="reduce_overdue" property="reduceOverdue" />
+		<result column="plans_status" property="plansStatus" />
+		<result column="repay_lock" property="repayLock" />
+		<result column="plan_repayment_time" property="planRepaymentTime" />
+		<result column="real_repayment_time" property="realRepaymentTime" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="operator" property="operator" />
+		
+		<result column="partner_order_amount" property="partnerOrderAmount" />
+		<result column="overdue_rate" property="overdueRate" />
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.po.UserRepaymentPlans" id="userRepaymentPlansMap">
+		<result column="repayment_plans_id" property="repaymentPlansId" />
+		<result column="instalment_id" property="instalmentId" />
+		<result column="user_id" property="userId" />
+		<result column="instalment_number" property="instalmentNumber" />
+		<result column="instalment_count" property="instalmentCount" />
+		<result column="receivable_amount" property="receivableAmount" />
+		<result column="received_amount" property="receivedAmount" />
+		<result column="receivable_principal" property="receivablePrincipal" />
+		<result column="received_principal" property="receivedPrincipal" />
+		<result column="receivable_service" property="receivableService" />
+		<result column="received_service" property="receivedService" />
+		<result column="receivable_overdue" property="receivableOverdue" />
+		<result column="received_overdue" property="receivedOverdue" />
+		<result column="reduce_overdue" property="reduceOverdue" />
+		<result column="plans_status" property="plansStatus" />
+		<result column="repay_lock" property="repayLock" />
+		<result column="plan_repayment_time" property="planRepaymentTime" />
+		<result column="real_repayment_time" property="realRepaymentTime" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="operator" property="operator" />
+	</resultMap>
+	
+	<select id="queryUserRepaymentPlansById" resultMap="userRepaymentPlansInstalmentDTOMap">
+		select p.*,i.partner_order_amount,i.overdue_rate
+		from t_user_repayment_plans p
+			join	t_user_instalment i on p.instalment_id = i.instalment_id
+		where p.repayment_plans_id = #{value}
+	</select>
+	
+	<select id="queryUserRepaymentPlansTotalRow" resultType="java.lang.Long">
+		select count(*)
+		from t_user_repayment_plans p
+			join	t_user_instalment i on p.instalment_id = i.instalment_id
+			join	t_user_bank_card c on i.bank_card_id = c.bank_card_id
+			join	t_relation_config_bank rb on c.relation_bank_id = rb.relation_bank_id
+			join	t_config_bank b on rb.bank_id = b.bank_id
+		<where>
+			<if test="instalmentId!=null"> and p.instalment_id = #{instalmentId}</if>
+			<if test="startTime!=null"> and p.plan_repayment_time &gt;= #{startTime}</if>
+			<if test="endTime!=null"> and p.plan_repayment_time &lt;  #{endTime}</if>
+			<if test="plansStatus!=null"> and p.plans_status = #{plansStatus}</if>
+			<if test="repayLock!=null"> and p.repay_lock = #{repayLock}</if>
+		</where>
+	</select>
+	
+	<select id="queryUserRepaymentPlansList" resultMap="userRepaymentPlansDTOMap">
+		select p.*,i.partner_order_amount,i.overdue_rate,
+			 c.bank_card_id,c.owner_id_card,c.owner_name,c.card_type,
+			 c.card_number,u.bind_mobile,rb.third_party_bank_id,
+			 b.bank_name
+		from t_user_repayment_plans p
+			join	t_user_instalment i on p.instalment_id = i.instalment_id
+			join	t_user_bank_card c on i.bank_card_id = c.bank_card_id
+			join    t_user_info u on i.user_id = u.user_id
+			join	t_relation_config_bank rb on c.relation_bank_id = rb.relation_bank_id
+			join	t_config_bank b on rb.bank_id = b.bank_id
+		<where>
+			<if test="instalmentId!=null"> and p.instalment_id = #{instalmentId}</if>
+			<if test="startTime!=null"> and p.plan_repayment_time &gt;= #{startTime}</if>
+			<if test="endTime!=null"> and p.plan_repayment_time &lt;  #{endTime}</if>
+			<if test="plansStatus!=null"> and p.plans_status = #{plansStatus}</if>
+			<if test="repayLock!=null"> and p.repay_lock = #{repayLock}</if>
+		</where>
+		<if test="start!=null and pageSize!=null">
+			limit #{start},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="queryOverdueUserRepaymentPlansTotalRow" resultType="java.lang.Long">
+		select count(*)
+		from t_user_repayment_plans p
+			join	t_user_instalment i on p.instalment_id = i.instalment_id
+		<where>
+			<if test="startTime!=null"> and p.plan_repayment_time &gt;= #{startTime}</if>
+			<if test="endTime!=null"> and p.plan_repayment_time &lt;  #{endTime}</if>
+			<if test="plansStatus!=null"> and p.plans_status = #{plansStatus}</if>
+			<if test="repayLock!=null"> and p.repay_lock = #{repayLock}</if>
+		</where>
+	</select>
+	
+	<select id="queryOverdueUserRepaymentPlansList" resultMap="userRepaymentPlansInstalmentDTOMap">
+		select p.*,i.partner_order_amount,i.overdue_rate
+		from t_user_repayment_plans p
+			join	t_user_instalment i on p.instalment_id = i.instalment_id
+		<where>
+			<if test="startTime!=null"> and p.plan_repayment_time &gt;= #{startTime}</if>
+			<if test="endTime!=null"> and p.plan_repayment_time &lt;  #{endTime}</if>
+			<if test="plansStatus!=null"> and p.plans_status = #{plansStatus}</if>
+			<if test="repayLock!=null"> and p.repay_lock = #{repayLock}</if>
+		</where>
+		<if test="start!=null and pageSize!=null">
+			limit #{start},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="queryUserRepaymentPlansOfInstalment" resultMap="userRepaymentPlansMap">
+		select p.* from t_user_repayment_plans p
+		<where>
+			<if test="instalmentId!=null"> and p.instalment_id = #{instalmentId}</if>
+			<if test="startTime!=null"> and p.plan_repayment_time &gt;= #{startTime}</if>
+			<if test="endTime!=null"> and p.plan_repayment_time &lt;  #{endTime}</if>
+			<if test="plansStatus!=null"> and p.plans_status = #{plansStatus}</if>
+			<if test="repayLock!=null"> and p.repay_lock = #{repayLock}</if>
+			<if test="plansStatusList!=null">
+				and p.plans_status in 
+				<foreach item="item" index="index" collection="plansStatusList"
+			      open="(" separator="," close=")">
+			        #{item}
+			  </foreach>
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryUserRepaymentPlansListByPaymentOrderId" resultMap="userRepaymentPlansMap">
+		select p.* from t_user_payment_order t
+			join t_user_payment_record_item r on t.user_payment_order_id = r.user_payment_order_id
+			join t_user_repayment_plans p on r.repayment_plans_id = p.repayment_plans_id
+		where t.user_payment_order_id = #{value}
+	</select>
+	
+	<update id="updateRepaymentPlansToPaying" parameterType="java.util.Map" >
+	    UPDATE t_user_repayment_plans
+	    SET
+	    	plans_status = #{plansStatus},
+			update_time = #{updateTime}
+		WHERE 
+		   repayment_plans_id = #{repaymentPlansId}
+		   and plans_status = #{beforeStatus}
+	</update>
+	
+	<update id="updateUserRepaymentPlansStatus" parameterType="java.util.Map">
+	    UPDATE t_user_repayment_plans
+	    SET
+	    	plans_status = #{plansStatus},
+			update_time = #{updateTime}
+			<if test="receivedAmount!=null"> ,received_amount = #{receivedAmount}</if>
+			<if test="receivedPrincipal!=null"> ,received_principal = #{receivedPrincipal}</if>
+			<if test="receivedService!=null"> ,received_service = #{receivedService}</if>
+			<if test="receivedOverdue!=null"> ,received_overdue = #{receivedOverdue}</if>
+			<if test="realRepaymentTime!=null"> ,real_repayment_time = #{realRepaymentTime}</if>
+			<if test="operator!=null and operator!=''"> ,operator = #{operator}</if>
+		WHERE 
+		   repayment_plans_id = #{repaymentPlansId}
+		   and plans_status = #{beforeStatus}
+	</update>
+	
+	<update id="releaseUserRepaymentPlansLock">
+   		update t_user_repayment_plans t 
+   			set t.repay_lock = 0
+   		where t.instalment_id = #{value}  
+	</update>
+	
+	<select id="queryPlanToRemindByPlanId"  resultType="com.hikootech.mqcash.dto.UserForSendSmDTO">
+   		select u.bind_mobile bindMobile,u.name userName,p.receivable_amount receivableAmount,c.card_number,u.id_card idCard
+   		 from t_user_repayment_plans p 
+   		 	join t_user_info u on p.user_id=u.user_id
+   		    join t_user_instalment i on   i.instalment_id = p.instalment_id
+			join t_user_bank_card c on c.bank_card_id = i.bank_card_id
+  		where p.repayment_plans_id = #{value} limit 1
+	</select>
+   	
+	<update id="updateUserRepaymentPlansToOverdue" parameterType="java.util.Map">
+ 		update t_user_repayment_plans set plans_status = 50, update_time = #{updateTime}, operator = #{operator} 
+ 			where plan_repayment_time &lt; #{endTime}  
+ 				and plan_repayment_time &gt;= #{startTime}
+ 				and plans_status = 20 
+	</update>
+   	
+	<update id="updateRepaymentPlansOverdueAmount" parameterType="com.hikootech.mqcash.dto.UserRepaymentPlansDTO">
+   		update t_user_repayment_plans t  
+   			set t.receivable_overdue = #{receivableOverdue},
+   				t.receivable_amount = #{receivableAmount},
+   				t.update_time = #{updateTime} 
+   		where t.repayment_plans_id = #{repaymentPlansId}
+   			and t.plans_status = 50
+   	</update>
+   	
+   	<select id="queryOverdueRepaymentPlansInstalmentIdList" parameterType="java.util.Map" resultType="java.lang.String">
+   		select distinct(t.instalment_id) from t_user_repayment_plans t
+			where t.plans_status in(30, 50)
+				and t.repay_lock = 0
+				and t.plan_repayment_time &gt;= #{startTime}
+				and t.plan_repayment_time &lt; #{endTime}
+   	</select>
+   
+	<update id="updateRepayLockByInstalmentId">
+		update t_user_repayment_plans t
+			set t.repay_lock = 1
+		where t.instalment_id = #{value}
+	</update>
+	
+	<select id="queryPlansToRemindNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(*) from t_user_repayment_plans p
+			left join t_user_info u on p.user_id=u.user_id
+		where p.plans_status=#{plansStatus} and u.user_sm_type=#{userSmType}
+			and u.status=#{userStatus} and p.repay_lock=#{repayLock}
+			and p.plan_repayment_time &gt;=#{startDate}
+			and p.plan_repayment_time &lt; #{endDate}
+	</select>
+	
+	<select id="queryPlansToRemind" parameterType="java.util.Map" resultType="com.hikootech.mqcash.dto.UserForSendSmDTO">
+   		SELECT u.bind_mobile bindMobile,u.name userName,p.receivable_amount receivableAmount,c.card_number cardNumber,u.id_card idCard
+   			from t_user_repayment_plans p 
+			INNER join t_user_info u on p.user_id=u.user_id
+		    INNER join t_user_instalment i on   i.instalment_id = p.instalment_id
+			INNER join t_user_bank_card c on c.bank_card_id = i.bank_card_id
+		where p.plans_status=#{plansStatus} and u.user_sm_type=#{userSmType}   and u.status=#{userStatus}  and p.repay_lock=#{repayLock}
+			and p.plan_repayment_time &gt;=#{startDate} 
+			and p.plan_repayment_time &lt;  #{endDate}
+		order by p.repayment_plans_id
+		limit #{start},#{size}
+   	</select>
+   	
+   	<select id="queryInstalmentIdFromRepaymentPlans" parameterType="java.util.Map" resultType="java.lang.String">
+   		select distinct(p.instalment_id) from t_user_repayment_plans p
+	 	<where>
+			<if test="startTime!=null"> and p.plan_repayment_time &gt;= #{startTime}</if>
+			<if test="endTime!=null"> and p.plan_repayment_time &lt;  #{endTime}</if>
+			<if test="plansStatus!=null"> and p.plans_status = #{plansStatus}</if>
+			<if test="repayLock!=null"> and p.repay_lock = #{repayLock}</if>
+		</where>
+   	</select>
+</mapper>

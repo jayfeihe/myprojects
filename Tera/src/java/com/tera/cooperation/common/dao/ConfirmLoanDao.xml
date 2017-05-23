@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.cooperation.common.dao.ConfirmLoanDao">
+
+	<select id="queryConfirmLoanCount" parameterType="map" resultType="integer">
+		SELECT COUNT(1) <include refid="confirmLoanQuerySQL"/>
+	</select>
+	
+<!-- 放款/拒贷管理查询列表 -->	
+	<select id="queryConfirmLoanList" parameterType="map" resultType="com.tera.cooperation.common.model.ConfirmLoanQBean">
+		SELECT 
+			t2.id AS appId,
+			t2.APP_ID AS appNo,
+			t1.CONTRACT_NO AS contractNo,
+			(SELECT o.ORG_NAME FROM t_org o WHERE o.ORG_ID = t2.ORG_ID) AS orgName,
+			t1.LOAN_PRODUCT AS product,
+			t2.`NAME` AS name,
+			REPLACE(t2.ID_NO,SUBSTRING(t2.ID_NO FROM 7 FOR 8),'****') AS idNo,
+			t1.BANK_NAME AS bankName,
+			t1.BANK_ACCOUNT_NAME AS bankAccountName,
+			t2.INPUT_TIME AS incomeTime,
+			t1.SIGN_DATE AS signDate,
+			t1.START_DATE AS firstRepayDate,
+			t1.LOAN_AMOUNT AS contractAmount,
+			t1.CHANNEL_TYPE AS channelType,
+			(
+				SELECT
+					r.INTEREST_RECEIVABLE + r.PRINCIPAL_RECEIVABLE
+				FROM
+					t_loan_repay_plan r,
+					t_contract c
+				WHERE
+					r.CONTRACT_NO = c.CONTRACT_NO
+				AND c.loan_app_id = t2.app_id
+				ORDER BY
+					r.id
+				LIMIT 1
+			) AS monthRepayAmount,
+			CONCAT(
+				(
+					SELECT
+						d.KEY_VALUE
+					FROM
+						t_data_dictionary d
+					WHERE
+						d.KEY_NAME = 'creditusage1'
+					AND t2.USEAGE1 = d.KEY_PROP
+				),
+				'-',
+				(
+					SELECT
+						d.KEY_VALUE
+					FROM
+						t_data_dictionary d
+					WHERE
+						d.KEY_NAME = 'creditusage2'
+					AND t2.USEAGE2 = d.KEY_PROP
+				)
+			) AS loanApplication
+		<include refid="confirmLoanQuerySQL"/>
+		<if test="rowS != null and rowE != null " >
+			LIMIT #{rowS} , #{rowE}
+		</if>
+	</select>
+	
+<!-- 放款/拒贷管理查询SQL -->
+	<sql id="confirmLoanQuerySQL">
+		FROM
+			t_contract t1
+		LEFT JOIN t_credit_app t2 ON t1.LOAN_APP_ID = t2.APP_ID
+		LEFT JOIN t_bpm_task t3 ON t1.LOAN_APP_ID = t3.BIZ_KEY
+		WHERE
+			t1.state != '0'
+		AND t2.state = '20'
+		AND t3.STATE = '放款'
+		<if test="channelType != null and channelType != ''">
+			AND t1.CHANNEL_TYPE = #{channelType}
+		</if>
+		<if test="appNo != null and appNo != ''">
+			AND t2.APP_ID = #{appNo}
+		</if>
+		<if test="name != null and name != ''">
+			AND t2.`NAME` = #{name}
+		</if>
+		<if test="idNo != null and idNo != ''">
+			AND t2.ID_NO = #{idNo}
+		</if>
+		<if test="product != null and product != ''">
+			AND t1.LOAN_PRODUCT = #{product}
+		</if>
+		<if test="orgName != null and orgName != ''">
+			AND t2.ORG_ID = #{orgName}
+		</if>
+		<if test="inputTimeMin != null and inputTimeMin != ''">
+			<![CDATA[AND t2.INPUT_TIME >= #{inputTimeMin}]]>
+		</if>
+		<if test="inputTimeMax != null and inputTimeMax != ''">
+			<![CDATA[AND t2.INPUT_TIME <= DATE_ADD(#{inputTimeMax},INTERVAL '1' DAY)]]>
+		</if>
+	</sql>
+	
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.company.dao.UserCompanyDao">
+	<insert id="add" parameterType="Object">
+		insert into t_user_company(<include refid="columns"/>)
+		values (#{companyId},
+				#{companyName},
+				#{companyUrl},
+				#{industryId},
+				#{linkName},
+				#{linkPhone},
+				#{linkEmail},
+				#{companyAddr},
+				#{companyPhone},
+				#{postCode},
+				#{type},
+				#{status},
+				#{createTime})
+	</insert>
+	
+	<update id="update">
+		update 
+			t_user_company
+		set
+			company_name = #{companyName}, 
+			company_url  = #{companyUrl}, 
+			industry_id  = #{industryId}, 
+			link_name    = #{linkName}, 
+			link_phone   = #{linkPhone}, 
+			link_email   = #{linkEmail}, 
+			company_addr = #{companyAddr}, 
+			company_phone= #{companyPhone}, 
+			post_code    = #{postCode}
+		where
+			company_id = #{companyId}
+ 	</update>
+ 	
+ 	<update id="updateStatus">
+		update 
+			t_user_company
+		set
+			status= #{status}
+		where
+			company_id = #{companyId}
+ 	</update>
+	
+	<select id="queryByCompanyId" resultType="com.greenkoo.company.model.UserCompany">
+		select <include refid="columns"/> from t_user_company where company_id = #{companyId}
+	</select>
+	
+	<select id="queryByCompanyUrlAndType" resultType="com.greenkoo.company.model.UserCompany">
+		select <include refid="columns"/> from t_user_company where company_url = #{companyUrl} and type = #{type}
+	</select>
+	
+	<select id="queryCount" resultType="int">
+		select count(*) from t_user_company <include refid="conditions"/>
+	</select>
+	
+	<select id="queryList" parameterType="map" resultType="com.greenkoo.company.model.form.UserCompanyVo">
+		select <include refid="columns"/> 
+			,(select t.industry_name from t_industry t where t.industry_id = u.industry_id) as industryName
+		from t_user_company u <include refid="conditions"/>
+		<if test="pageOffset != null and pageSize != null " >
+	      limit #{pageOffset} , #{pageSize}
+	    </if>
+	</select>
+	
+	<sql id="columns">
+		company_id  ,	
+		company_name,	
+		company_url ,
+		industry_id  ,
+		link_name    ,
+		link_phone   ,
+		link_email   ,
+		company_addr ,
+		company_phone,
+		post_code    ,
+		type        ,	
+		status      ,	
+		create_time 
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="conditions">
+		<where>
+			<if test="companyName != null and companyName != ''">
+				and company_name = #{companyName}
+			</if>
+			<if test="companyUrl != null and companyUrl != ''">
+				and company_url = #{companyUrl}
+			</if>
+			<if test="type != null and type != ''">
+				and type = #{type}
+			</if>
+			<if test="status != null and status != ''">
+				and status = #{status}
+			</if>
+		</where>
+	</sql>
+</mapper>

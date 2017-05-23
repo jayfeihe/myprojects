@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.law.dao.ContractDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.audit.law.model.Contract" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="loan_id" property="loanId"/><!-- 申请ID -->
+	<result column="contract_id" property="contractId"/><!-- 合同ID -->
+	<result column="loan_amt" property="loanAmt"/><!-- 借款金额 -->
+	<result column="start_date" property="startDate"/><!-- 借款开始时间 -->
+	<result column="end_date" property="endDate"/><!-- 借款结束时间 -->
+	<result column="days" property="days"/><!-- 合同天数 -->
+	<result column="real_end_date" property="realEndDate"/><!-- 合同实际结束时间 -->
+	<result column="con_index" property="conIndex"/><!-- 合同序号(默认是0，被拆分后累计标识) -->
+	<result column="num" property="num"/><!-- 合同总期数 -->
+	<result column="lend_user_id" property="lendUserId"/><!-- 借款人Id -->
+	<result column="org" property="org"/><!-- 所属机构 -->
+	<result column="get_loan_way" property="getLoanWay"/><!-- 融资方式（1直投2债权转让3线下） -->
+	<result column="remark" property="remark"/><!-- 说明 -->
+	<result column="online_rate_in" property="onlineRateIn"/><!-- 推送线上利率 -->
+	<result column="is_all_set" property="isAllSet"/><!-- 担保物权是否全部设定1是0否 -->
+	<result column="input_uid" property="inputUid"/><!-- 合同录入人 -->
+	<result column="law_name" property="lawName"/><!-- 法律意见书律师 -->
+	<result column="is_late" property="isLate"/><!-- 是否逾期1是0否 -->
+	<result column="is_late_dis" property="isLateDis"/><!-- 是否催收分配1是0否 -->
+	<result column="state" property="state"/><!-- 1未生效2合同中3合同结清4被拆分 -->
+	<result column="check_state" property="checkState"/><!-- 稽查标识(1未处理，2已处理，3移交法务) -->
+	<result column="is_accept" property="isAccept"/><!-- 当期逾期是否受理 -->
+	<result column="check_in_time" property="checkInTime"/><!-- 进入稽查时间（每周初始化一次数据） -->
+	<result column="is_check" property="isCheck"/><!-- 稽查状态是否进入稽查（1是0否） -->
+	<result column="check_source" property="checkSource"/><!--  稽查案件来源（1新逾期2业务员新跟进3还款变化） -->
+	<result column="check_report_state" property="checkReportState"/><!-- 逾期书面报告状态（0未提交1未审核2通过3不通过） -->
+	<result column="late_num" property="lateNum"/><!-- 本次逾期的期数，第几期 -->
+	<result column="overdue_type" property="overdueType"/><!-- 当期逾期类型（1利息逾期2本金逾期） -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="update_time" property="updateTime"/><!-- 修改时间 -->
+</resultMap>
+       
+<!-- T_CONTRACT table all fields -->
+<sql id="Column_List" >
+	 id,loan_id,contract_id,loan_amt,start_date,end_date,days,real_end_date,con_index,num,lend_user_id,org,get_loan_way,remark,online_rate_in,is_all_set,input_uid,law_name,is_late,is_late_dis,state,check_state,is_accept,check_in_time,is_check,check_source,check_report_state,late_num,overdue_type,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and loan_id =  #{loanId}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and contract_id =  #{contractId}
+	</if>
+<if test="loanAmt != null and loanAmt != ''" >
+	    and loan_amt =  #{loanAmt}
+	</if>
+<if test="startDate != null and startDate != ''" >
+	    and start_date =  #{startDate}
+	</if>
+<if test="endDate != null and endDate != ''" >
+	    and end_date =  #{endDate}
+	</if>
+<if test="days != null and days != ''" >
+	    and days =  #{days}
+	</if>
+<if test="realEndDate != null and realEndDate != ''" >
+	    and real_end_date =  #{realEndDate}
+	</if>
+<if test="conIndex != null and conIndex != ''" >
+	    and con_index =  #{conIndex}
+	</if>
+<if test="num != null and num != ''" >
+	    and num =  #{num}
+	</if>
+<if test="lendUserId != null and lendUserId != ''" >
+	    and lend_user_id =  #{lendUserId}
+	</if>
+<if test="org != null and org != ''" >
+	    and org =  #{org}
+	</if>
+<if test="getLoanWay != null and getLoanWay != ''" >
+	    and get_loan_way =  #{getLoanWay}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="onlineRateIn != null and onlineRateIn != ''" >
+	    and online_rate_in =  #{onlineRateIn}
+	</if>
+<if test="isAllSet != null and isAllSet != ''" >
+	    and is_all_set =  #{isAllSet}
+	</if>
+<if test="inputUid != null and inputUid != ''" >
+	    and input_uid =  #{inputUid}
+	</if>
+<if test="lawName != null and lawName != ''" >
+	    and law_name =  #{lawName}
+	</if>
+<if test="isLate != null and isLate != ''" >
+	    and is_late =  #{isLate}
+	</if>
+<if test="isLateDis != null and isLateDis != ''" >
+	    and is_late_dis =  #{isLateDis}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="checkState != null and checkState != ''" >
+	    and check_state =  #{checkState}
+	</if>
+<if test="isAccept != null and isAccept != ''" >
+	    and is_accept =  #{isAccept}
+	</if>
+<if test="checkInTime != null and checkInTime != ''" >
+	    and check_in_time =  #{checkInTime}
+	</if>
+<if test="isCheck != null and isCheck != ''" >
+	    and is_check =  #{isCheck}
+	</if>
+<if test="checkSource != null and checkSource != ''" >
+	    and check_source =  #{checkSource}
+	</if>
+<if test="checkReportState != null and checkReportState != ''" >
+	    and check_report_state =  #{checkReportState}
+	</if>
+<if test="lateNum != null and lateNum != ''" >
+	    and late_num =  #{lateNum}
+	</if>
+<if test="overdueType != null and overdueType != ''" >
+	    and overdue_type =  #{overdueType}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+<!-- 			Select nextval('T_CONTRACT_SEQ') From dual -->
+			Select T_CONTRACT_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_CONTRACT(id,loan_id,contract_id,loan_amt,start_date,end_date,days,real_end_date,con_index,num,lend_user_id,org,get_loan_way,remark,online_rate_in,is_all_set,input_uid,law_name,is_late,is_late_dis,state,check_state,is_accept,check_in_time,is_check,check_source,check_report_state,late_num,overdue_type,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{loanId, jdbcType=VARCHAR},#{contractId, jdbcType=VARCHAR},#{loanAmt, jdbcType=DOUBLE},#{startDate, jdbcType=DATE},#{endDate, jdbcType=DATE},#{days, jdbcType=INTEGER},#{realEndDate, jdbcType=DATE},#{conIndex, jdbcType=INTEGER},#{num, jdbcType=INTEGER},#{lendUserId, jdbcType=VARCHAR},#{org, jdbcType=VARCHAR},#{getLoanWay, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{onlineRateIn, jdbcType=DOUBLE},#{isAllSet, jdbcType=VARCHAR},#{inputUid, jdbcType=VARCHAR},#{lawName, jdbcType=VARCHAR},#{isLate, jdbcType=VARCHAR},#{isLateDis, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{checkState, jdbcType=VARCHAR},#{isAccept, jdbcType=VARCHAR},#{checkInTime, jdbcType=TIMESTAMP},#{isCheck, jdbcType=VARCHAR},#{checkSource, jdbcType=VARCHAR},#{checkReportState, jdbcType=VARCHAR},#{lateNum, jdbcType=INTEGER},#{overdueType, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_CONTRACT set 
+	<trim  suffixOverrides="," >
+	loan_id =  #{loanId, jdbcType=VARCHAR},
+	contract_id =  #{contractId, jdbcType=VARCHAR},
+	loan_amt =  #{loanAmt, jdbcType=DOUBLE},
+	start_date =  #{startDate, jdbcType=DATE},
+	end_date =  #{endDate, jdbcType=DATE},
+	days =  #{days, jdbcType=INTEGER},
+	real_end_date =  #{realEndDate, jdbcType=DATE},
+	con_index =  #{conIndex, jdbcType=INTEGER},
+	num =  #{num, jdbcType=INTEGER},
+	lend_user_id =  #{lendUserId, jdbcType=VARCHAR},
+	org =  #{org, jdbcType=VARCHAR},
+	get_loan_way =  #{getLoanWay, jdbcType=VARCHAR},
+	remark =  #{remark, jdbcType=VARCHAR},
+	online_rate_in =  #{onlineRateIn, jdbcType=DOUBLE},
+	is_all_set =  #{isAllSet, jdbcType=VARCHAR},
+	input_uid =  #{inputUid, jdbcType=VARCHAR},
+	law_name =  #{lawName, jdbcType=VARCHAR},
+	is_late =  #{isLate, jdbcType=VARCHAR},
+	is_late_dis =  #{isLateDis, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	check_state =  #{checkState, jdbcType=VARCHAR},
+	is_accept =  #{isAccept, jdbcType=VARCHAR},
+	check_in_time =  #{checkInTime, jdbcType=TIMESTAMP},
+	is_check =  #{isCheck, jdbcType=VARCHAR},
+	check_source =  #{checkSource, jdbcType=VARCHAR},
+	check_report_state =  #{checkReportState, jdbcType=VARCHAR},
+	late_num =  #{lateNum, jdbcType=INTEGER},
+	overdue_type =  #{overdueType, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_CONTRACT  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_CONTRACT set 
+	<trim  suffixOverrides="," >
+
+	<if test="loanId != null and loanId != '' " >
+	    loan_id =  #{loanId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractId != null and contractId != '' " >
+	    contract_id =  #{contractId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanAmt != null and loanAmt != ''  or loanAmt==0" >
+	    loan_amt =  #{loanAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="startDate != null and startDate != '' " >
+	    start_date =  #{startDate, jdbcType=DATE},
+	</if>
+
+	<if test="endDate != null and endDate != '' " >
+	    end_date =  #{endDate, jdbcType=DATE},
+	</if>
+
+	<if test="days != null and days != ''  or days==0" >
+	    days =  #{days, jdbcType=INTEGER},
+	</if>
+
+	<if test="realEndDate != null and realEndDate != '' " >
+	    real_end_date =  #{realEndDate, jdbcType=DATE},
+	</if>
+
+	<if test="conIndex != null and conIndex != ''  or conIndex==0" >
+	    con_index =  #{conIndex, jdbcType=INTEGER},
+	</if>
+
+	<if test="num != null and num != ''  or num==0" >
+	    num =  #{num, jdbcType=INTEGER},
+	</if>
+
+	<if test="lendUserId != null and lendUserId != '' " >
+	    lend_user_id =  #{lendUserId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="org != null and org != '' " >
+	    org =  #{org, jdbcType=VARCHAR},
+	</if>
+
+	<if test="getLoanWay != null and getLoanWay != '' " >
+	    get_loan_way =  #{getLoanWay, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="onlineRateIn != null and onlineRateIn != ''  or onlineRateIn==0" >
+	    online_rate_in =  #{onlineRateIn, jdbcType=DOUBLE},
+	</if>
+
+	<if test="isAllSet != null and isAllSet != '' " >
+	    is_all_set =  #{isAllSet, jdbcType=VARCHAR},
+	</if>
+
+	<if test="inputUid != null and inputUid != '' " >
+	    input_uid =  #{inputUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lawName != null and lawName != '' " >
+	    law_name =  #{lawName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="isLate != null and isLate != '' " >
+	    is_late =  #{isLate, jdbcType=VARCHAR},
+	</if>
+
+	<if test="isLateDis != null and isLateDis != '' " >
+	    is_late_dis =  #{isLateDis, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="checkState != null and checkState != '' " >
+	    check_state =  #{checkState, jdbcType=VARCHAR},
+	</if>
+
+	<if test="isAccept != null and isAccept != '' " >
+	    is_accept =  #{isAccept, jdbcType=VARCHAR},
+	</if>
+
+	<if test="checkInTime != null and checkInTime != '' " >
+	    check_in_time =  #{checkInTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="isCheck != null and isCheck != '' " >
+	    is_check =  #{isCheck, jdbcType=VARCHAR},
+	</if>
+
+	<if test="checkSource != null and checkSource != '' " >
+	    check_source =  #{checkSource, jdbcType=VARCHAR},
+	</if>
+
+	<if test="checkReportState != null and checkReportState != '' " >
+	    check_report_state =  #{checkReportState, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lateNum != null and lateNum != ''  or lateNum==0" >
+	    late_num =  #{lateNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="overdueType != null and overdueType != '' " >
+	    overdue_type =  #{overdueType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 合同信息表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CONTRACT  where id = #{id}
+</select>
+
+<!-- 根据contractId查询 合同信息表 -->
+<select id="queryByContractId"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CONTRACT  where contract_id = #{contractId, jdbcType=VARCHAR}
+</select>
+
+<!-- 合同信息表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CONTRACT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询合同信息表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_CONTRACT 
+	<include refid="Where_Clause"/>
+	<!-- <if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if> -->
+</select>
+
+<!-- 查询逾期且未未标识的数据 -->
+<select id="queryLateNoFlag" resultMap="ResultMap"  parameterType="map">
+	SELECT
+		con.id,
+		con.CONTRACT_ID,
+		con.LOAN_ID,
+		con.LOAN_AMT,
+		con.START_DATE,
+		con.END_DATE,
+		con.DAYS,
+		con.REAL_END_DATE,
+		con.CON_INDEX,
+		con.NUM,
+		con.LEND_USER_ID,
+		con.ORG,
+		con.GET_LOAN_WAY,
+		con.REMARK,
+		con.ONLINE_RATE_IN,
+		con.IS_ALL_SET,
+		con.INPUT_UID,
+		con.LAW_NAME,
+		con.IS_LATE,
+		con.IS_LATE_DIS,
+		con.STATE,
+		con.CHECK_STATE,
+		con.IS_ACCEPT,
+		con.CHECK_IN_TIME,
+		con.IS_CHECK,
+		con.CHECK_SOURCE,
+		con.CHECK_REPORT_STATE,
+		late.LATE_NUM,
+		late.OVERDUE_TYPE,
+		con.CREATE_TIME,
+		con.UPDATE_TIME
+		
+		FROM
+			t_contract con
+		INNER JOIN (
+			SELECT
+				plan.CONTRACT_ID,
+				MAX(plan.TYPE) AS OVERDUE_TYPE,
+				MAX(NUM) as LATE_NUM
+			FROM
+				t_ret_plan plan
+			WHERE
+				plan.RET_DATE &lt; SYSDATE
+			AND plan.STATE = '1'
+			GROUP BY
+				plan.CONTRACT_ID
+		) late ON late.CONTRACT_ID = con.CONTRACT_ID
+		WHERE
+			con.IS_LATE = '0'
+</select>
+
+<!-- 查询利息逾期和本金逾期的合同 date1<时间<date2范围内的-->
+<select id="queryLateCon" resultMap="ResultMap"  parameterType="map">
+SELECT con.* from t_contract  con 
+INNER JOIN (SELECT plan.CONTRACT_ID FROM t_ret_plan plan WHERE plan.TYPE=#{type} AND plan.RET_DATE &gt; #{date1} AND plan.RET_DATE &lt; #{date2}  AND plan.STATE='1' GROUP BY plan.CONTRACT_ID) newplan
+ ON newplan.CONTRACT_ID=con.CONTRACT_ID 
+ WHERE con.IS_CHECK='0'
+
+</select>
+<!-- 查询业务员跟进的合同 date1<时间<date2范围内的-->
+<select id="querySalesNewLog" resultMap="ResultMap"  parameterType="map">
+SELECT con.* from t_contract  con
+INNER JOIN
+(SELECT log.CONTRACT_ID from t_sales_check_log log  WHERE log.ROLE=#{role} AND log.CREATE_TIME &gt; #{date1} AND log.CREATE_TIME &lt; #{date2} GROUP BY log.CONTRACT_ID) newLog
+on newLog.CONTRACT_ID=con.CONTRACT_ID
+WHERE con.IS_CHECK='0' and con.IS_LATE='1'
+</select>
+<!-- 查询新还款的合同 date1<时间<date2范围内的-->
+<select id="querySalesNewBill" resultMap="ResultMap"  parameterType="map">
+SELECT con.* from t_contract  con 
+INNER JOIN 
+(SELECT bill.CONTRACT_ID FROM t_bill_acct bill WHERE bill.TYPE='2' AND bill.OPER_TIME  &gt; #{date1} AND bill.OPER_TIME &lt; #{date2} GROUP BY bill.CONTRACT_ID) newbill
+on newbill.CONTRACT_ID=con.CONTRACT_ID
+WHERE con.IS_CHECK='0' AND con.IS_LATE='1'
+</select>
+<!-- 查询无效的稽查-->
+<select id="queryInvalidCheck" resultMap="ResultMap"  parameterType="map">
+SELECT * from t_contract WHERE CHECK_STATE!='1' AND IS_CHECK='1' AND CHECK_IN_TIME &lt; #{date1}
+</select>
+  	
+</mapper>

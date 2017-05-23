@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.afterloanquery.dao.AfterLoanQueryDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.afterloanquery.model.AfterLoanQueryBean" >
+	<result column="contract_id" property="contractId"/><!--合同号 -->
+	<result column="state" property="state"/><!--合同状态-->
+	<result column="loan_id" property="loanId"/><!-- 申请ID -->
+	<result column="id_type" property="idType"/><!--证件类型 -->
+	<result column="id_no" property="idNo"/><!--证件号码 -->
+	<result column="org_name" property="orgName"/><!--业务机构  -->
+	<result column="sale_name" property="saleName"/><!--业务员-->
+	<result column="loan_name" property="loanName"/><!--业务员-->
+	<result column="salesman" property="salesman"/><!--业务员-->
+    <result column="late_num" property="lateNum"/><!-- 期数 -->
+	<result column="start_date" property="startDate"/><!-- 合同开始日期 -->
+	<result column="end_date" property="endDate"/><!-- 合同结束日期-->
+
+	<result column="loan_amt" property="loanAmt"/><!-- 借款金额 -->
+	<result column="tel" property="tel"/><!-- 借款人电话 -->
+
+	<result column="warehouse_id" property="warehouseId"/><!--仓库 -->
+	<result column="warehouseName" property="warehouseName"/><!--仓库 -->
+	
+	<result column="is_renew" property="isRenew"/><!-- 是否续贷-->
+	<result column="is_late" property="isLate"/><!-- 是否逾期-->
+	<result column="is_check" property="isCheck"/><!-- 是否稽查-->
+	<result column="check_report_state" property="checkReportState"/><!-- 逾期报告状态-->
+	<result column="check_source" property="checkSource"/><!-- 稽查来源-->
+	
+	<result column="org" property="org"/><!--登录机构id-->
+	<result column="role_id" property="roleId"/><!-- 登录角色id-->
+	<result column="login_id" property="loginId"/><!--loginid -->
+	
+</resultMap>
+       
+<!-- 贷后综合查询字段 -->
+<sql id="Column_List" >
+	    CON.CONTRACT_ID,
+		CON.STATE,
+		con.START_DATE START_DATE,
+		con.END_DATE END_DATE,
+		con.IS_LATE,
+		con.IS_LATE_DIS,
+		base. NAME AS loan_name,
+		(SELECT
+			T .tel
+		FROM
+			t_loan_app T
+		WHERE
+			 T.MAIN_FLAG='1' and (T .loan_id = base.loan_id or T.LOAN_ID=base.orig_loan_id)
+	    ) tel,
+		base.loan_id,
+		base.loan_amt,
+		BASE.ID_TYPE,
+		base.ID_NO,
+		BASE.SALESMAN,
+		(
+			SELECT
+				NAME
+			FROM
+				T_USER
+			WHERE
+				T_USER.LOGIN_ID = BASE.SALESMAN
+		) sale_name,
+		CON.ORG,
+		(
+			SELECT
+				org_name
+			FROM
+				T_ORG
+			WHERE
+				T_ORG.ORG_ID = CON.ORG
+		) org_name,
+		base.IS_RENEW,
+		(
+			SELECT
+				T .ROLE_ID
+			FROM
+				T_USER_EXT T
+			WHERE
+				T .LOGIN_ID = BASE.SALESMAN
+		) role_id
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="contractId != null and contractId !=''">
+	    and con.CONTRACT_ID =  #{contractId}
+	</if>
+<if test="state != null and state !=''">
+	    and con.state =  #{state}
+	</if>			
+<if test="isLate != null and isLate != ''" >
+	    and con.is_late =  #{isLate}
+	</if>	
+<if test="isCheck != null and isCheck != ''" >
+	    and con.is_check =  #{isCheck}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and base.loan_id =  #{loanId}
+	</if>		
+<if test="isRenew != null and isRenew != ''" >
+	    and base.is_renew =  #{isRenew}
+	</if>
+<if test="isLateDis != null and isLateDis != ''" >
+	    and con.is_late_dis =  #{isLateDis}
+	</if>
+<if test="checkReportState != null and checkReportState != ''" >
+	    and con.check_report_state =  #{checkReportState}
+	</if>								
+<if test="checkSource != null and checkSource != ''" >
+	    and con.check_source =  #{checkSource}
+	</if>
+<if test="loanAmt != null and loanAmt != ''" >
+	    and base.loan_amt =  #{loanAmt}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and base.id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and base.id_no =  #{idNo}
+	</if>
+<if test="org != null and org != ''" >
+	    and con.org like  concat(#{org},'%')
+	</if>
+<if test="loanName != null and loanName != ''" >
+	    and base.name like  concat('%',concat(#{loanName},'%'))
+	</if>
+<if test="salesman != null and salesman != ''" >
+	    and base.salesman =  #{salesman}
+	</if>	
+<if test="roleId != null and roleId != ''" >
+	    and role_id =  #{roleId}
+	</if>
+<if test="minStartTime != null and minStartTime != ''" >
+<![CDATA[and con.start_date >=  #{minStartTime}]]>	    
+	</if>
+<if test="maxStartTime != null and maxStartTime != ''" >
+<![CDATA[and con.start_date <=  #{maxStartTime}]]>	
+	</if>	
+<if test="minEndTime != null and minEndTime != ''" >
+<![CDATA[and con.end_date >=  #{minEndTime}]]>	    
+	</if>
+<if test="maxEndTime != null and maxEndTime != ''" >
+<![CDATA[and con.end_date <=  #{maxEndTime}]]>	
+	</if>					
+</trim>
+</sql>
+   
+<!-- 贷后综合查询 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from (select <include refid="Column_List" /> 
+	from T_CONTRACT con
+    LEFT JOIN T_LOAN_BASE base ON CON.LOAN_ID = BASE.LOAN_ID
+    <include refid="Where_Clause"/> )					
+</select>
+  	
+<!-- 贷后综合查询列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select <include refid="Column_List" /> 
+	from T_CONTRACT con
+    LEFT JOIN T_LOAN_BASE base ON CON.LOAN_ID = BASE.LOAN_ID
+    <include refid="Where_Clause"/>
+    order by con.contract_id
+</select>
+</mapper>   

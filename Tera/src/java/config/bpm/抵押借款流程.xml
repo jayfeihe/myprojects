@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="抵押借款流程">
+	<start name="开始">
+		<transition to="录入申请" comment="录入申请"/>
+	</start>
+	<state name="录入申请" comment="录入申请" role="借款客户经理">
+		<transition to="结束" comment="结束"/>
+		<transition to="风险专员初核" comment="风险专员初核"/>		
+	</state>
+	<state name="风险专员初核" comment="风险专员初核"  role="风险专员">
+		<transition to="录入申请" comment="退回到录入申请"></transition>
+		<transition to="营业部经理审核" comment="营业部经理审核"/>
+		<transition to="申请复议" comment="申请复议"/>
+		<transition to="放弃" comment="放弃"/>
+		<transition to="签约" comment="签约"/>
+	</state>
+	<state name="营业部经理审核" comment="营业部经理审核"  role="营业部经理,营业部负责人">
+		<transition to="总部审核" comment="总部审核"></transition>
+		<transition to="风险专员初核" comment="风险专员初核"/>
+		<transition to="结束" comment="结束"/>
+	</state>
+	<state name="申请复议" comment="申请复议"  role="风险专员">
+		<transition to="营业部经理审核" comment="营业部经理审核"/>
+	</state>
+	<state name="总部审核" comment="总部审核"  role="总部审批人,总部负责人">
+		<transition to="风险专员初核" comment="退回到风险专员初核"/>
+		<transition to="人工撮合" comment="人工撮合"/>
+		<transition to="自动撮合" comment="自动撮合"/>
+		<transition to="特殊件审核" comment="特殊件审核"/>
+		<transition to="拒件" comment="拒件"/>
+	</state>
+	<state name="特殊件审核" comment="特殊件审核"  role="总部高级审批人,总部高级负责人">
+		<transition to="人工撮合" comment="人工撮合"/>
+		<transition to="自动撮合" comment="自动撮合"/>
+		<transition to="营业部经理审核" comment="退回到营业部经理审核"/>
+		<transition to="风险专员初核" comment="退回到风险专员初核"/>
+		<transition to="拒件" comment="拒件"/>
+	</state>
+	<state name="自动撮合" comment="人工撮合"  role="系统">
+		<transition to="人工撮合" comment="人工撮合"/>
+		<transition to="签约" comment="签约"/>
+	</state>
+	<state name="人工撮合" comment="人工撮合" role="人工撮合专员">
+		<transition to="自动撮合" comment="自动撮合"/>
+		<transition to="人工撮合审批" comment="人工撮合审批"/>
+	</state>
+	<state name="人工撮合审批" comment="人工撮合审批" role="人工撮合审批人">
+		<transition to="人工撮合" comment="人工撮合"/>
+		<transition to="人工撮合收费" comment="人工撮合收费"/>
+	</state>
+	<state name="人工撮合收费" comment="人工撮合收费"  role="人工撮合收费专员">		
+		<transition to="结束" comment="结束"/>
+	</state>
+	<state name="拒件" comment="人工撮合"  role="系统">
+		<transition to="风险专员初核" comment="退回到风险专员初核"/>
+	</state>
+	<state name="签约" comment="签约" role="风险专员">
+		<transition to="复核" comment="复核"/>
+		<transition to="人工撮合" comment="人工撮合"/>
+		<transition to="放弃" comment="放弃"/>
+	</state>
+	<state name="复核" comment="复核" role="放款专员">
+		<transition to="放款" comment="放款"/>
+		<transition to="风险专员初核" comment="退回到风险专员初核"/>
+	</state>
+	<state name="放款" comment="放款" role="放款专员">
+		<transition to="复核" comment="复核"/>
+		<transition to="结束" comment="结束"/>
+	</state>
+	<state name="放弃" comment="放弃" role="系统">
+		<transition to="结束" comment="结束"/>
+	</state>
+	<end name="结束" comment="结束"/>
+</process>

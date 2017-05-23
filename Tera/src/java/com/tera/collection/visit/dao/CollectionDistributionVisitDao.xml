@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.collection.visit.dao.CollectionDistributionVisitDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.collection.visit.model.VisitDistribution" >
+	<result column="id" property="id"/><!-- id -->
+	<result column="contract_no" property="contractNo"/><!-- 合同编号 -->
+	<result column="customer_name" property="customerName"/><!-- 客户名称-->
+	<result column="id_no" property="idNo"/><!-- 客户名称-->
+	<result column="product" property="product"/><!-- 产品 -->
+	<result column="contract_amount" property="contractAmount"/><!-- 合同额-->
+	<result column="month_amount_all" property="monthAmountAll"/><!-- 合同额-->
+	<result column="late_age" property="lateAge"/><!-- 账龄 -->
+	<result column="late_days" property="lateDays"/><!-- 状态 -->
+	<result column="orgId" property="orgId"/><!-- 部门id -->
+	<result column="org_name" property="orgName"/><!-- 部门名称-->
+	<result column="answer_state" property="answerState"/><!--接听状态-->
+	<result column="phone_summary" property="phoneSummary"/><!-- 电话摘要-->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="follow_time" property="followTime"/><!-- 跟进时间 -->
+	<result column="order_time" property="orderTime"/><!--	预约时间 -->
+	<result column="loan_platform" property="loanPlatform"/><!-- 放款平台 -->
+	<result column="distribution_state" property="distributionState"/><!-- 分配状态 -->
+	<result column="channel_name" property="channelName"/><!-- 放款平台名称 -->
+	<result column="key_value" property="keyValue"/><!-- 催收摘要对应中文-->
+	<result column="handle_state" property="handleState"/><!-- 分担后催收处理状态-->
+</resultMap>
+<!-- 分单统计  start -->
+<resultMap id="CountMap" type="com.tera.collection.phone.model.CollectionDistributionCount" >
+	<result column="task_num" property="taskNum"/><!-- 分单总计 -->
+	<result column="collection_uid" property="collectionUid"/><!--催收人loginId -->
+	<result column="collection_uid_name" property="collectionUidName"/><!-- 催收人姓名-->
+	<result column="month_amount_all" property="monthAmountAll"/><!-- 所有单的月还款总额之和-->
+	<result column="distribution_date" property="distributionDate"/><!-- 分单时间 -->
+	<result column="org_name" property="orgName"/><!-- 部门名称 -->
+</resultMap> 
+<!-- 落地催分单统计列表 列表总数-->
+<select id="queryTaskNumCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from (<include refid="taskNumSql"/>) t
+	
+</select>
+<!-- 落地催查询催收分单统计列表 -->
+<select id="queryTaskNumList" resultMap="CountMap"  parameterType="map">
+	select * from (<include refid="taskNumSql"/>) t
+	order by org_id
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>  
+</select>
+<sql id="taskNumSql">
+SELECT  COUNT(1) task_Num,b.COLLECTION_UID COLLECTION_UID ,e.name collection_uid_name,SUM(a.MONTH_AMOUNT_ALL) MONTH_AMOUNT_ALL,MIN(b.DISTRIBUTION_DATE) DISTRIBUTION_DATE,e.org_name,a.ORG_ID
+FROM t_collection_base a,t_collection_distribution b,
+(SELECT DISTINCT d.ORG_ID ,c.LOGIN_ID,d.org_name,u.NAME FROM t_user_ext c,t_org d,t_user u WHERE c.org_id=d.id  AND c.USER_ID=u.ID ) AS e
+WHERE a.CONTRACT_NO=b.CONTRACT_NO AND  b.COLLECTION_UID=e.login_id AND b.COLLECTION_WAY='2' AND b.IS_DONE='N' AND b.IS_CUR='Y'
+<if test="orgId !=null and orgId !=''">
+		and a.org_id like CONCAT(#{orgId},'%')
+</if>
+<if test="distributionDateMin !=null and distributionDateMin !=''">
+		<![CDATA[and b.distribution_date >=#{distributionDateMin}]]>
+</if>
+<if test="distributionDateMax !=null and distributionDateMax !=''">
+		<![CDATA[ and b.distribution_date <=#{distributionDateMax}]]>
+</if>	
+GROUP BY b.COLLECTION_UID
+</sql>  
+<!-- 分单统计  end -->
+
+
+ 
+  
+<!-- T_COLLECTION_DISTRIBUTION table all fields -->
+<sql id="Column_List" >
+	  id,contract_no,customer_name,distribution_state,handle_state,id_no,product,loan_platform,month_amount_all,contract_amount,late_age,late_days,org_id,org_name,answer_state,collection_uid_cur,
+	  phone_summary,state,follow_time,order_time ,channel_name,key_value
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim suffixOverrides=",">
+	<if test="customerName !=null and customerName !=''">
+		and t.customer_name  like CONCAT('%',#{customerName},'%')
+	</if>
+	<if test="idNo !=null and idNo !=''">
+		and t.id_no  = #{idNo}
+	</if>
+	<if test="contractNo !=null and contractNo !=''">
+		and t.contract_no = #{contractNo}
+	</if>
+	<if test="product !=null and product !=''">
+		and t.product = #{product}
+	</if>
+	<if test="orgId !=null and orgId !=''"><!--
+		and t.org_id = #{orgId}
+	-->
+		and t.org_id like CONCAT(#{orgId},'%')
+	</if>
+	<if test="customerTel !=null and customerTel != ''">
+		and t.customer_tel = #{customerTel}
+	</if>
+	<!--	加一个根据角色判断  
+			如果是催收主管 则不需要   
+			如果催收专员  需要加当前用户 id 与表中分配处理者id相同
+	-->
+ 	<if test="roleName !=null and roleName !=''">
+		and t.collection_uid_cur = #{loginId}
+	</if>
+	<if test="phoneSummary !=null and phoneSummary !=''">
+		and t.phone_summary = #{phoneSummary}
+	</if>
+	<if test="state !=null and state !=''">
+		and t.state = #{state}
+	</if>
+	<if test="handleState !=null and handleState !=''">
+		and t.handle_state = #{handleState}
+	</if>
+	<if test="loanPlatform !=null and loanPlatform !=''">
+		and t.loan_platform = #{loanPlatform}
+	</if>
+	<if test="lateDaysMin !=null and lateDaysMin !=''">
+		<![CDATA[and t.late_days >= #{lateDaysMin}]]>
+	</if>
+	<if test="lateDaysMax !=null and lateDaysMax !=''">
+		<![CDATA[and t.late_days <= #{lateDaysMax}]]>
+	</if>
+	</trim>
+</sql>
+ 
+   
+<!-- 落地催催收信息列表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from (<include refid="distributionVistSql"/>) t
+	<include refid="Where_Clause"/>	
+</select>
+<!-- 落地催查询催收信息基本表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from (<include refid="distributionVistSql"/>) t
+	<include refid="Where_Clause"/>
+	order by rowNo
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+    
+</select>
+	 
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="addVisitDistributionMap" parameterType="map" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_COLLECTION_DISTRIBUTION_SEQ') From dual
+			<!-- Select T_COLLECTION_DISTRIBUTION_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_COLLECTION_DISTRIBUTION(id,contract_no,collection_way,collection_uid,is_done,is_cur,is_help,state,distribution_date,create_uid,create_time)
+ 	values( #{id, jdbcType=INTEGER},#{contractNo, jdbcType=VARCHAR},#{collectionWay, jdbcType=VARCHAR},#{collectionUid, jdbcType=VARCHAR},#{isDone, jdbcType=VARCHAR},#{isCur, jdbcType=VARCHAR},#{isHelp, jdbcType=VARCHAR},1,#{distributionDate, jdbcType=DATE},#{createUid, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP})
+</insert>
+<!--分配记录表  添加前 将此合同号的其他记录当前表示置为'N'-->
+<update id="updateVisitDistributionMap" parameterType="map" >
+	update T_COLLECTION_DISTRIBUTION set 
+	is_cur='N'
+	where CONTRACT_NO = #{contractNo}
+</update>
+
+
+<!-- 落地催分单 信息集合-->
+<sql id="distributionVistSql">
+	SELECT (@rowNO := @rowNo+1) AS rowNo, result.* FROM( 
+	SELECT * FROM ( 
+	SELECT b.id AS id, b.CONTRACT_NO AS contract_no,distribution_state,handle_state,CUSTOMER_NAME ,CUSTOMER_TEL,id_no,loan_platform,PRODUCT , CONTRACT_AMOUNT ,MONTH_AMOUNT_ALL,collection_uid_cur,
+	LATE_AGE , LATE_DAYS , b.ORG_ID AS org_id, ORG_NAME , ANSWER_STATE ,PHONE_SUMMARY 
+	, b.STATE AS state,FOLLOW_TIME , ORDER_TIME,channel_name,key_value
+	FROM t_collection_base b 
+	LEFT JOIN t_channel_total t ON b.loan_platform = t.channel_code
+	LEFT JOIN t_org o ON b.ORG_ID=o.ORG_ID 
+	LEFT JOIN t_user u ON b.COLLECTION_UID_CUR = u.LOGIN_ID
+	LEFT JOIN T_DATA_DICTIONARY e  ON b.PHONE_SUMMARY =e.KEY_PROP AND e.key_name='collectionsummary'
+	WHERE  b.COLLECTION_WAY_CUR ='2' AND b.IS_FINISH = 'N'  AND b.DISTRIBUTION_STATE = 'Y'  AND b.STATE NOT IN (1,2,5,6)
+	AND b.FOLLOW_TIME IS NULL 			 
+	ORDER BY b.org_id,b.submit_time DESC,b.id) m1
+	UNION
+	SELECT * FROM (
+	SELECT b.id AS id, b.CONTRACT_NO AS contract_no,distribution_state,handle_state,CUSTOMER_NAME ,CUSTOMER_TEL,id_no,loan_platform,PRODUCT , CONTRACT_AMOUNT ,MONTH_AMOUNT_ALL,collection_uid_cur,
+ 	LATE_AGE , LATE_DAYS , b.ORG_ID AS org_id, ORG_NAME , ANSWER_STATE ,PHONE_SUMMARY 
+	, b.STATE AS state,FOLLOW_TIME , ORDER_TIME,channel_name,key_value
+	FROM t_collection_base b 
+	LEFT JOIN t_channel_total t ON b.loan_platform = t.channel_code
+	LEFT JOIN t_org o ON b.ORG_ID=o.ORG_ID 
+	LEFT JOIN t_user u ON b.COLLECTION_UID_CUR = u.LOGIN_ID
+	LEFT JOIN T_DATA_DICTIONARY e  ON b.PHONE_SUMMARY =e.KEY_PROP AND e.key_name='collectionsummary'
+	WHERE  b.COLLECTION_WAY_CUR ='2' AND b.IS_FINISH = 'N'  AND b.DISTRIBUTION_STATE = 'Y'  AND b.STATE NOT IN (1,2,5,6)
+	AND b.FOLLOW_TIME IS NOT NULL 		 
+	ORDER BY b.org_id,b.follow_time DESC,b.id )m2
+	) result,(SELECT @rowNO :=0) r
+  </sql>
+</mapper>   

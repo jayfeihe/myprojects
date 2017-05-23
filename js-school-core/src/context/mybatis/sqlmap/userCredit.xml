@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.UserCreditDataDAO">
+	
+	<resultMap type="com.hikootech.mqcash.po.UserMobileCreditInfo" id="userMobileCreditInfoMap">
+		<result column="mobile_credit_id" property="mobileCreditId" />
+		<result column="mobile_number" property="mobileNumber" />
+		<result column="unique_code" property="wybs" />
+		<result column="source" property="source" />
+		<result column="query_status" property="queryStatus" />
+		<result column="result_status" property="resultStatus" />
+		<result column="hf_balance" property="hfBalance" />
+		<result column="hf_acc_date" property="hfAccDate" />
+		<result column="hf_bal_sign" property="hfBalSign" />
+		<result column="hf_user_status" property="hfUserStatus" />
+		<result column="hf_auth_date" property="hfAuthDate" />
+		<result column="hf_seg_card_type" property="hfSegCardType" />
+		<result column="telecom_operator" property="telecomOperator" />
+		<result column="online_times" property="onlineTimes" />
+		<result column="estiminate_income_month" property="estimateIncomeMonth" />
+		<result column="estiminate_income_acc" property="estimateIncomeAcc" />
+		<result column="estiminate_stable_income_month" property="estimateStableIncomeMonth" />
+		<result column="estiminate_stable_income_acc" property="estimateStableIncomeAcc" />
+		<result column="estiminate_other_income_month" property="estimateOtherIncomeMonth" />
+		<result column="estiminate_other_income_acc" property="estimateOtherIncomeAcc" />
+		<result column="estiminate_outgo_month" property="estimateOutgoMonth" />
+		<result column="estiminate_outgo_acc" property="estimateOutgoAcc" />
+		<result column="estiminate_pos_outgo_month" property="estimatePosOutgoMonth" />
+		<result column="estiminate_pos_outgo_acc" property="estimatePosOutgoAcc" />
+		<result column="estiminate_other_outgo_month" property="estimateOtherOutgoMonth" />
+		<result column="estiminate_other_outgo_acc" property="estimateOtherOutgoAcc" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.po.UserMobileCreditDetailInfo" id="userMobileCreditDetailInfoMap">
+		<result column="mobile_credit_detail_id" property="mobileCreditDetailId" />
+		<result column="mobile_credit_id" property="mobileCreditId" />
+		<result column="mobile_number" property="mobile" />
+		<result column="month" property="month" />
+		<result column="bank_no" property="bankNo" />
+		<result column="card_no" property="cardNo" />
+		<result column="card_type" property="cardType" />
+		<result column="stable_income" property="stableIncome" />
+		<result column="other_income" property="otherIncome" />
+		<result column="pos_outgo" property="posOutgo" />
+		<result column="other_outgo" property="otherOutgo" />
+		<result column="if_stable" property="ifStable" />
+		<result column="if_pay_ontime" property="ifPayOntime" />
+		<result column="remain_amt" property="remainAmt" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.po.UserCreditInfo" id="UserCreditInfoMap">
+		<result column="credit_id" property="creditId" />
+		<result column="source" property="source" />
+		<result column="identity_card" property="identityCard" />
+		<result column="user_name" property="userName" />
+		<result column="query_status" property="queryStatus" />
+		<result column="result_status" property="resultStatus" />
+		<result column="card_split_address" property="cardSplitAddress" />
+		<result column="card_split_birthday" property="cardSplitBirthday" />
+		<result column="card_split_sex" property="cardSplitSex" />
+		<result column="graduate" property="graduate" />
+		<result column="education_degree" property="educationDegree" />
+		<result column="enrol_date" property="enrolDate" />
+		<result column="speciality_name" property="specialityName" />
+		<result column="graduate_time" property="graduateTime" />
+		<result column="study_result" property="studyResult" />
+		<result column="study_style" property="studyStyle" />
+		<result column="photo" property="photo" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="count" property="count" />
+	</resultMap>
+	
+	<resultMap id="creditDayMap" type="java.util.HashMap">
+     <result property="day" column="day" javaType="java.lang.String" />
+     <result property="idCard" column="id_card" javaType="java.lang.String" />
+	</resultMap>
+
+	<resultMap type="com.hikootech.mqcash.po.UserBrSpeciallistC" id="UserBrSpeciallistCInfoMap">
+		<result column="specialList_id" property="speciallistId" />
+		<result column="br_req_id" property="brReqId" />
+		<result column="code" property="code" />
+		<result column="swift_number" property="swift_number" />
+		<result column="type" property="type" />
+		<result column="bank_bad" property="bank_bad" />
+		<result column="bank_overdue" property="bank_overdue" />
+		<result column="bank_fraud" property="bank_fraud" />
+		<result column="bank_lost" property="bank_lost" />
+		<result column="bank_refuse" property="bank_refuse" />
+		<result column="credit_bad" property="credit_bad" />
+		<result column="p2p_bad" property="p2p_bad" />
+		<result column="p2p_overdue" property="p2p_overdue" />
+		<result column="p2p_fraud" property="p2p_fraud" />
+		<result column="p2p_lost" property="p2p_lost" />
+		<result column="p2p_refuse" property="p2p_refuse" />
+		<result column="phone_overdue" property="phone_overdue" />
+		<result column="insurance_fraud" property="insurance_fraud" />
+		<result column="court_bad" property="court_bad" />
+		<result column="court_executed" property="court_executed" />
+		<result column="flag" property="flag" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.po.UserQhzxLoan" id="UserQhzxLoanResultMap">
+		<result property="id" column="id"/>
+		<result property="transNo" column="trans_no"/>
+		<result property="batchNo" column="batch_no"/>
+		<result property="seqNo" column="seq_no"/>
+		<result property="idNo" column="id_no"/>
+		<result property="idType" column="id_type"/>
+		<result property="reasonCode" column="reason_code"/>
+		<result property="totalInfoId" column="total_info_id"/>
+		<result property="name" column="name"/>
+		<result property="industry" column="industry"/>
+		<result property="entityAuthCode" column="entity_auth_code"/>
+		<result property="entityAuthDate" column="entity_auth_date"/>
+		<result property="amount" column="amount"/>
+		<result property="busidate" column="busiDate"/>
+		<result property="ercode" column="erCode"/>
+		<result property="ermsg" column="erMsg"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.po.BrApplyLoan" id="BrApplyLoanMap">
+		<result property="id" column="id"/>
+		<result property="brReqId" column="br_req_id"/>
+		<result property="code" column="code"/>
+		<result property="swiftNumber" column="swift_number"/>
+		<result property="m12IdBankAllnum" column="m12_id_bank_allnum"/>
+		<result property="m12IdBankSelfnum" column="m12_id_bank_selfnum"/>
+		<result property="m12IdBankOrgnum" column="m12_id_bank_orgnum"/>
+		<result property="m12IdNotbankAllnum" column="m12_id_notbank_allnum"/>
+		<result property="m12IdNotbankSelfnum" column="m12_id_notbank_selfnum"/>
+		<result property="m12IdNotbankOrgnum" column="m12_id_notbank_orgnum"/>
+		
+		<result property="m6IdBankAllnum" column="m6_id_bank_allnum"/>
+		<result property="m6IdBankSelfnum" column="m6_id_bank_selfnum"/>
+		<result property="m6IdBankOrgnum" column="m6_id_bank_orgnum"/>
+		<result property="m6IdNotbankAllnum" column="m6_id_notbank_allnum"/>
+		<result property="m6IdNotbankSelfnum" column="m6_id_notbank_selfnum"/>
+		<result property="m6IdNotbankOrgnum" column="m6_id_notbank_orgnum"/>
+		
+		<result property="m3IdBankAllnum" column="m3_id_bank_allnum"/>
+		<result property="m3IdBankSelfnum" column="m3_id_bank_selfnum"/>
+		<result property="m3IdBankOrgnum" column="m3_id_bank_orgnum"/>
+		<result property="m3IdNotbankAllnum" column="m3_id_notbank_allnum"/>
+		<result property="m3IdNotbankSelfnum" column="m3_id_notbank_selfnum"/>
+		<result property="m3IdNotbankOrgnum" column="m3_id_notbank_orgnum"/>
+		
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+	
+	<insert id="insertUserMobileCreditInfo">
+		insert into t_user_mobile_credit_info(
+			mobile_credit_id,
+			mobile_number,
+			unique_code,
+			source,
+			query_status,
+			result_status,
+			hf_balance,
+			hf_acc_date,
+			hf_bal_sign,
+			hf_user_status,
+			hf_auth_date,
+			hf_seg_card_type,
+			telecom_operator,
+			online_times,
+			estiminate_income_month,
+			estiminate_income_acc,
+			estiminate_stable_income_month,
+			estiminate_stable_income_acc,
+			estiminate_other_income_month,
+			estiminate_other_income_acc,
+			estiminate_outgo_month,
+			estiminate_outgo_acc,
+			estiminate_pos_outgo_month,
+			estiminate_pos_outgo_acc,
+			estiminate_other_outgo_month,
+			estiminate_other_outgo_acc,
+			create_time
+		)
+		
+		values(
+			#{mobileCreditId},
+			#{mobileNumber},
+			#{wybs},
+			#{source},
+			#{queryStatus},
+			#{resultStatus},
+			#{hfBalance},
+			#{hfAccDate},
+			#{hfBalSign},
+			#{hfUserStatus},
+			#{hfAuthDate},
+			#{hfSegCardType},
+			#{telecomOperator},
+			#{onlineTimes},
+			#{estimateIncomeMonth},
+			#{estimateIncomeAcc},
+			#{estimateStableIncomeMonth},
+			#{estimateStableIncomeAcc},
+			#{estimateOtherIncomeMonth},
+			#{estimateOtherIncomeAcc},
+			#{estimateOutgoMonth},
+			#{estimateOutgoAcc},
+			#{estimatePosOutgoMonth},
+			#{estimatePosOutgoAcc},
+			#{estimateOtherOutgoMonth},
+			#{estimateOtherOutgoAcc},
+			#{createTime}
+		)
+	</insert>
+	
+	<insert id="insertUserMobileCreditDetailInfo">
+		insert into t_user_mobile_credit_detail_info(
+			mobile_credit_detail_id,
+			mobile_credit_id,
+			mobile_number,
+			month,
+			bank_no,
+			card_no,
+			card_type,
+			stable_income,
+			other_income,
+			pos_outgo,
+			other_outgo,
+			if_stable,
+			if_pay_ontime,
+			remain_amt,
+			create_time
+		)
+		
+		values(
+			#{mobileCreditDetailId},
+			#{mobileCreditId},
+			#{mobile},
+			#{month},
+			#{bankNo},
+			#{cardNo},
+			#{cardType},
+			#{stableIncome},
+			#{otherIncome},
+			#{posOutgo},
+			#{otherOutgo},
+			#{ifStable},
+			#{ifPayOntime},
+			#{remainAmt},
+			#{createTime}
+		)
+	</insert>
+	
+	<insert id="insertUserCreditInfo">
+		insert into t_user_credit_info(
+			credit_id,
+			source,
+			identity_card,
+			user_name,
+			query_status,
+			result_status,
+			card_split_address,
+			card_split_birthday,
+			card_split_sex,
+			graduate,
+			education_degree,
+			enrol_date,
+			speciality_name,
+			graduate_time,
+			study_result,
+			study_style,
+			photo,
+			create_time,
+			update_time
+		)
+		
+		values(
+			#{creditId},
+			#{source},
+			#{identityCard},
+			#{userName},
+			#{queryStatus},
+			#{resultStatus},
+			#{cardSplitAddress},
+			#{cardSplitBirthday},
+			#{cardSplitSex},
+			#{graduate},
+			#{educationDegree},
+			#{enrolDate},
+			#{specialityName},
+			#{graduateTime},
+			#{studyResult},
+			#{studyStyle},
+			#{photo},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+		<!-- 	插入用户征信记录表 -->
+	<insert id="insertUserCreditRequestRecord">
+	INSERT INTO t_user_credit_request_log
+	(request_id,
+	name, 
+	id_card,
+	unique_code,
+	mobile_number,
+	source, 
+	request_type, 
+	request_time, 
+	request_result,
+	descp
+	)
+	values
+	(
+	#{requestId},
+	#{name},
+	#{idCard},
+	#{uniqueCode},
+	#{mobileNumber},
+	#{source},
+	#{requestType},
+	#{requestTime},
+	#{requestResult},
+	#{descp}
+	)
+
+	</insert>
+	
+	<select id="querySingleUserMobileCreditInfo" resultMap="userMobileCreditInfoMap">
+		select t.* from t_user_mobile_credit_info t where t.mobile_number = #{mobileNumber}
+	</select>
+	
+	<select id="querySingleUserMobileCreditDetailInfo" resultMap="userMobileCreditDetailInfoMap">
+		select t.* from t_user_mobile_credit_detail_info t where t.mobile_credit_id = #{value} order by t.month desc limit 3
+	</select>
+	
+	<select id="querySingleUserCreditInfo" resultMap="UserCreditInfoMap">
+		select t.* from t_user_credit_info t where t.identity_card = #{identityCard} and user_name=#{userName} and t.query_status = 0 order by create_time desc
+	</select>
+	
+	<select id="queryExistInstalment" resultType="java.lang.Integer" >
+   		select  count(*) from t_user_info t inner join t_user_instalment i on t.user_id = i.user_id 
+		where t.id_card =#{idCard}  and i.instalment_status &lt;=30
+   </select>
+   
+	<select id="queryExistInstalmentByTel" resultMap="creditDayMap" >
+   		select  datediff(#{date},i.create_time) day ,t.id_card  from t_user_info t inner join t_user_instalment i on t.user_id = i.user_id 
+		where t.contact_phone =#{contactPhone}  and t.status =1
+   </select>
+   
+	<select id="queryBlackUser" resultType="com.hikootech.mqcash.po.UserCreditRecord" >
+   		select credit_id creditId ,create_time createTime,reason reason from t_user_credit_record t where (t.reason='205320' or t.reason = '201020' or t.reason = '213020' or t.reason = '204020') and  t.id_card = #{idCard} and t.name =#{name}  order by t.create_time desc limit 1
+   </select>
+	<select id="queryExist91LoanList" resultType="com.hikootech.mqcash.po.UserJyzxRecordItem">
+		select 	
+			s.trx_no trxNo,
+			t.borrow_type borrowType,
+			t.borrow_state borrowState,
+			t.borrow_amount borrowAmount,
+			t.contract_date contractDate,
+			t.loan_period loanPeriod,
+			t.repay_state repayState,
+			t.arrears_amount arrearsAmount,
+			t.company_code companyCode,
+			s.create_time createTime
+		from t_user_jyzx_record s left join t_user_jyzx_record_item t on t.trx_no = s.trx_no
+		where s.id_card=#{idNo} and s.name=#{name} and s.result_status in(10,20)  order by  s.create_time desc
+	</select>
+	
+	<select id="queryExistQhBlackListData" resultType="com.hikootech.mqcash.po.UserQhzxBlackList">
+		select id,er_code erCode
+		from t_user_qhzx_blacklist
+		where
+		id_no=#{idNo} and name=#{name} order by create_time desc
+	</select>
+   
+   		<!-- 	征信结果记录表  -->
+	<insert id="insertUserCreditRecord">
+		INSERT INTO t_user_credit_record (
+			info_id,
+			credit_id,
+			id_card,
+			name,
+			id_card_address,
+			contact_phone,
+			cust_ip,
+			source,
+			is_pass,
+			reason,
+			create_time,
+			update_time,
+			operator
+		)
+		VALUES
+			(
+			#{infoId},
+			#{creditId},
+			#{idCard},
+			#{name},
+			#{idCardAddress},
+			#{contactPhone},
+			#{custIp},
+			#{source},
+			#{isPass},
+			#{reason},
+			#{createTime},
+			#{updateTime},
+			#{operator}
+			)
+			
+	</insert>
+   	
+   	<!--记录征信模快信息  -->
+	<insert id="insertCreditModelRecord">
+		INSERT INTO t_user_credit_model_record (
+		model_record_id,
+		credit_id,
+		credit_model,
+		credit_model_type,
+		is_effective,
+		data_id,
+		credit_checking_result,
+		credit_checking_result_desc,
+		create_time,
+		update_time,
+		operator
+		)
+		VALUES
+		(
+		#{modelRecordId}, 
+		#{creditId}, 
+		#{creditModel},
+		#{creditModelType}, 
+		#{isEffective}, 
+		#{dataId,}, 
+		#{creditCheckingResult}, 
+		#{creditCheckingResultDesc},
+		#{createTime},
+		#{updateTime},
+		#{operator}
+		)
+	</insert>
+	
+	<update id="updateUserCreditRecord">
+		update t_user_credit_record t set t.is_pass = #{isPass} , reason = #{reason} , update_time = #{updateTime} 
+		<where>
+			<if test="creditId!=null and creditId!=''"> t.credit_id = #{creditId}</if>
+			<if test="infoId!=null and infoId!=''">and t.info_id = #{infoId}</if>
+		</where> 
+	</update>
+	
+	<update id="updateUserCreditRecordByInfoId">
+		update t_user_credit_record t set t.is_pass = #{isPass} , reason = #{reason} , update_time = #{updateTime} where t.info_id = #{infoId} 
+	</update>
+	
+	<select id="queryWhiteList" resultType="java.lang.Integer" >
+   		select  count(*) from t_white_list t where  t.name=#{name} and (t.id_card =#{idCard} or t.contact_phone = #{contactPhone}) and t.partner_id = #{partnerId} and status = 10
+   </select>
+	<select id="querySchoolWhiteList" resultType="com.hikootech.mqcash.po.WhiteList" >
+		SELECT list_id listId, id_card idCard, name
+		FROM t_white_list  t 
+		where  t.name=#{name} and (t.id_card =#{idCard} or t.contact_phone = #{contactPhone}) and t.partner_id = #{partnerId} and status = 10
+   </select>
+   
+   	<select id="queryIllegalCount" resultType="java.lang.Integer" >
+   		select  count(*) from t_illegal_name t where  t.name=#{name}   and status = 10
+   </select>
+   
+   	<select id="queryCreditIdByTotalId" resultType="java.lang.String" >
+   		SELECT t.credit_id creditId FROM `t_user_credit_record` t where t.info_id = #{totalId}
+   </select>
+   
+   	<select id="queryBlackList" resultType="com.hikootech.mqcash.po.BlackList" >
+   		select list_id listId, match_type matchType , match_value matchValue from t_black_list t  	where (t.match_value =#{idCard} or match_value =#{telPhone}) and  t.status = 10 limit 1
+   </select>
+	
+   <update id="updateUserCreditRequestRecordCount">
+	update t_user_credit_info t set t.count = #{count} , update_time = #{updateTime} where t.identity_card = #{identityCard}
+	</update>
+	
+	<select id="queryExistBrBlackListData" resultMap="UserBrSpeciallistCInfoMap">
+		SELECT
+			c.specialList_id,
+			c.br_req_id,
+			c. CODE,
+			c.swift_number,
+			c.type,
+			c.bank_bad,
+			c.bank_overdue,
+			c.bank_fraud,
+			c.bank_lost,
+			c.bank_refuse,
+			c.credit_bad,
+			c.p2p_bad,
+			c.p2p_overdue,
+			c.p2p_fraud,
+			c.p2p_lost,
+			c.p2p_refuse,
+			c.phone_overdue,
+			c.insurance_fraud,
+			c.court_bad,
+			c.court_executed,
+			c.flag,
+			c.create_time
+		FROM
+			t_user_br_speciallist_c c
+		LEFT JOIN t_user_br_request t ON c.br_req_id = t.id 
+			where t.id_card=#{idCard}
+			 and t.name=#{name} and c.type = 0
+			order by c.create_time desc
+		
+	</select>
+	
+	<select id="queryExistQhLoanList" resultMap="UserQhzxLoanResultMap">
+		select * from t_user_qhzx_loan where id_no=#{idCard} and name = #{name}
+	</select>
+	
+	<select id="queryJyRecordId" resultType="java.lang.String">
+		SELECT id FROM t_user_jyzx_record t where t.trx_no = #{trxNo}
+	</select>
+	
+ 		<select id="queryExistBrApplyList"  resultMap="BrApplyLoanMap">
+			select c.*
+			from t_user_br_request t inner join t_user_br_apply_loan c on t.id = c.br_req_id
+			where 	t.id_card=#{idCard}
+			and t.name=#{name}
+			order by c.create_time desc
+	</select>
+	<update id="updateBusApplicationOfReason">
+		update t_jsschool_service_apply y set y.credit_reason = #{creditReason}
+		where y.bus_id = #{busId}
+	</update>
+</mapper>

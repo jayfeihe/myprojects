@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.record.dao.DataRecordDao">
+	
+	<insert id="add" parameterType="Object">
+		insert into t_data_record (<include refid="columns"/>)
+		values (#{id},
+				#{infoId},
+				#{adName},
+				#{creativeName},
+				#{adpicUrl},
+				#{adpicWidth},
+				#{adpicHeight},
+				#{thumbWidth},
+				#{thumbHeight},
+				#{landingUrl},
+				#{advertiserUrl},
+				#{advertiserName},
+				#{mediaUrl},
+				#{mediaName},
+				#{terminalType},
+				#{adxUrl},
+				#{adxName},
+				#{type},
+				#{level},
+				#{collectTime},
+				#{checkTime},
+				#{confirmTime},
+				#{createTime})
+	</insert>
+	
+	<sql id="columns">
+		id              ,
+		info_id         ,
+		ad_name         ,
+		creative_name   ,
+		adpic_url       ,
+		adpic_width     ,
+		adpic_height    ,
+		thumb_width     ,
+		thumb_height    ,
+		landing_url     ,
+		advertiser_url  ,
+		advertiser_name ,
+		media_url       ,
+		media_name      ,
+		terminal_type   ,
+		adx_url         ,
+		adx_name        ,
+		type            ,
+		level           ,
+		collect_time    ,
+		check_time      ,
+		confirm_time    ,
+		create_time     
+	</sql>
+</mapper>

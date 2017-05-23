@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.collection.reduce.dao.CollectionRemissionDetailDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.collection.reduce.model.CollectionRemissionDetail" >
+	<result column="id" property="id"/><!-- id -->
+	<result column="contract_no" property="contractNo"/><!-- 合同编号 -->
+	<result column="remission_id" property="remissionId"/><!-- 减免申请表ID -->
+	<result column="loan_repay_plan_id" property="loanRepayPlanId"/><!-- 还款计划表ID -->
+	<result column="remark" property="remark"/><!-- 备注 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="create_uid" property="createUid"/><!-- 创建人 -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="update_uid" property="updateUid"/><!-- 修改人 -->
+	<result column="update_time" property="updateTime"/><!-- 修改时间 -->
+</resultMap>
+       
+<!-- T_COLLECTION_REMISSION_DETAIL table all fields -->
+<sql id="Column_List" >
+	 id,contract_no,remission_id,loan_repay_plan_id,remark,state,create_uid,create_time,update_uid,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="contractNo != null and contractNo != ''" >
+	    and contract_no =  #{contractNo}
+	</if>
+<if test="remissionId != null and remissionId != ''" >
+	    and remission_id =  #{remissionId}
+	</if>
+<if test="loanRepayPlanId != null and loanRepayPlanId != ''" >
+	    and loan_repay_plan_id =  #{loanRepayPlanId}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="createUid != null and createUid != ''" >
+	    and create_uid =  #{createUid}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateUid != null and updateUid != ''" >
+	    and update_uid =  #{updateUid}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_COLLECTION_REMISSION_DETAIL_SEQ') From dual
+			<!-- Select T_COLLECTION_REMISSION_DETAIL_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_COLLECTION_REMISSION_DETAIL(id,contract_no,remission_id,loan_repay_plan_id,remark,state,create_uid,create_time,update_uid,update_time)
+ values( #{id, jdbcType=INTEGER},#{contractNo, jdbcType=VARCHAR},#{remissionId, jdbcType=INTEGER},#{loanRepayPlanId, jdbcType=INTEGER},#{remark, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{createUid, jdbcType=VARCHAR},NOW(),#{updateUid, jdbcType=VARCHAR},NOW())
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_COLLECTION_REMISSION_DETAIL set 
+	<trim  suffixOverrides="," >
+	contract_no =  #{contractNo, jdbcType=VARCHAR},
+	remission_id =  #{remissionId, jdbcType=INTEGER},
+	loan_repay_plan_id =  #{loanRepayPlanId, jdbcType=INTEGER},
+	remark =  #{remark, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	update_uid =  #{updateUid, jdbcType=VARCHAR},
+	update_time =  NOW(),
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_COLLECTION_REMISSION_DETAIL  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_COLLECTION_REMISSION_DETAIL set 
+	<trim  suffixOverrides="," >
+
+	<if test="contractNo != null and contractNo != '' " >
+	    contract_no =  #{contractNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remissionId != null and remissionId != '' " >
+	    remission_id =  #{remissionId, jdbcType=INTEGER},
+	</if>
+
+	<if test="loanRepayPlanId != null and loanRepayPlanId != '' " >
+	    loan_repay_plan_id =  #{loanRepayPlanId, jdbcType=INTEGER},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="updateUid != null and updateUid != '' " >
+	    update_uid =  #{updateUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  NOW(),
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 减免明细记录表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_COLLECTION_REMISSION_DETAIL  where id = #{id}
+</select>
+
+<!-- 减免明细记录表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_COLLECTION_REMISSION_DETAIL 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询减免明细记录表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_COLLECTION_REMISSION_DETAIL 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

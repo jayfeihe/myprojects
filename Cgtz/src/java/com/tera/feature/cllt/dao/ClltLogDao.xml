@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.cllt.dao.ClltLogDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.cllt.model.ClltLog" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="loan_id" property="loanId"/><!--申请id-->
+	<result column="contract_id" property="contractId"/><!-- 合同id -->
+	<result column="cllt_uid" property="clltUid"/><!-- 催收人员id -->
+	<result column="cllt_name" property="clltName"/><!-- 催收人员姓名 -->
+	<result column="name" property="name"/><!-- 姓名/机构名称 -->
+	<result column="id_type" property="idType"/><!-- 证件类型 -->
+	<result column="id_no" property="idNo"/><!-- 证件号码 -->
+	<result column="cllt_way" property="clltWay"/><!-- 催收方式 -->
+	<result column="cllt_remark" property="clltRemark"/><!-- 催收说明 -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+</resultMap>
+       
+<!-- T_CLLT_LOG table all fields -->
+<sql id="Column_List" >
+ ID,
+ loan_id,
+ contract_id,
+ cllt_uid,
+ NAME,
+ id_type,
+ id_no,
+ cllt_way,
+ cllt_remark,
+ create_time,
+ (
+	SELECT
+		t_user. NAME
+	FROM
+		t_user
+	WHERE
+		t_user.login_id = t_cllt_log.cllt_uid
+) cllt_name
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and loan_id =  #{loanId}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and contract_id =  #{contractId}
+	</if>
+<if test="clltUid != null and clltUid != ''" >
+	    and cllt_uid =  #{clltUid}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="clltWay != null and clltWay != ''" >
+	    and cllt_way =  #{clltWay}
+	</if>
+<if test="clltRemark != null and clltRemark != ''" >
+	    and cllt_remark =  #{clltRemark}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_CLLT_LOG_SEQ') From dual -->
+			Select T_CLLT_LOG_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_CLLT_LOG(id,loan_id,contract_id,cllt_uid,name,id_type,id_no,cllt_way,cllt_remark,create_time)
+ values( #{id, jdbcType=INTEGER},#{loanId, jdbcType=VARCHAR},#{contractId, jdbcType=VARCHAR},#{clltUid, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{clltWay, jdbcType=VARCHAR},#{clltRemark, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_CLLT_LOG set 
+	<trim  suffixOverrides="," >
+	loan_id =  #{loanId, jdbcType=VARCHAR},
+	contract_id =  #{contractId, jdbcType=VARCHAR},
+	cllt_uid =  #{clltUid, jdbcType=VARCHAR},
+	name =  #{name, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	cllt_way =  #{clltWay, jdbcType=VARCHAR},
+	cllt_remark =  #{clltRemark, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_CLLT_LOG  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_CLLT_LOG set 
+	<trim  suffixOverrides="," >
+
+	<if test="loanId != null and loanId != '' " >
+	    loan_id =  #{loanId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractId != null and contractId != '' " >
+	    contract_id =  #{contractId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="clltUid != null and clltUid != '' " >
+	    cllt_uid =  #{clltUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="name != null and name != '' " >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idType != null and idType != '' " >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idNo != null and idNo != '' " >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="clltWay != null and clltWay != '' " >
+	    cllt_way =  #{clltWay, jdbcType=VARCHAR},
+	</if>
+
+	<if test="clltRemark != null and clltRemark != '' " >
+	    cllt_remark =  #{clltRemark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 T_CLLT_LOG -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CLLT_LOG  where id = #{id}
+</select>
+
+<!-- T_CLLT_LOG 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CLLT_LOG 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询T_CLLT_LOG列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_CLLT_LOG 
+	<include refid="Where_Clause"/>
+		order by  create_time desc
+</select>
+
+</mapper>   

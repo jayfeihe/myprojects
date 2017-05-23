@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.HaoDaiDao">
+
+	<!--查询好贷数据 -->
+	<insert id="insertHaoDaiRecord" parameterType="com.hikootech.mqcash.vo.HaoDaiVo">
+
+		insert into t_haodai_query_record
+		(record_id,query_type, mobile,data,create_time,update_time,operator)
+		values(#{recordId},#{queryType}, #{mobile},#{date},#{createTime},#{updateTime},#{operator})
+
+	</insert>
+
+	<insert id="addhdBxdjgcxjl">
+		insert into
+		t_user_hd_bxdjgcxjl(id,request_id, bank,small_loans,p2p,consumer_finance,capital_leases,commercial_factoring,guarantee_company,data_services,create_time)
+		values( #{id}, #{requestId},   #{bank}, #{smallLoans},
+		#{p2p}, #{consumerFinance}, #{capitalLeases}, #{commercialFactoring},
+		#{guaranteeCompany}, #{dataServices}, #{createTime} )
+	</insert>
+
+
+	<insert id="addhdDkcfsq">
+		insert into
+		t_user_hd_dkcfsq(id,request_id, type,money,c_time,use_company,create_time)
+		values( #{id}, #{requestId},   #{type},
+		#{money},
+		#{cTime}, #{useCompany}, #{createTime} )
+	</insert>
+
+	<insert id="addhdRequest">
+		insert into
+		t_user_hd_request(id,total_info_id,type,id_card,name,mobile,create_time)
+		values( #{id}, #{totalInfoId}, #{type}, #{idCard}, #{name}, #{mobile},
+		#{createTime} )
+	</insert>
+	<insert id="addhdSyhmd">
+		insert into
+		t_user_hd_shanyin_syhmd(id,request_id,match_type,reason,create_date_type,amount_type,over_due_type,legal_status,create_time)
+		values( #{id}, #{requestId}, #{matchType}, #{reason}, #{createDateType},
+		#{amountType}, #{overDueType}, #{legalStatus}, #{createTime} )
+	</insert>
+	<insert id="addhdSxbzxrcx">
+		insert into
+		t_user_hd_sxbzxrcx(id,request_id, sxgg_id,court,province,case_no,sort_time,p_name,id_card_no,age,sex,yj_code,yiwu,lxqk,jtqx,yjdw,post_time,body,create_time)
+		values( #{id}, #{requestId},   #{sxggId}, #{court},
+		#{province}, #{caseNo}, #{sortTime}, #{pName}, #{idCardNo}, #{age}, #{sex},
+		#{yjCode}, #{yiwu}, #{lxqk}, #{jtqx}, #{yjdw}, #{postTime} ,#{body},
+		#{createTime} )
+
+	</insert>
+	<insert id="addGrbzxggcx">
+		insert into t_user_hd_grbzxggcx(id,request_id, court,case_no,sort_time,exec_money,case_state,create_time)
+ 	values( #{id} ,#{requestId} , #{court} ,#{caseNo} ,#{sortTime} ,#{execMoney} ,#{caseState} ,#{createTime})
+	</insert>
+
+</mapper>
+

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.report.dao.CollateralAccountBeanDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.report.model.CollateralAccountBean" >
+	<result column="product" property="product"/><!-- 项目类型 -->
+	<result column="contract_id" property="contractId"/><!--线下合同编号 -->
+	<result column="org" property="orgId"/><!--分公司 -->
+	<result column="org_name" property="orgName"/><!--分公司名称-->
+	<result column="salesman" property="salesMan"/><!--业务员 -->
+	<result column="sale_name" property="saleName"/><!-- 说明 -->
+	
+	<result column="is_late" property="isLate"/><!--是否逾期 -->
+	<result column="is_renew" property="isRenew"/><!--是否续贷 -->
+	<result column="law_name" property="lawName"/><!-- 法律意见书签字律师 -->
+	<result column="loan_id" property="loanId"/><!--申请id-->
+	<result column="loan_name" property="loanName"/><!--借款人姓名-->
+	<result column="tel" property="tel"/><!--借款人联系方式-->
+	<result column="lend_user_id" property="lendUserId"/><!-- 出借人id-->
+	<result column="lend_name" property="lendName"/><!-- 出借人姓名 -->
+	<result column="loan_amt" property="loanAmt"/><!-- 借款金额 -->
+	<result column="buy_date" property="buyDate"/><!-- 购买日期 -->
+	<result column="start_date" property="startDate"/><!-- 出借时间 -->
+	<result column="end_date" property="endDate"/><!-- 还款时间 -->
+	<result column="rate" property="rate"/><!-- 年化利率 -->
+
+	<result column="is_set" property="isSet"/><!-- 担保物权是否设立 -->
+	<result column="frame_code" property="frameCode"/><!--车架号 -->
+	<result column="license" property="license"/><!--车牌号 -->
+	<result column="house_property_code" property="housePropertyCode"/><!--房产证号 -->
+	<result column="asset_addr" property="assetAddr"/><!-- 所在地址 -->
+	<result column="evalPrice" property="evalPrice"/><!-- 评估金额 -->
+	<result column="reserve_des" property="reserveDes"/><!-- 保管物品 -->
+	<result column="remark" property="remark"/><!-- 备注 -->
+	<result column="state" property="state"/><!-- 备注 -->
+	<result column="colState" property="colState"/><!-- 押品状态 -->
+	
+</resultMap>
+       
+<!-- T_COLLATERAL table all fields -->
+<sql id="Column_List" >
+	base.PRODUCT,
+	con.CONTRACT_ID,
+	base.SALESMAN,
+  base.org,
+  (SELECT t.org_name from t_org t where t.org_id=CON.org)org_name,
+	(SELECT t.name from t_user t where t.login_id=base.salesman)sale_name,
+	con.IS_LATE,
+	base.IS_RENEW,
+	con.LAW_NAME,
+	clat.is_set,
+	clat.frame_code,
+	clat.license,
+	clat.HOUSE_PROPERTY_CODE,
+	clat.ASSET_ADDR,
+	clat.EVAL_PRICE / 10000 AS evalPrice,
+	clat.RESERVE_DES,
+	clat.remark remark,
+  CON.lend_user_id,
+	(SELECT ld.name from t_lend_user ld where LD.id=CON.lend_user_id)lend_name,
+	con.LOAN_ID,
+	con.LOAN_AMT / 10000 AS loan_amt,
+	con.START_DATE,
+	con.END_DATE,
+	con.state,
+	base.RATE,
+    base.name loan_name,
+	(
+		SELECT
+			T .tel
+		FROM
+			t_loan_app T
+		WHERE
+			 T.MAIN_FLAG='1' and (T .loan_id = base.loan_id or T.LOAN_ID=base.orig_loan_id)
+	) tel,
+	decode(CLAT.STATE,
+		'1','库存中',
+		'2','正常出库',
+		'3','资产处置'
+    )colState
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="product != null and product != ''" >
+	    and base.PRODUCT =  #{product}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and con.CONTRACT_ID =  #{contractId}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and base.org like  concat(#{orgId},'%')
+	</if>
+<if test="orgName != null and orgName != ''" >
+	    and org.org_name =  #{orgName}
+	</if>
+<if test="salesMan != null and salesMan != ''" >
+	    and base.salesman =  #{salesMan}
+	</if>
+<if test="isLate != null and isLate != ''" >
+	    and con.is_late =  #{isLate}
+	</if>
+<if test="isRenew != null and isRenew != ''" >
+	    and base.is_renew =  #{isRenew}
+	</if>
+<if test="lawName != null and lawName != ''" >
+	    and con.law_name =  #{lawName}
+	</if>
+<if test="isSet != null and isSet != ''" >
+	    and clat.is_set =  #{isSet}
+	</if>
+<if test="frameCode != null and frameCode != ''" >
+	    and clat.frame_code =  #{frameCode}
+	</if>
+<if test="license != null and license != ''" >
+	    and clat.license =  #{license}
+	</if>
+<if test="housePropertyCode != null and housePropertyCode != ''" >
+	    and clat.house_property_code =  #{housePropertyCode}
+	</if>
+<if test="assetAddr != null and assetAddr != ''" >
+	    and clat.ASSET_ADDR =  #{assetAddr}
+	</if>
+<if test="evalPrice != null and evalPrice != ''" >
+	    and clat.evalPrice =  #{evalPrice}
+	</if>
+<if test="reserveDes != null and reserveDes != ''" >
+	    and clat.RESERVE_DES =  #{reserveDes}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and clat.remark =  #{remark}
+	</if>
+<if test="lendUserId != null and lendUserId != ''" >
+	    and  con.LEND_USER_ID =  #{lendUserId}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and con.loan_id =  #{loanId}
+	</if>
+<if test="loanAmt != null and loanAmt != ''" >
+	    and con.loan_amt =  #{loanAmt}
+	</if>
+<!-- <if test="startDate != null and startDate != ''" >
+	    and con.start_date =  #{startDate}
+	</if>
+<if test="endDate != null and endDate != ''" >
+	    and con.end_date =  #{endDate}
+	</if> -->
+<if test="minStartDate != null and minStartDate != ''" >
+  <![CDATA[and con.start_date >= #{minStartDate}]]>
+</if> 
+<if test="maxStartDate != null and maxStartDate != ''" >
+     <![CDATA[and con.start_date <= #{maxStartDate}]]>
+</if> 
+<if test="minEndDate != null and minEndDate != ''" >
+  <![CDATA[and con.end_date >= #{minEndDate}]]>
+</if> 
+<if test="maxEndDate != null and maxEndDate != ''" >
+     <![CDATA[and con.end_date <= #{maxEndDate}]]>
+</if> 
+<if test="loanName != null and loanName != ''" >
+	    and base.name =  #{loanName}
+	</if>
+<if test="rate != null and rate != ''" >
+	    and base.rate =  #{rate}
+	</if>
+<if test="tel != null and tel != ''" >
+	    and loan.tel =  #{tel}
+	</if>
+<if test="lendName != null and lendName != ''" >
+	    and ldusr.name =  #{lendName}
+	</if>
+<if test="state != null and state != ''" >
+	    and con.state =  #{state}
+	</if>
+<if test="colState != null and colState != ''" >
+	    and clat.state =  #{colState}
+	</if>
+<!--机构权限限制  -->
+<if test="orgs != null and orgs.size() >0 " >
+and base.org in
+                <foreach item="item" index="index" collection="orgs" open="(" separator="," close=")">
+						#{item}
+				</foreach>	
+	</if>		
+</trim>
+</sql>
+
+<!-- 质押、抵押物信息 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from (select 
+	<include refid="Column_List"/>
+	from t_collateral clat
+	LEFT JOIN t_contract con ON clat.LOAN_ID = con.LOAN_ID
+	LEFT JOIN t_loan_base base ON base.LOAN_ID = con.LOAN_ID 
+	<include refid="Where_Clause"/>)
+</select>
+  	
+<!-- 查询质押、抵押物信息列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from t_collateral clat
+	LEFT JOIN t_contract con ON clat.LOAN_ID = con.LOAN_ID
+	LEFT JOIN t_loan_base base ON base.LOAN_ID = con.LOAN_ID 
+	<include refid="Where_Clause"/>
+	order by con.start_date desc,con.contract_id 
+</select>
+
+</mapper>   

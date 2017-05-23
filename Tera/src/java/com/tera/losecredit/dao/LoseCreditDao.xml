@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.losecredit.dao.LoseCreditDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.losecredit.model.LoseCredit" >
+	<result column="id" property="id"/><!--  -->
+	<result column="type" property="type"/><!--  -->
+	<result column="iname" property="iname"/><!--  -->
+	<result column="cardnum" property="cardnum"/><!--  -->
+	<result column="casecode" property="casecode"/><!--  -->
+	<result column="age" property="age"/><!--  -->
+	<result column="sexy" property="sexy"/><!--  -->
+	<result column="focusnumber" property="focusnumber"/><!--  -->
+	<result column="areaname" property="areaname"/><!--  -->
+	<result column="businessentity" property="businessentity"/><!--  -->
+	<result column="courtname" property="courtname"/><!--  -->
+	<result column="duty" property="duty"/><!--  -->
+	<result column="performance" property="performance"/><!--  -->
+	<result column="disrupttypename" property="disrupttypename"/><!--  -->
+	<result column="publishdate" property="publishdate"/><!--  -->
+	<result column="partytypename" property="partytypename"/><!--  -->
+	<result column="gistid" property="gistid"/><!--  -->
+	<result column="regdate" property="regdate"/><!--  -->
+	<result column="gistunit" property="gistunit"/><!--  -->
+	<result column="performedpart" property="performedpart"/><!--  -->
+	<result column="unperformpart" property="unperformpart"/><!--  -->
+	<result column="publishdatestamp" property="publishdatestamp"/><!--  -->
+</resultMap>
+       
+<!-- T_LOSE_CREDIT table all fields -->
+<sql id="Column_List" >
+<!-- 	 id,type,iname,cardnum,casecode,age,sexy,focusnumber,areaname,businessentity,courtname,duty,performance,disrupttypename,publishdate,partytypename,gistid,regdate,gistunit,performedpart,unperformpart,publishdatestamp -->
+id,iname
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="iname != null and iname != ''" >
+	    and iname =  #{iname}
+	</if>
+<if test="cardnum != null and cardnum != ''" >
+	    and cardnum =  #{cardnum}
+	</if>
+<if test="casecode != null and casecode != ''" >
+	    and casecode =  #{casecode}
+	</if>
+<if test="age != null and age != ''" >
+	    and age =  #{age}
+	</if>
+<if test="sexy != null and sexy != ''" >
+	    and sexy =  #{sexy}
+	</if>
+<if test="focusnumber != null and focusnumber != ''" >
+	    and focusnumber =  #{focusnumber}
+	</if>
+<if test="areaname != null and areaname != ''" >
+	    and areaname =  #{areaname}
+	</if>
+<if test="businessentity != null and businessentity != ''" >
+	    and businessentity =  #{businessentity}
+	</if>
+<if test="courtname != null and courtname != ''" >
+	    and courtname =  #{courtname}
+	</if>
+<if test="duty != null and duty != ''" >
+	    and duty =  #{duty}
+	</if>
+<if test="performance != null and performance != ''" >
+	    and performance =  #{performance}
+	</if>
+<if test="disrupttypename != null and disrupttypename != ''" >
+	    and disrupttypename =  #{disrupttypename}
+	</if>
+<if test="publishdate != null and publishdate != ''" >
+	    and publishdate =  #{publishdate}
+	</if>
+<if test="partytypename != null and partytypename != ''" >
+	    and partytypename =  #{partytypename}
+	</if>
+<if test="gistid != null and gistid != ''" >
+	    and gistid =  #{gistid}
+	</if>
+<if test="regdate != null and regdate != ''" >
+	    and regdate =  #{regdate}
+	</if>
+<if test="gistunit != null and gistunit != ''" >
+	    and gistunit =  #{gistunit}
+	</if>
+<if test="performedpart != null and performedpart != ''" >
+	    and performedpart =  #{performedpart}
+	</if>
+<if test="unperformpart != null and unperformpart != ''" >
+	    and unperformpart =  #{unperformpart}
+	</if>
+<if test="publishdatestamp != null and publishdatestamp != ''" >
+	    and publishdatestamp =  #{publishdatestamp}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+	insert into T_LOSE_CREDIT(id,type,iname,cardnum,casecode,age,sexy,focusnumber,areaname,businessentity,courtname,duty,performance,disrupttypename,publishdate,partytypename,gistid,regdate,gistunit,performedpart,unperformpart,publishdatestamp)
+ values( #{id, jdbcType=INTEGER},#{type, jdbcType=VARCHAR},#{iname, jdbcType=VARCHAR},#{cardnum, jdbcType=VARCHAR},#{casecode, jdbcType=VARCHAR},#{age, jdbcType=VARCHAR},#{sexy, jdbcType=VARCHAR},#{focusnumber, jdbcType=VARCHAR},#{areaname, jdbcType=VARCHAR},#{businessentity, jdbcType=VARCHAR},#{courtname, jdbcType=VARCHAR},#{duty, jdbcType=VARCHAR},#{performance, jdbcType=VARCHAR},#{disrupttypename, jdbcType=VARCHAR},#{publishdate, jdbcType=VARCHAR},#{partytypename, jdbcType=VARCHAR},#{gistid, jdbcType=VARCHAR},#{regdate, jdbcType=VARCHAR},#{gistunit, jdbcType=VARCHAR},#{performedpart, jdbcType=VARCHAR},#{unperformpart, jdbcType=VARCHAR},#{publishdatestamp, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_LOSE_CREDIT set 
+	<trim  suffixOverrides="," >
+	id =  #{id, jdbcType=INTEGER},
+	type =  #{type, jdbcType=VARCHAR},
+	iname =  #{iname, jdbcType=VARCHAR},
+	cardnum =  #{cardnum, jdbcType=VARCHAR},
+	casecode =  #{casecode, jdbcType=VARCHAR},
+	age =  #{age, jdbcType=VARCHAR},
+	sexy =  #{sexy, jdbcType=VARCHAR},
+	focusnumber =  #{focusnumber, jdbcType=VARCHAR},
+	areaname =  #{areaname, jdbcType=VARCHAR},
+	businessentity =  #{businessentity, jdbcType=VARCHAR},
+	courtname =  #{courtname, jdbcType=VARCHAR},
+	duty =  #{duty, jdbcType=VARCHAR},
+	performance =  #{performance, jdbcType=VARCHAR},
+	disrupttypename =  #{disrupttypename, jdbcType=VARCHAR},
+	publishdate =  #{publishdate, jdbcType=VARCHAR},
+	partytypename =  #{partytypename, jdbcType=VARCHAR},
+	gistid =  #{gistid, jdbcType=VARCHAR},
+	regdate =  #{regdate, jdbcType=VARCHAR},
+	gistunit =  #{gistunit, jdbcType=VARCHAR},
+	performedpart =  #{performedpart, jdbcType=VARCHAR},
+	unperformpart =  #{unperformpart, jdbcType=VARCHAR},
+	publishdatestamp =  #{publishdatestamp, jdbcType=VARCHAR},
+	</trim>
+ 	where  = #{}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_LOSE_CREDIT  where  = #{}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_LOSE_CREDIT set 
+	<trim  suffixOverrides="," >
+	<if test="id != null and id != ''  or id==0" >
+	    id =  #{id, jdbcType=INTEGER},
+	</if>
+
+	<if test="type != null and type != '' " >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+
+	<if test="iname != null and iname != '' " >
+	    iname =  #{iname, jdbcType=VARCHAR},
+	</if>
+
+	<if test="cardnum != null and cardnum != '' " >
+	    cardnum =  #{cardnum, jdbcType=VARCHAR},
+	</if>
+
+	<if test="casecode != null and casecode != '' " >
+	    casecode =  #{casecode, jdbcType=VARCHAR},
+	</if>
+
+	<if test="age != null and age != '' " >
+	    age =  #{age, jdbcType=VARCHAR},
+	</if>
+
+	<if test="sexy != null and sexy != '' " >
+	    sexy =  #{sexy, jdbcType=VARCHAR},
+	</if>
+
+	<if test="focusnumber != null and focusnumber != '' " >
+	    focusnumber =  #{focusnumber, jdbcType=VARCHAR},
+	</if>
+
+	<if test="areaname != null and areaname != '' " >
+	    areaname =  #{areaname, jdbcType=VARCHAR},
+	</if>
+
+	<if test="businessentity != null and businessentity != '' " >
+	    businessentity =  #{businessentity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="courtname != null and courtname != '' " >
+	    courtname =  #{courtname, jdbcType=VARCHAR},
+	</if>
+
+	<if test="duty != null and duty != '' " >
+	    duty =  #{duty, jdbcType=VARCHAR},
+	</if>
+
+	<if test="performance != null and performance != '' " >
+	    performance =  #{performance, jdbcType=VARCHAR},
+	</if>
+
+	<if test="disrupttypename != null and disrupttypename != '' " >
+	    disrupttypename =  #{disrupttypename, jdbcType=VARCHAR},
+	</if>
+
+	<if test="publishdate != null and publishdate != '' " >
+	    publishdate =  #{publishdate, jdbcType=VARCHAR},
+	</if>
+
+	<if test="partytypename != null and partytypename != '' " >
+	    partytypename =  #{partytypename, jdbcType=VARCHAR},
+	</if>
+
+	<if test="gistid != null and gistid != '' " >
+	    gistid =  #{gistid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="regdate != null and regdate != '' " >
+	    regdate =  #{regdate, jdbcType=VARCHAR},
+	</if>
+
+	<if test="gistunit != null and gistunit != '' " >
+	    gistunit =  #{gistunit, jdbcType=VARCHAR},
+	</if>
+
+	<if test="performedpart != null and performedpart != '' " >
+	    performedpart =  #{performedpart, jdbcType=VARCHAR},
+	</if>
+
+	<if test="unperformpart != null and unperformpart != '' " >
+	    unperformpart =  #{unperformpart, jdbcType=VARCHAR},
+	</if>
+
+	<if test="publishdatestamp != null and publishdatestamp != '' " >
+	    publishdatestamp =  #{publishdatestamp, jdbcType=VARCHAR},
+	</if>
+
+	</trim>
+	where  = #{}
+</update>
+
+<!-- 根据id查询  -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_LOSE_CREDIT  where  = #{}
+</select>
+
+<!--  列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LOSE_CREDIT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LOSE_CREDIT 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.InstalmentInfoDAO">
+	<resultMap type="com.hikootech.mqcash.dto.UserPaymentOrderDTO" id="userPaymentOrderDTOMap">
+		<result property="userPaymentOrderId" column="user_payment_order_id"/>
+		<result property="paymentOrderNo" column="payment_order_no"/>
+		<result property="paymentType" column="payment_type"/>
+		<result property="paymentChannelId" column="payment_channel_id"/>
+		<result property="paymentTime" column="payment_time"/>
+		<result property="paymentAmount" column="payment_amount"/>
+		<result property="bankName" column="bank_name"/>
+		<result property="paymentCount" column="payment_count"/>
+		<result property="paymentStatus" column="payment_status"/>
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.dto.UserPaymentOrderDetailDTO" id="userPaymentOrderDetailDTOMap">
+		<result property="instalmentId" column="instalment_id"/>
+		<result property="instalmentNumber" column="instalment_number"/>
+		<result property="instalmentCount" column="instalment_count"/>
+		<result property="receivedPrincipal" column="received_principal"/>
+		<result property="receivedService" column="received_service"/>
+		<result property="receivedOverdue" column="received_overdue"/>
+		<result property="paymentStatus" column="payment_status"/>
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.dto.InstalmentInfoDTO" id="InstalmentInfoDTOMap">
+		<result property="instalmentId" column="instalment_id"/>
+		<result property="partnerOrderId" column="partner_order_id"/>
+		<result property="productName" column="product_name"/>
+		<result property="loanDateForCompare" column="loanDateForCompare"/>
+		<result property="periodMax" column="instalment_count"/>
+		<result property="loanAmount" column="instalment_amount"/>
+		<result property="overdueRate" column="overdue_rate"/>
+		<result property="loanPrincipalAmount" column="partner_order_amount"/>
+		<result property="instalmentIdStatus" column="instalment_status" />
+		<collection  property="userPlanList" column="instalment_id"   select="com.hikootech.mqcash.dao.UserRepayPlanDAO.queryRepayPlansOnlyByInstalmentId" />
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.dto.InstalmentInfoDTO" id="InstalDTOTopMap">
+		<result property="instalmentId" column="instalment_id"/>
+		<result property="loanDate" column="loanDate"/>
+		<result property="periodMax" column="instalment_count"/>
+		<result property="loanAmount" column="instalment_amount"/>
+		<result property="overdueRate" column="overdue_rate"/>
+		<result property="loanPrincipalAmount" column="partner_order_amount"/>
+		<result property="instalmentIdStatus" column="instalment_status" />
+		<collection property="userPlanList" column="instalment_id"   select="com.hikootech.mqcash.dao.UserRepayPlanDAO.queryRepayPlansOnlyByInstalmentId" />
+	</resultMap>
+	
+<select id="queryInstalmentAndProductInfoByUserId"   parameterType="java.util.Map" resultType="com.hikootech.mqcash.dto.InstalmentInfoDTO">
+	SELECT
+	z.instalment_id instalmentId,
+	b.product_name productName,
+	DATE_FORMAT(z.create_time, '%Y-%m-%d') loanDate,
+	a.partner_order_amount loanPrincipalAmount,
+	z.instalment_count AS periodMax,
+	z.instalment_amount loanAmount,
+	a.partner_order_id partnerOrderId,
+	ccp.partner_name partnerName
+FROM
+	t_user_instalment z
+JOIN t_partner_user_order a ON a.instalment_id = z.instalment_id
+JOIN t_order_item b ON b.user_order_id = a.user_order_id
+JOIN t_config_cooperative_partner ccp ON ccp.partner_id = a.partner_id
+where z.user_id=#{userId} and  z.instalment_id = #{instalmentId} 
+ 	 
+ 
+</select>
+
+<select id="queryUserPaymentOrderTotalVO"   parameterType="java.util.Map" resultType="java.lang.Integer">
+			
+			SELECT
+			count(*)
+		FROM
+			t_user_payment_order t
+		where t.user_id=#{userId} 
+		<if test="paymentStatus!=null">
+			and t.payment_status in 
+			<foreach item="item" index="index" collection="paymentStatus"
+		      open="(" separator="," close=")">
+		        #{item}
+		  </foreach>
+		</if>
+   	order by t.create_time  
+</select>
+<select id="queryUserPaymentOrderList"   parameterType="java.util.Map" resultMap="userPaymentOrderDTOMap">
+			
+			SELECT
+			<!-- a.instalment_id, -->
+			t.user_payment_order_id,
+			t.payment_order_no,
+			t.payment_type,
+		    t.bank_name,
+		    t.payment_channel_id,
+			t.payment_time,
+			t.payment_amount,
+			t.payment_status,
+			t.payment_count
+		FROM
+			t_user_payment_order t
+		where t.user_id=#{userId} 
+		<if test="paymentStatus!=null">
+			and t.payment_status in 
+			<foreach item="item" index="index" collection="paymentStatus"
+		      open="(" separator="," close=")">
+		        #{item}
+		  </foreach>
+		</if>
+	order by t.create_time  
+ 		limit #{pageStart},#{pageSize}
+</select>
+
+<!-- 查询已还款订单明细 -->
+<select id="queryUserPaymentOrderDetailList"   parameterType="java.util.Map" resultMap="userPaymentOrderDetailDTOMap">
+			SELECT
+				t.payment_status,
+			   a.instalment_id,
+				a.instalment_number,
+				a.instalment_count,
+				a.received_principal,
+				a.received_service,
+				a.received_overdue,
+				a.real_repayment_time
+			FROM
+				t_user_payment_record_item t
+			JOIN t_user_repayment_plans a ON a.repayment_plans_id = t.repayment_plans_id
+		where a.user_id=#{userId} 
+		and t.user_payment_order_id = #{userPaymentOrderId}		
+		order by a.instalment_id, a.instalment_number 
+</select>
+<!-- 查询还款信息 -->
+<select id="queryUserPaymentOrderInfo"   parameterType="com.hikootech.mqcash.dto.UserPaymentOrderDTO" resultType="com.hikootech.mqcash.dto.UserPaymentOrderDTO">
+			SELECT distinct 
+			a.instalment_id instalmentId,
+			t.payment_order_no paymentOrderNo,
+			t.payment_amount paymentAmount,	
+			t.payment_amount paymentAmount,		
+			o.partner_order_id partnerOrderId,
+			it.product_name productName,
+			a.create_time createTime,
+			o.partner_channel partnerChannel,
+			t.payment_time bankTxTime,
+			t.bank_name bankName
+		
+		FROM
+			t_user_payment_order t 
+			join t_user_payment_record_item r on r.user_payment_order_id = t.user_payment_order_id
+			join t_user_repayment_plans p on p.repayment_plans_id = r.repayment_plans_id
+			join t_user_instalment a on a.instalment_id = p.instalment_id
+			join t_partner_user_order o on o.instalment_id = p.instalment_id
+			join t_order_item it on it.user_order_id = o.user_order_id
+			
+			join (
+				select   partner_id from t_config_cooperative_partner r  where r.status = 1
+			
+			)  s on s.partner_id = o.partner_id
+		where t.user_id=#{userId} 
+		and t.user_payment_order_id = #{userPaymentOrderId}		
+</select>
+
+
+
+<!-- 获取顶部标线用 -->
+<select id="getInstalmentlistByUserId" parameterType="java.util.Map" resultMap="InstalDTOTopMap">
+	select t.instalment_status,t.instalment_id,DATE_FORMAT(t.create_time,'%Y-%m-%d') loanDate,t.instalment_count,t.overdue_rate,
+	t.instalment_amount ,t.partner_order_amount
+	from t_user_instalment t
+	where t.user_id=#{userId}
+	<if test="instalmentStatus!=null">
+		and t.instalment_status  in  
+		<foreach item="item" index="index" collection="instalmentStatus"
+	      open="(" separator="," close=")">
+	        #{item}
+	  </foreach>
+	</if>
+	<if test="instalmentId!=null">
+		and t.instalment_id = #{instalmentId} 
+	</if>
+ order by t.instalment_status asc,t.create_time desc
+</select>
+ 
+ 
+<select id="getInsMsgByUserId" parameterType="java.util.Map" resultMap="InstalmentInfoDTOMap">
+	select t.instalment_status,t.instalment_id, t.create_time  loanDateForCompare,t.instalment_count,t.overdue_rate,
+	t.instalment_amount,b.product_name,a.partner_order_amount  ,a.partner_order_id
+	from t_user_instalment t
+	left JOIN t_partner_user_order a ON a.instalment_id = t.instalment_id
+	 left  JOIN t_order_item b ON b.user_order_id = a.user_order_id
+	where t.user_id=#{userId}
+	<if test="instalmentStatus!=null">
+		and t.instalment_status  in  
+		<foreach item="item" index="index" collection="instalmentStatus"
+	      open="(" separator="," close=")">
+	        #{item}
+	  </foreach>
+	</if>
+	<if test="instalmentId!=null">
+		and t.instalment_id = #{instalmentId} 
+	</if>
+ order by t.instalment_status asc,t.create_time desc
+</select>
+</mapper>

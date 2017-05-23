@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.house.dao.HouseInfoDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.house.model.HouseInfo" >
+	<result column="id" property="id"/><!-- 主键 -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="house_space" property="houseSpace"/><!-- 房屋面积 -->
+	<result column="house_orientation" property="houseOrientation"/><!-- 房屋朝向 -->
+	<result column="house_certificate_number" property="houseCertificateNumber"/><!-- 房产证号 -->
+	<result column="land_certificate_number" property="landCertificateNumber"/><!-- 土地证号 -->
+	<result column="house_yearly_limit" property="houseYearlyLimit"/><!-- 使用年限 -->
+	<result column="house_exist_province" property="houseExistProvince"/><!-- 房屋所在省份 -->
+	<result column="house_exist_city" property="houseExistCity"/><!-- 房屋所在城市 -->
+	<result column="house_exist_county" property="houseExistCounty"/><!-- 房屋所在市区 -->
+	<result column="house_exist_address" property="houseExistAddress"/><!-- 房屋所在地址 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="update_time" property="updateTime"/><!-- 修改时间 -->
+</resultMap>
+       
+<!-- T_HOUSE_INFO table all fields -->
+<sql id="Column_List" >
+	 id,app_id,house_space,house_orientation,house_certificate_number,land_certificate_number,house_yearly_limit,house_exist_province,house_exist_city,house_exist_county,house_exist_address,state,org_id,operator,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="houseSpace != null and houseSpace != ''" >
+	    and house_space =  #{houseSpace}
+	</if>
+<if test="houseOrientation != null and houseOrientation != ''" >
+	    and house_orientation =  #{houseOrientation}
+	</if>
+<if test="houseCertificateNumber != null and houseCertificateNumber != ''" >
+	    and house_certificate_number =  #{houseCertificateNumber}
+	</if>
+<if test="landCertificateNumber != null and landCertificateNumber != ''" >
+	    and land_certificate_number =  #{landCertificateNumber}
+	</if>
+<if test="houseYearlyLimit != null and houseYearlyLimit != ''" >
+	    and house_yearly_limit =  #{houseYearlyLimit}
+	</if>
+<if test="houseExistProvince != null and houseExistProvince != ''" >
+	    and house_exist_province =  #{houseExistProvince}
+	</if>
+<if test="houseExistCity != null and houseExistCity != ''" >
+	    and house_exist_city =  #{houseExistCity}
+	</if>
+<if test="houseExistCounty != null and houseExistCounty != ''" >
+	    and house_exist_county =  #{houseExistCounty}
+	</if>
+<if test="houseExistAddress != null and houseExistAddress != ''" >
+	    and house_exist_address =  #{houseExistAddress}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_HOUSE_INFO_SEQ') From dual
+		  </selectKey>
+	insert into T_HOUSE_INFO(id,app_id,house_space,house_orientation,house_certificate_number,land_certificate_number,house_yearly_limit,house_exist_province,house_exist_city,house_exist_county,house_exist_address,state,org_id,operator,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{houseSpace, jdbcType=VARCHAR},#{houseOrientation, jdbcType=VARCHAR},#{houseCertificateNumber, jdbcType=VARCHAR},#{landCertificateNumber, jdbcType=VARCHAR},#{houseYearlyLimit, jdbcType=VARCHAR},#{houseExistProvince, jdbcType=VARCHAR},#{houseExistCity, jdbcType=VARCHAR},#{houseExistCounty, jdbcType=VARCHAR},#{houseExistAddress, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_HOUSE_INFO set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	house_space =  #{houseSpace, jdbcType=VARCHAR},
+	house_orientation =  #{houseOrientation, jdbcType=VARCHAR},
+	house_certificate_number =  #{houseCertificateNumber, jdbcType=VARCHAR},
+	land_certificate_number =  #{landCertificateNumber, jdbcType=VARCHAR},
+	house_yearly_limit =  #{houseYearlyLimit, jdbcType=VARCHAR},
+	house_exist_province =  #{houseExistProvince, jdbcType=VARCHAR},
+	house_exist_city =  #{houseExistCity, jdbcType=VARCHAR},
+	house_exist_county =  #{houseExistCounty, jdbcType=VARCHAR},
+	house_exist_address =  #{houseExistAddress, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_HOUSE_INFO  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_HOUSE_INFO set 
+	<trim  suffixOverrides="," >
+
+	<if test="appId != null and appId != '' " >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="houseSpace != null and houseSpace != '' " >
+	    house_space =  #{houseSpace, jdbcType=VARCHAR},
+	</if>
+
+	<if test="houseOrientation != null and houseOrientation != '' " >
+	    house_orientation =  #{houseOrientation, jdbcType=VARCHAR},
+	</if>
+
+	<if test="houseCertificateNumber != null and houseCertificateNumber != '' " >
+	    house_certificate_number =  #{houseCertificateNumber, jdbcType=VARCHAR},
+	</if>
+
+	<if test="landCertificateNumber != null and landCertificateNumber != '' " >
+	    land_certificate_number =  #{landCertificateNumber, jdbcType=VARCHAR},
+	</if>
+
+	<if test="houseYearlyLimit != null and houseYearlyLimit != '' " >
+	    house_yearly_limit =  #{houseYearlyLimit, jdbcType=VARCHAR},
+	</if>
+
+	<if test="houseExistProvince != null and houseExistProvince != '' " >
+	    house_exist_province =  #{houseExistProvince, jdbcType=VARCHAR},
+	</if>
+
+	<if test="houseExistCity != null and houseExistCity != '' " >
+	    house_exist_city =  #{houseExistCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="houseExistCounty != null and houseExistCounty != '' " >
+	    house_exist_county =  #{houseExistCounty, jdbcType=VARCHAR},
+	</if>
+
+	<if test="houseExistAddress != null and houseExistAddress != '' " >
+	    house_exist_address =  #{houseExistAddress, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operator != null and operator != '' " >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 房产信息表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_HOUSE_INFO  where id = #{id}
+</select>
+
+<!-- 房产信息表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_HOUSE_INFO 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询房产信息表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_HOUSE_INFO 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

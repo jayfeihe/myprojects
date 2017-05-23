@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.account.dao.BillAcctDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.audit.account.model.BillAcct" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="loan_id" property="loanId"/><!-- 申请ID -->
+	<result column="contract_id" property="contractId"/><!-- 合同id -->
+	<result column="subject" property="subject"/><!-- (1收利息2收本金3续贷本金转移4放款付5付保证金) -->
+	<result column="type" property="type"/><!-- 类型（1收，2付） -->
+	<result column="num" property="num"/><!-- 期数说明,例5/6 -->
+	<result column="proof" property="proof"/><!-- 凭证号 -->
+	<result column="amt" property="amt"/><!-- 金额 -->
+	<result column="reduce" property="reduce"/><!-- 减免 -->
+	<result column="remark" property="remark"/><!-- 说明 -->
+	<result column="flags" property="flags"/><!-- 说明 -->
+	<result column="oper_uid" property="operUid"/><!-- 操作人 -->
+	<result column="oper_time" property="operTime"/><!-- 时间 -->
+</resultMap>
+       
+<!-- T_BILL_ACCT table all fields -->
+<sql id="Column_List" >
+	 id,loan_id,contract_id,subject,type,num,proof,amt,reduce,remark,flags,oper_uid,oper_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and loan_id =  #{loanId}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and contract_id =  #{contractId}
+	</if>
+<if test="subject != null and subject != ''" >
+	    and subject =  #{subject}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="num != null and num != ''" >
+	    and num =  #{num}
+	</if>
+<if test="proof != null and proof != ''" >
+	    and proof =  #{proof}
+	</if>
+<if test="amt != null and amt != ''" >
+	    and amt =  #{amt}
+	</if>
+<if test="reduce != null and reduce != ''" >
+	    and reduce =  #{reduce}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+	<if test="flags != null and flags != ''" >
+	    and flags =  #{flags}
+	</if>
+<if test="operUid != null and operUid != ''" >
+	    and oper_uid =  #{operUid}
+	</if>
+<if test="operTime != null and operTime != ''" >
+	    and oper_time =  #{operTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+<!-- 			Select nextval('T_BILL_ACCT_SEQ') From dual -->
+			Select T_BILL_ACCT_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_BILL_ACCT(id,loan_id,contract_id,subject,type,num,proof,amt,reduce,remark,flags,oper_uid,oper_time)
+ values( #{id, jdbcType=INTEGER},#{loanId, jdbcType=VARCHAR},#{contractId, jdbcType=VARCHAR},#{subject, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{num, jdbcType=VARCHAR},#{proof, jdbcType=VARCHAR},#{amt, jdbcType=DOUBLE},#{reduce, jdbcType=DOUBLE},#{remark, jdbcType=VARCHAR},#{flags, jdbcType=VARCHAR},#{operUid, jdbcType=VARCHAR},#{operTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_BILL_ACCT set 
+	<trim  suffixOverrides="," >
+	loan_id =  #{loanId, jdbcType=VARCHAR},
+	contract_id =  #{contractId, jdbcType=VARCHAR},
+	subject =  #{subject, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	num =  #{num, jdbcType=VARCHAR},
+	proof =  #{proof, jdbcType=VARCHAR},
+	amt =  #{amt, jdbcType=DOUBLE},
+	reduce =  #{reduce, jdbcType=DOUBLE},
+	remark =  #{remark, jdbcType=VARCHAR},
+	flags =  #{flags, jdbcType=VARCHAR},
+	oper_uid =  #{operUid, jdbcType=VARCHAR},
+	oper_time =  #{operTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_BILL_ACCT  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_BILL_ACCT set 
+	<trim  suffixOverrides="," >
+
+	<if test="loanId != null and loanId != '' " >
+	    loan_id =  #{loanId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractId != null and contractId != '' " >
+	    contract_id =  #{contractId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="subject != null and subject != '' " >
+	    subject =  #{subject, jdbcType=VARCHAR},
+	</if>
+
+	<if test="type != null and type != '' " >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+
+	<if test="num != null and num != '' " >
+	    num =  #{num, jdbcType=VARCHAR},
+	</if>
+
+	<if test="proof != null and proof != '' " >
+	    proof =  #{proof, jdbcType=VARCHAR},
+	</if>
+
+	<if test="amt != null and amt != ''  or amt==0" >
+	    amt =  #{amt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="reduce != null and reduce != ''  or reduce==0" >
+	    reduce =  #{reduce, jdbcType=DOUBLE},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="flags != null and flags != '' " >
+	    flags =  #{flags, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operUid != null and operUid != '' " >
+	    oper_uid =  #{operUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operTime != null and operTime != '' " >
+	    oper_time =  #{operTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 借款人交易记录表
+ -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_BILL_ACCT  where id = #{id}
+</select>
+
+<!-- 借款人交易记录表
+ 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_BILL_ACCT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询借款人交易记录表
+列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_BILL_ACCT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+</mapper>   

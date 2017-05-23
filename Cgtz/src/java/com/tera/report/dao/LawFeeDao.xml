@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.report.dao.LawFeeDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.report.model.LawFee" >
+	<result column="loan_id" property="loanId"/><!-- 申请Id -->
+	<result column="contract_id" property="contractId"/><!-- 合同id -->
+	<result column="ret_date" property="retDate"/><!-- 收款日期 -->
+	<result column="num" property="num"/><!-- 期数 -->
+	<result column="type" property="type"/><!-- 类别(1利息2本金) -->
+	
+	<result column="plan_law_fee" property="planLawFee"/><!-- 当月应收法律服务费 -->
+	<result column="real_law_fee" property="realLawFee"/><!-- 当月实收法律服务费 -->
+	<result column="state" property="state"/><!-- 当月实收法律服务费 -->
+	
+</resultMap>
+       
+<!-- T_RET_PLAN table all fields -->
+<sql id="Column_List" >
+	 t.loan_id,t.contract_id,t.num,
+	 decode(t.type,'1','利息','2','本金')type,
+	 t.plan_law_fee,t.real_law_fee,
+	 t.ret_date,
+	 decode(t.state,'1','未还','2','结清','3','提前还款','4','续贷转移')state
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="loanId != null and loanId != ''" >
+	    and t.loan_id like  concat(#{loanId},'%')
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and t.contract_id like  concat(#{contractId},'%')
+	</if>
+<if test="num != null and num != ''" >
+	    and t.num =  #{num}
+	</if>	
+<if test="state != null and state != ''" >
+	    and t.state =  #{state}
+	</if>
+<if test="minRetDate != null and minRetDate != ''" >
+<![CDATA[and t.ret_date >=#{minRetDate}]]>
+	</if>
+<if test="maxRetDate != null and maxRetDate != ''" >
+<![CDATA[and t.ret_date <=#{maxRetDate}]]>
+	</if>
+<if test="org != null and org != ''" >
+	    and con.org like  concat(#{org},'%')
+	</if>	
+<!--机构权限限制  -->
+<if test="orgs != null and orgs.size() >0 " >
+and con.org in
+                <foreach item="item" index="index" collection="orgs" open="(" separator="," close=")">
+						#{item}
+				</foreach>	
+	</if>					
+</trim>
+</sql>
+
+
+<!-- 还款计划表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_RET_PLAN 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询还款计划表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_RET_PLAN t
+	left join t_contract con on t.contract_id=con.contract_id
+	<include refid="Where_Clause"/>
+	order by ret_date desc
+</select>
+
+<!-- 查询还款计划表列表 -->
+<select id="queryLateByCon" resultMap="ResultMap"  parameterType="map">
+	SELECT 
+	<include refid="Column_List"/>
+	from t_ret_plan WHERE RET_DATE &lt; #{date1} AND STATE='1' AND CONTRACT_ID= #{contractId}
+
+</select>
+  	
+</mapper>   

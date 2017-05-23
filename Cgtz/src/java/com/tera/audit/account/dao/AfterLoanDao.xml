@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.account.dao.AfterLoanDao" > 
+	<select id="queryList" parameterType="map" 
+			resultType="com.tera.audit.account.model.form.AfterLoanQBean">
+		
+		SELECT 
+			t1.CONTRACT_ID contractId,
+			t1.LOAN_AMT loanAmt,
+			t1.STATE contractState,
+			t1.LOAN_ID loanId,
+			t2.ID id,
+			t2.NAME name,
+			t2.ID_NO idNo,
+			t2.IS_RENEW isRenew,
+			t2.RENEW_NUM renewNum,
+			(SELECT d.KEY_VALUE FROM t_data_dictionary d WHERE t2.PRODUCT = d.KEY_PROP AND d.KEY_NAME = 'productType') productName,
+			(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = t2.SALESMAN) salesman,
+			(SELECT o.ORG_NAME FROM t_org o WHERE o.ORG_ID = t2.ORG) orgName 
+		
+		FROM t_contract t1 
+		LEFT JOIN t_loan_base t2 ON t1.LOAN_ID = t2.LOAN_ID
+		WHERE t1.STATE = '2' <!-- 合同中 -->
+		<if test="contractId != null and contractId != ''">	
+			AND t1.CONTRACT_ID = #{contractId}
+		</if>
+		<if test="name != null and name != ''">	
+			AND t2.NAME = #{name}
+		</if>
+		<if test="idNo != null and idNo != ''">
+			AND t2.ID_NO = #{idNo}
+		</if>
+		<if test="product != null and product != ''">
+			AND t2.PRODUCT = #{product}
+		</if>
+		<if test="orgId != null and orgId != ''">
+			AND t2.ORG LIKE CONCAT(#{orgId},'%')
+		</if>
+		<if test="salesmanName != null and salesmanName != ''">
+			AND t2.salesman IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{salesmanName})
+		</if>
+	</select>
+</mapper>

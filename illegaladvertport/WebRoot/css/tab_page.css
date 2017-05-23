@@ -1,0 +1,369 @@
+@charset "UTF-8";
+
+ul, ol, li {
+	list-style: none;
+}
+
+#container-fluid {
+	background: #f1f3f6;
+}
+
+.top {
+	width: 100%;
+	height: 50px;
+	background: red;
+	vertical-align: middle;
+	text-align: center;
+	position: relative;
+}
+
+.top img {
+	width: 45px;
+	height: 45px;
+	display: inline-block;
+	position: absolute;
+	left: 50%;
+	margin-left: -23px;
+	vertical-align: middle;
+	top: 50%;
+	margin-top: -20px;
+}
+
+.top h2 {
+	display: inline-block;
+	line-height: 50px;
+	padding-bottom: 5px;
+	font-size: 32px;
+	color: #3490DD;
+	font-family: "鍗庢枃琛屾シ";
+	text-align: center;
+}
+
+.navbar-fixed-top {
+	background: #0c7cda;
+}
+
+.navbar-fixed-top .navbar-center {
+	/*width: 30%;刚改的*/
+	position: absolute;
+	left: 50%;
+	margin-left: -7.5%;/*刚改的*/
+	display: -webkit-flex;
+}
+
+.navbar-fixed-top .navbar-center li {
+	/*width: 33%;刚改的*/
+	padding-right:30px;/*刚改的*/
+}
+
+.navbar-fixed-top .navbar-center li a {
+	width: 100%;
+	-webkit-flex-grow: 1;
+	text-align: center;
+	color: #d7d8df;
+}
+
+.navbar-fixed-top .navbar-center #active {
+	color: #fff;
+}
+
+.navbar-fixed-top .navbar-center #active a {
+	background: none;
+	color: #fff;
+	border-bottom: 4px solid #fff;
+}
+
+.navbar-fixed-top .navbar-right {
+	right: 0;
+	top: 0;
+	color: #d7d8df;
+}
+
+.presentation {
+	background: red;
+}
+
+.col-md-12 .h {
+	margin-top: 30px !important;
+}
+
+#h {
+	background: url("../images/left-img.jpg") no-repeat left center;
+	font-size: 14px;
+	/*color: #9C9D9F;*//*刚改的*/
+	color:#555;/*刚改的*/
+	/*font-weight: bolder;*//*10.31*/
+}
+
+#isac {
+	z-index: 1000000000;
+}
+
+#isac li {
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+}
+
+#isac li a {
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+}
+
+.nav-tabs>li>a {
+	margin-right: 0 !important;
+	line-height: 1.42857143;
+	border: none !important;
+	border-radius: 0 !important;
+}
+
+.illegal.nav>li.active>a:hover {
+	text-decoration: none;
+	background-color: #fff !important;
+}
+
+.dash-data {
+	height: 150px;
+	border-radius: 0px;
+	background: #fff;
+	padding: 10px;
+	position: relative;
+	/* border: none !important;刚改的*/
+	margin-right: 0 !important;
+	float: left;
+}
+
+.dash-data .illegal {
+	border-right: 1px solid #ddd !important;
+}
+
+.tab-content{
+  position:relative !important;
+}
+.tab-content>.active{
+	border:none !important;
+}
+
+.tab-content.illegal {
+	padding: 0 !important;
+	border-top: 0;
+	height: 130px;
+	margin-right: 0 !important;
+}
+
+.tab-content.illegal2 {
+	padding-top: 25px;
+	background: #fff;
+}
+.tab-content .tab-pane {
+	min-height: 350px;
+}
+
+.bgBlock{
+  width:100%;
+  height:100%;
+  position:absolute;
+  text-align:center;
+  color:#787878;
+  font-size:14px;
+  line-height:400px;
+  left:0;
+  top:0;
+  background:#fcfcfc !important;
+  display:none;
+}
+
+#illegal {
+    border-right: 1px solid #D8D8E0 !important;
+    border-bottom: 1px solid #D8D8E0 !important;
+}
+
+#illegal:last-child {
+    border-right: none !important;
+}
+
+/* tab切换瀑布流部分的样式 */
+#latestIllegal,#severeIllegal {
+	min-height:350px;
+	background: #fff;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+
+#detailPage {
+	height: 800px;
+	padding: 20px 10px 0 10px;
+	background: #fff;
+	border-bottom: 1px solid #ddd;
+	overflow: auto;
+}
+
+/*为了是详情页的瀑布流直接使用首页的瀑布流样式将#latestIllegal删了，如出现错误可再将#latestIllegal填上即可，还有上面的几个样式也是*/
+.white-panel dl {
+	/* width: 189px; */
+	text-align: left;
+	border: 1px solid #D8D8E0;
+}
+
+.white-panel dl dt {
+	/* width: 189px; */
+	display: block;
+	height: auto;
+}
+
+.single-box dl dt img {
+	/* width: 187px; */
+	height: auto;
+	display: block;
+}
+
+.single-box dl dd {
+	padding: 10px;
+	line-height: 25px;
+	font-size: 12px;
+	/* margin-bottom:0px !important; */
+}
+/* 瀑布流部分到此结束 */
+
+.big-box {
+	width: 100%;
+	background: yellow;
+	margin: 10px auto;
+}
+
+.big-box #box1 {
+	width: 100%;
+	height: 40px;
+	background: blue;
+}
+
+.big-box #tit {
+	width: 100%;
+	height: 40px;
+	background: red;
+}
+
+.big-box #tit a li {
+	float: left;
+	width: 150px;
+	height: 40px;
+	display: block;
+	text-align: center;
+	color: #888;
+	line-height: 40px;
+	border: 1px solid #ccc;
+}
+
+.big-box #box2 {
+	width: 100%;
+	height: auto;
+	padding: 10px 0px;
+	background: green;
+}
+
+.big-box #box2 #num1 {
+	width: 100%;
+	height: 100%;
+	background: #ccc;
+}
+
+.big-box #box2 #num2 {
+	width: 100%;
+}
+
+.footer {
+	background: #3591DC;
+	color: #fff;
+	height: 187px;
+	margin-top: 30px;
+	padding-top: 15px;
+	text-align: center;
+}
+
+.footer h1 {
+	width: 17% !important;
+	margin: 20px auto;
+	font-size: 24px;
+	color: #fff;
+	line-height: 35px;
+	font-family: "微软雅黑";
+	background: url("../images/shouye_header_r1_c1.jpg") no-repeat 10px
+		center;
+}
+
+.footer p {
+	font-size: 12px;
+	line-height: 10px !important;
+	color: #fff;
+}
+
+.kong {
+	color: #F8967D;
+	margin-left: 10px;
+	font-weight: bolder;
+}
+.ziliaoBox{
+ /*  width:100% !important;
+  padding:10px !important; */
+}
+.ziliaoBox .paramlist{
+	margin-left:-30px;
+}
+.ziliaoBox .paramlist li{
+  font-size:12px;
+  line-height:25px;
+  float:left;
+  /* padding-left:5px; */
+  padding-right:8px;
+  text-align:left;
+  position:relative;
+}
+.ziliaoBox .paramlist li label{
+  font-weight:700;
+  position:absolute;
+  left:2px;
+}
+.ziliaoBox .paramlist li span a{
+ 	color: #AF9A85;
+    opacity: 1;
+    text-decoration: underline;
+}
+.ziliaoBox .paramlist li span a:HOVER{
+ 	color: #d52a1d;
+}
+.ziliaoBox .paramlist li span{
+  margin-left:58px;
+  float:left;
+}
+/*# sourceMappingURL=tab_page.css.map */
+
+.fuca .title{
+  font-size:14px !important;
+}
+.fuca .content{
+  padding-top:10px !important;
+}
+.fuca .content .impor{
+  font-size:20px;
+  color:#777777;
+}
+.fuca .content .changeColor{
+  color:#F98765 !important;
+}
+
+.search 
+{
+	padding-left: 10px!important;
+}
+
+/*表格中表头部分的文字加粗*/
+.fontRight{
+  font-weight:bolder !important;
+  font-size:14px !important;
+}
+/*表格中表头部分左侧的文字加粗*/
+#firstOne,.ri{
+  font-weight:bolder !important;
+}

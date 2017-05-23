@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:task="http://www.springframework.org/schema/task"  
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/batch 
+	http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+	http://www.springframework.org/schema/context
+  	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+ 	http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+    
+    
+     <job id="repayPlanJob"  xmlns="http://www.springframework.org/schema/batch">
+        <step id="repayPlanStep">
+            <tasklet>
+                <chunk reader="repayPlanReader" writer="repayPlanWriter" processor="repayPlanProcessor" commit-interval="1000"  skip-limit="20">
+                	<skippable-exception-classes>
+						<include class="com.tera.batch.exception.BatchProcessException" />
+					</skippable-exception-classes>
+                </chunk>
+                <listeners> 
+				<listener ref="skipRepayPlanListener" /> 
+				</listeners> 
+            </tasklet>
+        </step>
+    </job>
+
+	<bean id="skipRepayPlanListener" class="com.tera.batch.repayPlan.listener.RepayPlanSkipListener"> 
+		<constructor-arg ref="batchErrorLogDao" /> 
+	</bean> 
+
+    <bean id="repayPlanReader"
+        class="org.mybatis.spring.batch.MyBatisPagingItemReader" scope="step">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+		<property name="queryId" value="com.tera.payment.dao.LoanRepayPlanDao.queryListPay"/>
+		
+		<property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="loanRepayPlan" class="com.tera.payment.model.LoanRepayPlan" scope="prototype"></bean>
+    
+    <bean id="repayPlanProcessor" class="com.tera.batch.repayPlan.processor.RepayPlanProcessor">	
+     	<property name="loanRepayPlanService" ref="loanRepayPlanService"/>
+     	<property name="batchErrorLogDao" ref="batchErrorLogDao"/>
+     	<property name="contractService" ref="contractService"/>
+     	<property name="productService" ref="productService"/>
+     	<property name="paymentService" ref="paymentService"/>
+     	<property name="accounttingService" ref="accounttingService"/>
+     	<property name="creditSignService" ref="creditSignService"/>
+	</bean>
+	
+    <bean id="repayPlanWriter"
+        class="com.tera.batch.repayPlan.writer.Writer" scope="step">
+    </bean>
+	
+</beans>

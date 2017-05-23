@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.account.dao.UserAccountDao">
+	
+	<insert id="add" parameterType="Object">
+		insert into t_user_account (<include refid="columns"/>)
+		values (#{id},
+				#{account},
+				#{pwd},
+				#{compayId},
+				#{userName},
+				#{email},
+				#{fax},
+				#{mobile},
+				#{telephone},
+				#{qq},
+				#{status},
+				#{createTime})
+	</insert>
+	
+	<update id="update">
+		update 
+			t_user_account
+		set
+			pwd = #{pwd},
+			compay_id = #{compayId},
+			user_name = #{userName},
+			email = #{email},
+		    fax = #{fax},
+		    mobile = #{mobile},
+		    telephone = #{telephone},
+		    qq = #{qq},
+		    status = #{status}
+		where
+			id = #{id}
+	</update>
+	
+	<select id="queryById" resultType="com.greenkoo.account.model.UserAccount">
+		select <include refid="columns"/> from t_user_account where id = #{id}
+	</select>
+	
+	<select id="queryByAccountAndPwd" resultType="com.greenkoo.account.model.form.UserAccountVo">
+		select 
+			a.id 			as "userAccount.id",
+			a.account 		as "userAccount.account",   
+			a.pwd           as "userAccount.pwd",
+			a.compay_id     as "userAccount.compayId",
+			a.user_name     as "userAccount.userName",
+			a.email         as "userAccount.email",
+			a.fax           as "userAccount.fax",
+			a.mobile        as "userAccount.mobile",
+			a.telephone     as "userAccount.telephone",
+			a.qq            as "userAccount.qq",
+			a.status        as "userAccount.status",
+			a.create_time   as "userAccount.create_time",
+			
+			c.company_id    as "userCompany.companyId",
+			c.company_name  as "userCompany.companyName",
+			c.company_url   as "userCompany.companyUrl",
+			c.industry_id   as "userCompany.industryId",
+			c.link_name     as "userCompany.linkName",
+			c.link_phone    as "userCompany.linkPhone",
+			c.link_email    as "userCompany.linkEmail",
+			c.company_addr  as "userCompany.companyAddr",
+			c.company_phone as "userCompany.companyPhone",
+			c.post_code     as "userCompany.postCode",  
+			c.type          as "userCompany.type",
+			c.status        as "userCompany.status",
+			c.create_time   as "userCompany.createTime"
+		from t_user_account a 
+		left join t_user_company c on a.compay_id = c.company_id
+		
+		where a.account = #{account} 
+		and a.pwd = #{pwd}
+	</select>
+	
+	<sql id="columns">
+		id         ,
+		account    ,
+		pwd        ,
+		compay_id  ,
+		user_name  ,
+		email      ,
+		fax        ,
+		mobile     ,
+		telephone  ,
+		qq         ,
+		status     ,
+		create_time
+	</sql>
+</mapper>

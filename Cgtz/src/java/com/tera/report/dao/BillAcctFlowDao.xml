@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.report.dao.BillAcctFlowDao" > 
+<!--流水表  -->
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.report.model.BillAcctFlow" >
+	<result column="contract_id" property="contractId"/><!-- 线下编号 -->
+	<result column="online_con_id" property="onlineConId"/><!--线上编号 -->
+	<result column="project_name" property="projectName"/><!--项目名称 -->
+	<result column="lend_name" property="lendName"/><!--债权人-->
+	<result column="proof" property="proof"/><!--凭证号-->
+	<result column="num" property="num"/><!-- 期数 -->
+	
+	<result column="subject" property="subject"/><!--类型 -->
+	<result column="loan_name" property="loanName"/><!--借款人 -->
+	<result column="amt" property="amt"/><!--金额-->
+	<result column="oper_time" property="operTime"/><!--时间-->
+	<result column="org_name" property="orgName"/><!--分公司名称-->
+	<result column="org_id" property="orgId"/><!--分公司org_id-->
+	<result column="sub" property="sub"/><!--billbase中的subject-->
+	
+	<!-- <result column="real_margin" property="realMargin"/>金额
+	<result column="real_law_fee" property="realLawFee"/>金额
+	<result column="real_mem_fee" property="realMemFee"/>金额
+	<result column="real_tran_fee" property="realTranFee"/>金额
+	<result column="real_other_fee" property="realOtherFee"/>金额 -->
+</resultMap>
+       
+<!-- T_COLLATERAL table all fields -->
+<sql id="Column_List" >
+    acct.CONTRACT_ID,
+	acct.SUBJECT,
+	CONLI.ONLINE_CON_ID,
+	CONLI.PROJECT_NAME,
+	(
+		SELECT
+			T . NAME
+		FROM
+			T_LEND_USER T
+		WHERE
+			T . ID = (
+				SELECT
+					tt.LEND_USER_ID
+				FROM
+					T_CONTRACT tt
+				WHERE
+					tt.CONTRACT_ID = ACCT.CONTRACT_ID
+			)
+	) lend_name,
+	(
+		SELECT
+			tb. NAME
+		FROM
+			T_LOAN_BASE tb
+		WHERE
+			TB.LOAN_ID = (
+				SELECT
+					tc.LOAN_ID
+				FROM
+					T_CONTRACT tc
+				WHERE
+					tc.CONTRACT_ID = ACCT.CONTRACT_ID
+			)
+	) loan_name,
+	(SELECT t.NAME from T_USER t where t.LOGIN_ID=acct.OPER_UID)operName,
+	ACCT.OPER_TIME,
+	acct.proof,
+	CONCAT (
+		NVL (ACCT.NUM, '0'),
+		CONCAT ('/', con.num)
+	)num,
+	acct.amt,
+	(SELECT t.ORG_NAME from T_ORG t where t.ORG_ID=con.org)org_name,
+    con.org org_id,
+    acct.remark
+<!-- <if test="sub != null and sub != ''" >   
+    ,DECODE (
+		select bb.subject from t_bill_base bb where bb.contract_id=acct.contract_id,
+		'1',
+		'收利息',
+		'2',
+		'收本金',
+		'3',
+		'付出借人',
+		'4',
+		'付线上垫付',
+		'5',
+		'付保证金'
+	)sub
+</if> --> 	
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="contractId != null and contractId != ''" >
+	    and con.CONTRACT_ID like  concat(#{contractId},'%')
+	</if>
+<if test="projectName != null and projectName != ''" >
+	    and conli.PROJECT_NAME like  concat(#{projectName},'%')
+	</if>
+<if test="proof != null and proof != ''" >
+	    and acct.proof like  concat(#{proof},'%')
+	</if>
+<if test="minOperTime != null and minOperTime != ''" >
+<![CDATA[and acct.oper_time >=  #{minOperTime}]]>	    
+	</if>
+<if test="maxOperTime != null and maxOperTime != ''" >
+<![CDATA[and acct.oper_time <=  #{maxOperTime}+1]]>	    
+	</if>	
+<if test="subject != null and subject != ''" >
+	    and acct.subject =  #{subject}
+	</if>	
+<if test="orgId != null and orgId != ''" >
+	    and con.org like CONCAT(#{orgId},'%')
+	</if>
+<if test="sub != null and sub != ''" >
+	    and bb.subject=#{sub}
+	</if>
+<!--机构权限限制  -->
+<if test="orgs != null and orgs.size() >0 " >
+and con.org in
+                <foreach item="item" index="index" collection="orgs" open="(" separator="," close=")">
+						#{item}
+				</foreach>	
+	</if>
+						
+</trim>
+</sql>
+
+<!-- 流水表列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from (select 
+	<include refid="Column_List"/>
+	FROM T_BILL_ACCT acct
+	LEFT JOIN T_CONTRACT con ON con.contract_id = acct.contract_id
+	LEFT JOIN T_CONTRACT_ONLINE conli ON con.CONTRACT_ID = CONLI.CONTRACT_ID
+	<include refid="Where_Clause"/>)
+</select>
+  	
+<!-- 查询流水表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	FROM T_BILL_ACCT acct
+	LEFT JOIN T_CONTRACT con ON con.contract_id = acct.contract_id
+	LEFT JOIN T_CONTRACT_ONLINE conli ON con.CONTRACT_ID = CONLI.CONTRACT_ID
+	<include refid="Where_Clause"/>
+	order by ACCT.OPER_TIME desc,acct.contract_id,acct.num desc
+</select>
+
+</mapper>   

@@ -1,0 +1,288 @@
+/*****************************全局**********************************/
+body{
+	font-family:微软雅黑,Arial, Helvetica, sans-serif;
+	font-size:13px;
+	margin:0px;
+	padding:0px;
+	text-align:left;			
+}
+#container{
+	position:relative;
+	margin:1px auto 0px auto;
+	/*width:760px;*/
+	text-align:left;
+	border:1px dashed #AAAAAA;		/* 添加虚线框 微软雅黑*/
+}
+
+/*******************表单************************/
+form{
+	/*border: 1px dotted #AAAAAA;*/
+	padding: 1px 6px 1px 6px;
+	margin:0px;
+	font:13px 微软雅黑;
+}
+#updateForm{padding:0px !important;}
+input{							/* 所有input标记 */
+	color: #00008B;
+}
+input.txt{						/* 文本框单独设置 */
+	border:1px #d3d3d3 solid;border-radius:5px;-moz-border-radius: 5px;-khtml-border-radius: 5px;-webkit-border-radius: 5px;
+	width:150px;
+	background-color: #FFFFFF;
+}
+input.time{
+	border:1px #d3d3d3 solid;border-radius:5px;-moz-border-radius: 5px;-khtml-border-radius: 5px;-webkit-border-radius: 5px;
+	width:150px;
+	background: #FFFFFF url(../img/calendar/calendar.gif) no-repeat right;/*图像高84px*/
+}
+input.btn{						/* 按钮单独设置 */
+	color: #333;
+	background:url(../img/2014070617462.gif) repeat-x;padding:0px 10px;height:21px;
+	border:1px #b8b7b7 solid;border-radius:5px;-moz-border-radius: 5px;-khtml-border-radius: 5px;-webkit-border-radius: 5px;
+	text-align:center;
+	cursor:pointer;	
+	font:13px 微软雅黑;margin-left:1px;
+}
+input.btn:hover{						/* 按钮单独设置 */
+	color:#333;
+	font-weight:bold;
+	
+}
+input.btntxt{
+	background-color:transparent;
+	border:0px;
+	padding:1px 4px;
+	text-align:center;
+	font:13px 微软雅黑;
+}
+input.btntxt:hover{
+	color:#0072ff; 
+	text-decoration:underline;
+}
+select{
+	color: #00008B;
+	border:1px #d3d3d3 solid;border-radius:5px;-moz-border-radius: 5px;-khtml-border-radius: 5px;-webkit-border-radius: 5px;
+}
+textarea{
+	color: #00008B;
+	background-color: #FFFFFF;
+	border: 1px inset #00008B;
+}
+
+/*******************表格********************/
+.datatable{
+	border:1px solid #ccc;	/* 表格边框 */
+	font-family:微软雅黑;
+	border-collapse:collapse;	/* 边框重叠 */
+	background-color:#fff;	/* 表格背景色 */
+	font-size:13px;
+	width: 100%;
+}
+.datatable th{
+	word-wrap: break-word; word-break: normal;
+	border:1px solid #ccc;	/* 行名称边框 */
+	background:#f2f2f2;/*url(../img/201407061920.gif) repeat-x;*/	/* 行名称背景色 */
+	color:#333;				/* 行名称颜色 */
+	font-weight:bold;
+	height:24px;line-height:24px;
+	padding-left:5px; padding-right:5px;
+	text-align:center;
+}
+.datatable td{
+	border:1px solid #ccc;	/* 单元格边框 */
+	text-align:left;
+	padding-top:4px; padding-bottom:4px;
+	padding-left:10px; padding-right:10px;
+}
+.datatable tr:hover, .datatable tr.altrow{
+	background-color:#f2f2f2;	/* 动态变色 */
+}
+/******************表单布局表格************/
+.formtable tfoot tr td{
+	text-align:right;	
+}
+
+
+/******************链接*******************/
+a:link{							/* 超链接正常状态下的样式 */
+	color:#662900;		
+	text-decoration:none;		/* 无下划线 */
+}
+a:visited{						/* 访问过的超链接 */
+	color:#662900;		
+	text-decoration:none;		/* 无下划线 */
+}
+a:hover{						/* 鼠标经过时的超链接 */
+	color:#0072ff;		
+	text-decoration:underline;	/* 下划线 */
+}
+
+/*******************************上部*********************************/
+#top{
+	/*width:760px;*/ 
+	height:84px;	/* 设置块的尺寸，高度大于banner图片 */
+	margin:0px; padding:0px;
+	/* 再设置背景颜色，作为导航菜单的背景色 */
+	/*background: #a0d5ff url(../img/banner.jpg) no-repeat top left;*//*图像高84px*/
+	background:url(../img/201407061144.jpg) top left;/*图像高84px*/
+	
+	font:13px 微软雅黑;
+}
+#top ul{
+	list-style-type:none;
+	position:absolute;			/* 绝对定位 */
+	/*width:417px;*/
+	right:10px; /*导航栏靠右*/
+	top:65px;		/* 具体位置 */
+	padding:0px; margin:0px;
+}
+#top li{
+	float:left; 
+	text-align:center;
+	padding:0px 6px 0px 6px;	/* 链接之间的距离 */
+}
+
+/*******************************导航栏*********************************/
+#navigation{
+	height:35px;
+	margin:0px 0px 0px 0px; 
+	padding: 0px 0px 0px 0px;
+	background: #f6f6f6;
+	border-bottom: 1px solid #CCC;
+	background: url("../img/201407061345.gif") repeat-x;
+	line-height:35px;
+}
+#navigation span.hideleft{
+	/*border:1px solid #8db2e3;*/
+	height:20px;float:left;
+	width:20px;
+	cursor:pointer;
+	margin:0px 0px 0px 0px; 
+	padding: 7px 0px 8px 0px;
+	background: url("../img/collpase_menu.gif") no-repeat left 
+}
+
+#navigation span.item{
+	margin:0px; 
+	padding: 0px 0px 0px 10px;
+	background: #f6f6f6 url(../img/right-arrow.gif) no-repeat left;
+	
+}
+
+/*******************************左导航*********************************/
+#left{
+	position:relative;
+	/* float:left; */
+	width:200px;
+	padding:0px;
+	margin:0px;
+}
+#left div{
+	clear:both;
+	margin-top:10px;
+	position:relative;
+}
+#left div p.title{					/* 统一设置 */
+	/*background:url(../img/leftbg.jpg) no-repeat;*/
+	border:1px solid #8db2e3;
+	font:13px 微软雅黑;
+	padding: 2px 0px 2px 0px;
+	margin:5px 15px 0px 15px;
+	font-weight:bold;
+}
+#left div ul{
+	list-style:none;
+	margin:5px 15px 0px 15px;
+	padding:0px;
+}
+#left div ul li{
+	padding:2px 3px 2px 15px;
+	background:url(../img/icon1.gif) no-repeat 8px 7px;
+	border-bottom:1px dashed #999999;		/* 虚线作为下划线 */
+}
+
+/*******************************内容部分*******************************/
+#main{
+	position:relative;
+	font:13px 微软雅黑;
+	margin:0px;
+	padding:5px 5px 10px 10px;
+
+}
+#main div.part{
+	position:relative;
+	margin:10px 0px 10px 0px;
+	/*border:2px solid #d2d2d2;*/
+}
+#main div.part p.title{	
+	font-size:15px;
+	
+	margin:0px;
+	height:35px;line-height:35px;
+	background:url(../img/201407061532.gif) repeat-x left;
+	box-shadow: 1px -2px 7px 3px rgba(0, 0, 0, 0.2);
+}
+#main div.part p.title a{color:#000;padding-left:30px;background:url(../img/dot.gif) 8px 3px no-repeat;}
+#main div.part p.title img{float:left;margin:16px 11px 0px;}
+#main div.part div.content{
+	margin:0px;
+	padding:10px 0px 10px;
+	background:#fff;box-shadow: 1px 5px 7px 3px rgba(0, 0, 0, 0.2);
+}
+
+.content table td{padding:3px;}
+.content table td.td01{text-align:right;}
+#main div.part div.content div.control{
+	margin:0px;
+	padding:0Px;
+	height: 20px;
+	text-align: right;
+	position:relative;top:-10px;
+}
+
+#main div.part div.content div.sub{
+	margin:0px;
+	padding:0Px;
+	text-align: center;
+}
+
+#main div.page{
+	margin:0px 0px 0px 0px;
+	padding:0px 0px 0px 0px;
+	text-align: center;
+}
+
+#pageStyle{/* 分页 */
+	text-align: right !important;
+	margin-top: 4px;
+}
+
+/*************************************/
+.dotimg{
+	padding:0px;
+	
+	width: 16px;
+	height: 16px;
+	border:none;
+	margin:6px 1px 0px; 
+}
+.dotimg:hover{
+	margin:5px 0px 0px;
+	padding:0px;
+	width: 18px;
+	height: 18px;
+	border:none;
+	
+}
+#queryContent #main{padding:0px !important;}
+
+.tera_textarea {
+    border: 1px solid #d3d3d3;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    line-height: 18px;
+    vertical-align: middle;
+	font-size:14px;
+}
+

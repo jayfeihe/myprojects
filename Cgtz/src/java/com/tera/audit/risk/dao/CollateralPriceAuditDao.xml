@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.risk.dao.CollateralPriceAuditDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.audit.risk.model.CollateralPriceAudit" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="collateral_id" property="collateralId"/><!-- 抵押物ID -->
+	<result column="amt" property="amt"/><!-- 金额 -->
+	<result column="result" property="result"/><!-- 核价结果 -->
+	<result column="remark" property="remark"/><!-- 核价说明 -->
+	<result column="oper_uid" property="operUid"/><!-- 操作人 -->
+	<result column="oper_time" property="operTime"/><!-- 操作时间 -->
+</resultMap>
+       
+<!-- T_COLLATERAL_PRICE_AUDIT table all fields -->
+<sql id="Column_List" >
+	 id,collateral_id,amt,result,remark,oper_uid,oper_time,
+	 (SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = oper_uid) operName
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="collateralId != null and collateralId != ''" >
+	    and collateral_id =  #{collateralId}
+	</if>
+<if test="amt != null and amt != ''" >
+	    and amt =  #{amt}
+	</if>
+<if test="result != null and result != ''" >
+	    and result =  #{result}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="operUid != null and operUid != ''" >
+	    and oper_uid =  #{operUid}
+	</if>
+<if test="operTime != null and operTime != ''" >
+	    and oper_time =  #{operTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+<!-- 			Select nextval('T_COLLATERAL_PRICE_AUDIT_SEQ') From dual -->
+			Select T_COLLATERAL_PRICE_AUDIT_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_COLLATERAL_PRICE_AUDIT(id,collateral_id,amt,result,remark,oper_uid,oper_time)
+ values( #{id, jdbcType=INTEGER},#{collateralId, jdbcType=INTEGER},#{amt, jdbcType=DOUBLE},#{result, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{operUid, jdbcType=VARCHAR},#{operTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_COLLATERAL_PRICE_AUDIT set 
+	<trim  suffixOverrides="," >
+	collateral_id =  #{collateralId, jdbcType=INTEGER},
+	amt =  #{amt, jdbcType=DOUBLE},
+	result =  #{result, jdbcType=VARCHAR},
+	remark =  #{remark, jdbcType=VARCHAR},
+	oper_uid =  #{operUid, jdbcType=VARCHAR},
+	oper_time =  #{operTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_COLLATERAL_PRICE_AUDIT  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_COLLATERAL_PRICE_AUDIT set 
+	<trim  suffixOverrides="," >
+
+	<if test="collateralId != null and collateralId != ''  or collateralId==0" >
+	    collateral_id =  #{collateralId, jdbcType=INTEGER},
+	</if>
+
+	<if test="amt != null and amt != ''  or amt==0" >
+	    amt =  #{amt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="result != null and result != '' " >
+	    result =  #{result, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operUid != null and operUid != '' " >
+	    oper_uid =  #{operUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operTime != null and operTime != '' " >
+	    oper_time =  #{operTime, jdbcType=TIMESTAMP},
+	</if>
+	
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 核价表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_COLLATERAL_PRICE_AUDIT  where id = #{id}
+</select>
+
+<!-- 根据CollateralId查询 最新核价历史-->
+<select id="queryLatestByCollateralId" resultMap="ResultMap" parameterType="Object">
+	SELECT <include refid="Column_List" /> 
+	 FROM T_COLLATERAL_PRICE_AUDIT  WHERE COLLATERAL_ID = #{collateralId}
+	 AND p1.OPER_TIME = (SELECT MAX(p2.OPER_TIME) FROM T_COLLATERAL_PRICE_AUDIT p2 WHERE p2.COLLATERAL_ID = p1.COLLATERAL_ID) 
+</select>
+
+<!-- 根据CollateralId查询 所有核价历史-->
+<select id="queryByCollateralId"  resultMap="ResultMap" parameterType="Object">
+	SELECT <include refid="Column_List" /> 
+	 FROM T_COLLATERAL_PRICE_AUDIT p1  WHERE p1.COLLATERAL_ID = #{collateralId}
+</select>
+
+<!-- 核价表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_COLLATERAL_PRICE_AUDIT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询核价表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_COLLATERAL_PRICE_AUDIT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+</mapper>   

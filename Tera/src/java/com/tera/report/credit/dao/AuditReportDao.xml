@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.report.credit.dao.AuditReportDao" > 
+	<!-- 信审统计列表查询 -->
+	<select id="queryList" parameterType="map" resultType="com.tera.report.credit.model.AuditReportBean">
+		SELECT 
+			COUNT(t.ID) AS totalAmount,
+			COUNT(CASE WHEN t.DECISION IN ('01','02') THEN 1 END) AS passAmount,
+			COUNT(CASE WHEN t.DECISION IN ('03','05') THEN 1 END) AS denyAmount,
+			(SELECT u.`NAME` FROM t_user u WHERE u.LOGIN_ID = t.OPERATOR) AS auditUser
+		FROM t_credit_decision t
+		WHERE 1=1 
+		<if test="auditType != null and auditType != ''">
+			AND t.TYPE = #{auditType}
+		</if>
+		<if test="auditDateStart != null and auditDateStart != ''">
+			<![CDATA[AND DATE_FORMAT(t.UPDATE_TIME, '%y%m%d') >= DATE_FORMAT(#{auditDateStart},'%y%m%d')]]>
+		</if>
+		<if test="auditDateEnd != null and auditDateEnd != ''">
+			<![CDATA[AND DATE_FORMAT(DATE_SUB(t.UPDATE_TIME,INTERVAL 1 DAY), '%y%m%d') <= DATE_FORMAT(#{auditDateEnd},'%y%m%d')]]>
+		</if>
+		GROUP BY t.OPERATOR
+	</select>
+	
+	<!-- 查询信审处理量 -->
+	<select id="queryAmountWithDecision" resultType="Integer" parameterType="map">
+		SELECT COUNT(DISTINCT(t.ID)) FROM t_credit_decision t
+		WHERE 1=1
+		<if test="auditType != null and auditType != ''">
+			AND t.TYPE = #{auditType}
+		</if>
+		<if test="decisions != null and decisions.length > 0">
+			AND t.DECISION IN
+			<foreach collection="decisions" item="item" open="(" separator="," close=")" index="index">
+				#{item}
+			</foreach>
+		</if>
+		<if test="auditDateStart != null and auditDateStart != ''">
+			<![CDATA[AND DATE_FORMAT(t.UPDATE_TIME, '%y%m%d') >= DATE_FORMAT(#{auditDateStart},'%y%m%d')]]>
+		</if>
+		<if test="auditDateEnd != null and auditDateEnd != ''">
+			<![CDATA[AND DATE_FORMAT(DATE_SUB(t.UPDATE_TIME,INTERVAL 1 DAY), '%y%m%d') <= DATE_FORMAT(#{auditDateEnd},'%y%m%d')]]>
+		</if>
+	</select>
+</mapper>

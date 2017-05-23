@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.report.credit.dao.ViolateReportDao" > 
+	<!-- 违约统计列表查询 -->
+	<select id="queryList" parameterType="map" resultType="com.tera.report.credit.model.ViolateReportBean">
+		SELECT 
+			SUM(p.INTEREST_RECEIVABLE+p.PENALTY_RECEIVABLE+p.DEFAULT_RECEIVABLE+p.PENALTY_RECEIVABLE+p.DELAY_RECEIVABLE) AS totalAmount,
+			SUM(p.INTEREST_RECEIVABLE+p.PENALTY_RECEIVABLE) AS repayAmount,
+			SUM(p.DEFAULT_RECEIVABLE+p.PENALTY_RECEIVABLE+p.DELAY_RECEIVABLE) AS violateAmount,
+			(SELECT o.ORG_NAME FROM t_org o WHERE o.ORG_ID=c.ORG_ID ) AS orgName,
+			COUNT(CASE WHEN p.DEFAULT_FLAG = '1' THEN p.ID END) AS violatePeriod,
+			COUNT(CASE WHEN p.DEFAULT_FLAG != '1' THEN p.ID END) AS normalPeriod
+		FROM t_contract c 
+		LEFT JOIN t_loan_repay_plan p ON c.CONTRACT_NO = p.CONTRACT_NO
+		WHERE 1=1
+		<if test="orgId != null and orgId != ''">
+			AND c.ORG_ID = #{orgId}
+		</if>
+		<if test="violateDateStart != null and violateDateStart != ''">
+			<![CDATA[AND p.REPAYMENT_DATE >= DATE_FORMAT(#{violateDateStart},'%y%m%d')]]>
+		</if>
+		<if test="violateDateEnd != null and violateDateEnd != ''">
+			<![CDATA[AND p.REPAYMENT_DATE <= DATE_FORMAT(#{violateDateEnd},'%y%m%d')]]>
+		</if>
+		GROUP BY c.ORG_ID
+	</select>
+	
+	<!-- 查询金额 -->
+	<select id="queryAmount" resultType="com.tera.report.credit.model.ViolateReportBean" parameterType="map">
+		SELECT 
+			SUM(p.INTEREST_RECEIVABLE+p.PENALTY_RECEIVABLE+p.DEFAULT_RECEIVABLE+p.PENALTY_RECEIVABLE+p.DELAY_RECEIVABLE) AS totalAmount,
+			SUM(p.INTEREST_RECEIVABLE+p.PENALTY_RECEIVABLE) AS repayAmount,
+			SUM(p.DEFAULT_RECEIVABLE+p.PENALTY_RECEIVABLE+p.DELAY_RECEIVABLE) AS violateAmount,
+			COUNT(CASE WHEN p.DEFAULT_FLAG = '1' THEN p.ID END) AS violatePeriod,
+			COUNT(CASE WHEN p.DEFAULT_FLAG != '1' THEN p.ID END) AS normalPeriod
+		FROM t_contract c 
+		LEFT JOIN t_loan_repay_plan p ON c.CONTRACT_NO = p.CONTRACT_NO
+		WHERE 1=1
+		<if test="orgId != null and orgId != ''">
+			AND c.ORG_ID = #{orgId}
+		</if>
+		<if test="violateDateStart != null and violateDateStart != ''">
+			<![CDATA[AND p.REPAYMENT_DATE >= DATE_FORMAT(#{violateDateStart},'%y%m%d')]]>
+		</if>
+		<if test="violateDateEnd != null and violateDateEnd != ''">
+			<![CDATA[AND p.REPAYMENT_DATE <= DATE_FORMAT(#{violateDateEnd},'%y%m%d')]]>
+		</if>
+	</select>
+</mapper>

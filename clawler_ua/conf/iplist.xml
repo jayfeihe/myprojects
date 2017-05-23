@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 允许访问的IP列表 -->
+<clients>
+	<client name="zhuyan" ip="192.168.1.2" />
+	<client name="localhost" ip="127.0.0.1" />
+</clients>

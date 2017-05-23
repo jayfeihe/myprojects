@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/data/mongo 
+		http://www.springframework.org/schema/data/mongo/spring-mongo.xsd"> 
+	
+	<!-- 加载mongodb的属性配置文件 -->
+	<context:property-placeholder location="classpath:mongodb.properties" /> 
+	
+	<!-- 定义mongo对象，对应的是mongodb官方jar包中的Mongo，replica-set设置集群副本的ip地址和端口 -->
+	<mongo:mongo-client id="mongoClient" host="${mongo.host}" port="${mongo.port}">
+		<!-- 一些连接属性的设置 -->
+		<mongo:client-options 
+			connections-per-host="${mongo.connectionsPerHost}"
+            min-connections-per-host="${mongo.minConnectionsPerHost}"
+            threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
+            connect-timeout="${mongo.connectTimeout}"
+            max-wait-time="${mongo.maxWaitTime}"
+            socket-keep-alive="${mongo.socketKeepAlive}"
+            socket-timeout="${mongo.socketTimeout}"
+            description="${mongo.description}"
+            max-connection-idle-time="${mongo.maxConnectionIdleTime}"
+            max-connection-life-time="${mongo.maxConnectionLifeTime}"
+         />
+            <!-- heartbeat-socket-timeout="${mongo.heartbeatSocketTimeout}"
+            heartbeat-connect-timeout="${mongo.heartbeatConnectTimeout}"
+            min-heartbeat-frequency="${mongo.minHeartbeatFrequency}"
+            heartbeat-frequency="${mongo.heartbeatFrequency}" -->
+	</mongo:mongo-client>
+	
+	<!-- mongo的工厂，通过它来取得mongo实例,dbname为mongodb的数据库名，没有的话会自动创建 -->
+	<mongo:db-factory id="mongoDbFactory" dbname="${mongo.dbName}" mongo-ref="mongoClient"/>
+	
+	<mongo:template id="mongoTemplate" db-factory-ref="mongoDbFactory" write-concern="NORMAL"/>
+	
+	<!-- 映射转换器，扫描back-package目录下的文件，根据注释，把它们作为mongodb的一个collection的映射 -->
+	<mongo:mapping-converter id="converter" db-factory-ref="mongoDbFactory" base-package="com.greenkoo.dmp.model"/>
+	<!-- mongodb bean的仓库目录，会自动扫描扩展了MongoRepository接口的接口进行注入 -->
+	<mongo:repositories base-package="com.greenkoo.dmp.dao" />
+</beans>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.collection.visit.dao.CollectionBaseVisitDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.collection.phone.model.CollectionBase" >
+	<result column="id" property="id"/><!-- id -->
+	<result column="contract_no" property="contractNo"/><!-- 合同编号 -->
+	<result column="customer_id" property="customerId"/><!-- 客户id -->
+	<result column="id_type" property="idType"/><!-- 证件类型 -->
+	<result column="id_no" property="idNo"/><!-- 证件号码 -->
+	<result column="customer_name" property="customerName"/><!-- 客户姓名 -->
+	<result column="gender" property="gender"/><!-- 客户性别-->
+	<result column="customer_tel" property="customerTel"/><!-- 联系方式 -->
+	<result column="contract_amount" property="contractAmount"/><!-- 合同额 -->
+	<result column="month_amount_all" property="monthAmountAll"/><!-- 月还总额为本金和利息总和，不包括已还的 -->
+	<result column="product" property="product"/><!-- 产品 -->
+	<result column="late_age" property="lateAge"/><!-- 账龄 -->
+	<result column="late_days" property="lateDays"/><!-- 逾期天数 -->
+	<result column="repayment_date" property="repaymentDate"/><!-- 还款日 -->
+	<result column="loan_platform" property="loanPlatform"/><!-- 放款平台 -->
+	<result column="org_id" property="orgId"/><!-- 营业部 -->
+	<result column="is_late" property="isLate"/><!-- 是否逾期 -->
+	<result column="is_finish" property="isFinish"/><!-- 是否结清 -->
+	<result column="penalty" property="penalty"/><!-- 罚息总额 -->
+	<result column="default_fee" property="defaultFee"/><!-- 违约金总额 -->
+	<result column="delay" property="delay"/><!-- 滞纳金总额 -->
+	<result column="srevice_fee" property="sreviceFee"/><!-- 服务费 -->
+	<result column="principal" property="principal"/><!-- 本金总额 -->
+	<result column="interest" property="interest"/><!-- 利息总额 -->
+	<result column="reduce" property="reduce"/><!-- 减免总额 -->
+	<result column="amount_all" property="amountAll"/><!-- 应还总额 -->
+	<result column="period_all" property="periodAll"/><!-- 总期数 -->
+	<result column="period_cur" property="periodCur"/><!-- 当前期数 -->
+	<result column="period_late_his" property="periodLateHis"/><!-- 历史逾期期数 -->
+	<result column="period_finish" property="periodFinish"/><!-- 已还期数 -->
+	<result column="answer_state" property="answerState"/><!-- 接听状态 -->
+	<result column="phone_summary" property="phoneSummary"/><!-- 电催摘要 -->
+	<result column="state" property="state"/><!-- 状态标识 -->
+	<result column="follow_time" property="followTime"/><!-- 跟进时间 -->
+	<result column="order_time" property="orderTime"/><!-- 预约时间 -->
+	<result column="distribution_state" property="distributionState"/><!-- 分配状态
+             -->
+	<result column="collection_way_cur" property="collectionWayCur"/><!-- 当前渠道:
+            0 无
+            1 电催
+            2 落地催 -->
+	<result column="collection_uid_cur" property="collectionUidCur"/><!-- 当前处理人 -->
+	<result column="apply_state" property="applyState"/><!-- 申请状态:
+            欺诈，司法共用
+            初始0  无申请或者退回
+            1  申请中
+            2  申请通过 -->
+   
+    <result column="handle_state" property="handleState"/> <!-- 处理状态-->
+    <result column="help_follow_time" property="helpFollowTime"/><!-- 协催跟进时间 -->
+	<result column="submit_time" property="submitTime"/><!-- 提交时间（电催，协催，落地催） -->
+	<result column="keep_Date" property="keepDate"/><!--保留时间 -->
+	<result column="remark" property="remark"/><!-- 备注 -->
+	<result column="create_uid" property="createUid"/><!-- 创建人 -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="update_uid" property="updateUid"/><!-- 修改人 -->
+	<result column="update_time" property="updateTime"/><!-- 修改时间 -->
+	
+	<result column="org_name" property="orgName"/><!-- 营业部名称 -->
+	<result column="collection_uid" property="collectionUid"/><!-- 分配给的当前用户的id -->
+ 	<result column="collection_uid_name" property="collectionUidName"/><!-- 分配给的当前用户的名称 -->
+ 	<result column="is_cur" property="isCur"/><!--是否当前标识-->
+ 	<result column="is_help" property="isHelp"/><!-- 是否协催标识 -->
+ 	<result column="channel_name" property="channelName"/><!--渠道名称 -->
+</resultMap>
+      
+<!-- T_COLLECTION_BASE table all fields -->
+<sql id="Column_List" >
+	 id,contract_no,customer_id,id_type,id_no,customer_name,gender,customer_tel,contract_amount,product,late_age,late_days,repayment_date,loan_platform,org_id,is_late,is_finish,penalty,default_fee,delay,srevice_fee,principal,interest,reduce,month_amount_all,amount_all,period_all,period_cur,period_late_his,period_finish,answer_state,phone_summary,state,follow_time,order_time,distribution_state,collection_way_cur,collection_uid_cur,apply_state,handle_state,help_follow_time,submit_time,keep_date,remark,create_uid,create_time,update_uid,update_time,
+	 org_name,collection_uid_name,channel_name
+</sql>
+<sql id="Where_Clause" >
+	 where 1=1 
+	<trim suffixOverrides=",">
+	<if test="customerName !=null and customerName !=''">
+		and t.customer_name  like CONCAT('%',#{customerName},'%')
+	</if>
+	<if test="idNo !=null and idNo !=''">
+		and t.id_no = #{idNo}
+	</if>
+	<if test="contractNo !=null and contractNo !=''">
+		and t.contract_no = #{contractNo}
+	</if>
+	<if test="collectionUidCur !=null and collectionUidCur !=''">
+		and t.collection_uid_cur = #{collectionUidCur}
+	</if>
+	<if test="orgId !=null and orgId !=''">
+		and t.org_id like CONCAT(#{orgId},'%')
+	</if>
+	<if test="distributionState !=null and distributionState !=''">
+		and t.distribution_state = #{distributionState}
+	</if>
+	<if test="state !=null and state !=''">
+		and t.state = #{state}
+	</if>
+	<if test="lateDaysMin !=null and lateDaysMin !=''">
+		<![CDATA[and t.late_days >= #{lateDaysMin}]]>
+	</if>
+	<if test="lateDaysMax !=null and lateDaysMax !=''">
+		<![CDATA[and t.late_days <= #{lateDaysMax}]]>
+	</if>
+	</trim>
+	
+	</sql>   
+  
+ <!-- 根据id查询 催收信息基本表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from (<include refid="collectionVistSql"/>) t  where contract_no = #{id}
+</select>
+
+<!-- 催收信息基本表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from (<include refid="collectionVistSql"/>) t
+	<include refid="Where_Clause"/>
+	
+</select>
+  	
+<!-- 查询催收信息基本表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from (<include refid="collectionVistSql"/>) t
+	<include refid="Where_Clause"/>
+	  ORDER BY rowNo
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+  
+</select>
+<!-- 落地催分单 信息集合-->
+<sql id="collectionVistSql">
+SELECT (@rowNO := @rowNo+1) AS rowNo, result.* FROM ( SELECT a.*,c.GENDER, 
+	o.ORG_NAME,
+	u.LOGIN_ID,u.NAME AS COLLECTION_UID_NAME,channel_name
+	FROM t_collection_base a 
+	LEFT JOIN t_channel_total t	ON a.loan_platform = t.channel_code  
+	LEFT JOIN t_org o ON a.ORG_ID=o.ORG_ID 
+	LEFT JOIN t_user u ON u.LOGIN_ID=a.collection_uid_cur
+	LEFT JOIN t_customer c ON c.ID=a.CUSTOMER_ID
+	WHERE  a.COLLECTION_WAY_CUR = 2 AND a.IS_FINISH = 'N'   AND a.STATE NOT IN (1,2,5,6)
+	ORDER BY a.ORG_ID,REPAYMENT_DATE) result,(SELECT @rowNO :=0)  r 
+</sql>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateVisitCollectionMap" parameterType="map" >
+	update T_COLLECTION_BASE set 
+	<trim  suffixOverrides="," >	 
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="distributionState != null and distributionState != '' " >
+	    distribution_state =  #{distributionState, jdbcType=VARCHAR},
+	</if>
+	<if test="collectionUidCur != null and collectionUidCur != '' " >
+	    collection_uid_cur =  #{collectionUidCur, jdbcType=VARCHAR},
+	</if>
+	<if test="phoneSummary != null and phoneSummary != '' " >
+	    phone_summary =  #{phoneSummary, jdbcType=VARCHAR},
+	</if>
+	<if test="answerState != null and answerState != '' " >
+	    answer_state =  #{answerState, jdbcType=VARCHAR},
+	</if>
+	<if test="orderTime != null and orderTime != '' " >
+	    order_time =  #{orderTime, jdbcType=TIMESTAMP},
+	</if>
+	<!-- redistribute_ 不为空表示  落地催重新分单   且将基本表中以下五个字段置空-->
+	<if test="redistribute_ != null and redistribute_ != '' " >
+	    phone_summary =  NULL,
+	    answer_state = NULL,
+	    order_time = NULL,
+	    handle_state = NULL,
+	   	follow_time = NULL,
+	</if>
+	<!-- submitType 按钮类型不为空且为提交   即催收页面催收预约点击了提交 则预约时间置空 -->
+	<if test="submitType != null and submitType != ''" >
+	    order_time = NULL, 
+	</if> 
+	
+	<if test="updateUid != null and updateUid != '' " >
+	    update_uid =  #{updateUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	
+	</trim>
+	where contract_no = #{contractNo}
+</update>
+ 
+  	
+</mapper>   

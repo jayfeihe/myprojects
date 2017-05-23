@@ -1,0 +1,771 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.loan.dao.LoanBaseDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.audit.loan.model.LoanBase" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="loan_id" property="loanId"/><!-- 申请ID -->
+	<result column="loan_way" property="loanWay"/><!-- 申请渠道 -->
+	<result column="salesman" property="salesman"/><!-- 业务员 -->
+	<result column="loan_type" property="loanType"/><!-- 申请类型 -->
+	<result column="org" property="org"/><!-- 所属机构 -->
+	<result column="name" property="name"/><!-- 姓名、名称 -->
+	<result column="id_type" property="idType"/><!-- 证件类型 -->
+	<result column="id_no" property="idNo"/><!-- 证件号码 -->
+	<result column="product" property="product"/><!-- 产品 -->
+	<result column="loan_amt" property="loanAmt"/><!-- 借款金额 -->
+	<result column="end_date" property="endDate"/><!-- 到期日期 -->
+	<result column="loan_use" property="loanUse"/><!-- 借款用途 -->
+	
+	<result column="acct_prvn" property="acctPrvn"/><!-- 开户行省 -->
+	<result column="acct_city" property="acctCity"/><!-- 开户行市-->
+	<result column="acct_ctry" property="acctCtry"/><!-- 开户行区 -->
+	<result column="acct_bank" property="acctBank"/><!-- 开户行 -->
+	<result column="acct_name" property="acctName"/><!-- 开户名 -->
+	<result column="acct_branch" property="acctBranch"/><!-- 所属分行 -->
+	<result column="acct_code" property="acctCode"/><!-- 账号 -->
+	<result column="ret_way" property="retWay"/><!-- 还款方式 -->
+	<result column="rate" property="rate"/><!-- 年化利率 -->
+	<result column="de_rate" property="deRate"/><!-- 等额利率 -->
+	<result column="inte_days" property="inteDays"/><!-- 计息天数 -->
+	<result column="mem_fee" property="memFee"/><!-- 会员服务费 -->
+	<result column="other_fee" property="otherFee"/><!-- 其他费用 -->
+	<result column="law_fee" property="lawFee"/><!-- 法律服务费 -->
+	<result column="magin" property="magin"/><!-- 保证金 -->
+	<result column="tran_fee" property="tranFee"/><!-- 转贷费 -->
+		
+	<result column="MGR_FEE" property="mgrFee"/> <!-- 管理服务费 -->
+	<result column="CERT_FEE" property="certFee"/><!-- 他项权证费 -->
+	<result column="EVAL_FEE" property="evalFee"/><!-- 评估费 -->
+	<result column="AGENT_FEE" property="agentFee"/><!-- 中介费 -->
+	
+	<result column="ret_loan_sol" property="retLoanSol"/><!-- 周期方案 -->
+	<result column="is_tgth" property="isTgth"/><!-- 是否有共同借款人 -->
+	<result column="is_renew" property="isRenew"/><!-- 是否续贷 -->
+	<result column="renew_num" property="renewNum"/><!-- 续贷次数 -->
+	<result column="orig_loan_id" property="origLoanId"/><!-- 续贷原申请ID -->
+	<result column="input_time" property="inputTime"/><!-- 录入时间 -->
+	<result column="is_enough" property="isEnough"/><!-- 抵押物是否足额 -->
+	<result column="branch_audit_time" property="branchAuditTime"/><!-- 提交分公司审核时间 -->
+	<result column="risk_first_time" property="riskFirstTime"/><!-- 提交风控初审时间 -->
+	<result column="risk_check_time" property="riskCheckTime"/><!-- 提交风控复核时间 -->
+	<result column="meet_first_time" property="meetFirstTime"/><!-- 提交评审会初审时间 -->
+	<result column="meet_check_time" property="meetCheckTime"/><!-- 提交评审会复核时间 -->
+	<result column="law_time" property="lawTime"/><!-- 提交法务时间 -->
+	<result column="cash_time" property="cashTime"/><!-- 提交出纳时间 -->
+	<result column="acct_time" property="acctTime"/><!-- 提交财务时间 -->
+	<result column="loan_time" property="loanTime"/><!-- 放款时间 -->
+	<result column="is_beyond" property="isBeyond"/>
+	<result column="state_1st" property="state1st"/><!-- 一级状态 -->
+	<result column="state_2nd" property="state2nd"/><!-- 二级状态 -->
+	<result column="update_uid" property="updateUid"/><!--  -->
+	<result column="update_time" property="updateTime"/><!--  -->
+	<result column="ext1" property="ext1"/><!--  -->
+	<result column="ext2" property="ext2"/><!--  -->
+	
+	<result column="contract_id" property="contractId"/><!-- 合同号 -->
+	
+	<!-- 以下字段为显示所用 -->
+	<result column="productName" property="productName"/>
+	<result column="orgName" property="orgName"/>
+	<result column="appState" property="appState"/>
+	<result column="get_loan_way" property="getLoanWay"/><!-- 融资方式 -->
+</resultMap>
+       
+<!-- T_LOAN_BASE table all fields -->
+<sql id="Column_List" >
+	 id,loan_id,loan_way,salesman,loan_type,org,name,id_type,id_no,product,loan_amt,end_date,loan_use,acct_prvn,acct_city,acct_ctry,acct_bank,acct_name,acct_branch,acct_code,ret_way,rate,de_rate,inte_days,mem_fee,other_fee,law_fee,tran_fee,mgr_fee,cert_fee,eval_fee,agent_fee,ret_loan_sol,is_tgth,is_renew,renew_num,orig_loan_id,input_time,is_enough,branch_audit_time,risk_first_time,risk_check_time,meet_first_time,meet_check_time,law_time,magin,cash_time,acct_time,loan_time,state_1st,state_2nd,is_beyond,update_uid,update_time,ext1,ext2,
+	 (SELECT d.KEY_VALUE FROM t_data_dictionary d WHERE PRODUCT = d.KEY_PROP AND d.KEY_NAME = 'productType') productName
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and loan_id =  #{loanId}
+	</if>
+<if test="loanWay != null and loanWay != ''" >
+	    and loan_way =  #{loanWay}
+	</if>
+<if test="salesman != null and salesman != ''" >
+	    and salesman =  #{salesman}
+	</if>
+<if test="loanType != null and loanType != ''" >
+	    and loan_type =  #{loanType}
+	</if>
+<if test="org != null and org != ''" >
+	    and org =  #{org}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="product != null and product != ''" >
+	    and product =  #{product}
+	</if>
+<if test="loanAmt != null and loanAmt != ''" >
+	    and loan_amt =  #{loanAmt}
+	</if>
+<if test="endDate != null and endDate != ''" >
+	    and end_date =  #{endDate}
+	</if>
+<if test="loanUse != null and loanUse != ''" >
+	    and loan_use =  #{loanUse}
+	</if>
+<if test="acctBank != null and acctBank != ''" >
+	    and acct_bank =  #{acctBank}
+	</if>
+<if test="acctName != null and acctName != ''" >
+	    and acct_name =  #{acctName}
+	</if>
+<if test="acctBranch != null and acctBranch != ''" >
+	    and acct_branch =  #{acctBranch}
+	</if>
+<if test="acctCode != null and acctCode != ''" >
+	    and acct_code =  #{acctCode}
+	</if>
+<if test="retWay != null and retWay != ''" >
+	    and ret_way =  #{retWay}
+	</if>
+<if test="rate != null and rate != ''" >
+	    and rate =  #{rate}
+	</if>
+<if test="inteDays != null and inteDays != ''" >
+	    and inte_days =  #{inteDays}
+	</if>
+<if test="memFee != null and memFee != ''" >
+	    and mem_fee =  #{memFee}
+	</if>
+<if test="otherFee != null and otherFee != ''" >
+	    and other_fee =  #{otherFee}
+	</if>
+<if test="lawFee != null and lawFee != ''" >
+	    and law_fee =  #{lawFee}
+	</if>
+<if test="tranFee != null and tranFee != ''" >
+	    and tran_fee =  #{tranFee}
+	</if>
+<if test="retLoanSol != null and retLoanSol != ''" >
+	    and ret_loan_sol =  #{retLoanSol}
+	</if>
+<if test="isTgth != null and isTgth != ''" >
+	    and is_tgth =  #{isTgth}
+	</if>
+<if test="isRenew != null and isRenew != ''" >
+	    and is_renew =  #{isRenew}
+	</if>
+<if test="renewNum != null and renewNum != ''" >
+	    and renew_num =  #{renewNum}
+	</if>
+<if test="origLoanId != null and origLoanId != ''" >
+	    and orig_loan_id =  #{origLoanId}
+	</if>
+<if test="inputTime != null and inputTime != ''" >
+	    and input_time =  #{inputTime}
+	</if>
+<if test="isEnough != null and isEnough != ''" >
+	    and is_enough =  #{isEnough}
+	</if>
+<if test="branchAuditTime != null and branchAuditTime != ''" >
+	    and branch_audit_time =  #{branchAuditTime}
+	</if>
+<if test="riskFirstTime != null and riskFirstTime != ''" >
+	    and risk_first_time =  #{riskFirstTime}
+	</if>
+<if test="riskCheckTime != null and riskCheckTime != ''" >
+	    and risk_check_time =  #{riskCheckTime}
+	</if>
+<if test="meetFirstTime != null and meetFirstTime != ''" >
+	    and meet_first_time =  #{meetFirstTime}
+	</if>
+<if test="meetCheckTime != null and meetCheckTime != ''" >
+	    and meet_check_time =  #{meetCheckTime}
+	</if>
+<if test="lawTime != null and lawTime != ''" >
+	    and law_time =  #{lawTime}
+	</if>
+<if test="magin != null and magin != ''" >
+	    and magin =  #{magin}
+	</if>
+<if test="cashTime != null and cashTime != ''" >
+	    and cash_time =  #{cashTime}
+	</if>
+<if test="acctTime != null and acctTime != ''" >
+	    and acct_time =  #{acctTime}
+	</if>
+<if test="loanTime != null and loanTime != ''" >
+	    and loan_time =  #{loanTime}
+	</if>
+<if test="state1st != null and state1st != ''" >
+	    and state_1st =  #{state1st}
+	</if>
+<if test="state2nd != null and state2nd != ''" >
+	    and state_2nd =  #{state2nd}
+	</if>
+<if test="isBeyond != null and isBeyond != ''" >
+	    and is_beyond =  #{isBeyond}
+	</if>
+<if test="updateUid != null and updateUid != ''" >
+	    and update_uid =  #{updateUid}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+<if test="ext1 != null and ext1 != ''" >
+	    and ext1 =  #{ext1}
+	</if>
+<if test="ext2 != null and ext2 != ''" >
+	    and ext2 =  #{ext2}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" useGeneratedKeys="true" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+<!-- 			Select nextval('T_LOAN_BASE_SEQ') From dual -->
+			Select T_LOAN_BASE_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_LOAN_BASE(id,loan_id,loan_way,salesman,loan_type,org,name,id_type,id_no,product,loan_amt,end_date,loan_use,acct_prvn,acct_city,acct_ctry,acct_bank,acct_name,acct_branch,acct_code,ret_way,rate,de_rate,inte_days,mem_fee,other_fee,law_fee,magin,tran_fee,mgr_fee,cert_fee,eval_fee,agent_fee,ret_loan_sol,is_tgth,is_renew,renew_num,orig_loan_id,input_time,is_enough,branch_audit_time,risk_first_time,risk_check_time,meet_first_time,meet_check_time,law_time,cash_time,acct_time,loan_time,state_1st,state_2nd,is_beyond,update_uid,update_time,ext1,ext2)
+ values( #{id, jdbcType=INTEGER},#{loanId, jdbcType=VARCHAR},#{loanWay, jdbcType=VARCHAR},#{salesman, jdbcType=VARCHAR},#{loanType, jdbcType=VARCHAR},#{org, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{product, jdbcType=VARCHAR},#{loanAmt, jdbcType=DOUBLE},#{endDate, jdbcType=DATE},#{loanUse, jdbcType=VARCHAR},#{acctPrvn, jdbcType=VARCHAR},#{acctCity, jdbcType=VARCHAR},#{acctCtry, jdbcType=VARCHAR},#{acctBank, jdbcType=VARCHAR},#{acctName, jdbcType=VARCHAR},#{acctBranch, jdbcType=VARCHAR},#{acctCode, jdbcType=VARCHAR},#{retWay, jdbcType=VARCHAR},
+ #{rate, jdbcType=DOUBLE},#{deRate, jdbcType=DOUBLE},#{inteDays, jdbcType=INTEGER},#{memFee, jdbcType=DOUBLE},#{otherFee, jdbcType=DOUBLE},#{lawFee, jdbcType=DOUBLE},#{magin, jdbcType=DOUBLE},#{tranFee, jdbcType=DOUBLE},#{mgrFee, jdbcType=DOUBLE},#{certFee, jdbcType=DOUBLE},#{evalFee, jdbcType=DOUBLE},#{agentFee, jdbcType=DOUBLE},
+ #{retLoanSol, jdbcType=VARCHAR},#{isTgth, jdbcType=VARCHAR},#{isRenew, jdbcType=VARCHAR},#{renewNum, jdbcType=INTEGER},#{origLoanId, jdbcType=VARCHAR},#{inputTime, jdbcType=TIMESTAMP},#{isEnough, jdbcType=VARCHAR},#{branchAuditTime, jdbcType=TIMESTAMP},#{riskFirstTime, jdbcType=TIMESTAMP},#{riskCheckTime, jdbcType=TIMESTAMP},#{meetFirstTime, jdbcType=TIMESTAMP},#{meetCheckTime, jdbcType=TIMESTAMP},#{lawTime, jdbcType=TIMESTAMP},#{cashTime, jdbcType=TIMESTAMP},#{acctTime, jdbcType=TIMESTAMP},#{loanTime, jdbcType=TIMESTAMP},#{state1st, jdbcType=VARCHAR},#{state2nd, jdbcType=VARCHAR},#{isBeyond, jdbcType=VARCHAR},#{updateUid, jdbcType=VARCHAR},#{updateTime, jdbcType=TIMESTAMP},#{ext1, jdbcType=VARCHAR},#{ext2, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_LOAN_BASE set 
+	<trim  suffixOverrides="," >
+	loan_id =  #{loanId, jdbcType=VARCHAR},
+	loan_way =  #{loanWay, jdbcType=VARCHAR},
+	salesman =  #{salesman, jdbcType=VARCHAR},
+	loan_type =  #{loanType, jdbcType=VARCHAR},
+	org =  #{org, jdbcType=VARCHAR},
+	name =  #{name, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	product =  #{product, jdbcType=VARCHAR},
+	loan_amt =  #{loanAmt, jdbcType=DOUBLE},
+	end_date =  #{endDate, jdbcType=DATE},
+	loan_use =  #{loanUse, jdbcType=VARCHAR},
+	acct_prvn = #{acctPrvn, jdbcType=VARCHAR},
+	acct_city = #{acctCity, jdbcType=VARCHAR},
+	acct_ctry = #{acctCtry, jdbcType=VARCHAR},
+	acct_bank =  #{acctBank, jdbcType=VARCHAR},
+	acct_name =  #{acctName, jdbcType=VARCHAR},
+	acct_branch =  #{acctBranch, jdbcType=VARCHAR},
+	acct_code =  #{acctCode, jdbcType=VARCHAR},
+	ret_way =  #{retWay, jdbcType=VARCHAR},
+	rate =  #{rate, jdbcType=DOUBLE},
+	de_rate = #{deRate, jdbcType=DOUBLE},
+	inte_days =  #{inteDays, jdbcType=INTEGER},
+	mem_fee =  #{memFee, jdbcType=DOUBLE},
+	other_fee =  #{otherFee, jdbcType=DOUBLE},
+	law_fee =  #{lawFee, jdbcType=DOUBLE},
+	magin = #{magin, jdbcType=DOUBLE},
+	tran_fee =  #{tranFee, jdbcType=DOUBLE},
+	mgr_fee = #{mgrFee, jdbcType=DOUBLE},
+	cert_fee = #{certFee, jdbcType=DOUBLE},
+	eval_fee = #{evalFee, jdbcType=DOUBLE},
+	agent_fee = #{agentFee, jdbcType=DOUBLE},
+	ret_loan_sol =  #{retLoanSol, jdbcType=VARCHAR},
+	is_tgth =  #{isTgth, jdbcType=VARCHAR},
+	is_renew =  #{isRenew, jdbcType=VARCHAR},
+	renew_num =  #{renewNum, jdbcType=INTEGER},
+	orig_loan_id =  #{origLoanId, jdbcType=VARCHAR},
+	input_time =  #{inputTime, jdbcType=TIMESTAMP},
+	is_enough =  #{isEnough, jdbcType=VARCHAR},
+	branch_audit_time =  #{branchAuditTime, jdbcType=TIMESTAMP},
+	risk_first_time =  #{riskFirstTime, jdbcType=TIMESTAMP},
+	risk_check_time =  #{riskCheckTime, jdbcType=TIMESTAMP},
+	meet_first_time =  #{meetFirstTime, jdbcType=TIMESTAMP},
+	meet_check_time =  #{meetCheckTime, jdbcType=TIMESTAMP},
+	law_time =  #{lawTime, jdbcType=TIMESTAMP},
+	cash_time =  #{cashTime, jdbcType=TIMESTAMP},
+	acct_time =  #{acctTime, jdbcType=TIMESTAMP},
+	loan_time =  #{loanTime, jdbcType=TIMESTAMP},
+	state_1st =  #{state1st, jdbcType=VARCHAR},
+	state_2nd =  #{state2nd, jdbcType=VARCHAR},
+	is_beyond =  #{isBeyond, jdbcType=VARCHAR},
+	update_uid =  #{updateUid, jdbcType=VARCHAR},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	ext1 =  #{ext1, jdbcType=VARCHAR},
+	ext2 =  #{ext2, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_LOAN_BASE  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_LOAN_BASE set 
+	<trim  suffixOverrides="," >
+
+	<if test="loanId != null and loanId != '' " >
+	    loan_id =  #{loanId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanWay != null and loanWay != '' " >
+	    loan_way =  #{loanWay, jdbcType=VARCHAR},
+	</if>
+
+	<if test="salesman != null and salesman != '' " >
+	    salesman =  #{salesman, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanType != null and loanType != '' " >
+	    loan_type =  #{loanType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="org != null and org != '' " >
+	    org =  #{org, jdbcType=VARCHAR},
+	</if>
+
+	<if test="name != null and name != '' " >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idType != null and idType != '' " >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idNo != null and idNo != '' " >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="product != null and product != '' " >
+	    product =  #{product, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanAmt != null and loanAmt != '' or loanAmt == 0" >
+	    loan_amt =  #{loanAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="endDate != null and endDate != '' " >
+	    end_date =  #{endDate, jdbcType=DATE},
+	</if>
+
+	<if test="loanUse != null and loanUse != '' " >
+	    loan_use =  #{loanUse, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="acctPrvn != null and acctPrvn != '' " >
+		acct_prvn = #{acctPrvn, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="acctCity != null and acctCity != '' " >
+		acct_city = #{acctCity, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="acctCtry != null and acctCtry != '' " >
+		acct_ctry = #{acctCtry, jdbcType=VARCHAR},
+	</if>
+	<if test="acctBank != null and acctBank != '' " >
+	    acct_bank =  #{acctBank, jdbcType=VARCHAR},
+	</if>
+
+	<if test="acctName != null and acctName != '' " >
+	    acct_name =  #{acctName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="acctBranch != null and acctBranch != '' " >
+	    acct_branch =  #{acctBranch, jdbcType=VARCHAR},
+	</if>
+
+	<if test="acctCode != null and acctCode != '' " >
+	    acct_code =  #{acctCode, jdbcType=VARCHAR},
+	</if>
+
+	<if test="retWay != null and retWay != '' " >
+	    ret_way =  #{retWay, jdbcType=VARCHAR},
+	</if>
+
+	<if test="rate != null" >
+	    rate =  #{rate, jdbcType=DOUBLE},
+	</if>
+	
+	<if test="rate != null" >
+		de_rate = #{deRate, jdbcType=DOUBLE},
+	</if>
+	
+	<if test="inteDays != null" >
+	    inte_days =  #{inteDays, jdbcType=INTEGER},
+	</if>
+
+	<if test="memFee != null" >
+	    mem_fee =  #{memFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="otherFee != null" >
+	    other_fee =  #{otherFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="lawFee != null" >
+	    law_fee =  #{lawFee, jdbcType=DOUBLE},
+	</if>
+	
+	<if test="magin != null" >
+		magin = #{magin, jdbcType=DOUBLE},
+	</if>
+	
+	<if test="tranFee != null" >
+	    tran_fee =  #{tranFee, jdbcType=DOUBLE},
+	</if>
+	<if test="mgrFee != null" >
+		mgr_fee = #{mgrFee, jdbcType=DOUBLE},
+	</if>
+	<if test="certFee != null" >
+		cert_fee = #{certFee, jdbcType=DOUBLE},
+	</if>
+	<if test="evalFee != null" >
+		eval_fee = #{evalFee, jdbcType=DOUBLE},
+	</if>
+	<if test="agentFee != null" >
+		agent_fee = #{agentFee, jdbcType=DOUBLE},
+	</if>
+	
+	<if test="retLoanSol != null" >
+	    ret_loan_sol =  #{retLoanSol, jdbcType=VARCHAR},
+	</if>
+
+	<if test="isTgth != null and isTgth != '' " >
+	    is_tgth =  #{isTgth, jdbcType=VARCHAR},
+	</if>
+
+	<if test="isRenew != null and isRenew != '' " >
+	    is_renew =  #{isRenew, jdbcType=VARCHAR},
+	</if>
+
+	<if test="renewNum != null and renewNum != ''  and renewNum != 0" >
+	    renew_num =  #{renewNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="origLoanId != null and origLoanId != '' " >
+	    orig_loan_id =  #{origLoanId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="inputTime != null and inputTime != '' " >
+	    input_time =  #{inputTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="isEnough != null and isEnough != '' " >
+	    is_enough =  #{isEnough, jdbcType=VARCHAR},
+	</if>
+
+	<if test="branchAuditTime != null and branchAuditTime != '' " >
+	    branch_audit_time =  #{branchAuditTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="riskFirstTime != null and riskFirstTime != '' " >
+	    risk_first_time =  #{riskFirstTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="riskCheckTime != null and riskCheckTime != '' " >
+	    risk_check_time =  #{riskCheckTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="meetFirstTime != null and meetFirstTime != '' " >
+	    meet_first_time =  #{meetFirstTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="meetCheckTime != null and meetCheckTime != '' " >
+	    meet_check_time =  #{meetCheckTime, jdbcType=TIMESTAMP},
+	</if>
+	
+	<if test="lawTime != null and lawTime != '' " >
+		law_time =  #{lawTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="cashTime != null and cashTime != '' " >
+	    cash_time =  #{cashTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="acctTime != null and acctTime != '' " >
+	    acct_time =  #{acctTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="loanTime != null and loanTime != '' " >
+	    loan_time =  #{loanTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="state1st != null and state1st != '' " >
+	    state_1st =  #{state1st, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state2nd != null and state2nd != '' " >
+	    state_2nd =  #{state2nd, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="isBeyond != null and isBeyond != '' " >
+		is_beyond =  #{isBeyond, jdbcType=VARCHAR},
+	</if>
+		
+	<if test="updateUid != null and updateUid != '' " >
+	    update_uid =  #{updateUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="ext1 != null and ext1 != '' " >
+	    ext1 =  #{ext1, jdbcType=VARCHAR},
+	</if>
+
+	<if test="ext2 != null and ext2 != '' " >
+	    ext2 =  #{ext2, jdbcType=VARCHAR},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 T_LOAN_BASE -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_LOAN_BASE  where id = #{id}
+</select>
+
+<!-- 根据id查询 T_LOAN_BASE -->
+<select id="queryByLoanId"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_LOAN_BASE  where loan_id = #{loanId, jdbcType=VARCHAR}
+</select>
+
+<!-- T_LOAN_BASE 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LOAN_BASE 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询T_LOAN_BASE列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LOAN_BASE 
+	<include refid="Where_Clause"/>
+</select>
+
+<select id="queryBusinessCount" resultType="java.lang.Integer"  parameterType="map">
+	SELECT COUNT(1) <include refid="businessSql"/>
+</select>
+<select id="queryBusinessList" resultMap="ResultMap"  parameterType="map">
+	SELECT 
+	t1.ID,
+	t1.LOAN_ID,
+	t1.NAME,
+	t1.ID_NO,
+	t1.INPUT_TIME,
+	t1.LOAN_AMT,
+	t1.LOAN_TYPE,
+	t1.IS_RENEW,
+	t1.IS_TGTH,
+	t1.RENEW_NUM,
+	t1.IS_ENOUGH,
+	t1.BRANCH_AUDIT_TIME,
+	t1.RISK_FIRST_TIME,
+	t1.RISK_CHECK_TIME,
+	t1.MEET_FIRST_TIME,
+	t1.MEET_CHECK_TIME,
+	t1.LAW_TIME,
+	t1.CASH_TIME,
+	t1.ACCT_TIME,
+	t1.LOAN_TIME,
+	(SELECT d.KEY_VALUE FROM t_data_dictionary d WHERE t1.PRODUCT = d.KEY_PROP AND d.KEY_NAME = 'productType') productName,
+	(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = t1.SALESMAN) SALESMAN,
+	(SELECT o.ORG_NAME FROM t_org o WHERE o.ORG_ID = t1.ORG) orgName,
+	CONCAT(t1.STATE_1ST,t1.STATE_2ND) appState
+	
+	<if test="loanWays != null and loanWays.length > 0">
+		,c.CONTRACT_ID
+		,c.GET_LOAN_WAY
+	</if>
+	
+	<include refid="businessSql"/>
+</select>
+<sql id="businessSql">
+	FROM t_loan_base t1
+	INNER JOIN t_bpm_task b ON t1.loan_id = b.biz_key
+	
+	<!-- 评审会意见查询 -->
+	<if test="judgeUser != null and judgeUser != ''">
+		LEFT JOIN (SELECT ja.LOAN_ID,ja.AUDIT_UID FROM t_judge_adv ja WHERE ja.AUDIT_STATE = '1'
+		 			AND ja.NUM = 
+						(SELECT MAX(NUM) FROM t_judge_adv adv WHERE adv.loan_id = ja.LOAN_ID)) tmp ON t1.LOAN_ID = tmp.LOAN_ID
+	</if>
+	
+	<!-- 放款方式 -->
+	<if test="loanWays != null and loanWays.length > 0">
+		LEFT JOIN t_contract c ON t1.LOAN_ID = c.LOAN_ID
+	</if>
+	
+	<where>
+		1=1
+		<!-- 评审会意见查询 -->
+		<if test="judgeUser != null and judgeUser != ''">
+			AND tmp.AUDIT_UID = #{judgeUser}
+		</if>
+		
+		<!-- 放款方式 -->
+		<if test="loanWays != null and loanWays.length > 0">
+			AND c.GET_LOAN_WAY IN 
+				<foreach item="item" index="index" collection="loanWays" open="(" separator="," close=")">
+						#{item}
+				</foreach>
+		</if>
+		
+		<if test="bpmStates != null and bpmStates.length > 0">
+			AND b.state IN
+				<foreach item="item" index="index" collection="bpmStates" open="(" separator="," close=")">
+						#{item}
+				</foreach>
+		</if>
+		<if test="processer != null and processer != ''">
+			AND b.processer = #{processer}
+		</if>
+		
+		<if test="isRenew != null and isRenew != ''">
+			AND t1.is_renew = #{isRenew}
+		</if>
+		
+		<if test="orgId != null and orgId != ''">
+			AND t1.ORG LIKE CONCAT(#{orgId},'%')
+		</if>
+		
+		<if test="loanId != null and loanId != '' " >
+		    AND t1.LOAN_ID =  #{loanId, jdbcType=VARCHAR}
+		</if>
+		
+		<if test="origLoanId != null and origLoanId != ''">
+			AND t1.ORIG_LOAN_ID =  #{origLoanId, jdbcType=VARCHAR}
+		</if>
+		
+		<if test="org != null and org != '' " >
+		    AND t1.ORG =  #{org, jdbcType=VARCHAR}
+		</if>
+	
+		<if test="name != null and name != '' " >
+		    AND t1.NAME =  #{name, jdbcType=VARCHAR}
+		</if>
+	
+		<if test="idNo != null and idNo != '' " >
+		   AND t1.ID_NO =  #{idNo, jdbcType=VARCHAR}
+		</if>
+	
+		<if test="product != null and product != '' " >
+		    AND t1.PRODUCT =  #{product, jdbcType=VARCHAR}
+		</if>
+		
+		<!-- app只查找车贷和房贷 -->
+		<if test="appProducts != null and appProducts.length > 0">
+			AND t1.PRODUCT IN
+				<foreach item="item" index="index" collection="appProducts" open="(" separator="," close=")">
+						#{item}
+				</foreach>
+		</if>   
+		
+		<if test="salesman != null and salesman != ''" >
+		    and salesman =  #{salesman}
+		</if>
+		
+		<if test="appState != null and appState != ''">
+			AND CONCAT(t1.STATE_1ST,t1.STATE_2ND) = #{appState}
+		</if>
+		
+		<if test="salesmanName != null and salesmanName != ''">
+			AND t1.salesman IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{salesmanName})
+		</if>
+		
+		<!-- 录入时间 -->
+		<if test="inputTimeMin != null and inputTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.INPUT_TIME,'YYYY-MM-DD') >= #{inputTimeMin} ]]>
+		</if>
+		<if test="inputTimeMax != null and inputTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.INPUT_TIME,'YYYY-MM-DD') <= #{inputTimeMax} ]]>
+		</if>
+		
+		<!-- 提交分公司审核时间 -->
+		<if test="branchAuditTimeMin != null and branchAuditTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.BRANCH_AUDIT_TIME,'YYYY-MM-DD') >= #{branchAuditTimeMin} ]]>
+		</if>
+		<if test="branchAuditTimeMax != null and branchAuditTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.BRANCH_AUDIT_TIME,'YYYY-MM-DD') <= #{branchAuditTimeMax} ]]>
+		</if>
+		
+		<!-- 提交风控初审时间 -->
+		<if test="riskAuditTimeMin != null and riskAuditTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.RISK_FIRST_TIME,'YYYY-MM-DD') >= #{riskAuditTimeMin} ]]>
+		</if>
+		<if test="riskAuditTimeMax != null and riskAuditTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.RISK_FIRST_TIME,'YYYY-MM-DD') <= #{riskAuditTimeMax} ]]>
+		</if>
+		
+		<!-- 提交评审会初审时间 -->
+		<if test="meetFirstTimeMin != null and meetFirstTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.MEET_FIRST_TIME,'YYYY-MM-DD') >= #{meetFirstTimeMin} ]]>
+		</if>
+		<if test="meetFirstTimeMax != null and meetFirstTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.MEET_FIRST_TIME,'YYYY-MM-DD') <= #{meetFirstTimeMax} ]]>
+		</if>
+		
+		<!-- 提交评审会复核时间 -->
+		<if test="meetCheckTimeMin != null and meetCheckTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.MEET_CHECK_TIME,'YYYY-MM-DD') >= #{meetCheckTimeMin} ]]>
+		</if>
+		<if test="meetCheckTimeMax != null and meetCheckTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.MEET_CHECK_TIME,'YYYY-MM-DD') <= #{meetCheckTimeMax} ]]>
+		</if>
+		
+		<!-- 提交风控复核时间 -->
+		<if test="riskCheckTimeMin != null and riskCheckTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.RISK_CHECK_TIME,'YYYY-MM-DD') >= #{riskCheckTimeMin} ]]>
+		</if>
+		<if test="riskCheckTimeMax != null and riskCheckTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.RISK_CHECK_TIME,'YYYY-MM-DD') <= #{riskCheckTimeMax} ]]>
+		</if>
+		
+		<!-- 提交法务初审时间 -->
+		<if test="lawTimeMin != null and lawTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.LAW_TIME,'YYYY-MM-DD') >= #{lawTimeMin} ]]>
+		</if>
+		<if test="lawTimeMax != null and lawTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.LAW_TIME,'YYYY-MM-DD') <= #{lawTimeMax} ]]>
+		</if>
+		
+		<!-- 提交出纳时间 -->
+		<if test="cashTimeMin != null and cashTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.CASH_TIME,'YYYY-MM-DD') >= #{cashTimeMin} ]]>
+		</if>
+		<if test="cashTimeMax != null and cashTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.CASH_TIME,'YYYY-MM-DD') <= #{cashTimeMax} ]]>
+		</if>
+		
+		<!-- 提交财务时间 -->
+		<if test="acctTimeMin != null and acctTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.ACCT_TIME,'YYYY-MM-DD') >= #{acctTimeMin} ]]>
+		</if>
+		<if test="acctTimeMax != null and acctTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.ACCT_TIME,'YYYY-MM-DD') <= #{acctTimeMax} ]]>
+		</if>
+	</where>
+	ORDER BY t1.INPUT_TIME
+</sql>
+
+</mapper>   

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<change-set xmlns='http://drools.org/drools-5.0/change-set'
+    xmlns:xs='http://www.w3.org/2001/XMLSchema-instance'
+    xs:schemaLocation='http://drools.org/drools-5.0/change-set
+    http://anonsvn.jboss.org/repos/labs/labs/jbossrules/trunk/drools-api/src/main/resources/change-set-1.0.0.xsd' >
+	
+<add>
+	<resource source='classpath:com/tera/common/assignRuleFlow.rf' type='DRF' />
+
+	<resource source='classpath:com/tera/common/AssignRule.drl' type='DRL' />
+	
+</add>
+
+</change-set>

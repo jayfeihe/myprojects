@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Tera Project" basedir="." default="war">
+	
+	<property environment="env"/>
+	<property file="build.properties"/>
+	
+	<property name="src" value="${basedir}/src/java"/>
+	<property name="rule" value="${basedir}/src/rule"/>
+	<property name="resources" value="${basedir}/resources"/>
+	<property name="web" value="${basedir}/WebRoot"/>
+	<property name="lib" value="${web}/WEB-INF/lib"/>
+	<property name="classes" value="${web}/WEB-INF/classes"/>
+	<property name="build" value="${basedir}/build"/>
+	<property name="deploy" value="${deploy.url}"/>
+	<property name="config" value="${basedir}/config"/>
+	<property name="property" value="${basedir}/properties"/>
+	
+	<tstamp>
+		<format property="DSTAMP" pattern="yyyy-MM-dd" />
+	</tstamp>
+	
+	<path id="compile.classpath">
+		<fileset dir="${lib}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${basedir}/baklib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	
+	
+	<!-- 创建目录结构 -->
+	<target name="init">
+		<delete>
+			<fileset dir="${build}" includes="**/**" />
+		</delete>
+		<mkdir dir="${build}" />
+		<delete>
+			<fileset dir="${classes}" includes="**/**" />
+		</delete>
+		<mkdir dir="${classes}" />
+	</target>
+
+	<!-- 编译程序 -->
+	<target name="compile" depends="init">
+		<copy todir="${classes}/">
+			<fileset dir="${src}">
+				<include name="**/*.*" />
+				<exclude name="**/*.java" />
+			</fileset>
+			<fileset dir="${resources}">
+				<include name="**/*.*" />
+			</fileset>
+			<fileset dir="${rule}">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+		<!-- 
+			在使用SpringMVC绑定基本类型（如String,Integer等）参数时，
+			应通过@RequestParam注解指定具体的参数名称，否则当源代码在非debug模式下编译后，
+			运行时会引发HandlerMethodInvocationException异常，
+			这是因为只有在debug模式下编译，其参数名称才存储在编译好的代码中。
+		 -->
+		<javac debug="true" srcdir="${src}" destdir="${classes}" classpathref="compile.classpath" target="1.6" />
+	</target>
+	
+	<target name="war" >
+		<!--
+		<copy todir="${classes}">
+			<fileset dir="${config}/i18n" includes="*.properties"></fileset>
+		</copy>
+		-->
+		<war destfile="${build}/${war-name}.war" webxml="${web}/WEB-INF/web.xml">
+			<fileset dir="${web}" />
+		</war>
+	</target>
+	
+	<!-- 供批处理使用 -->
+	<target name="jar" depends="compile">
+		<jar jarfile="${build}/${war-name}.jar" basedir="${classes}" 
+			includes="**/*.*" 
+			excludes="**/*.properties, **/*Test*.class, **/controller/*.class, **/filter/*.class">
+			<manifest>
+				<attribute name="Class-Path" value="" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="deploy" depends="jar,war">
+		<copy file="${build}/${war-name}.war" todir="${deploy}/生产/${DSTAMP}"></copy>
+	</target>
+	<target name="deployUAT" depends="jar,war">
+		<copy file="${build}/${war-name}.war" todir="${deploy}/UAT/${DSTAMP}"></copy>
+	</target>
+</project>

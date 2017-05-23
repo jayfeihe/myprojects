@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.sales.dao.SalesDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.sales.model.Sales" >
+	<result column="id" property="id"/>
+	<result column="staff_no" property="staffNo"/>
+	<result column="name" property="name"/>
+	<result column="gender" property="gender"/>
+	<result column="id_type" property="idType"/>
+	<result column="id_no" property="idNo"/>
+	<result column="hukou" property="hukou"/>
+	<result column="org_id" property="orgId"/>
+	<result column="org_name" property="orgName"/>
+	<result column="level" property="level"/>
+	<result column="entry_date" property="entryDate"/>
+	<result column="permanent_date" property="permanentDate"/>
+	<result column="leave_date" property="leaveDate"/>
+	<result column="adjust_date" property="adjustDate"/>
+	<result column="contract_term" property="contractTerm"/>
+	<result column="mobile" property="mobile"/>
+	<result column="email" property="email"/>
+	<result column="marriage" property="marriage"/>
+	<result column="birth_flag" property="birthFlag"/>
+	<result column="education" property="education"/>
+	<result column="degree_certify_no" property="degreeCertifyNo"/>
+	<result column="university" property="university"/>
+	<result column="major" property="major"/>
+	<result column="id_address" property="idAddress"/>
+	<result column="cur_address" property="curAddress"/>
+	<result column="contact" property="contact"/>
+	<result column="contact_phone" property="contactPhone"/>
+	<result column="wage_card_no" property="wageCardNo"/>
+	<result column="wage_card_bank" property="wageCardBank"/>
+	<result column="social_security" property="socialSecurity"/>
+	<result column="full_flag" property="fullFlag"/>
+	<result column="state" property="state"/>
+	<result column="remark" property="remark"/>
+	<result column="operator" property="operator"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+	<result column="depart_id" property="departId"/>
+</resultMap>
+       
+<!-- T_SALES table all fields -->
+<sql id="Column_List" >
+	 id,staff_no,name,gender,id_type,id_no,hukou,org_id,level,entry_date,permanent_date,leave_date,adjust_date,contract_term,mobile,email,marriage,birth_flag,education,degree_certify_no,university,major,id_address,cur_address,contact,contact_phone,wage_card_no,wage_card_bank,social_security,full_flag,state,remark,operator,create_time,update_time,depart_id
+</sql>
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="staffNo != null and staffNo != ''" >
+	    and staff_no =  #{staffNo}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="gender != null and gender != ''" >
+	    and gender =  #{gender}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="hukou != null and hukou != ''" >
+	    and hukou =  #{hukou}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="level != null and level != ''" >
+	    and level =  #{level}
+	</if>
+<if test="entryDate != null and entryDate != ''" >
+	    and entry_date =  #{entryDate}
+	</if>
+<if test="permanentDate != null and permanentDate != ''" >
+	    and permanent_date =  #{permanentDate}
+	</if>
+<if test="leaveDate != null and leaveDate != ''" >
+	    and leave_date =  #{leaveDate}
+	</if>
+<if test="adjustDate != null and adjustDate != ''" >
+	    and adjust_date =  #{adjustDate}
+	</if>
+<if test="contractTerm != null and contractTerm != ''" >
+	    and contract_term =  #{contractTerm}
+	</if>
+<if test="mobile != null and mobile != ''" >
+	    and mobile =  #{mobile}
+	</if>
+<if test="email != null and email != ''" >
+	    and email =  #{email}
+	</if>
+<if test="marriage != null and marriage != ''" >
+	    and marriage =  #{marriage}
+	</if>
+<if test="birthFlag != null and birthFlag != ''" >
+	    and birth_flag =  #{birthFlag}
+	</if>
+<if test="education != null and education != ''" >
+	    and education =  #{education}
+	</if>
+<if test="degreeCertifyNo != null and degreeCertifyNo != ''" >
+	    and degree_certify_no =  #{degreeCertifyNo}
+	</if>
+<if test="university != null and university != ''" >
+	    and university =  #{university}
+	</if>
+<if test="major != null and major != ''" >
+	    and major =  #{major}
+	</if>
+<if test="idAddress != null and idAddress != ''" >
+	    and id_address =  #{idAddress}
+	</if>
+<if test="curAddress != null and curAddress != ''" >
+	    and cur_address =  #{curAddress}
+	</if>
+<if test="contact != null and contact != ''" >
+	    and contact =  #{contact}
+	</if>
+<if test="contactPhone != null and contactPhone != ''" >
+	    and contact_phone =  #{contactPhone}
+	</if>
+<if test="wageCardNo != null and wageCardNo != ''" >
+	    and wage_card_no =  #{wageCardNo}
+	</if>
+<if test="wageCardBank != null and wageCardBank != ''" >
+	    and wage_card_bank =  #{wageCardBank}
+	</if>
+<if test="socialSecurity != null and socialSecurity != ''" >
+	    and social_security =  #{socialSecurity}
+	</if>
+<if test="fullFlag != null and fullFlag != ''" >
+	    and full_flag =  #{fullFlag}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+<if test="departId != null and departId != ''" >
+	    and depart_id =  #{departId}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_SALES_SEQ') From dual
+			<!-- Select T_SALES_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_SALES(id,staff_no,name,gender,id_type,id_no,hukou,org_id,level,entry_date,permanent_date,leave_date,adjust_date,contract_term,mobile,email,marriage,birth_flag,education,degree_certify_no,university,major,id_address,cur_address,contact,contact_phone,wage_card_no,wage_card_bank,social_security,full_flag,state,remark,operator,create_time,update_time,depart_id)
+ values( #{id, jdbcType=INTEGER},#{staffNo, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{gender, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{hukou, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{level, jdbcType=VARCHAR},#{entryDate, jdbcType=DATE},#{permanentDate, jdbcType=DATE},#{leaveDate, jdbcType=DATE},#{adjustDate, jdbcType=DATE},#{contractTerm, jdbcType=INTEGER},#{mobile, jdbcType=VARCHAR},#{email, jdbcType=VARCHAR},#{marriage, jdbcType=VARCHAR},#{birthFlag, jdbcType=VARCHAR},#{education, jdbcType=VARCHAR},#{degreeCertifyNo, jdbcType=VARCHAR},#{university, jdbcType=VARCHAR},#{major, jdbcType=VARCHAR},#{idAddress, jdbcType=VARCHAR},#{curAddress, jdbcType=VARCHAR},#{contact, jdbcType=VARCHAR},#{contactPhone, jdbcType=VARCHAR},#{wageCardNo, jdbcType=VARCHAR},#{wageCardBank, jdbcType=VARCHAR},#{socialSecurity, jdbcType=VARCHAR},#{fullFlag, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP},#{departId, jdbcType=INTEGER})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_SALES set 
+	<trim  suffixOverrides="," >
+	staff_no =  #{staffNo, jdbcType=VARCHAR},
+	name =  #{name, jdbcType=VARCHAR},
+	gender =  #{gender, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	hukou =  #{hukou, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	level =  #{level, jdbcType=VARCHAR},
+	entry_date =  #{entryDate, jdbcType=DATE},
+	permanent_date =  #{permanentDate, jdbcType=DATE},
+	leave_date =  #{leaveDate, jdbcType=DATE},
+	adjust_date =  #{adjustDate, jdbcType=DATE},
+	contract_term =  #{contractTerm, jdbcType=INTEGER},
+	mobile =  #{mobile, jdbcType=VARCHAR},
+	email =  #{email, jdbcType=VARCHAR},
+	marriage =  #{marriage, jdbcType=VARCHAR},
+	birth_flag =  #{birthFlag, jdbcType=VARCHAR},
+	education =  #{education, jdbcType=VARCHAR},
+	degree_certify_no =  #{degreeCertifyNo, jdbcType=VARCHAR},
+	university =  #{university, jdbcType=VARCHAR},
+	major =  #{major, jdbcType=VARCHAR},
+	id_address =  #{idAddress, jdbcType=VARCHAR},
+	cur_address =  #{curAddress, jdbcType=VARCHAR},
+	contact =  #{contact, jdbcType=VARCHAR},
+	contact_phone =  #{contactPhone, jdbcType=VARCHAR},
+	wage_card_no =  #{wageCardNo, jdbcType=VARCHAR},
+	wage_card_bank =  #{wageCardBank, jdbcType=VARCHAR},
+	social_security =  #{socialSecurity, jdbcType=VARCHAR},
+	full_flag =  #{fullFlag, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	remark =  #{remark, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	depart_id =  #{departId, jdbcType=INTEGER},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_SALES  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_SALES set 
+	<trim  suffixOverrides="," >
+	<if test="staffNo != null and staffNo != ''" >
+	    staff_no =  #{staffNo, jdbcType=VARCHAR},
+	</if>
+	<if test="name != null and name != ''" >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+	<if test="gender != null and gender != ''" >
+	    gender =  #{gender, jdbcType=VARCHAR},
+	</if>
+	<if test="idType != null and idType != ''" >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+	<if test="hukou != null and hukou != ''" >
+	    hukou =  #{hukou, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="level != null and level != ''" >
+	    level =  #{level, jdbcType=VARCHAR},
+	</if>
+	<if test="entryDate != null and entryDate != ''" >
+	    entry_date =  #{entryDate, jdbcType=DATE},
+	</if>
+	<if test="permanentDate != null and permanentDate != ''" >
+	    permanent_date =  #{permanentDate, jdbcType=DATE},
+	</if>
+	<if test="leaveDate != null and leaveDate != ''" >
+	    leave_date =  #{leaveDate, jdbcType=DATE},
+	</if>
+	<if test="adjustDate != null and adjustDate != ''" >
+	    adjust_date =  #{adjustDate, jdbcType=DATE},
+	</if>
+	<if test="contractTerm != null and contractTerm != ''" >
+	    contract_term =  #{contractTerm, jdbcType=INTEGER},
+	</if>
+	<if test="mobile != null and mobile != ''" >
+	    mobile =  #{mobile, jdbcType=VARCHAR},
+	</if>
+	<if test="email != null and email != ''" >
+	    email =  #{email, jdbcType=VARCHAR},
+	</if>
+	<if test="marriage != null and marriage != ''" >
+	    marriage =  #{marriage, jdbcType=VARCHAR},
+	</if>
+	<if test="birthFlag != null and birthFlag != ''" >
+	    birth_flag =  #{birthFlag, jdbcType=VARCHAR},
+	</if>
+	<if test="education != null and education != ''" >
+	    education =  #{education, jdbcType=VARCHAR},
+	</if>
+	<if test="degreeCertifyNo != null and degreeCertifyNo != ''" >
+	    degree_certify_no =  #{degreeCertifyNo, jdbcType=VARCHAR},
+	</if>
+	<if test="university != null and university != ''" >
+	    university =  #{university, jdbcType=VARCHAR},
+	</if>
+	<if test="major != null and major != ''" >
+	    major =  #{major, jdbcType=VARCHAR},
+	</if>
+	<if test="idAddress != null and idAddress != ''" >
+	    id_address =  #{idAddress, jdbcType=VARCHAR},
+	</if>
+	<if test="curAddress != null and curAddress != ''" >
+	    cur_address =  #{curAddress, jdbcType=VARCHAR},
+	</if>
+	<if test="contact != null and contact != ''" >
+	    contact =  #{contact, jdbcType=VARCHAR},
+	</if>
+	<if test="contactPhone != null and contactPhone != ''" >
+	    contact_phone =  #{contactPhone, jdbcType=VARCHAR},
+	</if>
+	<if test="wageCardNo != null and wageCardNo != ''" >
+	    wage_card_no =  #{wageCardNo, jdbcType=VARCHAR},
+	</if>
+	<if test="wageCardBank != null and wageCardBank != ''" >
+	    wage_card_bank =  #{wageCardBank, jdbcType=VARCHAR},
+	</if>
+	<if test="socialSecurity != null and socialSecurity != ''" >
+	    social_security =  #{socialSecurity, jdbcType=VARCHAR},
+	</if>
+	<if test="fullFlag != null and fullFlag != ''" >
+	    full_flag =  #{fullFlag, jdbcType=VARCHAR},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="remark != null and remark != ''" >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="departId != null and departId != ''" >
+	    depart_id =  #{departId, jdbcType=INTEGER},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 营销人员表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_SALES  where id = #{id}
+</select>
+
+<!-- 营销人员表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_SALES 
+	<!--<include refid="Where_Clause"/>-->
+	where 1=1
+	<if test="staffNo != null and staffNo != ''" >
+	    and staff_no =  #{staffNo}
+	</if>
+	<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    and org_id LIKE CONCAT(#{orgId},'%')
+	</if>
+    <if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+	<if test="departId != null and departId != ''" >
+	    and depart_id =  #{departId}
+	</if>
+</select>
+  	
+<!-- 查询营销人员表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	id,staff_no,name,gender,id_type,id_no,hukou,org_id,
+	(select org_name from T_ORG where org_id =a.org_id) org_name,level,entry_date,permanent_date,leave_date,
+	adjust_date,contract_term,mobile,email,marriage,birth_flag,education,degree_certify_no,university,
+	major,id_address,cur_address,contact,contact_phone,wage_card_no,wage_card_bank,social_security,full_flag,
+	state,remark,operator,create_time,update_time,depart_id,
+	(select d.depart_name from t_depart d where d.id = a.depart_id) departName
+	<!--<include refid="Column_List"/>-->
+	from T_SALES a
+	<!--<include refid="Where_Clause"/>-->
+	where 1=1
+	<if test="staffNo != null and staffNo != ''" >
+	    and staff_no =  #{staffNo}
+	</if>
+	<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    and org_id LIKE CONCAT(#{orgId},'%')
+	</if>
+    <if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+	<if test="departId != null and departId != ''" >
+	    and depart_id =  #{departId}
+	</if>
+	<if test="level != null and level != ''" >
+	    and level =  #{level}
+	</if>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+	</select>
+	
+<!-- 根据id查询 营销人员表 -->
+<select id="queryListSelect"  resultMap="ResultMap" parameterType="map">
+	SELECT * FROM t_sales a WHERE EXISTS(
+	SELECT * FROM t_depart b WHERE b.ORG_ID LIKE CONCAT(#{orgId},'%') AND a.depart_id = b.ID
+	<if test="state != null and state != ''" >
+	    and a.state =  #{state}
+	</if>
+	)
+</select>
+
+<!-- 查询机构主管（排除自己） -->
+<select id="queryExcludeSelf" resultMap="ResultMap"  parameterType="map">
+	SELECT <include refid="Column_List"/>
+	FROM t_sales
+	WHERE 1=1
+	<if test="staffNo != null and staffNo != ''" >
+	    AND staff_no !=  #{staffNo}
+	</if>
+	<if test="name != null and name != ''" >
+	    AND name =  #{name}
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    AND org_id LIKE CONCAT(#{orgId},'%')
+	</if>
+    <if test="state != null and state != ''" >
+	    AND state =  #{state}
+	</if>
+	<if test="departId != null and departId != ''" >
+	    AND depart_id =  #{departId}
+	</if>
+	<if test="level != null and level != ''" >
+	    AND level =  #{level}
+	</if>
+</select>
+
+</mapper>   

@@ -1,0 +1,106 @@
+package com.tera.common
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import com.tera.rule.model.*;
+import com.tera.rule.model.common.*;
+
+global List ruleResult;
+global RuleProlessLog ruleProlessLog;
+
+rule "assignRule_lowestAssign"
+	no-loop true
+	ruleflow-group "assignRuleFlow"
+    when
+        a : ArrayList()
+        b : Integer()
+    then
+		if(a!=null&&!a.isEmpty()){
+			List<AssignUserInfoBean> assignInfo = new ArrayList<AssignUserInfoBean>();
+			for(Object aa : a){
+				AssignUserInfoBean ai = (AssignUserInfoBean)aa;
+				if(ai.getOverstockDay()<=3 && ai.getStatus() != null&&ai.getStatus()==1
+					&& ai.getSurplus()<b){
+					assignInfo.add(ai);
+				}
+			}
+			Collections.sort(assignInfo,  new Comparator<AssignUserInfoBean>(){
+				@Override
+				public int compare(AssignUserInfoBean o1, AssignUserInfoBean o2) { 
+					if(o1.getSurplus()>o2.getSurplus()){
+						return 1;
+					}
+					if(o1.getSurplus()<o2.getSurplus()){
+						return -1;
+					}
+					//如果剩余量相同 判断已做单量
+					if(o1.getSurplus().equals(o2.getSurplus())){
+						if(o1.getProcessed()>o2.getProcessed()){
+							return 1;
+						}
+						if(o1.getProcessed()==o2.getProcessed())return 0;
+						return -1;
+					}
+					return 0;
+				}
+			});
+			
+			//for(AssignUserInfoBean ab: assignInfo)
+			//	System.out.println(ab.toString());
+			if(assignInfo.size()>0){
+				//i.setResult(assignInfo.get(0).getUserId());
+				//ruleResult = assignInfo.get(0).getUserId();
+				//ruleResult.put("ruleResult", assignInfo.get(0).getUserId());
+				ruleResult.add(assignInfo.get(0).getUserId());
+				ruleProlessLog.addRuleInfo(drools.getRule().getName(), "最少分配算法", assignInfo.get(0).getUserId(), "", "分单规则", ""); 
+			}
+		}
+end
+
+rule "assignRule_snakeAssign"
+	no-loop true
+	ruleflow-group "assignRuleFlow"
+    when
+        map : Map()
+    then
+		if(map!=null&&!map.isEmpty()){
+			List<AssignUserInfoBean> assignUserInfoBeans = (List<AssignUserInfoBean>) map.get("assignUserInfoBeans");
+			List<AssignTaskBean> assignTaskBeans = (List<AssignTaskBean>) map.get("assignTaskBeans");
+
+			if (assignUserInfoBeans != null && !assignUserInfoBeans.isEmpty()
+					&& assignTaskBeans != null && !assignTaskBeans.isEmpty()) {
+				// 分配用户随机排序
+				List<AssignUserInfoBean> assignInfoList = new ArrayList<AssignUserInfoBean>();
+			    Random random = new Random();
+			    while (assignUserInfoBeans.size()>0) {
+			    	int ii = random.nextInt(assignUserInfoBeans.size());
+			    	assignInfoList.add(assignUserInfoBeans.get(ii));
+					assignUserInfoBeans.remove(ii);
+				}
+			    // 分配任务
+				int index = 0;
+				boolean boo = true;
+				for (AssignTaskBean assignTaskBean : assignTaskBeans) {
+					if (boo) {
+						assignTaskBean.setUserId(assignInfoList.get(index++).getUserId());
+					} else {
+						assignTaskBean.setUserId(assignInfoList.get(index--).getUserId());
+					}
+					if (index == assignInfoList.size()) {
+						index--;
+						boo = false;
+					} else if (index == -1) {
+						index++;
+						boo = true;
+					}
+					ruleResult.add(assignTaskBean);
+				}
+			}
+		}
+		ruleProlessLog.addRuleInfo(drools.getRule().getName(), "蛇形分配算法", "", "", "分单规则", ""); 
+end

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.archives.dao.ArchiveInfoDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.archives.model.ArchiveInfo" >
+	 <result column="id" property="id"/>          				  
+	 <result column="contract_id" property="contractId"/>  
+	 <result column="name" property="name"/>               
+	 <result column="org_id" property="orgId"/>            
+	 <result column="start_date" property="startDate"/>    
+	 <result column="end_date" property="endDate"/>        
+	 <result column="type" property="type"/>               
+	 <result column="loan_amt" property="loanAmt"/>        
+	 <result column="remarks " property="remarks"/>        
+</resultMap>
+       
+<!-- T_ARCHIVE_INFO table all fields -->
+<sql id="Column_List" >
+	id,	         
+	contract_id, 
+	name,        
+	org_id,      
+	start_date,  
+	end_date,    
+	type,        
+	loan_amt,    
+	remarks
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and contract_id =  #{contractId}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    AND ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+<if test="startDate != null and startDate != ''" >
+	    and start_date =  #{startDate}
+	</if>
+<if test="endDate != null and endDate != ''" >
+	    and end_date =  #{endDate}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="loanAmt != null and loanAmt != ''" >
+	    and loan_amt =  #{loanAmt}
+	</if>
+<if test="remarks != null and remarks != ''" >
+	    and remarks =  #{remarks}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+<!-- 			Select nextval('T_ARCHIVE_INFO_SEQ') From dual -->
+			Select T_ARCHIVE_INFO_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_ARCHIVE_INFO(
+	id,	         
+	contract_id, 
+	name,        
+	org_id,      
+	start_date,  
+	end_date,    
+	type,        
+	loan_amt,    
+	remarks )
+ values( 
+	 #{id, jdbcType=INTEGER},
+	 #{contractId, jdbcType=VARCHAR},
+	 #{name, jdbcType=VARCHAR},
+	 #{orgId, jdbcType=VARCHAR},
+	 #{startDate, jdbcType=DATE},
+	 #{endDate, jdbcType=DATE},
+	 #{type, jdbcType=VARCHAR},
+	 #{loanAmt, jdbcType=DOUBLE},
+	 #{remarks, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_ARCHIVE_INFO set 
+	<trim  suffixOverrides="," >
+	contract_id =  #{contractId, jdbcType=VARCHAR},
+	name =  #{name, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	start_date =  #{startDate, jdbcType=DATE},
+	end_date =  #{endDate, jdbcType=DATE},
+	type =  #{type, jdbcType=VARCHAR},
+	loan_amt =  #{loanAmt, jdbcType=DOUBLE},
+	remarks = #{remarks, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_ARCHIVE_INFO  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_ARCHIVE_INFO set 
+	<trim  suffixOverrides="," >
+		<if test="contractId != null and contractId != ''" >
+			    and contract_id =  #{contractId, jdbcType=VARCHAR},
+			</if>
+		<if test="name != null and name != ''" >
+			    and name =  #{name, jdbcType=VARCHAR},
+			</if>
+		<if test="orgId != null and orgId != ''" >
+			    and org_id =  #{orgId, jdbcType=VARCHAR},
+			</if>
+		<if test="startDate != null and startDate != ''" >
+			    and start_date =  #{startDate, jdbcType=DATE},
+			</if>
+		<if test="endDate != null and endDate != ''" >
+			    and end_date =  #{endDate, jdbcType=DATE},
+			</if>
+		<if test="type != null and type != ''" >
+			    and type =  #{type, jdbcType=VARCHAR},
+			</if>
+		<if test="loanAmt != null and loanAmt != ''" >
+			    and loan_amt =  #{loanAmt, jdbcType=DOUBLE},
+			</if>
+		<if test="remarks != null and remarks != ''" >
+			    and remarks =  #{remarks, jdbcType=VARCHAR},
+			</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 评审会意见 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_ARCHIVE_INFO  where id = #{id}
+</select>
+
+<!-- 根据id查询 评审会意见 -->
+<select id="queryByContractId"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_ARCHIVE_INFO  where contract_id = #{contractId,jdbcType=VARCHAR}
+</select>
+  	
+<!-- 查询评审会意见列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+		t.id,	         
+		t.contract_id, 
+		t.name,        
+		t.org_id,      
+		t.start_date,  
+		t.end_date,    
+		t.type,        
+		t.loan_amt,    
+		t.remarks,
+	(SELECT o.ORG_NAME FROM t_org o WHERE o.ORG_ID = t.ORG_ID) orgName  
+	from T_ARCHIVE_INFO t
+	<where>
+	1=1
+	<if test="contractId != null and contractId != ''">
+		and contract_id LIKE CONCAT(CONCAT('%', #{contractId}), '%')
+	</if>
+	<if test="name != null and name != ''">
+		and name LIKE CONCAT(CONCAT('%', #{name}), '%')
+	</if>
+	<if test="orgId != null and orgId != ''">
+		AND ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	<if test="type != null and type != ''">
+		and type LIKE CONCAT(CONCAT('%', #{type}), '%')
+	</if>
+	<if test="startDateMin != null and startDateMin != ''">
+	    <![CDATA[AND TO_CHAR(START_DATE,'YYYY-MM-DD') >= #{startDateMin} ]]>
+	</if>
+	<if test="startDateMax != null and startDateMax != ''">
+	    <![CDATA[AND TO_CHAR(START_DATE,'YYYY-MM-DD') <= #{startDateMax} ]]>
+	</if>
+	<if test="endDateMin != null and endDateMin != ''">
+	    <![CDATA[AND TO_CHAR(END_DATE,'YYYY-MM-DD') >= #{endDateMin} ]]>
+	</if>
+	<if test="endDateMax != null and endDateMax != ''">
+	    <![CDATA[AND TO_CHAR(END_DATE,'YYYY-MM-DD') <= #{endDateMax} ]]>
+	</if>
+</where>
+</select>
+</mapper>   

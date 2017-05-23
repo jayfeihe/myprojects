@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.HandleOverDueNoRepaymentDAO">
+
+	<select id="queryOverDueNoRepaymentList" parameterType="java.util.Map" resultType="com.hikootech.mqcash.dto.UserForSendSmDTO">
+		SELECT o.bind_mobile bindMobile,o.name userName,t.receivable_amount receivableAmount,c.card_number cardNumber,o.id_card idCard
+		FROM t_user_repayment_plans t
+		INNER JOIN t_user_info o ON t.user_id = o.user_id
+		 INNER join t_user_instalment i on   i.instalment_id =t.instalment_id
+			INNER join t_user_bank_card c on c.bank_card_id = i.bank_card_id
+		WHERE t.plans_status = 50
+		<![CDATA[AND t.plan_repayment_time >= #{startDate} AND t.plan_repayment_time < #{endDate}]]>
+		
+	</select>	
+</mapper>

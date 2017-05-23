@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.common.dao.NodeOrderDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.audit.common.model.NodeOrder" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="type" property="type"/><!--  -->
+	<result column="num" property="num"/><!--  -->
+	<result column="name" property="name"/><!-- 名称 -->
+</resultMap>
+       
+<!-- T_NODE_ORDER table all fields -->
+<sql id="Column_List" >
+	 id,type,num,name
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="num != null and num != ''" >
+	    and num =  #{num}
+	</if>
+<if test="lNum != null and lNum != ''">
+		<![CDATA[and num < #{lNum}]]>
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+	insert into T_NODE_ORDER(id,type,num,name)
+ values( #{id, jdbcType=INTEGER},#{type, jdbcType=VARCHAR},#{num, jdbcType=INTEGER},#{name, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_NODE_ORDER set 
+	<trim  suffixOverrides="," >
+	id =  #{id, jdbcType=INTEGER},
+	type =  #{type, jdbcType=VARCHAR},
+	num =  #{num, jdbcType=INTEGER},
+	name =  #{name, jdbcType=VARCHAR},
+	</trim>
+ 	where  = #{}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_NODE_ORDER  where  = #{}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_NODE_ORDER set 
+	<trim  suffixOverrides="," >
+	<if test="id != null and id != ''  or id==0" >
+	    id =  #{id, jdbcType=INTEGER},
+	</if>
+
+	<if test="type != null and type != '' " >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+
+	<if test="num != null and num != ''  or num==0" >
+	    num =  #{num, jdbcType=INTEGER},
+	</if>
+
+	<if test="name != null and name != '' " >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+
+	</trim>
+	where  = #{}
+</update>
+
+<!-- 根据id查询 流程环节表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_NODE_ORDER  where  = #{}
+</select>
+
+<!-- 流程环节表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_NODE_ORDER 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询流程环节表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_NODE_ORDER 
+	<include refid="Where_Clause"/>
+    order by num
+</select>
+  	
+</mapper>   

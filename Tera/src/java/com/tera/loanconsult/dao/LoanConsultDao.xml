@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.loanconsult.dao.LoanConsultDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.loanconsult.model.LoanConsult" >
+	<result column="id" property="id"/>
+	<result column="type" property="type"/>
+	<result column="name" property="name"/>
+	<result column="amount" property="amount"/>
+	<result column="phone" property="phone"/>
+	<result column="id_type" property="idType"/>
+	<result column="id_no" property="idNo"/>
+	<result column="repayment_source" property="repaymentSource"/>
+	<result column="mortgage" property="mortgage"/>
+	<result column="loan_purpose" property="loanPurpose"/>
+	<result column="start_time" property="startTime"/>
+	<result column="end_time" property="endTime"/>
+	<result column="customer_manager" property="customerManager"/>
+	<result column="operator" property="operator"/>
+	<result column="org_id" property="orgId"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+	<result column="state" property="state"/>
+</resultMap>
+       
+<!-- T_LOAN_CONSULT table all fields -->
+<sql id="Column_List" >
+	 id,type,name,amount,phone,id_type,id_no,repayment_source,mortgage,loan_purpose,start_time,end_time,customer_manager,operator,org_id,create_time,update_time,state
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="amount != null and amount != ''" >
+	    and amount =  #{amount}
+	</if>
+<if test="phone != null and phone != ''" >
+	    and phone =  #{phone}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="repaymentSource != null and repaymentSource != ''" >
+	    and repayment_source =  #{repaymentSource}
+	</if>
+<if test="mortgage != null and mortgage != ''" >
+	    and mortgage =  #{mortgage}
+	</if>
+<if test="loanPurpose != null and loanPurpose != ''" >
+	    and loan_purpose =  #{loanPurpose}
+	</if>
+<if test="startTime != null and startTime != ''" >
+	    and start_time =  #{startTime}
+	</if>
+<if test="endTime != null and endTime != ''" >
+	    and end_time =  #{endTime}
+	</if>
+<if test="customerManager != null and customerManager != ''" >
+	    and customer_manager =  #{customerManager}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_LOAN_CONSULT_SEQ') From dual
+			<!-- Select T_LOAN_CONSULT_SEQ.Nextval From Dual -->
+  </selectKey>
+  insert into T_LOAN_CONSULT(id,type,name,amount,phone,id_type,id_no,repayment_source,mortgage,loan_purpose,start_time,end_time,customer_manager,operator,org_id,create_time,update_time,state)
+ values( #{id, jdbcType=INTEGER},#{type, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{amount, jdbcType=DOUBLE},#{phone, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{repaymentSource, jdbcType=VARCHAR},#{mortgage, jdbcType=VARCHAR},#{loanPurpose, jdbcType=VARCHAR},#{startTime, jdbcType=DATE},#{endTime, jdbcType=DATE},#{customerManager, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP},#{state, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update T_LOAN_CONSULT set type=#{type, jdbcType=VARCHAR},name=#{name, jdbcType=VARCHAR},amount=#{amount, jdbcType=DOUBLE},phone=#{phone, jdbcType=VARCHAR},id_type=#{idType, jdbcType=VARCHAR},id_no=#{idNo, jdbcType=VARCHAR},repayment_source=#{repaymentSource, jdbcType=VARCHAR},mortgage=#{mortgage, jdbcType=VARCHAR},loan_purpose=#{loanPurpose, jdbcType=VARCHAR},start_time=#{startTime, jdbcType=DATE},end_time=#{endTime, jdbcType=DATE},customer_manager=#{customerManager, jdbcType=VARCHAR},operator=#{operator, jdbcType=VARCHAR},org_id=#{orgId, jdbcType=VARCHAR},create_time=#{createTime, jdbcType=TIMESTAMP},update_time=#{updateTime, jdbcType=TIMESTAMP},state=#{state, jdbcType=VARCHAR} where 1=1 and id=#{id}
+ </update>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_LOAN_CONSULT set 
+	<trim  suffixOverrides="," >
+	<if test="type != null and type != ''" >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+	<if test="name != null and name != ''" >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+	<if test="amount != null and amount != ''" >
+	    amount =  #{amount, jdbcType=DOUBLE},
+	</if>
+	<if test="phone != null and phone != ''" >
+	    phone =  #{phone, jdbcType=VARCHAR},
+	</if>
+	<if test="idType != null and idType != ''" >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+	<if test="repaymentSource != null and repaymentSource != ''" >
+	    repayment_source =  #{repaymentSource, jdbcType=VARCHAR},
+	</if>
+	<if test="mortgage != null and mortgage != ''" >
+	    mortgage =  #{mortgage, jdbcType=VARCHAR},
+	</if>
+	<if test="loanPurpose != null and loanPurpose != ''" >
+	    loan_purpose =  #{loanPurpose, jdbcType=VARCHAR},
+	</if>
+	<if test="startTime != null and startTime != ''" >
+	    start_time =  #{startTime, jdbcType=DATE},
+	</if>
+	<if test="endTime != null and endTime != ''" >
+	    end_time =  #{endTime, jdbcType=DATE},
+	</if>
+	<if test="customerManager != null and customerManager != ''" >
+	    customer_manager =  #{customerManager, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete 	 from T_LOAN_CONSULT where 1=1 and id=#{id}
+</delete>
+ 
+<!-- 根据id查询 借款咨询 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+		 from T_LOAN_CONSULT where 1=1 and id=#{id}
+</select>
+
+<!-- 借款咨询 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LOAN_CONSULT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询借款咨询列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LOAN_CONSULT 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

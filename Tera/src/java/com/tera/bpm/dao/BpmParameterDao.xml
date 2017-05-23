@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.bpm.dao.BpmParameterDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.bpm.model.BpmParameter" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="type" property="type"/><!-- 类型 -->
+	<result column="process_name" property="processName"/>
+	<result column="def_id" property="defId"/><!-- 流程定义ID -->
+	<result column="task_id" property="taskId"/><!-- 流程实例ID -->
+	<result column="biz_key" property="bizKey"/><!-- 业务KEY -->
+	<result column="state" property="state"/><!-- 节点 -->
+	<result column="param_name" property="paramName"/><!-- 参数名称 -->
+	<result column="param_value" property="paramValue"/><!-- 参数值 -->
+</resultMap>
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_BPM_PARAMETER_SEQ') From dual
+		  </selectKey>
+	insert into T_BPM_PARAMETER(id,type,def_id,task_id,biz_key,state,param_name,param_value)
+ values( #{id, jdbcType=INTEGER},#{type, jdbcType=VARCHAR},#{defId, jdbcType=INTEGER},#{taskId, jdbcType=INTEGER},#{bizKey, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{paramName, jdbcType=VARCHAR},#{paramValue, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_BPM_PARAMETER set 
+	<trim  suffixOverrides="," >
+	type =  #{type, jdbcType=VARCHAR},
+	def_id =  #{defId, jdbcType=INTEGER},
+	task_id =  #{taskId, jdbcType=INTEGER},
+	biz_key =  #{bizKey, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	param_name =  #{paramName, jdbcType=VARCHAR},
+	param_value =  #{paramValue, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_BPM_PARAMETER  where id = #{id}
+</delete>
+
+<!-- 查询流程参数列表 -->
+<select id="getBpmParameter" resultMap="ResultMap"  parameterType="map">
+	select C.id,type, C.def_id,C.task_id,C.biz_key,C.state,C.param_name,C.param_value
+	from T_Bpm_Def A, T_Bpm_Task B, T_BPM_PARAMETER C
+		where A.Id = B.Def_id and B.ID = C.task_ID
+	<if test="id != null and id != ''" >
+	    and C.id =  #{id}
+	</if>
+	<if test="type != null and type != ''" >
+	    and C.type =  #{type}
+	</if>
+	<if test="processName != null and processName != ''" >
+	    and A.process_name =  #{processName}
+	</if>
+	<if test="defId != null and defId != ''" >
+	    and C.def_id =  #{defId}
+	</if>
+	<if test="taskId != null and taskId != ''" >
+	    and C.task_id =  #{taskId}
+	</if>
+	<if test="bizKey != null and bizKey != ''" >
+	    and C.biz_key =  #{bizKey}
+	</if>
+	<if test="state != null and state != ''" >
+	    and C.state =  #{state}
+	</if>
+	<if test="paramName != null and paramName != ''" >
+	    and C.param_name =  #{paramName}
+	</if>
+	<if test="paramValue != null and paramValue != ''" >
+	    and C.param_value =  #{paramValue}
+	</if>
+</select>
+  	
+</mapper>   

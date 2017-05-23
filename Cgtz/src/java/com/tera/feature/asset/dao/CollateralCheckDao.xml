@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.asset.dao.CollateralCheckDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.asset.model.CollateralCheck" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="collateral_id" property="collateralId"/><!-- 抵押物ID -->
+	<result column="state" property="state"/><!-- 检查情况 -->
+	<result column="remark" property="remark"/><!-- 检查说明 -->
+	<result column="check_time" property="checkTime"/><!-- 检查时间 -->
+	<result column="check_uid" property="checkUid"/><!-- 检查操作人 -->
+</resultMap>
+       
+<!-- T_COLLATERAL_CHECK table all fields -->
+<sql id="Column_List" >
+	 id,collateral_id,state,remark,check_time,
+	 (select t_user.name from t_user where t_collateral_check.check_uid=t_user.login_id)check_uid
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="collateralId != null and collateralId != ''" >
+	    and collateral_id =  #{collateralId}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="checkTime != null and checkTime != ''" >
+	    and check_time =  #{checkTime}
+	</if>
+<if test="checkUid != null and checkUid != ''" >
+	    and check_uid =  #{checkUid}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_COLLATERAL_CHECK_SEQ') From dual -->
+			Select T_COLLATERAL_CHECK_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_COLLATERAL_CHECK(id,collateral_id,state,remark,check_time,check_uid)
+ values( #{id, jdbcType=INTEGER},#{collateralId, jdbcType=INTEGER},#{state, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{checkTime, jdbcType=TIMESTAMP},#{checkUid, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_COLLATERAL_CHECK set 
+	<trim  suffixOverrides="," >
+	collateral_id =  #{collateralId, jdbcType=INTEGER},
+	state =  #{state, jdbcType=VARCHAR},
+	remark =  #{remark, jdbcType=VARCHAR},
+	check_time =  #{checkTime, jdbcType=TIMESTAMP},
+	check_uid =  #{checkUid, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_COLLATERAL_CHECK  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_COLLATERAL_CHECK set 
+	<trim  suffixOverrides="," >
+
+	<if test="collateralId != null and collateralId != ''  or collateralId==0" >
+	    collateral_id =  #{collateralId, jdbcType=INTEGER},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="checkTime != null and checkTime != '' " >
+	    check_time =  #{checkTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="checkUid != null and checkUid != '' " >
+	    check_uid =  #{checkUid, jdbcType=VARCHAR},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 押品检查信息记录
+ -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_COLLATERAL_CHECK  where id = #{id}
+</select>
+
+<!-- 押品检查信息记录
+ 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_COLLATERAL_CHECK 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询押品检查信息记录
+列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_COLLATERAL_CHECK 
+	<include refid="Where_Clause"/>
+	ORDER BY CHECK_TIME
+</select>
+  	
+</mapper>   

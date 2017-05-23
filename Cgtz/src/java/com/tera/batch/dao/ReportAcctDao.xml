@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.batch.dao.ReportAcctDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.batch.model.ReportAcct" >
+	<result column="id" property="id"/><!-- id -->
+	<result column="org_id" property="orgId"/><!-- 分公司 -->
+	<result column="product" property="product"/><!-- 产品 -->
+	<result column="nor_num" property="norNum"/><!-- 未到期未收回笔数 -->
+	<result column="nor_amt" property="norAmt"/><!-- 未到期未收回金额 -->
+	<result column="over_num" property="overNum"/><!-- 已到期未收回笔数 -->
+	<result column="over_amt" property="overAmt"/><!-- 已到期未收回金额 -->
+	<result column="all_num" property="allNum"/><!-- 债权总笔数 -->
+	<result column="all_amt" property="allAmt"/><!-- 债权总金额 -->
+	<result column="tran_num" property="tranNum"/><!-- 转贷笔数 -->
+	<result column="tran_amt" property="tranAmt"/><!-- 转贷金额 -->
+	<result column="tran_rate" property="tranRate"/><!-- 转贷金额转贷比(转贷金额/存量) -->
+	<result column="tran_few_amt" property="tranFewAmt"/><!-- 转贷次数<=3项目金额 -->
+	<result column="tran_more_amt" property="tranMoreAmt"/><!-- 转贷次数>3项目金额 -->
+	<result column="create_date" property="createDate"/><!-- 创建日期 -->
+</resultMap>
+       
+<!-- T_REPORT_ACCT table all fields -->
+<sql id="Column_List" >
+	 id,org_id,product,nor_num,nor_amt,over_num,over_amt,all_num,all_amt,tran_num,tran_amt,tran_rate,tran_few_amt,tran_more_amt,create_date
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="product != null and product != ''" >
+	    and product =  #{product}
+	</if>
+<if test="norNum != null and norNum != ''" >
+	    and nor_num =  #{norNum}
+	</if>
+<if test="norAmt != null and norAmt != ''" >
+	    and nor_amt =  #{norAmt}
+	</if>
+<if test="overNum != null and overNum != ''" >
+	    and over_num =  #{overNum}
+	</if>
+<if test="overAmt != null and overAmt != ''" >
+	    and over_amt =  #{overAmt}
+	</if>
+<if test="allNum != null and allNum != ''" >
+	    and all_num =  #{allNum}
+	</if>
+<if test="allAmt != null and allAmt != ''" >
+	    and all_amt =  #{allAmt}
+	</if>
+<if test="tranNum != null and tranNum != ''" >
+	    and tran_num =  #{tranNum}
+	</if>
+<if test="tranAmt != null and tranAmt != ''" >
+	    and tran_amt =  #{tranAmt}
+	</if>
+<if test="tranRate != null and tranRate != ''" >
+	    and tran_rate =  #{tranRate}
+	</if>
+<if test="tranFewAmt != null and tranFewAmt != ''" >
+	    and tran_few_amt =  #{tranFewAmt}
+	</if>
+<if test="tranMoreAmt != null and tranMoreAmt != ''" >
+	    and tran_more_amt =  #{tranMoreAmt}
+	</if>
+<if test="createDate != null and createDate != ''" >
+	    and create_date =  #{createDate}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+		<!--	Select nextval('T_REPORT_ACCT_SEQ') From dual -->
+			 Select T_REPORT_ACCT_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_REPORT_ACCT(id,org_id,product,nor_num,nor_amt,over_num,over_amt,all_num,all_amt,tran_num,tran_amt,tran_rate,tran_few_amt,tran_more_amt,create_date)
+ values( #{id, jdbcType=INTEGER},#{orgId, jdbcType=VARCHAR},#{product, jdbcType=VARCHAR},#{norNum, jdbcType=INTEGER},#{norAmt, jdbcType=DOUBLE},#{overNum, jdbcType=INTEGER},#{overAmt, jdbcType=DOUBLE},#{allNum, jdbcType=INTEGER},#{allAmt, jdbcType=DOUBLE},#{tranNum, jdbcType=INTEGER},#{tranAmt, jdbcType=DOUBLE},#{tranRate, jdbcType=DOUBLE},#{tranFewAmt, jdbcType=DOUBLE},#{tranMoreAmt, jdbcType=DOUBLE},#{createDate, jdbcType=DATE})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_REPORT_ACCT set 
+	<trim  suffixOverrides="," >
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	product =  #{product, jdbcType=VARCHAR},
+	nor_num =  #{norNum, jdbcType=INTEGER},
+	nor_amt =  #{norAmt, jdbcType=DOUBLE},
+	over_num =  #{overNum, jdbcType=INTEGER},
+	over_amt =  #{overAmt, jdbcType=DOUBLE},
+	all_num =  #{allNum, jdbcType=INTEGER},
+	all_amt =  #{allAmt, jdbcType=DOUBLE},
+	tran_num =  #{tranNum, jdbcType=INTEGER},
+	tran_amt =  #{tranAmt, jdbcType=DOUBLE},
+	tran_rate =  #{tranRate, jdbcType=DOUBLE},
+	tran_few_amt =  #{tranFewAmt, jdbcType=DOUBLE},
+	tran_more_amt =  #{tranMoreAmt, jdbcType=DOUBLE},
+	create_date =  #{createDate, jdbcType=DATE},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_REPORT_ACCT  where id = #{id}
+</delete>
+
+<!-- 根据日期批量删除 -->
+<delete id="deleteByDate" parameterType="Object">
+	delete from T_REPORT_ACCT  where   to_char(create_date, 'yyyy-mm-dd')  = #{delDate}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_REPORT_ACCT set 
+	<trim  suffixOverrides="," >
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="product != null and product != '' " >
+	    product =  #{product, jdbcType=VARCHAR},
+	</if>
+
+	<if test="norNum != null and norNum != ''  or norNum==0" >
+	    nor_num =  #{norNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="norAmt != null and norAmt != ''  or norAmt==0" >
+	    nor_amt =  #{norAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="overNum != null and overNum != ''  or overNum==0" >
+	    over_num =  #{overNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="overAmt != null and overAmt != ''  or overAmt==0" >
+	    over_amt =  #{overAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="allNum != null and allNum != ''  or allNum==0" >
+	    all_num =  #{allNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="allAmt != null and allAmt != ''  or allAmt==0" >
+	    all_amt =  #{allAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="tranNum != null and tranNum != ''  or tranNum==0" >
+	    tran_num =  #{tranNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="tranAmt != null and tranAmt != ''  or tranAmt==0" >
+	    tran_amt =  #{tranAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="tranRate != null and tranRate != ''  or tranRate==0" >
+	    tran_rate =  #{tranRate, jdbcType=DOUBLE},
+	</if>
+
+	<if test="tranFewAmt != null and tranFewAmt != ''  or tranFewAmt==0" >
+	    tran_few_amt =  #{tranFewAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="tranMoreAmt != null and tranMoreAmt != ''  or tranMoreAmt==0" >
+	    tran_more_amt =  #{tranMoreAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="createDate != null and createDate != '' " >
+	    create_date =  #{createDate, jdbcType=DATE},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 报表数据，每天汇总一次。各个公司的存量，转贷情况等统计 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_REPORT_ACCT  where id = #{id}
+</select>
+
+<!-- 报表数据，每天汇总一次。各个公司的存量，转贷情况等统计 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_REPORT_ACCT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询报表数据，每天汇总一次。各个公司的存量，转贷情况等统计列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_REPORT_ACCT 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 查询未到期的存量-->
+<select id="queryNor" resultMap="ResultMap"  parameterType="Object">
+	SELECT BASEA.ORG ORG_ID,BASEA.PRODUCT ,count(BASEA.LOAN_ID) NOR_NUM,sum(BASEA.LOAN_AMT) NOR_AMT from T_CONTRACT cona,T_LOAN_BASE basea WHERE cona.LOAN_ID=basea.LOAN_ID AND cona.STATE='2' AND 
+	<![CDATA[ to_char(BASEA.END_DATE, 'yyyy-mm-dd')  > #{dateNow}]]>
+	GROUP BY basea.ORG,basea.PRODUCT
+</select>
+
+<!-- 查询过期的存量-->
+<select id="queryOver" resultMap="ResultMap"  parameterType="Object">
+	
+	SELECT BASEB.ORG ORG_ID,BASEB.PRODUCT ,count(BASEB.LOAN_ID) OVER_NUM,sum(BASEB.LOAN_AMT) OVER_AMT from T_CONTRACT conb,T_LOAN_BASE baseb WHERE conb.LOAN_ID=baseb.LOAN_ID AND conb.STATE='2' AND 
+	<![CDATA[to_char(BASEB.END_DATE, 'yyyy-mm-dd') <= #{dateNow}]]>
+	GROUP BY baseb.ORG,baseb.PRODUCT
+</select>
+<!--转贷情况统计-->
+<select id="queryTran" resultMap="ResultMap"  parameterType="Object">
+	SELECT 
+	aa.ORG_ID,
+	aa.PRODUCT,
+	NVL (AA.TRAN_NUM ,0),
+	NVL (AA.TRAN_AMT,0),
+	NVL (BB.TRAN_FEW_AMT,0),
+	NVL (cc.TRAN_MORE_AMT,0)
+	FROM
+	(SELECT BASEA.ORG ORG_ID,BASEA.PRODUCT ,count(BASEA.LOAN_ID) TRAN_NUM,sum(BASEA.LOAN_AMT) TRAN_AMT from T_CONTRACT cona,T_LOAN_BASE basea WHERE cona.LOAN_ID=basea.LOAN_ID AND cona.STATE='2'  
+	and BASEA.IS_RENEW='1' 
+	GROUP BY basea.ORG,basea.PRODUCT) aa
+	LEFT JOIN
+	(SELECT BASEb.ORG ORG_ID,BASEB.PRODUCT ,sum(BASEB.LOAN_AMT) TRAN_FEW_AMT from T_CONTRACT conb,T_LOAN_BASE baseb WHERE conb.LOAN_ID=baseb.LOAN_ID AND conb.STATE='2'  
+	and BASEb.IS_RENEW='1' 
+	<![CDATA[AND BASEB.RENEW_NUM <=3]]>
+	GROUP BY baseb.ORG,baseb.PRODUCT) bb ON aa.ORG_ID=BB.ORG_ID  AND AA.PRODUCT=BB.PRODUCT
+	LEFT JOIN 
+	(SELECT BASEC.ORG ORG_ID,BASEC.PRODUCT ,sum(BASEC.LOAN_AMT) TRAN_MORE_AMT from T_CONTRACT conc,T_LOAN_BASE basec WHERE conc.LOAN_ID=basec.LOAN_ID AND conc.STATE='2'  
+	and BASEC.IS_RENEW='1' 
+	<![CDATA[AND BASEC.RENEW_NUM >3]]>
+	GROUP BY basec.ORG,basec.PRODUCT) cc ON aa.ORG_ID=cc.ORG_ID  AND AA.PRODUCT=cc.PRODUCT
+	 
+
+</select>
+
+
+
+  	
+</mapper>   

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.check.dao.CheckOverDueDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.check.model.CheckOverDue" >
+	<!--合同表  -->
+	<result column="contract_id" property="contractId"/><!-- 合同id -->
+	<result column="loan_id" property="loanId"/><!--申请编号 -->
+	<result column="org" property="org"/><!-- 负责机构 -->
+	<result column="late_num" property="lateNum"/><!-- 逾期期数 -->
+	<result column="overdue_type" property="overdueType"/><!--逾期类型 -->
+	<result column="check_report_state" property="checkReportState"/><!-- 逾期报告状态 -->
+	<result column="check_state" property="checkState"/><!-- 稽查标识 -->
+	<result column="is_accept" property="isAccept"/><!--当期逾期是否受理 -->
+	<result column="check_in_time" property="checkInTime"/><!--进入稽查的时间-->
+	<result column="is_check" property="isCheck"/><!--是否处于稽查状态-->
+	<result column="check_source" property="checkSource"/><!--稽查来源 -->
+	<!--申请表  loanbase  -->
+	<result column="loan_name" property="loanName"/><!-- 姓名/机构名称-->
+	<result column="product" property="product"/><!-- 产品-->
+	<result column="salesman" property="salesMan"/><!-- 业务员 -->
+	<result column="loan_amt" property="loanAmt"/><!-- 借款金额-->
+    <!--org表  -->
+    <result column="org_name" property="orgName"/><!--负责机构名称-->
+    <!--user表  -->
+    <result column="sale_name" property="saleName"/><!--负责机构名称-->
+	<!--还款计划表  -->
+	<result column="ret_date" property="retDate"/><!-- 最后还款日 -->
+	<result column="late_days" property="lateDays"/><!-- 本月应还利息-->
+	<result column="dueCaptial" property="dueCaptial"/><!-- 本金逾期金额-->
+	<result column="dueInterest" property="dueInterest"/><!--利息逾期金额-->
+</resultMap>
+
+<sql id="Column_List" >
+		con.LOAN_ID,
+		con.CONTRACT_ID,
+		base.org,
+		(SELECT org_name from T_ORG where T_ORG.ORG_ID=BASE.ORG)org_name,
+		con.LATE_NUM,
+		con.OVERDUE_TYPE,
+		con.CHECK_REPORT_STATE,
+		con.CHECK_STATE,
+		con.IS_ACCEPT,
+		con.CHECK_IN_TIME,
+		con.IS_CHECK,
+		con.CHECK_SOURCE,
+		base.PRODUCT,
+		base. NAME AS loan_name,
+		base.LOAN_AMT,
+		base.SALESMAN,
+		(SELECT name from T_USER where T_USER.LOGIN_ID=BASE.SALESMAN)sale_name,
+		newplan.ret_date,
+		TRUNC (SYSDATE - newplan.RET_DATE) AS late_days,
+		newplan.PLAN_INTEREST - newplan.REAL_INTEREST AS dueInterest,
+		newplan.PLAN_CAPITAL - newplan.REAL_CAPITAL AS dueCapital
+</sql>
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="loanId != null and loanId != ''" >
+	    and con.loan_id =  #{loanId}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and con.contract_id =  #{contractId}
+	</if>
+<if test="org != null and org != ''" >
+	    and con.org like  CONCAT(#{org},'%')
+	</if>
+<if test="orgName != null and orgName != ''" >
+	    and org_name =  #{orgName}
+	</if>
+<if test="saleName != null and saleName != ''" >
+	    and sale_name =  #{saleName}
+	</if>
+<if test="lateNum != null and lateNum != ''" >
+	    and con.late_num =  #{lateNum}
+	</if>		
+<if test="overdueType != null and overdueType != ''" >
+	    and con.overdue_type =  #{overdueType}
+	</if>
+<if test="checkReportState != null and checkReportState != ''" >
+	    and con.CHECK_REPORT_STATE =  #{checkReportState}
+	</if>
+<if test="checkState != null and checkState != ''" >
+	    and con.check_state =  #{checkState}
+	</if>
+<if test="isAccept != null and isAccept != ''" >
+	    and con.is_accept =  #{isAccept}
+	</if>
+
+<if test="checkInTime != null and checkInTime != ''" >
+	    and con.check_in_time =  #{checkInTime}
+	</if>
+<if test="isCheck != null and isCheck != ''" >
+	    and con.is_check =  #{isCheck}
+	</if>
+<if test="checkSource != null and checkSource != ''" >
+	    and con.check_source =  #{checkSource}
+	</if>
+<if test="product != null and product != ''" >
+    and base.product =  #{product}
+</if>
+<if test="loanName != null and loanName != ''" >
+    and base.name =  #{loanName}
+</if>
+<if test="loanAmt != null and loanAmt != ''" >
+    and base.loan_amt =  #{loanAmt}
+</if>
+<if test="salesMan != null and salesMan != ''" >
+    and base.salesman =  #{salesMan}
+</if>
+<if test="lateDays != null and lateDays != ''" >
+    and late_days =  #{lateDays}
+</if>
+<if test="startTime != null and startTime != ''" >
+<![CDATA[and newplan.ret_date >= #{startTime}]]>
+</if>
+<if test="endTime != null and endTime != ''" >
+<![CDATA[and newplan.ret_date <= #{endTime}]]>
+</if>
+</trim>
+</sql>
+   
+<!-- 业务员，稽查人员催收跟进记录表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from (select 
+	<include refid="Column_List"/>
+	from t_contract con
+	LEFT JOIN t_loan_base base ON base.LOAN_ID = con.LOAN_ID
+	LEFT JOIN t_ret_plan newplan ON newplan.NUM = con.LATE_NUM AND con.CONTRACT_ID = newplan.CONTRACT_ID
+	<include refid="Where_Clause"/> 
+	and con.IS_CHECK='1' and newplan.STATE='1' and con.state in('2','4')
+	)
+</select>
+  	
+<!-- 查询业务员，稽查人员催收跟进记录表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from t_contract con
+	LEFT JOIN t_loan_base base ON base.LOAN_ID = con.LOAN_ID
+	LEFT JOIN t_ret_plan newplan ON newplan.NUM = con.LATE_NUM AND con.CONTRACT_ID = newplan.CONTRACT_ID
+	<include refid="Where_Clause"/> 
+	and con.IS_CHECK='1' and newplan.STATE='1' and con.state in('2','4')
+
+</select>
+  	
+</mapper>   

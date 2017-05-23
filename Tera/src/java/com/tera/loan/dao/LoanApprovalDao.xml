@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.loan.dao.LoanApprovalDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.loan.model.LoanApproval" >
+	<result column="app_id" property="appId"/>
+	<result column="self_credit_mark" property="selfCreditMark"/>
+	<result column="self_credit_card_dvalue" property="selfCreditCardDvalue"/>
+	<result column="self_credit_card_damount" property="selfCreditCardDamount"/>
+	<result column="self_credit_card_remark" property="selfCreditCardRemark"/>
+	<result column="self_loan_dvalue" property="selfLoanDvalue"/>
+	<result column="self_loan_damount" property="selfLoanDamount"/>
+	<result column="self_loan_remark" property="selfLoanRemark"/>
+	<result column="spouse_credit_mark" property="spouseCreditMark"/>
+	<result column="spouse_credit_card_dvalue" property="spouseCreditCardDvalue"/>
+	<result column="spouse_credit_card_damount" property="spouseCreditCardDamount"/>
+	<result column="spouse_credit_card_remark" property="spouseCreditCardRemark"/>
+	<result column="spouse_loan_dvalue" property="spouseLoanDvalue"/>
+	<result column="spouse_loan_damount" property="spouseLoanDamount"/>
+	<result column="spouse_loan_remark" property="spouseLoanRemark"/>
+	<result column="ent_loan_mark" property="entLoanMark"/>
+	<result column="ent_loan_dvalue" property="entLoanDvalue"/>
+	<result column="ent_loan_damount" property="entLoanDamount"/>
+	<result column="ent_loan_expiry_date" property="entLoanExpiryDate"/>
+	<result column="ent_loan_remark" property="entLoanRemark"/>
+	<result column="court_company" property="courtCompany"/>
+	<result column="court_company_remark" property="courtCompanyRemark"/>
+	<result column="court_legal" property="courtLegal"/>
+	<result column="court_legal_remark" property="courtLegalRemark"/>
+	<result column="court_guarantee" property="courtGuarantee"/>
+	<result column="court_guarantee_remark" property="courtGuaranteeRemark"/>
+	<result column="industry_network" property="industryNetwork"/>
+	<result column="industry_network_remark" property="industryNetworkRemark"/>
+	<result column="org_network" property="orgNetwork"/>
+	<result column="org_network_remark" property="orgNetworkRemark"/>
+	<result column="network_114" property="network114"/>
+	<result column="network_114_remark" property="network114Remark"/>
+	<result column="tel_legal" property="telLegal"/>
+	<result column="tel_legal_remark" property="telLegalRemark"/>
+	<result column="tel_agent" property="telAgent"/>
+	<result column="tel_agent_remark" property="telAgentRemark"/>
+	<result column="tel_cfo" property="telCfo"/>
+	<result column="tel_cfo_remark" property="telCfoRemark"/>
+	<result column="tel_contract" property="telContract"/>
+	<result column="tel_contract_remark" property="telContractRemark"/>
+	<result column="approval_amount" property="approvalAmount"/>
+	<result column="approval_period" property="approvalPeriod"/>
+	<result column="approval_service_rate" property="approvalServiceRate"/>
+	<result column="third_party_contract" property="thirdPartyContract"/>
+	<result column="guarantee_condition" property="guaranteeCondition"/>
+	<result column="match_type" property="matchType"/>
+	<result column="operator" property="operator"/>
+	<result column="org_id" property="orgId"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+</resultMap>
+       
+<!-- T_LOAN_APPROVAL table all fields -->
+<sql id="Column_List" >
+	 app_id,self_credit_mark,self_credit_card_dvalue,self_credit_card_damount,self_credit_card_remark,self_loan_dvalue,self_loan_damount,self_loan_remark,spouse_credit_mark,spouse_credit_card_dvalue,spouse_credit_card_damount,spouse_credit_card_remark,spouse_loan_dvalue,spouse_loan_damount,spouse_loan_remark,ent_loan_mark,ent_loan_dvalue,ent_loan_damount,ent_loan_expiry_date,ent_loan_remark,court_company,court_company_remark,court_legal,court_legal_remark,court_guarantee,court_guarantee_remark,industry_network,industry_network_remark,org_network,org_network_remark,network_114,network_114_remark,tel_legal,tel_legal_remark,tel_agent,tel_agent_remark,tel_cfo,tel_cfo_remark,tel_contract,tel_contract_remark,approval_amount,approval_period,approval_service_rate,third_party_contract,guarantee_condition,match_type,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="selfCreditMark != null and selfCreditMark != ''" >
+	    and self_credit_mark =  #{selfCreditMark}
+	</if>
+<if test="selfCreditCardDvalue != null and selfCreditCardDvalue != ''" >
+	    and self_credit_card_dvalue =  #{selfCreditCardDvalue}
+	</if>
+<if test="selfCreditCardDamount != null and selfCreditCardDamount != ''" >
+	    and self_credit_card_damount =  #{selfCreditCardDamount}
+	</if>
+<if test="selfCreditCardRemark != null and selfCreditCardRemark != ''" >
+	    and self_credit_card_remark =  #{selfCreditCardRemark}
+	</if>
+<if test="selfLoanDvalue != null and selfLoanDvalue != ''" >
+	    and self_loan_dvalue =  #{selfLoanDvalue}
+	</if>
+<if test="selfLoanDamount != null and selfLoanDamount != ''" >
+	    and self_loan_damount =  #{selfLoanDamount}
+	</if>
+<if test="selfLoanRemark != null and selfLoanRemark != ''" >
+	    and self_loan_remark =  #{selfLoanRemark}
+	</if>
+<if test="spouseCreditMark != null and spouseCreditMark != ''" >
+	    and spouse_credit_mark =  #{spouseCreditMark}
+	</if>
+<if test="spouseCreditCardDvalue != null and spouseCreditCardDvalue != ''" >
+	    and spouse_credit_card_dvalue =  #{spouseCreditCardDvalue}
+	</if>
+<if test="spouseCreditCardDamount != null and spouseCreditCardDamount != ''" >
+	    and spouse_credit_card_damount =  #{spouseCreditCardDamount}
+	</if>
+<if test="spouseCreditCardRemark != null and spouseCreditCardRemark != ''" >
+	    and spouse_credit_card_remark =  #{spouseCreditCardRemark}
+	</if>
+<if test="spouseLoanDvalue != null and spouseLoanDvalue != ''" >
+	    and spouse_loan_dvalue =  #{spouseLoanDvalue}
+	</if>
+<if test="spouseLoanDamount != null and spouseLoanDamount != ''" >
+	    and spouse_loan_damount =  #{spouseLoanDamount}
+	</if>
+<if test="spouseLoanRemark != null and spouseLoanRemark != ''" >
+	    and spouse_loan_remark =  #{spouseLoanRemark}
+	</if>
+<if test="entLoanMark != null and entLoanMark != ''" >
+	    and ent_loan_mark =  #{entLoanMark}
+	</if>
+<if test="entLoanDvalue != null and entLoanDvalue != ''" >
+	    and ent_loan_dvalue =  #{entLoanDvalue}
+	</if>
+<if test="entLoanDamount != null and entLoanDamount != ''" >
+	    and ent_loan_damount =  #{entLoanDamount}
+	</if>
+<if test="entLoanExpiryDate != null and entLoanExpiryDate != ''" >
+	    and ent_loan_expiry_date =  #{entLoanExpiryDate}
+	</if>
+<if test="entLoanRemark != null and entLoanRemark != ''" >
+	    and ent_loan_remark =  #{entLoanRemark}
+	</if>
+<if test="courtCompany != null and courtCompany != ''" >
+	    and court_company =  #{courtCompany}
+	</if>
+<if test="courtCompanyRemark != null and courtCompanyRemark != ''" >
+	    and court_company_remark =  #{courtCompanyRemark}
+	</if>
+<if test="courtLegal != null and courtLegal != ''" >
+	    and court_legal =  #{courtLegal}
+	</if>
+<if test="courtLegalRemark != null and courtLegalRemark != ''" >
+	    and court_legal_remark =  #{courtLegalRemark}
+	</if>
+<if test="courtGuarantee != null and courtGuarantee != ''" >
+	    and court_guarantee =  #{courtGuarantee}
+	</if>
+<if test="courtGuaranteeRemark != null and courtGuaranteeRemark != ''" >
+	    and court_guarantee_remark =  #{courtGuaranteeRemark}
+	</if>
+<if test="industryNetwork != null and industryNetwork != ''" >
+	    and industry_network =  #{industryNetwork}
+	</if>
+<if test="industryNetworkRemark != null and industryNetworkRemark != ''" >
+	    and industry_network_remark =  #{industryNetworkRemark}
+	</if>
+<if test="orgNetwork != null and orgNetwork != ''" >
+	    and org_network =  #{orgNetwork}
+	</if>
+<if test="orgNetworkRemark != null and orgNetworkRemark != ''" >
+	    and org_network_remark =  #{orgNetworkRemark}
+	</if>
+<if test="network114 != null and network114 != ''" >
+	    and network_114 =  #{network114}
+	</if>
+<if test="network114Remark != null and network114Remark != ''" >
+	    and network_114_remark =  #{network114Remark}
+	</if>
+<if test="telLegal != null and telLegal != ''" >
+	    and tel_legal =  #{telLegal}
+	</if>
+<if test="telLegalRemark != null and telLegalRemark != ''" >
+	    and tel_legal_remark =  #{telLegalRemark}
+	</if>
+<if test="telAgent != null and telAgent != ''" >
+	    and tel_agent =  #{telAgent}
+	</if>
+<if test="telAgentRemark != null and telAgentRemark != ''" >
+	    and tel_agent_remark =  #{telAgentRemark}
+	</if>
+<if test="telCfo != null and telCfo != ''" >
+	    and tel_cfo =  #{telCfo}
+	</if>
+<if test="telCfoRemark != null and telCfoRemark != ''" >
+	    and tel_cfo_remark =  #{telCfoRemark}
+	</if>
+<if test="telContract != null and telContract != ''" >
+	    and tel_contract =  #{telContract}
+	</if>
+<if test="telContractRemark != null and telContractRemark != ''" >
+	    and tel_contract_remark =  #{telContractRemark}
+	</if>
+<if test="approvalAmount != null and approvalAmount != ''" >
+	    and approval_amount =  #{approvalAmount}
+	</if>
+<if test="approvalPeriod != null and approvalPeriod != ''" >
+	    and approval_period =  #{approvalPeriod}
+	</if>
+<if test="approvalServiceRate != null and approvalServiceRate != ''" >
+	    and approval_service_rate =  #{approvalServiceRate}
+	</if>
+<if test="thirdPartyContract != null and thirdPartyContract != ''" >
+	    and third_party_contract =  #{thirdPartyContract}
+	</if>
+<if test="guaranteeCondition != null and guaranteeCondition != ''" >
+	    and guarantee_condition =  #{guaranteeCondition}
+	</if>
+<if test="matchType != null and matchType != ''" >
+	    and match_type =  #{matchType}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="com.tera.loan.model.LoanApproval" >
+	insert into T_LOAN_APPROVAL(app_id,self_credit_mark,self_credit_card_dvalue,self_credit_card_damount,self_credit_card_remark,self_loan_dvalue,self_loan_damount,self_loan_remark,spouse_credit_mark,spouse_credit_card_dvalue,spouse_credit_card_damount,spouse_credit_card_remark,spouse_loan_dvalue,spouse_loan_damount,spouse_loan_remark,ent_loan_mark,ent_loan_dvalue,ent_loan_damount,ent_loan_expiry_date,ent_loan_remark,court_company,court_company_remark,court_legal,court_legal_remark,court_guarantee,court_guarantee_remark,industry_network,industry_network_remark,org_network,org_network_remark,network_114,network_114_remark,tel_legal,tel_legal_remark,tel_agent,tel_agent_remark,tel_cfo,tel_cfo_remark,tel_contract,tel_contract_remark,approval_amount,approval_period,approval_service_rate,third_party_contract,guarantee_condition,match_type,operator,org_id,create_time,update_time)
+ values( #{appId, jdbcType=VARCHAR},#{selfCreditMark, jdbcType=VARCHAR},#{selfCreditCardDvalue, jdbcType=VARCHAR},#{selfCreditCardDamount, jdbcType=DOUBLE},#{selfCreditCardRemark, jdbcType=VARCHAR},#{selfLoanDvalue, jdbcType=VARCHAR},#{selfLoanDamount, jdbcType=DOUBLE},#{selfLoanRemark, jdbcType=VARCHAR},#{spouseCreditMark, jdbcType=VARCHAR},#{spouseCreditCardDvalue, jdbcType=VARCHAR},#{spouseCreditCardDamount, jdbcType=DOUBLE},#{spouseCreditCardRemark, jdbcType=VARCHAR},#{spouseLoanDvalue, jdbcType=VARCHAR},#{spouseLoanDamount, jdbcType=DOUBLE},#{spouseLoanRemark, jdbcType=VARCHAR},#{entLoanMark, jdbcType=VARCHAR},#{entLoanDvalue, jdbcType=VARCHAR},#{entLoanDamount, jdbcType=DOUBLE},#{entLoanExpiryDate, jdbcType=DATE},#{entLoanRemark, jdbcType=VARCHAR},#{courtCompany, jdbcType=VARCHAR},#{courtCompanyRemark, jdbcType=VARCHAR},#{courtLegal, jdbcType=VARCHAR},#{courtLegalRemark, jdbcType=VARCHAR},#{courtGuarantee, jdbcType=VARCHAR},#{courtGuaranteeRemark, jdbcType=VARCHAR},#{industryNetwork, jdbcType=VARCHAR},#{industryNetworkRemark, jdbcType=VARCHAR},#{orgNetwork, jdbcType=VARCHAR},#{orgNetworkRemark, jdbcType=VARCHAR},#{network114, jdbcType=VARCHAR},#{network114Remark, jdbcType=VARCHAR},#{telLegal, jdbcType=VARCHAR},#{telLegalRemark, jdbcType=VARCHAR},#{telAgent, jdbcType=VARCHAR},#{telAgentRemark, jdbcType=VARCHAR},#{telCfo, jdbcType=VARCHAR},#{telCfoRemark, jdbcType=VARCHAR},#{telContract, jdbcType=VARCHAR},#{telContractRemark, jdbcType=VARCHAR},#{approvalAmount, jdbcType=DOUBLE},#{approvalPeriod, jdbcType=INTEGER},#{approvalServiceRate, jdbcType=DOUBLE},#{thirdPartyContract, jdbcType=VARCHAR},#{guaranteeCondition, jdbcType=VARCHAR},#{matchType, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="com.tera.loan.model.LoanApproval" >
+ 	update T_LOAN_APPROVAL set 
+	<trim  suffixOverrides="," >
+	self_credit_mark =  #{selfCreditMark, jdbcType=VARCHAR},
+	self_credit_card_dvalue =  #{selfCreditCardDvalue, jdbcType=VARCHAR},
+	self_credit_card_damount =  #{selfCreditCardDamount, jdbcType=DOUBLE},
+	self_credit_card_remark =  #{selfCreditCardRemark, jdbcType=VARCHAR},
+	self_loan_dvalue =  #{selfLoanDvalue, jdbcType=VARCHAR},
+	self_loan_damount =  #{selfLoanDamount, jdbcType=DOUBLE},
+	self_loan_remark =  #{selfLoanRemark, jdbcType=VARCHAR},
+	spouse_credit_mark =  #{spouseCreditMark, jdbcType=VARCHAR},
+	spouse_credit_card_dvalue =  #{spouseCreditCardDvalue, jdbcType=VARCHAR},
+	spouse_credit_card_damount =  #{spouseCreditCardDamount, jdbcType=DOUBLE},
+	spouse_credit_card_remark =  #{spouseCreditCardRemark, jdbcType=VARCHAR},
+	spouse_loan_dvalue =  #{spouseLoanDvalue, jdbcType=VARCHAR},
+	spouse_loan_damount =  #{spouseLoanDamount, jdbcType=DOUBLE},
+	spouse_loan_remark =  #{spouseLoanRemark, jdbcType=VARCHAR},
+	ent_loan_mark =  #{entLoanMark, jdbcType=VARCHAR},
+	ent_loan_dvalue =  #{entLoanDvalue, jdbcType=VARCHAR},
+	ent_loan_damount =  #{entLoanDamount, jdbcType=DOUBLE},
+	ent_loan_expiry_date =  #{entLoanExpiryDate, jdbcType=DATE},
+	ent_loan_remark =  #{entLoanRemark, jdbcType=VARCHAR},
+	court_company =  #{courtCompany, jdbcType=VARCHAR},
+	court_company_remark =  #{courtCompanyRemark, jdbcType=VARCHAR},
+	court_legal =  #{courtLegal, jdbcType=VARCHAR},
+	court_legal_remark =  #{courtLegalRemark, jdbcType=VARCHAR},
+	court_guarantee =  #{courtGuarantee, jdbcType=VARCHAR},
+	court_guarantee_remark =  #{courtGuaranteeRemark, jdbcType=VARCHAR},
+	industry_network =  #{industryNetwork, jdbcType=VARCHAR},
+	industry_network_remark =  #{industryNetworkRemark, jdbcType=VARCHAR},
+	org_network =  #{orgNetwork, jdbcType=VARCHAR},
+	org_network_remark =  #{orgNetworkRemark, jdbcType=VARCHAR},
+	network_114 =  #{network114, jdbcType=VARCHAR},
+	network_114_remark =  #{network114Remark, jdbcType=VARCHAR},
+	tel_legal =  #{telLegal, jdbcType=VARCHAR},
+	tel_legal_remark =  #{telLegalRemark, jdbcType=VARCHAR},
+	tel_agent =  #{telAgent, jdbcType=VARCHAR},
+	tel_agent_remark =  #{telAgentRemark, jdbcType=VARCHAR},
+	tel_cfo =  #{telCfo, jdbcType=VARCHAR},
+	tel_cfo_remark =  #{telCfoRemark, jdbcType=VARCHAR},
+	tel_contract =  #{telContract, jdbcType=VARCHAR},
+	tel_contract_remark =  #{telContractRemark, jdbcType=VARCHAR},
+	approval_amount =  #{approvalAmount, jdbcType=DOUBLE},
+	approval_period =  #{approvalPeriod, jdbcType=INTEGER},
+	approval_service_rate =  #{approvalServiceRate, jdbcType=DOUBLE},
+	third_party_contract =  #{thirdPartyContract, jdbcType=VARCHAR},
+	guarantee_condition =  #{guaranteeCondition, jdbcType=VARCHAR},
+	match_type =  #{matchType, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where app_id = #{app_id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="java.lang.String">
+	delete from T_LOAN_APPROVAL  where app_id = #{app_id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="com.tera.loan.model.LoanApproval" >
+	update T_LOAN_APPROVAL set 
+	<trim  suffixOverrides="," >
+	<if test="selfCreditMark != null and selfCreditMark != ''" >
+	    self_credit_mark =  #{selfCreditMark, jdbcType=VARCHAR},
+	</if>
+	<if test="selfCreditCardDvalue != null and selfCreditCardDvalue != ''" >
+	    self_credit_card_dvalue =  #{selfCreditCardDvalue, jdbcType=VARCHAR},
+	</if>
+	<if test="selfCreditCardDamount != null and selfCreditCardDamount != ''" >
+	    self_credit_card_damount =  #{selfCreditCardDamount, jdbcType=DOUBLE},
+	</if>
+	<if test="selfCreditCardRemark != null and selfCreditCardRemark != ''" >
+	    self_credit_card_remark =  #{selfCreditCardRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="selfLoanDvalue != null and selfLoanDvalue != ''" >
+	    self_loan_dvalue =  #{selfLoanDvalue, jdbcType=VARCHAR},
+	</if>
+	<if test="selfLoanDamount != null and selfLoanDamount != ''" >
+	    self_loan_damount =  #{selfLoanDamount, jdbcType=DOUBLE},
+	</if>
+	<if test="selfLoanRemark != null and selfLoanRemark != ''" >
+	    self_loan_remark =  #{selfLoanRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="spouseCreditMark != null and spouseCreditMark != ''" >
+	    spouse_credit_mark =  #{spouseCreditMark, jdbcType=VARCHAR},
+	</if>
+	<if test="spouseCreditCardDvalue != null and spouseCreditCardDvalue != ''" >
+	    spouse_credit_card_dvalue =  #{spouseCreditCardDvalue, jdbcType=VARCHAR},
+	</if>
+	<if test="spouseCreditCardDamount != null and spouseCreditCardDamount != ''" >
+	    spouse_credit_card_damount =  #{spouseCreditCardDamount, jdbcType=DOUBLE},
+	</if>
+	<if test="spouseCreditCardRemark != null and spouseCreditCardRemark != ''" >
+	    spouse_credit_card_remark =  #{spouseCreditCardRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="spouseLoanDvalue != null and spouseLoanDvalue != ''" >
+	    spouse_loan_dvalue =  #{spouseLoanDvalue, jdbcType=VARCHAR},
+	</if>
+	<if test="spouseLoanDamount != null and spouseLoanDamount != ''" >
+	    spouse_loan_damount =  #{spouseLoanDamount, jdbcType=DOUBLE},
+	</if>
+	<if test="spouseLoanRemark != null and spouseLoanRemark != ''" >
+	    spouse_loan_remark =  #{spouseLoanRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="entLoanMark != null and entLoanMark != ''" >
+	    ent_loan_mark =  #{entLoanMark, jdbcType=VARCHAR},
+	</if>
+	<if test="entLoanDvalue != null and entLoanDvalue != ''" >
+	    ent_loan_dvalue =  #{entLoanDvalue, jdbcType=VARCHAR},
+	</if>
+	<if test="entLoanDamount != null and entLoanDamount != ''" >
+	    ent_loan_damount =  #{entLoanDamount, jdbcType=DOUBLE},
+	</if>
+	<if test="entLoanExpiryDate != null and entLoanExpiryDate != ''" >
+	    ent_loan_expiry_date =  #{entLoanExpiryDate, jdbcType=DATE},
+	</if>
+	<if test="entLoanRemark != null and entLoanRemark != ''" >
+	    ent_loan_remark =  #{entLoanRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="courtCompany != null and courtCompany != ''" >
+	    court_company =  #{courtCompany, jdbcType=VARCHAR},
+	</if>
+	<if test="courtCompanyRemark != null and courtCompanyRemark != ''" >
+	    court_company_remark =  #{courtCompanyRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="courtLegal != null and courtLegal != ''" >
+	    court_legal =  #{courtLegal, jdbcType=VARCHAR},
+	</if>
+	<if test="courtLegalRemark != null and courtLegalRemark != ''" >
+	    court_legal_remark =  #{courtLegalRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="courtGuarantee != null and courtGuarantee != ''" >
+	    court_guarantee =  #{courtGuarantee, jdbcType=VARCHAR},
+	</if>
+	<if test="courtGuaranteeRemark != null and courtGuaranteeRemark != ''" >
+	    court_guarantee_remark =  #{courtGuaranteeRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="industryNetwork != null and industryNetwork != ''" >
+	    industry_network =  #{industryNetwork, jdbcType=VARCHAR},
+	</if>
+	<if test="industryNetworkRemark != null and industryNetworkRemark != ''" >
+	    industry_network_remark =  #{industryNetworkRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="orgNetwork != null and orgNetwork != ''" >
+	    org_network =  #{orgNetwork, jdbcType=VARCHAR},
+	</if>
+	<if test="orgNetworkRemark != null and orgNetworkRemark != ''" >
+	    org_network_remark =  #{orgNetworkRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="network114 != null and network114 != ''" >
+	    network_114 =  #{network114, jdbcType=VARCHAR},
+	</if>
+	<if test="network114Remark != null and network114Remark != ''" >
+	    network_114_remark =  #{network114Remark, jdbcType=VARCHAR},
+	</if>
+	<if test="telLegal != null and telLegal != ''" >
+	    tel_legal =  #{telLegal, jdbcType=VARCHAR},
+	</if>
+	<if test="telLegalRemark != null and telLegalRemark != ''" >
+	    tel_legal_remark =  #{telLegalRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="telAgent != null and telAgent != ''" >
+	    tel_agent =  #{telAgent, jdbcType=VARCHAR},
+	</if>
+	<if test="telAgentRemark != null and telAgentRemark != ''" >
+	    tel_agent_remark =  #{telAgentRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="telCfo != null and telCfo != ''" >
+	    tel_cfo =  #{telCfo, jdbcType=VARCHAR},
+	</if>
+	<if test="telCfoRemark != null and telCfoRemark != ''" >
+	    tel_cfo_remark =  #{telCfoRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="telContract != null and telContract != ''" >
+	    tel_contract =  #{telContract, jdbcType=VARCHAR},
+	</if>
+	<if test="telContractRemark != null and telContractRemark != ''" >
+	    tel_contract_remark =  #{telContractRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="approvalAmount != null and approvalAmount != ''" >
+	    approval_amount =  #{approvalAmount, jdbcType=DOUBLE},
+	</if>
+	<if test="approvalPeriod != null and approvalPeriod != ''" >
+	    approval_period =  #{approvalPeriod, jdbcType=INTEGER},
+	</if>
+	<if test="approvalServiceRate != null and approvalServiceRate != ''" >
+	    approval_service_rate =  #{approvalServiceRate, jdbcType=DOUBLE},
+	</if>
+	<if test="thirdPartyContract != null and thirdPartyContract != ''" >
+	    third_party_contract =  #{thirdPartyContract, jdbcType=VARCHAR},
+	</if>
+	<if test="guaranteeCondition != null and guaranteeCondition != ''" >
+	    guarantee_condition =  #{guaranteeCondition, jdbcType=VARCHAR},
+	</if>
+	<if test="matchType != null and matchType != ''" >
+	    match_type =  #{matchType, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where app_id = #{appId}
+</update>
+
+<!-- 根据id查询 借款申请审批表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="java.lang.String">
+	select <include refid="Column_List" /> 
+	 from T_LOAN_APPROVAL  where app_id = #{appId}
+</select>
+
+<!-- 借款申请审批表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LOAN_APPROVAL 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询借款申请审批表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LOAN_APPROVAL 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

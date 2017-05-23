@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.message.dao.MsglogDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.message.model.Msglog" >
+	<result column="id" property="id"/><!-- id -->
+	<result column="template_id" property="templateId"/><!-- 模板ID -->
+	<result column="msg_id" property="msgId"/><!-- 信息ID -->
+	<result column="type" property="type"/><!-- 类型 -->
+	<result column="contract_no" property="contractNo"/><!-- 合同编号 -->
+	<result column="customer_name" property="customerName"/><!-- 客户姓名 -->
+	<result column="id_type" property="idType"/><!-- 证件类型 -->
+	<result column="id_no" property="idNo"/><!-- 证件号码 -->
+	<result column="mobile_tel" property="mobileTel"/><!-- 联系方式 -->
+	<result column="repayment_date" property="repaymentDate"/><!-- 还款日 -->
+	<result column="days" property="days"/><!-- 天数 -->
+	<result column="msg_content" property="msgContent"/><!-- 信息内容 -->
+	<result column="send_state" property="sendState"/><!-- 发送状态 -->
+	<result column="send_time" property="sendTime"/><!-- 发送时间 -->
+	<result column="receive_state" property="receiveState"/><!-- 接收状态 -->
+	<result column="receive_time" property="receiveTime"/><!-- 接收时间 -->
+	<result column="remark" property="remark"/><!-- 备注 -->
+	<result column="create_uid" property="createUid"/><!-- 创建人 -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="update_uid" property="updateUid"/><!-- 修改人 -->
+	<result column="update_time" property="updateTime"/><!-- 修改时间 -->
+</resultMap>
+       
+<!-- T_MSGLOG table all fields -->
+<sql id="Column_List" >
+	 id,template_id,msg_id,type,contract_no,customer_name,id_type,id_no,mobile_tel,repayment_date,days,msg_content,send_state,send_time,receive_state,receive_time,remark,create_uid,create_time,update_uid,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="templateId != null and templateId != ''" >
+	    and template_id =  #{templateId}
+	</if>
+<if test="msgId != null and msgId != ''" >
+	    and msg_id =  #{msgId}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="contractNo != null and contractNo != ''" >
+	    and contract_no =  #{contractNo}
+	</if>
+<if test="customerName != null and customerName != ''" >
+	    and customer_name =  #{customerName}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="mobileTel != null and mobileTel != ''" >
+	    and mobile_tel =  #{mobileTel}
+	</if>
+<if test="repaymentDate != null and repaymentDate != ''" >
+	    and repayment_date =  #{repaymentDate}
+	</if>
+<if test="days != null and days != ''" >
+	    and days =  #{days}
+	</if>
+<if test="msgContent != null and msgContent != ''" >
+	    and msg_content =  #{msgContent}
+	</if>
+<if test="sendState != null and sendState != ''" >
+	    and send_state =  #{sendState}
+	</if>
+<if test="sendTime != null and sendTime != ''" >
+	    and send_time =  #{sendTime}
+	</if>
+	<if test="sendTimeMin!=null and sendTimeMin!=''">
+		<![CDATA[AND send_time >= #{sendTimeMin}]]>
+	</if>
+	<if test="sendTimeMax!=null and sendTimeMax!=''">
+		<![CDATA[AND send_time < #{sendTimeMax}]]>
+	</if>
+<if test="receiveState != null and receiveState != ''" >
+	    and receive_state =  #{receiveState}
+	</if>
+<if test="receiveTime != null and receiveTime != ''" >
+	    and receive_time =  #{receiveTime}
+	</if>
+	<if test="receiveTimeMin!=null and receiveTimeMin!=''">
+		<![CDATA[AND receive_time >= #{receiveTimeMin}]]>
+	</if>
+	<if test="receiveTimeMax!=null and receiveTimeMax!=''">
+		<![CDATA[AND receive_time < #{receiveTimeMax}]]>
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="createUid != null and createUid != ''" >
+	    and create_uid =  #{createUid}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateUid != null and updateUid != ''" >
+	    and update_uid =  #{updateUid}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_MSGLOG_SEQ') From dual
+			<!-- Select T_MSGLOG_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_MSGLOG(id,template_id,msg_id,type,contract_no,customer_name,id_type,id_no,mobile_tel,repayment_date,days,msg_content,send_state,send_time,receive_state,receive_time,remark,create_uid,create_time,update_uid,update_time)
+ values( #{id, jdbcType=INTEGER},#{templateId, jdbcType=INTEGER},#{msgId, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{contractNo, jdbcType=VARCHAR},#{customerName, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{mobileTel, jdbcType=VARCHAR},#{repaymentDate, jdbcType=DATE},#{days, jdbcType=INTEGER},#{msgContent, jdbcType=VARCHAR},#{sendState, jdbcType=VARCHAR},#{sendTime, jdbcType=TIMESTAMP},#{receiveState, jdbcType=VARCHAR},#{receiveTime, jdbcType=TIMESTAMP},#{remark, jdbcType=VARCHAR},#{createUid, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateUid, jdbcType=VARCHAR},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_MSGLOG set 
+	<trim  suffixOverrides="," >
+	template_id =  #{templateId, jdbcType=INTEGER},
+	msg_id =  #{msgId, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	contract_no =  #{contractNo, jdbcType=VARCHAR},
+	customer_name =  #{customerName, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	mobile_tel =  #{mobileTel, jdbcType=VARCHAR},
+	repayment_date =  #{repaymentDate, jdbcType=DATE},
+	days =  #{days, jdbcType=INTEGER},
+	msg_content =  #{msgContent, jdbcType=VARCHAR},
+	send_state =  #{sendState, jdbcType=VARCHAR},
+	send_time =  #{sendTime, jdbcType=TIMESTAMP},
+	receive_state =  #{receiveState, jdbcType=VARCHAR},
+	receive_time =  #{receiveTime, jdbcType=TIMESTAMP},
+	remark =  #{remark, jdbcType=VARCHAR},
+	create_uid =  #{createUid, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_uid =  #{updateUid, jdbcType=VARCHAR},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_MSGLOG  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_MSGLOG set 
+	<trim  suffixOverrides="," >
+
+	<if test="templateId != null and templateId != ''  or templateId==0" >
+	    template_id =  #{templateId, jdbcType=INTEGER},
+	</if>
+
+	<if test="msgId != null and msgId != '' " >
+	    msg_id =  #{msgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="type != null and type != '' " >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractNo != null and contractNo != '' " >
+	    contract_no =  #{contractNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="customerName != null and customerName != '' " >
+	    customer_name =  #{customerName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idType != null and idType != '' " >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idNo != null and idNo != '' " >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="mobileTel != null and mobileTel != '' " >
+	    mobile_tel =  #{mobileTel, jdbcType=VARCHAR},
+	</if>
+
+	<if test="repaymentDate != null and repaymentDate != '' " >
+	    repayment_date =  #{repaymentDate, jdbcType=DATE},
+	</if>
+
+	<if test="days != null and days != ''  or days==0" >
+	    days =  #{days, jdbcType=INTEGER},
+	</if>
+
+	<if test="msgContent != null and msgContent != '' " >
+	    msg_content =  #{msgContent, jdbcType=VARCHAR},
+	</if>
+
+	<if test="sendState != null and sendState != '' " >
+	    send_state =  #{sendState, jdbcType=VARCHAR},
+	</if>
+
+	<if test="sendTime != null and sendTime != '' " >
+	    send_time =  #{sendTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="receiveState != null and receiveState != '' " >
+	    receive_state =  #{receiveState, jdbcType=VARCHAR},
+	</if>
+
+	<if test="receiveTime != null and receiveTime != '' " >
+	    receive_time =  #{receiveTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createUid != null and createUid != '' " >
+	    create_uid =  #{createUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateUid != null and updateUid != '' " >
+	    update_uid =  #{updateUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 短信日志表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_MSGLOG  where id = #{id}
+</select>
+
+<!-- 短信日志表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_MSGLOG 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询短信日志表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_MSGLOG 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

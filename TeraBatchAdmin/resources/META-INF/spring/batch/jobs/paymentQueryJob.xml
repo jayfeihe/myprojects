@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:task="http://www.springframework.org/schema/task"  
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/batch 
+	http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+	http://www.springframework.org/schema/context
+  	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+ 	http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+    
+    
+     <job id="paymentQueryJob"  xmlns="http://www.springframework.org/schema/batch">
+        <step id="paymentQueryStep">
+            <tasklet>
+                <chunk reader="paymentQueryReader" writer="paymentQueryWriter" processor="paymentQueryProcessor" commit-interval="1000">
+                </chunk>
+            </tasklet>
+        </step>
+    </job>
+
+    <bean id="paymentQueryReader"
+        class="org.mybatis.spring.batch.MyBatisPagingItemReader" scope="step">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+		<property name="queryId" value="com.tera.batch.errorLog.dao.BatchErrorLogDao.queryCount"/>
+		<property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="paymentQuerylend2match" class="com.tera.match.model.Lend2match" scope="prototype"></bean>
+    
+    <bean id="paymentQueryProcessor" class="com.tera.batch.payment.processor.PaymentQueryProcessor">
+     	<property name="allinPayTranxService" ref="allinPayTranxService"/>
+     	<property name="batchErrorLogDao" ref="batchErrorLogDao"/>
+	</bean>
+	
+     <bean id="paymentQueryWriter"
+        class="com.tera.batch.payment.writer.Writer" scope="step">
+    </bean>
+	
+</beans>

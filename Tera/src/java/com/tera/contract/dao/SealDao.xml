@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.contract.dao.SealDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.contract.model.Seal" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="code_type" property="codeType"/><!-- 1出借端2借款端 -->
+	<result column="contract_no" property="contractNo"/><!-- 合同号 -->
+	<result column="seal_no" property="sealNo"/><!-- 合同章编号 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_SEAL table all fields -->
+<sql id="Column_List" >
+	 id,code_type,contract_no,seal_no,state,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="codeType != null and codeType != ''" >
+	    and code_type =  #{codeType}
+	</if>
+<if test="contractNo != null and contractNo != ''" >
+	    and contract_no =  #{contractNo}
+	</if>
+<if test="sealNo != null and sealNo != ''" >
+	    and seal_no =  #{sealNo}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_SEAL_SEQ') From dual
+			<!-- Select T_SEAL_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_SEAL(id,code_type,contract_no,seal_no,state,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{codeType, jdbcType=INTEGER},#{contractNo, jdbcType=VARCHAR},#{sealNo, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_SEAL set 
+	<trim  suffixOverrides="," >
+	code_type =  #{codeType, jdbcType=INTEGER},
+	contract_no =  #{contractNo, jdbcType=VARCHAR},
+	seal_no =  #{sealNo, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_SEAL  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_SEAL set 
+	<trim  suffixOverrides="," >
+	<if test="codeType != null and codeType != ''" >
+	    code_type =  #{codeType, jdbcType=INTEGER},
+	</if>
+	<if test="contractNo != null and contractNo != ''" >
+	    contract_no =  #{contractNo, jdbcType=VARCHAR},
+	</if>
+	<if test="sealNo != null and sealNo != ''" >
+	    seal_no =  #{sealNo, jdbcType=VARCHAR},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询  -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_SEAL  where id = #{id}
+</select>
+
+<!--  列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_SEAL 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_SEAL 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+ <select id="getSealCode" resultType="string">
+ 	SELECT LPAD (nextval('T_SEAL_SEQ'),6,'0') FROM DUAL
+ </select>	
+</mapper>   

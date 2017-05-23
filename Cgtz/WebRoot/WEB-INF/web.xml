@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app id="ascweb" version="2.4"
+	xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/applicationContext.xml,/WEB-INF/daoContext.xml,/WEB-INF/fasts_spring.xml,/WEB-INF/taskContext.xml
+		</param-value>
+	</context-param>
+	<!-- 
+			,/WEB-INF/xfireContext.xml
+			,classpath:org/codehaus/xfire/spring/xfire.xml
+	
+	<context-param> 
+		<param-name>log4jConfigLocation</param-name> 
+		<param-value>WEB-INF/log4j.properties</param-value> 
+	</context-param> 
+	
+	<context-param> 
+		<param-name>log4jRefreshInterval</param-name> 
+		<param-value>50000</param-value> 
+	</context-param> 
+
+	<listener>  
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class> 
+	</listener> 
+  -->
+
+	
+
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	
+	<!-- session listener -->
+	<listener>
+		<listener-class>
+			com.tera.sys.listenner.TeraSessionListener
+		</listener-class>
+	</listener>
+	
+	<listener>
+		<listener-class>
+			com.tera.sys.listenner.InitListener
+		</listener-class>
+	</listener>
+	
+	
+
+	<!-- =================== servlet 配置==================== -->
+
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/webContext.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+	<!-- 监控统计servlet 页面配置 -->
+    <servlet>  
+        <servlet-name>DruidStatView</servlet-name>  
+        <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>  
+    </servlet>  
+    <servlet-mapping>  
+        <servlet-name>DruidStatView</servlet-name>  
+        <url-pattern>/druid/*</url-pattern>  
+    </servlet-mapping>  
+	
+	<!-- =================== servlet 配置==================== -->
+	
+	<!-- =================== filter 配置==================== -->
+	<filter>
+		<filter-name>Encoding</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>	
+	</filter>
+	
+	<filter>
+		<filter-name>AccessFilter</filter-name>
+		<filter-class>com.tera.sys.filter.AccessFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>Encoding</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>AccessFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>AccessFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+
+	<!-- 监控统计filter配置 -->
+    <filter>  
+       <filter-name>DruidWebStatFilter</filter-name>  
+       <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>  
+       <init-param>  
+           <param-name>exclusions</param-name>  
+           <param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>  
+       </init-param>  
+     </filter>  
+     <filter-mapping>  
+       <filter-name>DruidWebStatFilter</filter-name>  
+       <url-pattern>/*</url-pattern>  
+     </filter-mapping>  
+	<!-- =================== filter 配置==================== -->
+
+	<jsp-config>
+	  	<taglib>
+		    <taglib-uri>/ta</taglib-uri>
+		    <taglib-location>/WEB-INF/tlds/tera-tag.tld</taglib-location>
+	  	</taglib>
+	</jsp-config>
+
+	<welcome-file-list>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.do</welcome-file>
+	</welcome-file-list>
+
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+
+</web-app>

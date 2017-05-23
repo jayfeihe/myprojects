@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.account.dao.BillOnlineDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.audit.account.model.BillOnline" >
+	<result column="id" property="id"/><!--  -->
+	<result column="type" property="type"/><!-- (1出借人模式2直投) -->
+	<result column="loan_id" property="loanId"/><!--  -->
+	<result column="contract_id" property="contractId"/><!-- 合同id -->
+	<result column="lend_usre_id" property="lendUsreId"/><!--  -->
+	<result column="proof" property="proof"/><!--  -->
+	<result column="amt" property="amt"/><!--  -->
+	<result column="remark" property="remark"/><!--  -->
+	<result column="state" property="state"/><!--  -->
+	<result column="create_time" property="createTime"/><!--  -->
+	<result column="create_uid" property="createUid"/><!--  -->
+</resultMap>
+       
+<!-- T_BILL_ONLINE table all fields -->
+<sql id="Column_List" >
+	 id,type,loan_id,contract_id,lend_usre_id,proof,amt,remark,state,create_time,create_uid
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and loan_id =  #{loanId}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and contract_id =  #{contractId}
+	</if>
+<if test="lendUsreId != null and lendUsreId != ''" >
+	    and lend_usre_id =  #{lendUsreId}
+	</if>
+<if test="proof != null and proof != ''" >
+	    and proof =  #{proof}
+	</if>
+<if test="amt != null and amt != ''" >
+	    and amt =  #{amt}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="createUid != null and createUid != ''" >
+	    and create_uid =  #{createUid}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+<!-- 			Select nextval('T_BILL_ONLINE_SEQ') From dual -->
+			Select T_BILL_ONLINE_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_BILL_ONLINE(id,type,loan_id,contract_id,lend_usre_id,proof,amt,remark,state,create_time,create_uid)
+ values( #{id, jdbcType=INTEGER},#{type, jdbcType=VARCHAR},#{loanId, jdbcType=VARCHAR},#{contractId, jdbcType=VARCHAR},#{lendUsreId, jdbcType=VARCHAR},#{proof, jdbcType=VARCHAR},#{amt, jdbcType=DOUBLE},#{remark, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{createUid, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_BILL_ONLINE set 
+	<trim  suffixOverrides="," >
+	type =  #{type, jdbcType=VARCHAR},
+	loan_id =  #{loanId, jdbcType=VARCHAR},
+	contract_id =  #{contractId, jdbcType=VARCHAR},
+	lend_usre_id =  #{lendUsreId, jdbcType=VARCHAR},
+	proof =  #{proof, jdbcType=VARCHAR},
+	amt =  #{amt, jdbcType=DOUBLE},
+	remark =  #{remark, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	create_uid =  #{createUid, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_BILL_ONLINE  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_BILL_ONLINE set 
+	<trim  suffixOverrides="," >
+
+	<if test="type != null and type != '' " >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanId != null and loanId != '' " >
+	    loan_id =  #{loanId, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="contractId != null and contractId != '' " >
+	    contract_id =  #{contractId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lendUsreId != null and lendUsreId != '' " >
+	    lend_usre_id =  #{lendUsreId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="proof != null and proof != '' " >
+	    proof =  #{proof, jdbcType=VARCHAR},
+	</if>
+
+	<if test="amt != null and amt != ''  or amt==0" >
+	    amt =  #{amt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="createUid != null and createUid != '' " >
+	    create_uid =  #{createUid, jdbcType=VARCHAR},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 线上放款表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_BILL_ONLINE  where id = #{id}
+</select>
+
+<!-- 线上放款表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_BILL_ONLINE 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询线上放款表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_BILL_ONLINE 
+	<include refid="Where_Clause"/>
+</select>
+  	
+</mapper>   

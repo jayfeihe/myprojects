@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.UserRepaymentFailurePlansDAO">
+	 <insert id="insertUserRepaymentFailurePlans" parameterType="com.hikootech.mqcash.po.UserRepaymentFailurePlans">
+	 	insert into t_user_repayment_failure_plans(
+	 		id,
+	 		repayment_plans_id,
+	 		failure_time,
+	 		repeat_repayment_times,
+	 		status,
+	 		create_time,
+	 		update_time,
+	 		operator)  
+	 	values(
+	 		#{id},
+	 		#{repaymentPlansId},
+	 		#{failureTime},
+	 		#{repeatRepaymentTimes},
+	 		#{status},
+	 		#{createTime},
+	 		#{updateTime},
+	 		#{operator})
+	 </insert>
+	
+</mapper>

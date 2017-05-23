@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.sys.dao.DataDictionaryDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.sys.model.DataDictionary" >
+	<result column="id" property="id"/>
+	<result column="key_name" property="keyName"/>
+	<result column="key_prop" property="keyProp"/>
+	<result column="key_value" property="keyValue"/>
+	<result column="description" property="description"/>
+	<result column="parent_key_prop" property="parentKeyProp"/>
+</resultMap>
+       
+<!-- T_DATA_DICTIONARY table all fields -->
+<sql id="Column_List" >
+	 id,key_name,key_prop,key_value,description,parent_key_prop
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="keyName != null and keyName != ''" >
+	    and key_name =  #{keyName}
+	</if>
+<if test="keyProp != null and keyProp != ''" >
+	    and key_prop =  #{keyProp}
+	</if>
+<if test="keyValue != null and keyValue != ''" >
+	    and key_value =  #{keyValue}
+	</if>
+<if test="description != null and description != ''" >
+	    and description =  #{description}
+	</if>
+<if test="parentKeyProp != null and parentKeyProp != ''" >
+	    and parent_key_prop =  #{parentKeyProp}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_DATA_DICTIONARY_SEQ') From dual
+			<!-- Select T_DATA_DICTIONARY_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_DATA_DICTIONARY(id,key_name,key_prop,key_value,description,parent_key_prop)
+ values( #{id, jdbcType=INTEGER},#{keyName, jdbcType=VARCHAR},#{keyProp, jdbcType=VARCHAR},#{keyValue, jdbcType=VARCHAR},#{description, jdbcType=VARCHAR},#{parentKeyProp, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_DATA_DICTIONARY set 
+	<trim  suffixOverrides="," >
+	id =  #{id, jdbcType=INTEGER},
+	key_name =  #{keyName, jdbcType=VARCHAR},
+	key_prop =  #{keyProp, jdbcType=VARCHAR},
+	key_value =  #{keyValue, jdbcType=VARCHAR},
+	description =  #{description, jdbcType=VARCHAR},
+	parent_key_prop =  #{parentKeyProp, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_DATA_DICTIONARY  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_DATA_DICTIONARY set 
+	<trim  suffixOverrides="," >
+	<if test="keyName != null and keyName != ''" >
+	    key_name =  #{keyName, jdbcType=VARCHAR},
+	</if>
+	<if test="keyProp != null and keyProp != ''" >
+	    key_prop =  #{keyProp, jdbcType=VARCHAR},
+	</if>
+	<if test="keyValue != null and keyValue != ''" >
+	    key_value =  #{keyValue, jdbcType=VARCHAR},
+	</if>
+	<if test="description != null and description != ''" >
+	    description =  #{description, jdbcType=VARCHAR},
+	</if>
+	<if test="parentKeyProp != null and parentKeyProp != ''" >
+	    parent_key_prop =  #{parentKeyProp, jdbcType=VARCHAR},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 数据字典 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_DATA_DICTIONARY  where id = #{id}
+</select>
+
+<!-- 数据字典 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_DATA_DICTIONARY 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询数据字典列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_DATA_DICTIONARY 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+<select id="queryKeyNamesAndParentKeys" resultType="string">
+	(SELECT DISTINCT(CONCAT(d.KEY_NAME,',','*')) mapKey FROM `t_data_dictionary` d
+		WHERE d.PARENT_KEY_PROP is NULL OR d.PARENT_KEY_PROP ='')
+	UNION
+	(SELECT DISTINCT(CONCAT(d.KEY_NAME,',',d.PARENT_KEY_PROP)) mapKey FROM `t_data_dictionary` d
+		WHERE d.PARENT_KEY_PROP is NOT NULL AND d.PARENT_KEY_PROP !='')
+</select>
+</mapper>   

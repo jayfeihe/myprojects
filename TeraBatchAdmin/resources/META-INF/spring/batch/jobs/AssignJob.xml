@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:task="http://www.springframework.org/schema/task"  
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/batch 
+	http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+	http://www.springframework.org/schema/context
+  	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+ 	http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+    
+    
+     <job id="assignJob"  xmlns="http://www.springframework.org/schema/batch">
+        <step id="assignStep">
+            <tasklet>
+                <chunk reader="assignReader" writer="assignWriter" processor="assignProcessor" commit-interval="1000">
+                </chunk>
+            </tasklet>
+        </step>
+    </job>
+
+    <bean id="assignReader"
+        class="org.mybatis.spring.batch.MyBatisPagingItemReader" scope="step">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+		<property name="queryId" value="com.tera.bpm.dao.BpmTaskDao.getBpmTaskPool"/>
+		<!-- 设置查询参数 -->
+		<property name="parameterValues">
+	      <map>
+	      	<entry key="states" >
+	      		<array>
+	      			<value>审核</value>
+		        	<value>审批</value>
+		        	<value>复核</value>
+	      		</array>
+	      	 </entry>
+	      	<entry key="processName" value="信用借款流程" />   
+	      </map>
+	    </property>
+		<property name="pageSize" value="100"/>
+    </bean>
+    
+    <bean id="bpmTask" class="com.tera.bpm.model.BpmTask" scope="prototype"></bean>
+
+    <bean id="assignProcessor" class="com.tera.batch.assign.processor.AssignProcessor">
+     	<property name="creditAssignService" ref="creditAssignService"/>
+     	<property name="batchErrorLogDao" ref="batchErrorLogDao"/>
+	</bean>
+	
+    <bean id="assignWriter"
+        class="com.tera.batch.assign.writer.Writer" scope="step">
+    </bean>
+	
+</beans>

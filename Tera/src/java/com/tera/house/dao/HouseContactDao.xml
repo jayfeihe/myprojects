@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.house.dao.HouseContactDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.house.model.HouseContact" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="type" property="type"/><!-- 类型 -->
+	<result column="name" property="name"/><!-- 名字 -->
+	<result column="relation" property="relation"/><!-- 关系 -->
+	<result column="age" property="age"/><!-- 年龄 -->
+	<result column="phone" property="phone"/><!-- 固话 -->
+	<result column="mobile" property="mobile"/><!-- 手机 -->
+	<result column="id_type" property="idType"/><!-- 证件类型 -->
+	<result column="id_no" property="idNo"/><!-- 证件号码 -->
+	<result column="com_name" property="comName"/><!-- 单位名称 -->
+	<result column="add_province" property="addProvince"/><!-- 居住地址-省 -->
+	<result column="add_city" property="addCity"/><!-- 居住地址-市 -->
+	<result column="add_county" property="addCounty"/><!-- 居住地址-区县 -->
+	<result column="address" property="address"/><!-- 居住地址 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+	<result column="com_province" property="comProvince"/><!-- 单位地址-省 -->
+	<result column="com_city" property="comCity"/><!-- 单位地址-市 -->
+	<result column="com_county" property="comCounty"/><!-- 单位地址-区县 -->
+	<result column="com_address" property="comAddress"/><!-- 单位地址 -->
+	<result column="com_duty" property="comDuty"/><!-- 单位担任职务 -->
+	<result column="com_add_date" property="comAddDate"/><!-- 入职时间 -->
+	<result column="income" property="income"/><!-- 年收入 -->
+	<result column="cooperation_year" property="cooperationYear"/><!-- 合作年限 -->
+	<result column="cooperation_type" property="cooperationType"/><!-- 合作方式 -->
+	<result column="email" property="email"/><!-- 邮箱 -->
+	<result column="contract_No" property="contractNo"/><!-- 合同号 -->
+	
+</resultMap>
+<resultMap id="ResultHistoryMap" type="com.tera.house.model.HouseContactHistory" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="type" property="type"/><!-- 类型 -->
+	<result column="name" property="name"/><!-- 名字 -->
+	<result column="relation" property="relation"/><!-- 关系 -->
+	<result column="age" property="age"/><!-- 年龄 -->
+	<result column="phone" property="phone"/><!-- 固话 -->
+	<result column="mobile" property="mobile"/><!-- 手机 -->
+	<result column="id_type" property="idType"/><!-- 证件类型 -->
+	<result column="id_no" property="idNo"/><!-- 证件号码 -->
+	<result column="com_name" property="comName"/><!-- 单位名称 -->
+	<result column="add_province" property="addProvince"/><!-- 居住地址-省 -->
+	<result column="add_city" property="addCity"/><!-- 居住地址-市 -->
+	<result column="add_county" property="addCounty"/><!-- 居住地址-区县 -->
+	<result column="address" property="address"/><!-- 居住地址 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+	<result column="com_province" property="comProvince"/><!-- 单位地址-省 -->
+	<result column="com_city" property="comCity"/><!-- 单位地址-市 -->
+	<result column="com_county" property="comCounty"/><!-- 单位地址-区县 -->
+	<result column="com_address" property="comAddress"/><!-- 单位地址 -->
+	<result column="com_duty" property="comDuty"/><!-- 单位担任职务 -->
+	<result column="com_add_date" property="comAddDate"/><!-- 入职时间 -->
+	<result column="income" property="income"/><!-- 年收入 -->
+	<result column="cooperation_year" property="cooperationYear"/><!-- 合作年限 -->
+	<result column="cooperation_type" property="cooperationType"/><!-- 合作方式 -->
+	<result column="email" property="email"/><!-- 邮箱 -->
+	<result column="contract_No" property="contractNo"/><!-- 合同号 -->
+	<result column="remark" property="remark"/><!-- 备注 -->
+	<result column="phone_summary" property="phoneSummary"/><!-- 摘要 -->
+</resultMap>
+       
+<!-- T_HOUSE_CONTACT table all fields -->
+<sql id="Column_List" >
+	 id,app_id,type,name,relation,age,phone,mobile,id_type,id_no,com_name,add_province,add_city,add_county,address,state,operator,org_id,create_time,update_time,com_province,com_city,com_county,com_address,com_duty,com_add_date,income,cooperation_year,cooperation_type,email
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="relation != null and relation != ''" >
+	    and relation =  #{relation}
+	</if>
+<if test="age != null and age != ''" >
+	    and age =  #{age}
+	</if>
+<if test="phone != null and phone != ''" >
+	    and phone =  #{phone}
+	</if>
+<if test="mobile != null and mobile != ''" >
+	    and mobile =  #{mobile}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="comName != null and comName != ''" >
+	    and com_name =  #{comName}
+	</if>
+<if test="addProvince != null and addProvince != ''" >
+	    and add_province =  #{addProvince}
+	</if>
+<if test="addCity != null and addCity != ''" >
+	    and add_city =  #{addCity}
+	</if>
+<if test="addCounty != null and addCounty != ''" >
+	    and add_county =  #{addCounty}
+	</if>
+<if test="address != null and address != ''" >
+	    and address =  #{address}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+<if test="comProvince != null and comProvince != ''" >
+	    and com_province =  #{comProvince}
+	</if>
+<if test="comCity != null and comCity != ''" >
+	    and com_city =  #{comCity}
+	</if>
+<if test="comCounty != null and comCounty != ''" >
+	    and com_county =  #{comCounty}
+	</if>
+<if test="comAddress != null and comAddress != ''" >
+	    and com_address =  #{comAddress}
+	</if>
+<if test="comDuty != null and comDuty != ''" >
+	    and com_duty =  #{comDuty}
+	</if>
+<if test="comAddDate != null and comAddDate != ''" >
+	    and com_add_date =  #{comAddDate}
+	</if>
+<if test="income != null and income != ''" >
+	    and income =  #{income}
+	</if>
+<if test="cooperationYear != null and cooperationYear != ''" >
+	    and cooperation_year =  #{cooperationYear}
+	</if>
+<if test="cooperationType != null and cooperationType != ''" >
+	    and cooperation_type =  #{cooperationType}
+	</if>
+<if test="email != null and email != ''" >
+	    and email =  #{email}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_HOUSE_CONTACT_SEQ') From dual
+			<!-- Select T_HOUSE_CONTACT_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_HOUSE_CONTACT(id,app_id,type,name,relation,age,phone,mobile,id_type,id_no,com_name,add_province,add_city,add_county,address,state,operator,org_id,create_time,update_time,com_province,com_city,com_county,com_address,com_duty,com_add_date,income,cooperation_year,cooperation_type,email)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{relation, jdbcType=VARCHAR},#{age, jdbcType=INTEGER},#{phone, jdbcType=VARCHAR},#{mobile, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{comName, jdbcType=VARCHAR},#{addProvince, jdbcType=VARCHAR},#{addCity, jdbcType=VARCHAR},#{addCounty, jdbcType=VARCHAR},#{address, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP},#{comProvince, jdbcType=VARCHAR},#{comCity, jdbcType=VARCHAR},#{comCounty, jdbcType=VARCHAR},#{comAddress, jdbcType=VARCHAR},#{comDuty, jdbcType=VARCHAR},#{comAddDate, jdbcType=DATE},#{income, jdbcType=DOUBLE},#{cooperationYear, jdbcType=INTEGER},#{cooperationType, jdbcType=VARCHAR},#{email, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_HOUSE_CONTACT set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	name =  #{name, jdbcType=VARCHAR},
+	relation =  #{relation, jdbcType=VARCHAR},
+	age =  #{age, jdbcType=INTEGER},
+	phone =  #{phone, jdbcType=VARCHAR},
+	mobile =  #{mobile, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	com_name =  #{comName, jdbcType=VARCHAR},
+	add_province =  #{addProvince, jdbcType=VARCHAR},
+	add_city =  #{addCity, jdbcType=VARCHAR},
+	add_county =  #{addCounty, jdbcType=VARCHAR},
+	address =  #{address, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	com_province =  #{comProvince, jdbcType=VARCHAR},
+	com_city =  #{comCity, jdbcType=VARCHAR},
+	com_county =  #{comCounty, jdbcType=VARCHAR},
+	com_address =  #{comAddress, jdbcType=VARCHAR},
+	com_duty =  #{comDuty, jdbcType=VARCHAR},
+	com_add_date =  #{comAddDate, jdbcType=DATE},
+	income =  #{income, jdbcType=DOUBLE},
+	cooperation_year =  #{cooperationYear, jdbcType=INTEGER},
+	cooperation_type =  #{cooperationType, jdbcType=VARCHAR},
+	email =  #{email, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_HOUSE_CONTACT  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_HOUSE_CONTACT set 
+	<trim  suffixOverrides="," >
+	<if test="appId != null and appId != ''" >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+	<if test="type != null and type != ''" >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+	<if test="name != null and name != ''" >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+	<if test="relation != null and relation != ''" >
+	    relation =  #{relation, jdbcType=VARCHAR},
+	</if>
+	<if test="age != null and age != ''" >
+	    age =  #{age, jdbcType=INTEGER},
+	</if>
+	<if test="phone != null and phone != ''" >
+	    phone =  #{phone, jdbcType=VARCHAR},
+	</if>
+	<if test="mobile != null and mobile != ''" >
+	    mobile =  #{mobile, jdbcType=VARCHAR},
+	</if>
+	<if test="idType != null and idType != ''" >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+	<if test="comName != null and comName != ''" >
+	    com_name =  #{comName, jdbcType=VARCHAR},
+	</if>
+	<if test="addProvince != null and addProvince != ''" >
+	    add_province =  #{addProvince, jdbcType=VARCHAR},
+	</if>
+	<if test="addCity != null and addCity != ''" >
+	    add_city =  #{addCity, jdbcType=VARCHAR},
+	</if>
+	<if test="addCounty != null and addCounty != ''" >
+	    add_county =  #{addCounty, jdbcType=VARCHAR},
+	</if>
+	<if test="address != null and address != ''" >
+	    address =  #{address, jdbcType=VARCHAR},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="comProvince != null and comProvince != ''" >
+	    com_province =  #{comProvince, jdbcType=VARCHAR},
+	</if>
+	<if test="comCity != null and comCity != ''" >
+	    com_city =  #{comCity, jdbcType=VARCHAR},
+	</if>
+	<if test="comCounty != null and comCounty != ''" >
+	    com_county =  #{comCounty, jdbcType=VARCHAR},
+	</if>
+	<if test="comAddress != null and comAddress != ''" >
+	    com_address =  #{comAddress, jdbcType=VARCHAR},
+	</if>
+	<if test="comDuty != null and comDuty != ''" >
+	    com_duty =  #{comDuty, jdbcType=VARCHAR},
+	</if>
+	<if test="comAddDate != null and comAddDate != ''" >
+	    com_add_date =  #{comAddDate, jdbcType=DATE},
+	</if>
+	<if test="income != null and income != ''" >
+	    income =  #{income, jdbcType=DOUBLE},
+	</if>
+	<if test="cooperationYear != null and cooperationYear != ''" >
+	    cooperation_year =  #{cooperationYear, jdbcType=INTEGER},
+	</if>
+	<if test="cooperationType != null and cooperationType != ''" >
+	    cooperation_type =  #{cooperationType, jdbcType=VARCHAR},
+	</if>
+	<if test="email != null and email != ''" >
+	    email =  #{email, jdbcType=VARCHAR},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 信用借款申请联系人表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_HOUSE_CONTACT  where id = #{id}
+</select>
+
+<!-- 信用借款申请联系人表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_HOUSE_CONTACT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询信用借款申请联系人表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_HOUSE_CONTACT 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 合同号查询催收相关联系人 add by wangyongliang 20150615 -->
+<select id="getRelationList" resultMap="ResultHistoryMap"  parameterType="map">
+SELECT * FROM
+(
+SELECT a.id,a.app_id,a.type,a.name,a.relation,a.age,a.phone,a.mobile,a.id_type,a.id_no,a.com_name,a.add_province,a.add_city,a.add_county,a.address,a.state,a.operator,a.org_id,a.create_time,a.update_time,a.com_province,a.com_city,a.com_county,a.com_address,a.com_duty,
+a.com_add_date,a.income,a.cooperation_year,a.cooperation_type,a.email,b.contract_no
+FROM T_HOUSE_CONTACT a,t_contract b 
+WHERE 1=1 AND a.app_id=b.loan_app_id) c1 LEFT JOIN  
+(
+SELECT * FROM t_collection_record WHERE id IN(
+SELECT MAX(id) FROM  t_collection_record c  GROUP BY answer_name,CONTRACT_NO  ) ) c2
+ON c1.name=c2.answer_name AND c2.CONTRACT_NO=c1.CONTRACT_NO
+where 1=1
+<if test="id != null and id != ''" >
+	    and c1.id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and c1.app_id =  #{appId}
+	</if>
+<if test="type != null and type != ''" >
+	    and c1.type =  #{type}
+	</if>
+<if test="name != null and name != ''" >
+	    and c1.name =  #{name}
+	</if>
+<if test="relation != null and relation != ''" >
+	    and c1.relation =  #{relation}
+	</if>
+<if test="age != null and age != ''" >
+	    and c1.age =  #{age}
+	</if>
+<if test="phone != null and phone != ''" >
+	    and c1.phone =  #{phone}
+	</if>
+<if test="mobile != null and mobile != ''" >
+	    and c1.mobile =  #{mobile}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and c1.id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and c1.id_no =  #{idNo}
+	</if>
+<if test="comName != null and comName != ''" >
+	    and c1.com_name =  #{comName}
+	</if>
+<if test="addProvince != null and addProvince != ''" >
+	    and c1.add_province =  #{addProvince}
+	</if>
+<if test="addCity != null and addCity != ''" >
+	    and c1.add_city =  #{addCity}
+	</if>
+<if test="addCounty != null and addCounty != ''" >
+	    and c1.add_county =  #{addCounty}
+	</if>
+<if test="address != null and address != ''" >
+	    and c1.address =  #{address}
+	</if>
+<if test="state != null and state != ''" >
+	    and c1.state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and c1.operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and c1.org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and c1.create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and c1.update_time =  #{updateTime}
+	</if>
+<if test="comProvince != null and comProvince != ''" >
+	    and c1.com_province =  #{comProvince}
+	</if>
+<if test="comCity != null and comCity != ''" >
+	    and c1.com_city =  #{comCity}
+	</if>
+<if test="comCounty != null and comCounty != ''" >
+	    and c1.com_county =  #{comCounty}
+	</if>
+<if test="comAddress != null and comAddress != ''" >
+	    and c1.com_address =  #{comAddress}
+	</if>
+<if test="comDuty != null and comDuty != ''" >
+	    and c1.com_duty =  #{comDuty}
+	</if>
+<if test="comAddDate != null and comAddDate != ''" >
+	    and c1.com_add_date =  #{comAddDate}
+	</if>
+<if test="income != null and income != ''" >
+	    and c1.income =  #{income}
+	</if>
+<if test="cooperationYear != null and cooperationYear != ''" >
+	    and c1.cooperation_year =  #{cooperationYear}
+	</if>
+<if test="cooperationType != null and cooperationType != ''" >
+	    and c1.cooperation_type =  #{cooperationType}
+	</if>
+<if test="email != null and email != ''" >
+	    and c1.email =  #{email}
+	</if>
+<if test="contractNo!=null and contractNo!=''">
+	 	and c1.contract_no =  #{contractNo}
+</if>	
+	 
+</select>
+ <!-- 查询信用借款申请联系人表列表,按关系进行升序排列 -->
+<select id="queryListOrderByRelation" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_HOUSE_CONTACT 
+	<include refid="Where_Clause"/>
+	ORDER BY `RELATION` ASC
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+</mapper>   

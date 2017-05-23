@@ -1,0 +1,1337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.loan.dao.LoanAppDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.loan.model.LoanApp" >
+	<result column="id" property="id"/>
+	<result column="app_id" property="appId"/>
+	<result column="app_type" property="appType"/>
+	<result column="app_channel" property="appChannel"/>
+	<result column="customer_no" property="customerNo"/>
+	<result column="main_flag" property="mainFlag"/>
+	<result column="type" property="type"/>
+	<result column="consult_id" property="consultId"/>
+	<result column="customer_type" property="customerType"/>
+	<result column="name" property="name"/>
+	<result column="mobile" property="mobile"/>
+	<result column="phone" property="phone"/>
+	<result column="id_type" property="idType"/>
+	<result column="id_no" property="idNo"/>
+	<result column="marriage" property="marriage"/>
+	<result column="add_province" property="addProvince"/>
+	<result column="add_city" property="addCity"/>
+	<result column="add_county" property="addCounty"/>
+	<result column="address" property="address"/>
+	<result column="industry1" property="industry1"/>
+	<result column="industry2" property="industry2"/>
+	<result column="industry3" property="industry3"/>
+	<result column="amount" property="amount"/>
+	<result column="useage" property="useage"/>
+	<result column="detail_useage" property="detailUseage"/>
+	<result column="product" property="product"/>
+	<result column="period" property="period"/>  
+	<result column="srevice_fee_rate" property="sreviceFeeRate"/>
+	<result column="interest_rate" property="interestRate"/>
+	<result column="lend_acc_name" property="lendAccName"/>
+	<result column="lend_acc_bank" property="lendAccBank"/>
+	<result column="lend_account" property="lendAccount"/>
+	<result column="repay_acc_name" property="repayAccName"/>
+	<result column="repay_acc_bank" property="repayAccBank"/>
+	<result column="repay_account" property="repayAccount"/>
+	<result column="reg_date" property="regDate"/>
+	<result column="reg_amount" property="regAmount"/>
+	<result column="acctual_amount" property="acctualAmount"/>
+	<result column="org_code_no" property="orgCodeNo"/>
+	<result column="org_code_expiry_date" property="orgCodeExpiryDate"/>
+	<result column="tax_reg_no" property="taxRegNo"/>
+	<result column="baisc_account_bank" property="baiscAccountBank"/>
+	<result column="baisc_account" property="baiscAccount"/>
+	<result column="bizz_scope" property="bizzScope"/>
+	<result column="company_type" property="companyType"/>
+	<result column="main_product" property="mainProduct"/>
+	<result column="last_year_turnover" property="lastYearTurnover"/>
+	<result column="last_3m_turnover" property="last3mTurnover"/>
+	<result column="cooperate_bank_company" property="cooperateBankCompany"/>
+	<result column="daily_clear_bank" property="dailyClearBank"/>
+	<result column="loan_balance" property="loanBalance"/>
+	<result column="finance_company" property="financeCompany"/>
+	<result column="finance_bank" property="financeBank"/>
+	<result column="nearly_3m_ele_bill1" property="nearly3mEleBill1"/>
+	<result column="nearly_3m_ele_bill2" property="nearly3mEleBill2"/>
+	<result column="nearly_3m_ele_bill3" property="nearly3mEleBill3"/>
+	<result column="match_type" property="matchType"/>
+	<result column="customer_manager" property="customerManager"/>
+	<result column="sales" property="sales"/>
+	<result column="operator" property="operator"/>
+	<result column="org_id" property="orgId"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+	<result column="state" property="state"/>
+	<result column="taskState" property="taskState"/>
+	<result column="taskProcesser" property="taskProcesser"/>
+	
+
+</resultMap>
+
+
+<!-- 杨长收添加，用来返回组合的展示信息 -->
+<resultMap id="Lending_ResultMap" type="com.tera.loan.model.Lending" >
+	<result column="contract_no" property="contractNo"/>
+	<result column="state" property="state"/>
+	<result column="reason" property="reason"/>
+	<result column="loan_name" property="loanName"/>
+	<result column="loan_id_no" property="loanIdNo"/>
+	<result column="sign_date" property="signDate"/>
+	<result column="loan_product" property="loanProduct"/>
+	<result column="loan_amount" property="loanAmount"/>
+	<result column="loan_period" property="loanPeriod"/>
+	<result column="org_id" property="orgId"/>
+</resultMap>
+
+       
+<!-- T_LOAN_APP table all fields -->
+<sql id="Column_List" >
+	 id,app_id,app_type,app_channel,customer_no,main_flag,type,consult_id,customer_type,name,mobile,phone,id_type,id_no,marriage,add_province,add_city,add_county,address,industry1,industry2,industry3,amount,useage,detail_useage,product,period,srevice_fee_rate,interest_rate,lend_acc_name,lend_acc_bank,lend_account,repay_acc_name,repay_acc_bank,repay_account,reg_date,reg_amount,acctual_amount,org_code_no,org_code_expiry_date,tax_reg_no,baisc_account_bank,baisc_account,bizz_scope,company_type,main_product,last_year_turnover,last_3m_turnover,cooperate_bank_company,daily_clear_bank,loan_balance,finance_company,finance_bank,nearly_3m_ele_bill1,nearly_3m_ele_bill2,nearly_3m_ele_bill3,match_type,customer_manager,sales,operator,org_id,create_time,update_time,state
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="appType != null and appType != ''" >
+	    and app_type =  #{appType}
+	</if>
+<if test="appChannel != null and appChannel != ''" >
+	    and app_channel =  #{appChannel}
+	</if>
+<if test="customerNo != null and customerNo != ''" >
+	    and customer_no =  #{customerNo}
+	</if>
+<if test="mainFlag != null and mainFlag != ''" >
+	    and main_flag =  #{mainFlag}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="consultId != null and consultId != ''" >
+	    and consult_id =  #{consultId}
+	</if>
+<if test="customerType != null and customerType != ''" >
+	    and customer_type =  #{customerType}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="mobile != null and mobile != ''" >
+	    and mobile =  #{mobile}
+	</if>
+<if test="phone != null and phone != ''" >
+	    and phone =  #{phone}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="marriage != null and marriage != ''" >
+	    and marriage =  #{marriage}
+	</if>
+<if test="addProvince != null and addProvince != ''" >
+	    and add_province =  #{addProvince}
+	</if>
+<if test="addCity != null and addCity != ''" >
+	    and add_city =  #{addCity}
+	</if>
+<if test="addCounty != null and addCounty != ''" >
+	    and add_county =  #{addCounty}
+	</if>
+<if test="address != null and address != ''" >
+	    and address =  #{address}
+	</if>
+<if test="industry1 != null and industry1 != ''" >
+	    and industry1 =  #{industry1}
+	</if>
+<if test="industry2 != null and industry2 != ''" >
+	    and industry2 =  #{industry2}
+	</if>
+<if test="industry3 != null and industry3 != ''" >
+	    and industry3 =  #{industry3}
+	</if>
+<if test="amount != null and amount != ''" >
+	    and amount =  #{amount}
+	</if>
+<if test="useage != null and useage != ''" >
+	    and useage =  #{useage}
+	</if>
+<if test="detailUseage != null and detailUseage != ''" >
+	    and detail_useage =  #{detailUseage}
+	</if>
+<if test="product != null and product != ''" >
+	    and product =  #{product}
+	</if>
+<if test="period != null and period != ''" >
+	    and period =  #{period}
+	</if>
+<if test="sreviceFeeRate != null and sreviceFeeRate != ''" >
+	    and srevice_fee_rate =  #{sreviceFeeRate}
+	</if>
+<if test="interestRate != null and interestRate != ''" >
+	    and interest_rate =  #{interestRate}
+	</if>
+<if test="lendAccName != null and lendAccName != ''" >
+	    and lend_acc_name =  #{lendAccName}
+	</if>
+<if test="lendAccBank != null and lendAccBank != ''" >
+	    and lend_acc_bank =  #{lendAccBank}
+	</if>
+<if test="lendAccount != null and lendAccount != ''" >
+	    and lend_account =  #{lendAccount}
+	</if>
+<if test="repayAccName != null and repayAccName != ''" >
+	    and repay_acc_name =  #{repayAccName}
+	</if>
+<if test="repayAccBank != null and repayAccBank != ''" >
+	    and repay_acc_bank =  #{repayAccBank}
+	</if>
+<if test="repayAccount != null and repayAccount != ''" >
+	    and repay_account =  #{repayAccount}
+	</if>
+<if test="regDate != null and regDate != ''" >
+	    and reg_date =  #{regDate}
+	</if>
+<if test="regAmount != null and regAmount != ''" >
+	    and reg_amount =  #{regAmount}
+	</if>
+<if test="acctualAmount != null and acctualAmount != ''" >
+	    and acctual_amount =  #{acctualAmount}
+	</if>
+<if test="orgCodeNo != null and orgCodeNo != ''" >
+	    and org_code_no =  #{orgCodeNo}
+	</if>
+<if test="orgCodeExpiryDate != null and orgCodeExpiryDate != ''" >
+	    and org_code_expiry_date =  #{orgCodeExpiryDate}
+	</if>
+<if test="taxRegNo != null and taxRegNo != ''" >
+	    and tax_reg_no =  #{taxRegNo}
+	</if>
+<if test="baiscAccountBank != null and baiscAccountBank != ''" >
+	    and baisc_account_bank =  #{baiscAccountBank}
+	</if>
+<if test="baiscAccount != null and baiscAccount != ''" >
+	    and baisc_account =  #{baiscAccount}
+	</if>
+<if test="bizzScope != null and bizzScope != ''" >
+	    and bizz_scope =  #{bizzScope}
+	</if>
+<if test="companyType != null and companyType != ''" >
+	    and company_type =  #{companyType}
+	</if>
+<if test="mainProduct != null and mainProduct != ''" >
+	    and main_product =  #{mainProduct}
+	</if>
+<if test="lastYearTurnover != null and lastYearTurnover != ''" >
+	    and last_year_turnover =  #{lastYearTurnover}
+	</if>
+<if test="last3mTurnover != null and last3mTurnover != ''" >
+	    and last_3m_turnover =  #{last3mTurnover}
+	</if>
+<if test="cooperateBankCompany != null and cooperateBankCompany != ''" >
+	    and cooperate_bank_company =  #{cooperateBankCompany}
+	</if>
+<if test="dailyClearBank != null and dailyClearBank != ''" >
+	    and daily_clear_bank =  #{dailyClearBank}
+	</if>
+<if test="loanBalance != null and loanBalance != ''" >
+	    and loan_balance =  #{loanBalance}
+	</if>
+<if test="financeCompany != null and financeCompany != ''" >
+	    and finance_company =  #{financeCompany}
+	</if>
+<if test="financeBank != null and financeBank != ''" >
+	    and finance_bank =  #{financeBank}
+	</if>
+<if test="nearly3mEleBill1 != null and nearly3mEleBill1 != ''" >
+	    and nearly_3m_ele_bill1 =  #{nearly3mEleBill1}
+	</if>
+<if test="nearly3mEleBill2 != null and nearly3mEleBill2 != ''" >
+	    and nearly_3m_ele_bill2 =  #{nearly3mEleBill2}
+	</if>
+<if test="nearly3mEleBill3 != null and nearly3mEleBill3 != ''" >
+	    and nearly_3m_ele_bill3 =  #{nearly3mEleBill3}
+	</if>
+<if test="matchType != null and matchType != ''" >
+	    and match_type =  #{matchType}
+	</if>
+<if test="customerManager != null and customerManager != ''" >
+	    and customer_manager =  #{customerManager}
+	</if>
+<if test="sales != null and sales != ''" >
+	    and sales =  #{sales}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_LOAN_APP_SEQ') From dual
+			<!-- Select T_LOAN_APP_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_LOAN_APP(id,app_id,app_type,app_channel,customer_no,main_flag,type,consult_id,customer_type,name,mobile,phone,id_type,id_no,marriage,add_province,add_city,add_county,address,industry1,industry2,industry3,amount,useage,detail_useage,product,period,srevice_fee_rate,interest_rate,lend_acc_name,lend_acc_bank,lend_account,repay_acc_name,repay_acc_bank,repay_account,reg_date,reg_amount,acctual_amount,org_code_no,org_code_expiry_date,tax_reg_no,baisc_account_bank,baisc_account,bizz_scope,company_type,main_product,last_year_turnover,last_3m_turnover,cooperate_bank_company,daily_clear_bank,loan_balance,finance_company,finance_bank,nearly_3m_ele_bill1,nearly_3m_ele_bill2,nearly_3m_ele_bill3,match_type,customer_manager,sales,operator,org_id,create_time,update_time,state)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{appType, jdbcType=VARCHAR},#{appChannel, jdbcType=VARCHAR},#{customerNo, jdbcType=VARCHAR},#{mainFlag, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{consultId, jdbcType=INTEGER},#{customerType, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{mobile, jdbcType=VARCHAR},#{phone, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{marriage, jdbcType=VARCHAR},#{addProvince, jdbcType=VARCHAR},#{addCity, jdbcType=VARCHAR},#{addCounty, jdbcType=VARCHAR},#{address, jdbcType=VARCHAR},#{industry1, jdbcType=VARCHAR},#{industry2, jdbcType=VARCHAR},#{industry3, jdbcType=VARCHAR},#{amount, jdbcType=DOUBLE},#{useage, jdbcType=VARCHAR},#{detailUseage, jdbcType=VARCHAR},#{product, jdbcType=VARCHAR},#{period, jdbcType=INTEGER},#{sreviceFeeRate, jdbcType=DOUBLE},#{interestRate, jdbcType=DOUBLE},#{lendAccName, jdbcType=VARCHAR},#{lendAccBank, jdbcType=VARCHAR},#{lendAccount, jdbcType=VARCHAR},#{repayAccName, jdbcType=VARCHAR},#{repayAccBank, jdbcType=VARCHAR},#{repayAccount, jdbcType=VARCHAR},#{regDate, jdbcType=DATE},#{regAmount, jdbcType=DOUBLE},#{acctualAmount, jdbcType=DOUBLE},#{orgCodeNo, jdbcType=VARCHAR},#{orgCodeExpiryDate, jdbcType=DATE},#{taxRegNo, jdbcType=VARCHAR},#{baiscAccountBank, jdbcType=VARCHAR},#{baiscAccount, jdbcType=VARCHAR},#{bizzScope, jdbcType=VARCHAR},#{companyType, jdbcType=VARCHAR},#{mainProduct, jdbcType=VARCHAR},#{lastYearTurnover, jdbcType=DOUBLE},#{last3mTurnover, jdbcType=DOUBLE},#{cooperateBankCompany, jdbcType=VARCHAR},#{dailyClearBank, jdbcType=VARCHAR},#{loanBalance, jdbcType=DOUBLE},#{financeCompany, jdbcType=VARCHAR},#{financeBank, jdbcType=VARCHAR},#{nearly3mEleBill1, jdbcType=DOUBLE},#{nearly3mEleBill2, jdbcType=DOUBLE},#{nearly3mEleBill3, jdbcType=DOUBLE},#{matchType, jdbcType=VARCHAR},#{customerManager, jdbcType=VARCHAR},#{sales, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP},#{state, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_LOAN_APP set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	app_type =  #{appType, jdbcType=VARCHAR},
+	app_channel =  #{appChannel, jdbcType=VARCHAR},
+	customer_no =  #{customerNo, jdbcType=VARCHAR},
+	main_flag =  #{mainFlag, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	consult_id =  #{consultId, jdbcType=INTEGER},
+	customer_type =  #{customerType, jdbcType=VARCHAR},
+	name =  #{name, jdbcType=VARCHAR},
+	mobile =  #{mobile, jdbcType=VARCHAR},
+	phone =  #{phone, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	marriage =  #{marriage, jdbcType=VARCHAR},
+	add_province =  #{addProvince, jdbcType=VARCHAR},
+	add_city =  #{addCity, jdbcType=VARCHAR},
+	add_county =  #{addCounty, jdbcType=VARCHAR},
+	address =  #{address, jdbcType=VARCHAR},
+	industry1 =  #{industry1, jdbcType=VARCHAR},
+	industry2 =  #{industry2, jdbcType=VARCHAR},
+	industry3 =  #{industry3, jdbcType=VARCHAR},
+	amount =  #{amount, jdbcType=DOUBLE},
+	useage =  #{useage, jdbcType=VARCHAR},
+	detail_useage =  #{detailUseage, jdbcType=VARCHAR},
+	product =  #{product, jdbcType=VARCHAR},
+	period =  #{period, jdbcType=INTEGER},
+	srevice_fee_rate =  #{sreviceFeeRate, jdbcType=DOUBLE},
+	interest_rate =  #{interestRate, jdbcType=DOUBLE},
+	lend_acc_name =  #{lendAccName, jdbcType=VARCHAR},
+	lend_acc_bank =  #{lendAccBank, jdbcType=VARCHAR},
+	lend_account =  #{lendAccount, jdbcType=VARCHAR},
+	repay_acc_name =  #{repayAccName, jdbcType=VARCHAR},
+	repay_acc_bank =  #{repayAccBank, jdbcType=VARCHAR},
+	repay_account =  #{repayAccount, jdbcType=VARCHAR},
+	reg_date =  #{regDate, jdbcType=DATE},
+	reg_amount =  #{regAmount, jdbcType=DOUBLE},
+	acctual_amount =  #{acctualAmount, jdbcType=DOUBLE},
+	org_code_no =  #{orgCodeNo, jdbcType=VARCHAR},
+	org_code_expiry_date =  #{orgCodeExpiryDate, jdbcType=DATE},
+	tax_reg_no =  #{taxRegNo, jdbcType=VARCHAR},
+	baisc_account_bank =  #{baiscAccountBank, jdbcType=VARCHAR},
+	baisc_account =  #{baiscAccount, jdbcType=VARCHAR},
+	bizz_scope =  #{bizzScope, jdbcType=VARCHAR},
+	company_type =  #{companyType, jdbcType=VARCHAR},
+	main_product =  #{mainProduct, jdbcType=VARCHAR},
+	last_year_turnover =  #{lastYearTurnover, jdbcType=DOUBLE},
+	last_3m_turnover =  #{last3mTurnover, jdbcType=DOUBLE},
+	cooperate_bank_company =  #{cooperateBankCompany, jdbcType=VARCHAR},
+	daily_clear_bank =  #{dailyClearBank, jdbcType=VARCHAR},
+	loan_balance =  #{loanBalance, jdbcType=DOUBLE},
+	finance_company =  #{financeCompany, jdbcType=VARCHAR},
+	finance_bank =  #{financeBank, jdbcType=VARCHAR},
+	nearly_3m_ele_bill1 =  #{nearly3mEleBill1, jdbcType=DOUBLE},
+	nearly_3m_ele_bill2 =  #{nearly3mEleBill2, jdbcType=DOUBLE},
+	nearly_3m_ele_bill3 =  #{nearly3mEleBill3, jdbcType=DOUBLE},
+	match_type =  #{matchType, jdbcType=VARCHAR},
+	customer_manager =  #{customerManager, jdbcType=VARCHAR},
+	sales =  #{sales, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	state =  #{state, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_LOAN_APP  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_LOAN_APP set 
+	<trim  suffixOverrides="," >
+	<if test="appId != null and appId != ''" >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+	<if test="appType != null and appType != ''" >
+	    app_type =  #{appType, jdbcType=VARCHAR},
+	</if>
+	<if test="appChannel != null and appChannel != ''" >
+	    app_channel =  #{appChannel, jdbcType=VARCHAR},
+	</if>
+	<if test="customerNo != null and customerNo != ''" >
+	    customer_no =  #{customerNo, jdbcType=VARCHAR},
+	</if>
+	<if test="mainFlag != null and mainFlag != ''" >
+	    main_flag =  #{mainFlag, jdbcType=VARCHAR},
+	</if>
+	<if test="type != null and type != ''" >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+	<if test="consultId != null and consultId != ''" >
+	    consult_id =  #{consultId, jdbcType=INTEGER},
+	</if>
+	<if test="customerType != null and customerType != ''" >
+	    customer_type =  #{customerType, jdbcType=VARCHAR},
+	</if>
+	<if test="name != null and name != ''" >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+	<if test="mobile != null and mobile != ''" >
+	    mobile =  #{mobile, jdbcType=VARCHAR},
+	</if>
+	<if test="phone != null and phone != ''" >
+	    phone =  #{phone, jdbcType=VARCHAR},
+	</if>
+	<if test="idType != null and idType != ''" >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+	<if test="marriage != null and marriage != ''" >
+	    marriage =  #{marriage, jdbcType=VARCHAR},
+	</if>
+	<if test="addProvince != null and addProvince != ''" >
+	    add_province =  #{addProvince, jdbcType=VARCHAR},
+	</if>
+	<if test="addCity != null and addCity != ''" >
+	    add_city =  #{addCity, jdbcType=VARCHAR},
+	</if>
+	<if test="addCounty != null and addCounty != ''" >
+	    add_county =  #{addCounty, jdbcType=VARCHAR},
+	</if>
+	<if test="address != null and address != ''" >
+	    address =  #{address, jdbcType=VARCHAR},
+	</if>
+	<if test="industry1 != null and industry1 != ''" >
+	    industry1 =  #{industry1, jdbcType=VARCHAR},
+	</if>
+	<if test="industry2 != null and industry2 != ''" >
+	    industry2 =  #{industry2, jdbcType=VARCHAR},
+	</if>
+	<if test="industry3 != null and industry3 != ''" >
+	    industry3 =  #{industry3, jdbcType=VARCHAR},
+	</if>
+	<if test="amount != null and amount != ''" >
+	    amount =  #{amount, jdbcType=DOUBLE},
+	</if>
+	<if test="useage != null and useage != ''" >
+	    useage =  #{useage, jdbcType=VARCHAR},
+	</if>
+	<if test="detailUseage != null and detailUseage != ''" >
+	    detail_useage =  #{detailUseage, jdbcType=VARCHAR},
+	</if>
+	<if test="product != null and product != ''" >
+	    product =  #{product, jdbcType=VARCHAR},
+	</if>
+	<if test="period != null and period != ''" >
+	    period =  #{period, jdbcType=INTEGER},
+	</if>
+	<if test="sreviceFeeRate != null and sreviceFeeRate != ''" >
+	    srevice_fee_rate =  #{sreviceFeeRate, jdbcType=DOUBLE},
+	</if>
+	<if test="interestRate != null and interestRate != ''" >
+	    interest_rate =  #{interestRate, jdbcType=DOUBLE},
+	</if>
+	<if test="lendAccName != null and lendAccName != ''" >
+	    lend_acc_name =  #{lendAccName, jdbcType=VARCHAR},
+	</if>
+	<if test="lendAccBank != null and lendAccBank != ''" >
+	    lend_acc_bank =  #{lendAccBank, jdbcType=VARCHAR},
+	</if>
+	<if test="lendAccount != null and lendAccount != ''" >
+	    lend_account =  #{lendAccount, jdbcType=VARCHAR},
+	</if>
+	<if test="repayAccName != null and repayAccName != ''" >
+	    repay_acc_name =  #{repayAccName, jdbcType=VARCHAR},
+	</if>
+	<if test="repayAccBank != null and repayAccBank != ''" >
+	    repay_acc_bank =  #{repayAccBank, jdbcType=VARCHAR},
+	</if>
+	<if test="repayAccount != null and repayAccount != ''" >
+	    repay_account =  #{repayAccount, jdbcType=VARCHAR},
+	</if>
+	<if test="regDate != null and regDate != ''" >
+	    reg_date =  #{regDate, jdbcType=DATE},
+	</if>
+	<if test="regAmount != null and regAmount != ''" >
+	    reg_amount =  #{regAmount, jdbcType=DOUBLE},
+	</if>
+	<if test="acctualAmount != null and acctualAmount != ''" >
+	    acctual_amount =  #{acctualAmount, jdbcType=DOUBLE},
+	</if>
+	<if test="orgCodeNo != null and orgCodeNo != ''" >
+	    org_code_no =  #{orgCodeNo, jdbcType=VARCHAR},
+	</if>
+	<if test="orgCodeExpiryDate != null and orgCodeExpiryDate != ''" >
+	    org_code_expiry_date =  #{orgCodeExpiryDate, jdbcType=DATE},
+	</if>
+	<if test="taxRegNo != null and taxRegNo != ''" >
+	    tax_reg_no =  #{taxRegNo, jdbcType=VARCHAR},
+	</if>
+	<if test="baiscAccountBank != null and baiscAccountBank != ''" >
+	    baisc_account_bank =  #{baiscAccountBank, jdbcType=VARCHAR},
+	</if>
+	<if test="baiscAccount != null and baiscAccount != ''" >
+	    baisc_account =  #{baiscAccount, jdbcType=VARCHAR},
+	</if>
+	<if test="bizzScope != null and bizzScope != ''" >
+	    bizz_scope =  #{bizzScope, jdbcType=VARCHAR},
+	</if>
+	<if test="companyType != null and companyType != ''" >
+	    company_type =  #{companyType, jdbcType=VARCHAR},
+	</if>
+	<if test="mainProduct != null and mainProduct != ''" >
+	    main_product =  #{mainProduct, jdbcType=VARCHAR},
+	</if>
+	<if test="lastYearTurnover != null and lastYearTurnover != ''" >
+	    last_year_turnover =  #{lastYearTurnover, jdbcType=DOUBLE},
+	</if>
+	<if test="last3mTurnover != null and last3mTurnover != ''" >
+	    last_3m_turnover =  #{last3mTurnover, jdbcType=DOUBLE},
+	</if>
+	<if test="cooperateBankCompany != null and cooperateBankCompany != ''" >
+	    cooperate_bank_company =  #{cooperateBankCompany, jdbcType=VARCHAR},
+	</if>
+	<if test="dailyClearBank != null and dailyClearBank != ''" >
+	    daily_clear_bank =  #{dailyClearBank, jdbcType=VARCHAR},
+	</if>
+	<if test="loanBalance != null and loanBalance != ''" >
+	    loan_balance =  #{loanBalance, jdbcType=DOUBLE},
+	</if>
+	<if test="financeCompany != null and financeCompany != ''" >
+	    finance_company =  #{financeCompany, jdbcType=VARCHAR},
+	</if>
+	<if test="financeBank != null and financeBank != ''" >
+	    finance_bank =  #{financeBank, jdbcType=VARCHAR},
+	</if>
+	<if test="nearly3mEleBill1 != null and nearly3mEleBill1 != ''" >
+	    nearly_3m_ele_bill1 =  #{nearly3mEleBill1, jdbcType=DOUBLE},
+	</if>
+	<if test="nearly3mEleBill2 != null and nearly3mEleBill2 != ''" >
+	    nearly_3m_ele_bill2 =  #{nearly3mEleBill2, jdbcType=DOUBLE},
+	</if>
+	<if test="nearly3mEleBill3 != null and nearly3mEleBill3 != ''" >
+	    nearly_3m_ele_bill3 =  #{nearly3mEleBill3, jdbcType=DOUBLE},
+	</if>
+	<if test="matchType != null and matchType != ''" >
+	    match_type =  #{matchType, jdbcType=VARCHAR},
+	</if>
+	<if test="customerManager != null and customerManager != ''" >
+	    customer_manager =  #{customerManager, jdbcType=VARCHAR},
+	</if>
+	<if test="sales != null and sales != ''" >
+	    sales =  #{sales, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 借款端申请表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_LOAN_APP where id = #{id}
+</select>
+
+<!-- 根据appId查询 借款端申请表 -->
+<select id="getAppByAppId"  resultMap="ResultMap" parameterType="map">
+	select <include refid="Column_List" /> from T_LOAN_APP  a
+	where 1=1
+		AND a.APP_TYPE = a.CUSTOMER_TYPE
+		AND a.MAIN_FLAG = '0'
+	 <if test="appId != null and appId != ''" >
+	 	and app_id = #{appId}
+	 </if>
+	ORDER BY MAIN_FLAG
+</select>
+
+<sql id="Column_LoanList" >
+	 p.id,p.app_id,p.app_type,p.customer_no,p.main_flag,p.type,p.consult_id,p.customer_type,p.name,	p.mobile,p.phone,p.id_type,p.id_no,p.marriage,p.add_province,p.add_city,p.add_county,p.address,p.industry1,p.industry2,p.industry3,p.amount,
+	p.useage,p.detail_useage,p.product,p.period,p.srevice_fee_rate,p.interest_rate,p.lend_acc_name,p.lend_acc_bank,p.lend_account,p.repay_acc_name,p.repay_acc_bank,
+	p.repay_account,p.reg_date,p.reg_amount,p.acctual_amount,p.org_code_no,p.org_code_expiry_date,p.tax_reg_no,p.baisc_account_bank,p.baisc_account,p.bizz_scope,p.company_type
+	,p.main_product,p.last_year_turnover,p.last_3m_turnover,p.cooperate_bank_company,p.daily_clear_bank,p.loan_balance,p.finance_company
+	,p.finance_bank,p.nearly_3m_ele_bill1,p.nearly_3m_ele_bill2,p.nearly_3m_ele_bill3,p.match_type,p.operator,p.org_id,p.create_time,p.update_time,p.state
+
+</sql>
+<!-- 根据appId查询 借款端申请表 -->
+<select id="getMainFlagListByAppId"  resultType="string" parameterType="map">
+	select distinct MAIN_FLAG from T_LOAN_APP  
+	where state != 0
+	 <if test="appId != null and appId != ''" >
+	 	and app_id = #{appId}
+	 </if>
+	 <if test="state != null and state != ''" >
+	   and state =  #{state}
+	</if>
+	 ORDER BY MAIN_FLAG
+</select>
+
+
+<!-- 借款端申请表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LOAN_APP 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询借款端申请表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LOAN_APP 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+ <select id="getAppIdCode" resultType="string">
+ 	SELECT LPAD (nextval('T_LOAN_APP_DALIY_SEQ'),4,'0') FROM DUAL
+ </select>
+ 
+  <select id="getContractCode" resultType="string">
+ 	SELECT LPAD (nextval('T_CONTRACT_DALIY_SEQ'),4,'0') FROM DUAL
+ </select>
+
+ 
+  <!-- 流程 列表查询-->
+<select id="queryBpmLoanAppCount" resultType="java.lang.Integer" parameterType="map">
+	SELECT count(1) FROM  T_LOAN_APP a, t_bpm_task b 
+	WHERE a.APP_ID = b.BIZ_KEY 
+		AND a.APP_TYPE = a.CUSTOMER_TYPE
+		AND a.MAIN_FLAG = '0'
+		AND a.STATE != '0'
+	<if test="states != null and states != '' " >
+		AND a.STATE in
+		<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="nonStates != null and nonStates != '' " >
+		AND a.STATE not in
+		<foreach item="item" index="index" collection="nonStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="bpmStates != null and bpmStates != '' " >
+		AND b.STATE in
+		<foreach item="item" index="index" collection="bpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="nonBpmStates != null and nonBpmStates != '' " >
+		AND b.STATE not in
+		<foreach item="item" index="index" collection="nonBpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="userLoginId != null and userLoginId != '' " >
+		AND b.PROCESSER =#{userLoginId}
+	</if>
+	
+	<if test="orgId != null and orgId != '' " >
+		AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+		
+	<!-- 以下是 查询筛选条件  -->
+	<if test="roleLever != null and roleLever!=''">
+		<!-- 营业部以下级别只能查看自己的单子 -->
+		<if test="roleLever ==0">
+			<if test="customerManager != null and customerManager != ''" >
+				    and a.customer_manager =  #{customerManager}
+			</if>
+		</if>
+	</if>
+	<if test="name!=null and name!=''">
+		AND a.NAME =#{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	<if test="mobile!=null and mobile!=''">
+		AND a.mobile =#{mobile}
+	</if>
+	
+	<if test="amountMin!=null and amountMin!=''">
+		<![CDATA[
+			AND a.amount >= #{amountMin}
+		]]>
+	</if>
+	
+	<if test="amountMax!=null and amountMax!=''">
+		<![CDATA[
+			AND a.amount < #{amountMax}
+		]]>
+	</if>
+	
+	<if test="createTimeMin!=null and createTimeMin!=''">
+		<![CDATA[
+			AND a.CREATE_TIME >= #{createTimeMin}
+		]]>
+	</if>
+	
+	<if test="createTimeMax!=null and createTimeMax!=''">
+		<![CDATA[
+			AND a.CREATE_TIME < #{createTimeMax}
+		]]>
+	</if>
+</select>
+ 
+ <!-- 流程 列表查询-->
+<select id="queryBpmLoanAppList" resultMap="ResultMap"  parameterType="map">
+	SELECT    
+   a.ID,
+   a.APP_ID,
+   a.APP_TYPE,
+   a.CUSTOMER_NO,
+   a.MAIN_FLAG,
+   a.TYPE,
+   a.CONSULT_ID,
+   a.CUSTOMER_TYPE,
+   a.NAME,
+   a.MOBILE,
+   a.PHONE,
+   a.ID_TYPE,
+   a.ID_NO,
+   a.MARRIAGE,
+   a.ADD_PROVINCE,
+   a.ADD_CITY,
+   a.ADD_COUNTY,
+   a.ADDRESS,
+   a.INDUSTRY1,
+   a.INDUSTRY2,
+   a.INDUSTRY3,
+   a.AMOUNT,
+   a.USEAGE,
+   a.DETAIL_USEAGE,
+   a.PRODUCT,
+   a.PERIOD,
+   a.SREVICE_FEE_RATE,
+   a.INTEREST_RATE,
+   a.LEND_ACC_NAME,
+   a.LEND_ACC_BANK,
+   a.LEND_ACCOUNT,
+   a.REPAY_ACC_NAME,
+   a.REPAY_ACC_BANK,
+   a.REPAY_ACCOUNT,
+   a.REG_DATE,
+   a.REG_AMOUNT,
+   a.ACCTUAL_AMOUNT,
+   a.ORG_CODE_NO,
+   a.ORG_CODE_EXPIRY_DATE,
+   a.TAX_REG_NO,
+   a.BAISC_ACCOUNT_BANK,
+   a.BAISC_ACCOUNT,
+   a.BIZZ_SCOPE,
+   a.COMPANY_TYPE,
+   a.MAIN_PRODUCT,
+   a.LAST_YEAR_TURNOVER,
+   a.LAST_3M_TURNOVER,
+   a.COOPERATE_BANK_COMPANY,
+   a.DAILY_CLEAR_BANK,
+   a.LOAN_BALANCE,
+   a.FINANCE_COMPANY,
+   a.FINANCE_BANK,
+   a.NEARLY_3M_ELE_BILL1,
+   a.NEARLY_3M_ELE_BILL2,
+   a.NEARLY_3M_ELE_BILL3,
+   a.MATCH_TYPE,
+   a.CUSTOMER_MANAGER,
+   a.OPERATOR,
+   a.ORG_ID,
+   a.CREATE_TIME,
+   a.UPDATE_TIME,
+   a.STATE ,
+   b.state taskState,
+   b.PROCESSER taskProcesser
+   FROM  T_LOAN_APP a, t_bpm_task b 
+	WHERE a.APP_ID = b.BIZ_KEY 
+		AND a.APP_TYPE = a.CUSTOMER_TYPE
+		AND a.MAIN_FLAG = '0'
+	<if test="states != null and states != '' " >
+		AND a.STATE in
+		<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="nonStates != null and nonStates != '' " >
+		AND a.STATE not in
+		<foreach item="item" index="index" collection="nonStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="bpmStates != null and bpmStates != '' " >
+		AND b.STATE in
+		<foreach item="item" index="index" collection="bpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="nonBpmStates != null and nonBpmStates != '' " >
+		AND b.STATE not in
+		<foreach item="item" index="index" collection="nonBpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="userLoginId != null and userLoginId != '' " >
+		AND b.PROCESSER =#{userLoginId}
+	</if>
+	
+	<if test="orgId != null and orgId != '' " >
+		AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+		
+	<!-- 以下是 查询筛选条件  -->
+	<if test="roleLever != null and roleLever!=''">
+		<!-- 营业部以下级别只能查看自己的单子 -->
+		<if test="roleLever ==0">
+			<if test="customerManager != null and customerManager != ''" >
+				    and a.customer_manager =  #{customerManager}
+			</if>
+		</if>
+	</if>
+	
+	<if test="name!=null and name!=''">
+		AND a.NAME =#{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	<if test="mobile!=null and mobile!=''">
+		AND a.mobile =#{mobile}
+	</if>
+
+	<if test="amountMin!=null and amountMin!=''">
+		<![CDATA[
+			AND a.amount >= #{amountMin}
+		]]>
+	</if>
+	
+	<if test="amountMax!=null and amountMax!=''">
+		<![CDATA[
+			AND a.amount < #{amountMax}
+		]]>
+	</if>
+	
+	<if test="createTimeMin!=null and createTimeMin!=''">
+		<![CDATA[
+			AND a.CREATE_TIME >= #{createTimeMin}
+		]]>
+	</if>
+	
+	<if test="createTimeMax!=null and createTimeMax!=''">
+		<![CDATA[
+			AND a.CREATE_TIME < #{createTimeMax}
+		]]>
+	</if>
+	
+	<if test="rowS != null and rowE != null " >
+      	limit #{rowS} , #{rowE}
+    </if>
+</select>
+ 
+ <update id="updateAppByAppId" parameterType="Object" >
+	update T_LOAN_APP set 
+	<trim  suffixOverrides="," >
+	<if test="appType != null and appType != ''" >
+	    app_type =  #{appType, jdbcType=VARCHAR},
+	</if>
+	<if test="customerNo != null and customerNo != ''" >
+	    customer_no =  #{customerNo, jdbcType=VARCHAR},
+	</if>
+	<if test="mainFlag != null and mainFlag != ''" >
+	    main_flag =  #{mainFlag, jdbcType=VARCHAR},
+	</if>
+	<if test="type != null and type != ''" >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+	<if test="consultId != null and consultId != ''" >
+	    consult_id =  #{consultId, jdbcType=INTEGER},
+	</if>
+	<if test="customerType != null and customerType != ''" >
+	    customer_type =  #{customerType, jdbcType=VARCHAR},
+	</if>
+	<if test="name != null and name != ''" >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+	<if test="mobile != null and mobile != ''" >
+	    mobile =  #{mobile, jdbcType=VARCHAR},
+	</if>
+	<if test="phone != null and phone != ''" >
+	    phone =  #{phone, jdbcType=VARCHAR},
+	</if>
+	<if test="idType != null and idType != ''" >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+	<if test="marriage != null and marriage != ''" >
+	    marriage =  #{marriage, jdbcType=VARCHAR},
+	</if>
+	<if test="addProvince != null and addProvince != ''" >
+	    add_province =  #{addProvince, jdbcType=VARCHAR},
+	</if>
+	<if test="addCity != null and addCity != ''" >
+	    add_city =  #{addCity, jdbcType=VARCHAR},
+	</if>
+	<if test="addCounty != null and addCounty != ''" >
+	    add_county =  #{addCounty, jdbcType=VARCHAR},
+	</if>
+	<if test="address != null and address != ''" >
+	    address =  #{address, jdbcType=VARCHAR},
+	</if>
+	<if test="industry1 != null and industry1 != ''" >
+	    industry1 =  #{industry1, jdbcType=VARCHAR},
+	</if>
+	<if test="industry2 != null and industry2 != ''" >
+	    industry2 =  #{industry2, jdbcType=VARCHAR},
+	</if>
+	<if test="industry3 != null and industry3 != ''" >
+	    industry3 =  #{industry3, jdbcType=VARCHAR},
+	</if>
+	<if test="amount != null and amount != ''" >
+	    amount =  #{amount, jdbcType=DOUBLE},
+	</if>
+	<if test="useage != null and useage != ''" >
+	    useage =  #{useage, jdbcType=VARCHAR},
+	</if>
+	<if test="detailUseage != null and detailUseage != ''" >
+	    detail_useage =  #{detailUseage, jdbcType=VARCHAR},
+	</if>
+	<if test="product != null and product != ''" >
+	    product =  #{product, jdbcType=VARCHAR},
+	</if>
+	<if test="period != null and period != ''" >
+	    period =  #{period, jdbcType=INTEGER},
+	</if>
+	<if test="sreviceFeeRate != null and sreviceFeeRate != ''" >
+	    srevice_fee_rate =  #{sreviceFeeRate, jdbcType=DOUBLE},
+	</if>
+	<if test="interestRate != null and interestRate != ''" >
+	    interest_rate =  #{interestRate, jdbcType=DOUBLE},
+	</if>
+	<if test="lendAccName != null and lendAccName != ''" >
+	    lend_acc_name =  #{lendAccName, jdbcType=VARCHAR},
+	</if>
+	<if test="lendAccBank != null and lendAccBank != ''" >
+	    lend_acc_bank =  #{lendAccBank, jdbcType=VARCHAR},
+	</if>
+	<if test="lendAccount != null and lendAccount != ''" >
+	    lend_account =  #{lendAccount, jdbcType=VARCHAR},
+	</if>
+	<if test="repayAccName != null and repayAccName != ''" >
+	    repay_acc_name =  #{repayAccName, jdbcType=VARCHAR},
+	</if>
+	<if test="repayAccBank != null and repayAccBank != ''" >
+	    repay_acc_bank =  #{repayAccBank, jdbcType=VARCHAR},
+	</if>
+	<if test="repayAccount != null and repayAccount != ''" >
+	    repay_account =  #{repayAccount, jdbcType=VARCHAR},
+	</if>
+	<if test="regDate != null and regDate != ''" >
+	    reg_date =  #{regDate, jdbcType=DATE},
+	</if>
+	<if test="regAmount != null and regAmount != ''" >
+	    reg_amount =  #{regAmount, jdbcType=DOUBLE},
+	</if>
+	<if test="acctualAmount != null and acctualAmount != ''" >
+	    acctual_amount =  #{acctualAmount, jdbcType=DOUBLE},
+	</if>
+	<if test="orgCodeNo != null and orgCodeNo != ''" >
+	    org_code_no =  #{orgCodeNo, jdbcType=VARCHAR},
+	</if>
+	<if test="orgCodeExpiryDate != null and orgCodeExpiryDate != ''" >
+	    org_code_expiry_date =  #{orgCodeExpiryDate, jdbcType=DATE},
+	</if>
+	<if test="taxRegNo != null and taxRegNo != ''" >
+	    tax_reg_no =  #{taxRegNo, jdbcType=VARCHAR},
+	</if>
+	<if test="baiscAccountBank != null and baiscAccountBank != ''" >
+	    baisc_account_bank =  #{baiscAccountBank, jdbcType=VARCHAR},
+	</if>
+	<if test="baiscAccount != null and baiscAccount != ''" >
+	    baisc_account =  #{baiscAccount, jdbcType=VARCHAR},
+	</if>
+	<if test="bizzScope != null and bizzScope != ''" >
+	    bizz_scope =  #{bizzScope, jdbcType=VARCHAR},
+	</if>
+	<if test="companyType != null and companyType != ''" >
+	    company_type =  #{companyType, jdbcType=VARCHAR},
+	</if>
+	<if test="mainProduct != null and mainProduct != ''" >
+	    main_product =  #{mainProduct, jdbcType=VARCHAR},
+	</if>
+	<if test="lastYearTurnover != null and lastYearTurnover != ''" >
+	    last_year_turnover =  #{lastYearTurnover, jdbcType=DOUBLE},
+	</if>
+	<if test="last3mTurnover != null and last3mTurnover != ''" >
+	    last_3m_turnover =  #{last3mTurnover, jdbcType=DOUBLE},
+	</if>
+	<if test="cooperateBankCompany != null and cooperateBankCompany != ''" >
+	    cooperate_bank_company =  #{cooperateBankCompany, jdbcType=VARCHAR},
+	</if>
+	<if test="dailyClearBank != null and dailyClearBank != ''" >
+	    daily_clear_bank =  #{dailyClearBank, jdbcType=VARCHAR},
+	</if>
+	<if test="loanBalance != null and loanBalance != ''" >
+	    loan_balance =  #{loanBalance, jdbcType=DOUBLE},
+	</if>
+	<if test="financeCompany != null and financeCompany != ''" >
+	    finance_company =  #{financeCompany, jdbcType=VARCHAR},
+	</if>
+	<if test="financeBank != null and financeBank != ''" >
+	    finance_bank =  #{financeBank, jdbcType=VARCHAR},
+	</if>
+	<if test="nearly3mEleBill1 != null and nearly3mEleBill1 != ''" >
+	    nearly_3m_ele_bill1 =  #{nearly3mEleBill1, jdbcType=DOUBLE},
+	</if>
+	<if test="nearly3mEleBill2 != null and nearly3mEleBill2 != ''" >
+	    nearly_3m_ele_bill2 =  #{nearly3mEleBill2, jdbcType=DOUBLE},
+	</if>
+	<if test="nearly3mEleBill3 != null and nearly3mEleBill3 != ''" >
+	    nearly_3m_ele_bill3 =  #{nearly3mEleBill3, jdbcType=DOUBLE},
+	</if>
+	<if test="matchType != null and matchType != ''" >
+	    match_type =  #{matchType, jdbcType=VARCHAR},
+	</if>
+	<if test="customerManager != null and customerManager != ''" >
+	    customer_manager =  #{customerManager, jdbcType=VARCHAR},
+	</if>
+	<if test="sales != null and sales != ''" >
+	    sales =  #{sales, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	</trim>
+	where
+		APP_TYPE = CUSTOMER_TYPE
+		AND  MAIN_FLAG = '0'
+		and app_id = #{appId}
+</update>
+
+
+
+ <!-- 签约列表数目查询:签约流程：巨亚红添加：2014-6-17 14:22:11-->
+<select id="querySignCount" resultType="java.lang.Integer" parameterType="map">
+	SELECT count(1) FROM
+	T_LOAN_APP a, T_LOAN_APPROVAL b,
+	T_LOAN_2MATCH t, 
+	(SELECT  x.* FROM t_bpm_log X ,(SELECT biz_key, state, MAX(id) id FROM t_bpm_log WHERE state = '风险专员初核' GROUP BY biz_key , state ) Y
+	 WHERE x.id = y.id) g, 
+	t_bpm_task k
+	WHERE t.STATE = '2'
+	AND t.LOAN_APP_ID = a.APP_ID
+	AND a.APP_ID = b.APP_ID
+	AND a.APP_TYPE = a.CUSTOMER_TYPE
+	AND a.MAIN_FLAG = '0'
+	AND g.biz_key = a.APP_ID
+	AND k.BIZ_KEY = a.APP_ID
+	AND k.STATE IN ('自动撮合','签约')
+	<if test="userLoginId != null and userLoginId != '' " >	
+		AND g.OPERATOR = #{userLoginId}
+	</if>
+	 <if test="orgId != null and orgId != '' " >
+		AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	<!-- 以下是 查询筛选条件  -->
+	<if test="name!=null and name!=''">
+		AND a.NAME =#{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	<if test="mobile!=null and mobile!=''">
+		AND a.mobile =#{mobile}
+	</if>
+
+	<if test="amountMin!=null and amountMin!=''">
+		<![CDATA[
+			AND a.amount >= #{amountMin}
+		]]>
+	</if>
+	
+	<if test="amountMax!=null and amountMax!=''">
+		<![CDATA[
+			AND a.amount < #{amountMax}
+		]]>
+	</if>
+	
+	<if test="createTimeMin!=null and createTimeMin!=''">
+		<![CDATA[
+			AND a.CREATE_TIME >= #{createTimeMin}
+		]]>
+	</if>
+	
+	<if test="createTimeMax!=null and createTimeMax!=''">
+		<![CDATA[
+			AND a.CREATE_TIME < #{createTimeMax}
+		]]>
+	</if>
+</select>
+
+
+<!-- 签约 列表查询-->
+<select id="querySignList" resultMap="ResultMap"  parameterType="map">
+	SELECT a.* FROM
+	T_LOAN_APP a, T_LOAN_APPROVAL b,
+	T_LOAN_2MATCH t, 
+	(SELECT  x.* FROM t_bpm_log X ,(SELECT biz_key, state, MAX(id) id FROM t_bpm_log WHERE state = '风险专员初核' GROUP BY biz_key , state ) Y
+	 WHERE x.id = y.id) g, 
+	t_bpm_task k
+	WHERE t.STATE = '2'
+	AND t.LOAN_APP_ID = a.APP_ID
+	AND a.APP_ID = b.APP_ID
+	AND a.APP_TYPE = a.CUSTOMER_TYPE
+	AND a.MAIN_FLAG = '0'
+	AND g.biz_key = a.APP_ID
+	AND k.BIZ_KEY = a.APP_ID
+	AND k.STATE IN ('自动撮合','签约')
+	<if test="userLoginId != null and userLoginId != '' " >	
+		AND g.OPERATOR = #{userLoginId}
+	</if>
+	 <if test="orgId != null and orgId != '' " >
+		AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	<!-- 以下是 查询筛选条件  -->
+	<if test="name!=null and name!=''">
+		AND a.NAME =#{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	<if test="mobile!=null and mobile!=''">
+		AND a.mobile =#{mobile}
+	</if>
+
+	<if test="amountMin!=null and amountMin!=''">
+		<![CDATA[
+			AND a.amount >= #{amountMin}
+		]]>
+	</if>
+	
+	<if test="amountMax!=null and amountMax!=''">
+		<![CDATA[
+			AND a.amount < #{amountMax}
+		]]>
+	</if>
+	
+	<if test="createTimeMin!=null and createTimeMin!=''">
+		<![CDATA[
+			AND a.CREATE_TIME >= #{createTimeMin}
+		]]>
+	</if>
+	
+	<if test="createTimeMax!=null and createTimeMax!=''">
+		<![CDATA[
+			AND a.CREATE_TIME < #{createTimeMax}
+		]]>
+	</if>
+	<if test="rowS != null and rowE != null " >
+      	limit #{rowS} , #{rowE}
+    </if>
+ 
+</select>
+
+
+ 
+<!-- 放款列表总数-->
+<select id="queryLendingCount" resultType="java.lang.Integer"  parameterType="map">
+	SELECT  count(1)
+	FROM T_CONTRACT a, T_LOAN_APP b, t_bpm_task c
+	WHERE  a.LOAN_APP_ID = b.APP_ID
+		AND a.CONTRACT_CLASS='01'
+		AND b.APP_TYPE = b.CUSTOMER_TYPE
+		AND b.MAIN_FLAG = '0'	
+		AND b.app_id = c.biz_key	
+		AND b.state != '0'
+		AND (	(
+			c.state = '放款'
+			<if test="processer != null and processer != ''" >
+			   	AND c.PROCESSER = #{processer} 
+			</if>
+		) or (
+			 c.state = '结束'
+		) )
+	<if test="loanName != null and loanName != ''" >
+	    and a.LOAN_NAME =  #{loanName}
+	</if>
+	<if test="loanIdNo != null and loanIdNo != ''" >
+	    and a.LOAN_ID_NO =  #{loanIdNo}
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	     and b.ORG_ID  LIKE CONCAT(#{orgId},'%')
+	</if>
+	<if test="mobile != null and mobile != ''" >
+	    and b.MOBILE =  #{mobile}
+	</if>
+	<if test="contractNo != null and contractNo != ''" >
+	    AND a.CONTRACT_NO =  #{contractNo}
+	</if>
+		<if test="loanAmountMin != null and loanAmountMin != ''" >
+	    and a.LOAN_AMOUNT <![CDATA[>=]]> #{loanAmountMin,jdbcType=DOUBLE}
+	</if>
+	<if test="loanAmountMax != null and loanAmountMax != ''" >
+	    and a.LOAN_AMOUNT <![CDATA[<=]]> #{loanAmountMax, jdbcType=DOUBLE}
+	</if>
+	<if test="signDateBegin != null and signDateBegin != ''" >
+	    and a.SIGN_DATE <![CDATA[>=]]> #{signDateBegin, jdbcType=DATE} 
+	</if>
+	<if test="signDateEnd != null and signDateEnd != ''" >
+	    and a.SIGN_DATE <![CDATA[<=]]> #{signDateEnd, jdbcType=DATE} 
+	</if>
+</select>
+  	
+<!--  放款明细列表 -->
+<select id="queryLendingList" resultMap="Lending_ResultMap"  parameterType="map">
+	SELECT   a.CONTRACT_NO,
+	 (SELECT d.STATE FROM T_PAYMENT d WHERE d.CONTRACT_NO = a.CONTRACT_NO 
+	 	<if test="subject != null and subject != ''" >
+	   		AND d.SUBJECT =  #{subject} 
+		</if>
+	 ) STATE,
+	 (SELECT d.REASON FROM T_PAYMENT d WHERE d.CONTRACT_NO = a.CONTRACT_NO
+	 	<if test="subject != null and subject != ''" >
+	   		AND d.SUBJECT =  #{subject} 
+		</if>
+	 ) REASON,
+	 a.LOAN_NAME,
+	 a.LOAN_ID_NO,
+	 a.SIGN_DATE,
+	 a.LOAN_AMOUNT,
+	 a.LOAN_PRODUCT,
+	 a.LOAN_PERIOD,
+	 b.MOBILE,
+	 b.ORG_ID 
+	FROM T_CONTRACT a, T_LOAN_APP b, t_bpm_task c
+	WHERE  a.LOAN_APP_ID = b.APP_ID
+		AND a.CONTRACT_CLASS='01'
+		AND b.APP_TYPE = b.CUSTOMER_TYPE
+		AND b.MAIN_FLAG = '0'	
+		AND b.app_id = c.biz_key
+		AND b.state != '0'
+		AND (	(
+			c.state = '放款'
+			<if test="processer != null and processer != ''" >
+			   	AND c.PROCESSER = #{processer} 
+			</if>
+		) or (
+			 c.state = '结束'
+		) )
+	<if test="loanName != null and loanName != ''" >
+	    and a.LOAN_NAME =  #{loanName}
+	</if>
+	<if test="loanIdNo != null and loanIdNo != ''" >
+	    and a.LOAN_ID_NO =  #{loanIdNo}
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    and b.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	<if test="mobile != null and mobile != ''" >
+	    and b.MOBILE =  #{mobile}
+	</if>
+	<if test="contractNo != null and contractNo != ''" >
+	    AND a.CONTRACT_NO =  #{contractNo}
+	</if>
+		<if test="loanAmountMin != null and loanAmountMin != ''" >
+	    and a.LOAN_AMOUNT <![CDATA[>=]]> #{loanAmountMin,jdbcType=DOUBLE}
+	</if>
+	<if test="loanAmountMax != null and loanAmountMax != ''" >
+	    and a.LOAN_AMOUNT <![CDATA[<=]]> #{loanAmountMax, jdbcType=DOUBLE}
+	</if>
+	<if test="signDateBegin != null and signDateBegin != ''" >
+	    and a.SIGN_DATE <![CDATA[>=]]> #{signDateBegin, jdbcType=DATE} 
+	</if>
+	<if test="signDateEnd != null and signDateEnd != ''" >
+	    and a.SIGN_DATE <![CDATA[<=]]> #{signDateEnd, jdbcType=DATE} 
+	</if>
+	
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+    </select>
+    
+<!-- 根据合同号查询借款人信息:特殊方法：签约合同里显示借款人信息列表需要、支付详细信息需要 -->
+<select id="getLoanListByContractNo"  resultMap="ResultMap" parameterType="map">
+	SELECT  a.LOAN_AMOUNT AS amount, b.name, b.ID_NO, b.app_id,
+	CONCAT(b.add_province, b.add_city, b.add_county, b.address) address,
+	b.MOBILE,
+	b.id_type,
+	a.loan_product as product ,
+	a.loan_period as period,
+	a.loan_interest_rate as interest_rate,
+	a.loan_service_rate as srevice_fee_rate
+	FROM
+	T_CONTRACT a, T_LOAN_APP b
+	WHERE a.CONTRACT_NO = #{contractNo}
+	AND a.LOAN_APP_ID = b.app_id
+	AND b.APP_TYPE = b.CUSTOMER_TYPE
+	<!--ORDER BY  b.MAIN_FLAG--> 
+	<!--只要主借款人--> 
+ 	and b.MAIN_FLAG='0'
+</select>
+
+</mapper>

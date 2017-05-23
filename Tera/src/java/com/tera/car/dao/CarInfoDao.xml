@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.car.dao.CarInfoDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.car.model.CarInfo" >
+	<result column="id" property="id"/><!-- 主键 -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="car_brand" property="carBrand"/><!-- 车辆品牌型号 -->
+	<result column="license_plate" property="licensePlate"/><!-- 车牌号码 -->
+	<result column="car_yearly_limit" property="carYearlyLimit"/><!-- 车辆年限 -->
+	<result column="engine_number" property="engineNumber"/><!-- 发动机号 -->
+	<result column="mileage" property="mileage"/><!-- 里程 -->
+	<result column="vehicle_identification_number" property="vehicleIdentificationNumber"/><!-- 车架号 -->
+	<result column="transfer_num" property="transferNum"/><!-- 过户次数 -->
+	<result column="ticket_price" property="ticketPrice"/><!-- 开票价 -->
+	<result column="market_price" property="marketPrice"/><!-- 同类市场价格 -->
+	<result column="production_date" property="productionDate"/><!-- 出厂日期 -->
+	<result column="register_date" property="registerDate"/><!-- 登记日期 -->
+	<result column="purchase_date" property="purchaseDate"/><!-- 购买日期 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="update_time" property="updateTime"/><!-- 修改时间 -->
+</resultMap>
+       
+<!-- T_CAR_INFO table all fields -->
+<sql id="Column_List" >
+	 id,app_id,car_brand,license_plate,car_yearly_limit,engine_number,mileage,vehicle_identification_number,transfer_num,ticket_price,market_price,production_date,register_date,purchase_date,state,org_id,operator,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="carBrand != null and carBrand != ''" >
+	    and car_brand =  #{carBrand}
+	</if>
+<if test="licensePlate != null and licensePlate != ''" >
+	    and license_plate =  #{licensePlate}
+	</if>
+<if test="carYearlyLimit != null and carYearlyLimit != ''" >
+	    and car_yearly_limit =  #{carYearlyLimit}
+	</if>
+<if test="engineNumber != null and engineNumber != ''" >
+	    and engine_number =  #{engineNumber}
+	</if>
+<if test="mileage != null and mileage != ''" >
+	    and mileage =  #{mileage}
+	</if>
+<if test="vehicleIdentificationNumber != null and vehicleIdentificationNumber != ''" >
+	    and vehicle_identification_number =  #{vehicleIdentificationNumber}
+	</if>
+<if test="transferNum != null and transferNum != ''" >
+	    and transfer_num =  #{transferNum}
+	</if>
+<if test="ticketPrice != null and ticketPrice != ''" >
+	    and ticket_price =  #{ticketPrice}
+	</if>
+<if test="marketPrice != null and marketPrice != ''" >
+	    and market_price =  #{marketPrice}
+	</if>
+<if test="productionDate != null and productionDate != ''" >
+	    and production_date =  #{productionDate}
+	</if>
+<if test="registerDate != null and registerDate != ''" >
+	    and register_date =  #{registerDate}
+	</if>
+<if test="purchaseDate != null and purchaseDate != ''" >
+	    and purchase_date =  #{purchaseDate}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_CAR_INFO_SEQ') From dual
+		  </selectKey>
+	insert into T_CAR_INFO(id,app_id,car_brand,license_plate,car_yearly_limit,engine_number,mileage,vehicle_identification_number,transfer_num,ticket_price,market_price,production_date,register_date,purchase_date,state,org_id,operator,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{carBrand, jdbcType=VARCHAR},#{licensePlate, jdbcType=VARCHAR},#{carYearlyLimit, jdbcType=VARCHAR},#{engineNumber, jdbcType=VARCHAR},#{mileage, jdbcType=VARCHAR},#{vehicleIdentificationNumber, jdbcType=VARCHAR},#{transferNum, jdbcType=VARCHAR},#{ticketPrice, jdbcType=DOUBLE},#{marketPrice, jdbcType=DOUBLE},#{productionDate, jdbcType=DATE},#{registerDate, jdbcType=DATE},#{purchaseDate, jdbcType=DATE},#{state, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_CAR_INFO set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	car_brand =  #{carBrand, jdbcType=VARCHAR},
+	license_plate =  #{licensePlate, jdbcType=VARCHAR},
+	car_yearly_limit =  #{carYearlyLimit, jdbcType=VARCHAR},
+	engine_number =  #{engineNumber, jdbcType=VARCHAR},
+	mileage =  #{mileage, jdbcType=VARCHAR},
+	vehicle_identification_number =  #{vehicleIdentificationNumber, jdbcType=VARCHAR},
+	transfer_num =  #{transferNum, jdbcType=VARCHAR},
+	ticket_price =  #{ticketPrice, jdbcType=DOUBLE},
+	market_price =  #{marketPrice, jdbcType=DOUBLE},
+	production_date =  #{productionDate, jdbcType=DATE},
+	register_date =  #{registerDate, jdbcType=DATE},
+	purchase_date =  #{purchaseDate, jdbcType=DATE},
+	state =  #{state, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_CAR_INFO  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_CAR_INFO set 
+	<trim  suffixOverrides="," >
+
+	<if test="appId != null and appId != '' " >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="carBrand != null and carBrand != '' " >
+	    car_brand =  #{carBrand, jdbcType=VARCHAR},
+	</if>
+
+	<if test="licensePlate != null and licensePlate != '' " >
+	    license_plate =  #{licensePlate, jdbcType=VARCHAR},
+	</if>
+
+	<if test="carYearlyLimit != null and carYearlyLimit != '' " >
+	    car_yearly_limit =  #{carYearlyLimit, jdbcType=VARCHAR},
+	</if>
+
+	<if test="engineNumber != null and engineNumber != '' " >
+	    engine_number =  #{engineNumber, jdbcType=VARCHAR},
+	</if>
+
+	<if test="mileage != null and mileage != '' " >
+	    mileage =  #{mileage, jdbcType=VARCHAR},
+	</if>
+
+	<if test="vehicleIdentificationNumber != null and vehicleIdentificationNumber != '' " >
+	    vehicle_identification_number =  #{vehicleIdentificationNumber, jdbcType=VARCHAR},
+	</if>
+
+	<if test="transferNum != null and transferNum != '' " >
+	    transfer_num =  #{transferNum, jdbcType=VARCHAR},
+	</if>
+
+	<if test="ticketPrice != null and ticketPrice != ''  or ticketPrice==0" >
+	    ticket_price =  #{ticketPrice, jdbcType=DOUBLE},
+	</if>
+
+	<if test="marketPrice != null and marketPrice != ''  or marketPrice==0" >
+	    market_price =  #{marketPrice, jdbcType=DOUBLE},
+	</if>
+
+	<if test="productionDate != null and productionDate != '' " >
+	    production_date =  #{productionDate, jdbcType=DATE},
+	</if>
+
+	<if test="registerDate != null and registerDate != '' " >
+	    register_date =  #{registerDate, jdbcType=DATE},
+	</if>
+
+	<if test="purchaseDate != null and purchaseDate != '' " >
+	    purchase_date =  #{purchaseDate, jdbcType=DATE},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operator != null and operator != '' " >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 车辆信息表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CAR_INFO  where id = #{id}
+</select>
+
+<!-- 车辆信息表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CAR_INFO 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询车辆信息表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_CAR_INFO 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

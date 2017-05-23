@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<link rel="stylesheet" href="../../css/base.css">
+<link rel="stylesheet" href="../../css/pay.css">
+<title>支付成功</title>
+</head>
+<body onload="closeWindow()">
+<!--header-->
+<div class="header">
+  <div class="header-wrap">
+    <div class="logo"> <img  src="../../images/logo.png" alt="秒趣 轻松分期，畅想生活" title="秒趣 轻松分期，畅想生活"/> </div>
+    <div class="logo-text"> 轻松分期，畅想生活 </div>
+  </div>
+</div>
+<!--/header-->
+
+<!--content-->
+ 
+	
+	<div class="pay-result">
+		<div class="pay-remind">
+			<i class="pay-icon pay-success-icon"></i>
+			<span class="pay-success-remind">支付成功，请前往账单中心刷新账单状态！</span>
+		</div>
+		<div class="pay-remind">
+			 
+			<span class="ml40" id="secId"></span>秒后将自动关闭当前画面！
+		</div>
+		<div class="pay-result-btn clearfix">
+			<a  type="button" class="btn btn-big" onclick="closeNow()">关闭</a>
+			 
+		</div>
+	</div>
+ 
+ 
+<!--/content-->
+
+<script type="text/javascript">
+var time=5;
+function closeWindow(){
+window.setTimeout('closeWindow()',1000);
+if(time>0){
+	document.getElementById("secId").innerHTML=time;
+	time--;
+}
+else{
+ closeNow();
+
+}
+}
+function closeNow(){
+	window.opener=null; //关闭窗口时不出现提示窗口
+       window.open('', '_self', ''); 
+       window.close(); 
+}
+</script>
+</body>
+
+
+</html>
+
+
+ 

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="auditbpm">
+	<start name="录入申请">
+		<transition to="分公司审批" comment="分公司审批" />
+		<transition to="放弃申请" comment="放弃申请" />
+	</start>
+	
+	<state name="分公司审批" comment="分公司审批" role="">
+		<transition to="录入申请" comment="录入申请" />
+		<transition to="风控经理审批" comment="风控经理审批" />
+		<transition to="评审会初审" comment="评审会初审" />
+	</state>
+	
+	<state name="风控经理审批" comment="风控经理审批" role="">
+		<transition to="录入申请" comment="录入申请" />
+		<transition to="分公司审批" comment="分公司审批" />
+		<transition to="风控总监审批" comment="风控总监审批" />
+	</state>
+	
+	<state name="评审会初审" comment="评审会初审" role="">
+		<transition to="录入申请" comment="录入申请" />
+		<transition to="分公司审批" comment="分公司审批" />
+		<transition to="评审会复核" comment="评审会复核" />
+	</state>
+	<state name="评审会意见" comment="评审会意见" role="">
+		<transition to="评审会复核" comment="评审会复核" />
+	</state>
+	<state name="评审会复核" comment="评审会复核" role="">
+		<transition to="录入申请" comment="录入申请" />
+		<transition to="分公司审批" comment="分公司审批" />
+		<transition to="风控总监审批" comment="风控总监审批" />
+		<transition to="评审会初审" comment="评审会初审" />
+	</state>
+	<state name="风控总监审批" comment="风控总监审批" role="">
+		<transition to="录入申请" comment="录入申请" />
+		<transition to="分公司审批" comment="分公司审批" />
+		<transition to="风控经理审批" comment="风控经理审批" />
+		<transition to="评审会初审" comment="评审会初审" />
+		<transition to="评审会复核" comment="评审会复核" />
+		<transition to="法务初审" comment="法务初审" />
+	</state>
+	<state name="法务初审" comment="法务初审" role="">
+		<transition to="录入申请" comment="录入申请" />
+		<transition to="分公司审批" comment="分公司审批" />
+		<transition to="风控经理审批" comment="风控经理审批" />
+		<transition to="评审会初审" comment="评审会初审" />
+		<transition to="评审会复核" comment="评审会复核" />
+		<transition to="风控总监审批" comment="风控总监审批" />
+		<transition to="法务内勤" comment="法务内勤" />
+	</state>
+	<state name="法务内勤" comment="法务内勤" role="">
+		<transition to="录入申请" comment="录入申请" />
+		<transition to="分公司审批" comment="分公司审批" />
+		<transition to="风控经理审批" comment="风控经理审批" />
+		<transition to="评审会初审" comment="评审会初审" />
+		<transition to="评审会复核" comment="评审会复核" />
+		<transition to="风控总监审批" comment="风控总监审批" />
+		<transition to="法务初审" comment="法务初审" />
+		<transition to="法务复核" comment="法务复核" />
+	</state>
+	<state name="法务复核" comment="法务复核" role="">
+		<transition to="录入申请" comment="录入申请" />
+		<transition to="分公司审批" comment="分公司审批" />
+		<transition to="风控经理审批" comment="风控经理审批" />
+		<transition to="评审会初审" comment="评审会初审" />
+		<transition to="评审会复核" comment="评审会复核" />
+		<transition to="风控总监审批" comment="风控总监审批" />
+		<transition to="法务初审" comment="法务初审" />
+		<transition to="法务内勤" comment="法务内勤" />
+		<transition to="出纳核账" comment="出纳核账" />
+		<transition to="推送线上" comment="推送线上"/>
+	</state>
+	<state name="出纳核账" comment="出纳核账" role="">
+		<transition to="录入申请" comment="录入申请" />
+		<transition to="分公司审批" comment="分公司审批" />
+		<transition to="风控经理审批" comment="风控经理审批" />
+		<transition to="评审会初审" comment="评审会初审" />
+		<transition to="评审会复核" comment="评审会复核" />
+		<transition to="风控总监审批" comment="风控总监审批" />
+		<transition to="法务初审" comment="法务初审" />
+		<transition to="法务内勤" comment="法务内勤" />
+		<transition to="法务复核" comment="法务复核" />
+		<transition to="财务审批" comment="财务审批" />
+	</state>
+	<state name="财务审批" comment="财务审批" role="">
+		<transition to="出纳核账" comment="出纳核账" />
+		<transition to="财务复核" comment="财务复核" />
+		<transition to="出纳放款" comment="出纳放款" />
+	</state>
+	<state name="财务复核" comment="财务复核" role="">
+		<transition to="出纳核账" comment="出纳核账" />
+		<transition to="财务审批" comment="财务审批" />
+		<transition to="出纳放款" comment="出纳放款" />
+	</state>
+	<state name="出纳放款" comment="出纳放款" role="">
+		<transition to="法律意见" comment="法律意见"/>
+		<transition to="结束" comment="结束"/>
+	</state>
+	<state name="法律意见" comment="法律意见" role="">
+		<transition to="推送线上" comment="推送线上"/>
+	</state>
+	<state name="推送线上" comment="推送线上" role="">
+		<transition to="结束" comment="结束"/>
+	</state>
+	
+	<end name="放弃申请" comment="放弃申请"/>
+	<end name="结束" comment="结束"/>
+</process>

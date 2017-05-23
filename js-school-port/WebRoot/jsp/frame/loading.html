@@ -1,0 +1,41 @@
+<div class="user-main" style="width: 100%">
+	<div class="user-result clearfix" style="width: 100%" >
+		<div class="user-loading" style="width: 100%">
+			<div class="user-remind-left" ><i class="user-icon user-loading-icon1"  ></i></div>
+			<div class="user-remind-right">
+				<div class="ml10 mt20"><span class="user-success-remind">正在努力加载...</span></div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+
+/**
+ * Created by YD on 5/7/15.
+ * Base on Jquery
+ */
+var ele=null ;
+
+//自定义函数
+$.fn.extend({
+    rotate: function () {
+        ele = this ;
+        setInterval('singleRotate()',20);
+    }
+});
+
+//初始角度
+var degree = 0;
+
+//单次旋转
+function singleRotate() {
+    //一次增加50度
+    degree = degree + 50 * Math.PI / 180;
+  
+    ele.css("transform","rotate("+(degree + 50 * Math.PI / 180)+"deg)");
+}
+
+$(".user-loading-icon1").rotate();
+</script>

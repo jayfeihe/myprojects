@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.UserBankCardDAO">
+	<resultMap type="com.hikootech.mqcash.po.UserBankCard" id="userBankCardMap">
+		<result column="bank_card_id" property="bankCardId" />
+		<result column="third_pary_binding_id" property="thirdParyBindingId" />
+		<result column="user_id" property="userId" />
+		<result column="relation_bank_id" property="relationBankId" />
+		<result column="owner_id_card" property="ownerIdCard" />
+		<result column="owner_name" property="ownerName" />
+		<result column="card_type" property="cardType" />
+		<result column="card_number" property="cardNumber" />
+		<result column="reserve_mobile" property="reserveMobile" />
+		<result column="bind_status" property="bindStatus" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+		<resultMap type="com.hikootech.mqcash.dto.UserBankCardDTO" id="userBankCardDTOMap">
+		<result column="bank_card_id" property="bankCardId" />
+		<result column="third_pary_binding_id" property="thirdParyBindingId" />
+		<result column="user_id" property="userId" />
+		<result column="relation_bank_id" property="relationBankId" />
+		<result column="owner_id_card" property="ownerIdCard" />
+		<result column="owner_name" property="ownerName" />
+		<result column="card_type" property="cardType" />
+		<result column="card_number" property="cardNumber" />
+		<result column="reserve_mobile" property="reserveMobile" />
+		<result column="bind_status" property="bindStatus" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="bank_img_url" property="bankImgUrl" />
+	</resultMap>
+
+	<select id="queryUserBankCardByCardNumber" resultMap="userBankCardMap">
+		select * from t_user_bank_card where id_card = #{idCard} and card_number = #{cardNumber}
+	</select>
+	
+	<insert id="insertUserBankCard">
+		insert into t_user_bank_card(
+			bank_card_id,
+			third_pary_binding_id,
+			user_id,
+			relation_bank_id,
+			owner_id_card,
+			owner_name,
+			card_type,
+			card_number,
+			reserve_mobile,
+			bind_status,
+			create_time,
+			update_time
+		)
+		
+		values(
+			#{bankCardId},
+			#{thirdParyBindingId},
+			#{userId},
+			#{relationBankId},
+			#{ownerIdCard},
+			#{ownerName},
+			#{cardType},
+			#{cardNumber},
+			#{reserveMobile},
+			#{bindStatus},
+			#{createTime},
+			#{updateTime}
+		)
+	
+	</insert>
+	
+	
+	<select id="queryBankInfoByUser" resultMap="userBankCardDTOMap" >
+	SELECT * FROM (	
+		select bank.bank_img_url,s.* 
+		from  t_user_bank_card s 
+	 	join t_relation_config_bank rel on rel.relation_bank_id=s.relation_bank_id
+	 	join t_config_bank bank on bank.bank_id=rel.bank_id
+	 	where s.user_id=#{userId} and s.bind_status=#{bindStatus}
+	 	ORDER BY s.create_time DESC
+ 	) a
+ 	GROUP BY a.card_number
+	</select>
+	
+	<select id="queryBankCardByCardNumber" resultMap="userBankCardMap">
+		 select
+		 * from  t_user_bank_card s where bind_status in (1,3)
+		 <if test="cardNumber!=null and cardNumber!=''"> and s.card_number=#{cardNumber}</if>
+		 <if test="userId!=null and userId!=''"> and s.user_id=#{userId}</if>
+	</select>
+	
+	<select id="queryBankCardByKey" resultMap="userBankCardMap">
+		select * from t_user_bank_card where bank_card_id=#{bankCardId} and  user_id=#{userId}
+	</select>
+	<select id="queryBindStatus" resultMap="userBankCardMap">
+		select * from t_user_bank_card where third_pary_binding_id=#{thirdParyBindingId}
+	</select>
+<!-- 		查询用户发送验证码次数 -->
+	<select id="queryValidateCardLimit" resultType="com.hikootech.mqcash.po.UserValidateCardLimit">
+	SELECT 
+	id_card idCard, 
+	cur_times curTimes, 
+	MAX maxTimes,
+	total_times totalTimes, 
+	create_time createTime, 
+	update_time updateTime, 
+	operator operator
+	FROM
+	t_user_validate_card_limit t where t.id_card = #{ownerIdCard}
+	</select>
+	
+<!-- 		查询用户发送验证码次数 -->
+	<select id="queryInstalmentValidateCardLimit" resultType="com.hikootech.mqcash.po.InstalmentValidateCardLimit">
+		SELECT 
+		instalment_id instalmentId, 
+		cur_times curTimes, 
+		total_times totalTimes, 
+		create_time createTime, 
+		update_time updateTime, 
+		operator operator
+		FROM
+		t_instalment_validate_card_limit t where t.instalment_id = #{instalmentId}
+	</select>
+	
+	<insert id="insertValidateCardLimit">
+	INSERT INTO t_user_validate_card_limit (
+	id_card,
+	cur_time
+	total_times,
+	create_time,
+	update_time,
+	operator
+	)
+	VALUES
+	(#{idCard}, #{curTimes},  #{totalTimes}, #{createTime}, #{updateTime}, #{operator})
+	</insert>
+	<insert id="insertInstalmentValidateCardLimit">
+	INSERT INTO t_instalment_validate_card_limit (
+	instalment_id,
+	cur_times,
+	total_times,
+	create_time,
+	update_time,
+	operator
+	)
+	VALUES
+	(#{instalmentId}, #{curTimes},  #{totalTimes}, #{createTime}, #{updateTime}, #{operator})
+	</insert>
+	
+	
+		<!-- 修改点击发送验证码次数 -->
+	<update id="updateValidateCardLimit" parameterType="com.hikootech.mqcash.po.UserValidateCardLimit">
+		UPDATE t_user_validate_card_limit
+	SET
+		cur_times=#{curTimes},
+		update_time=#{updateTime},
+		total_times=#{totalTimes},
+		operator=#{operator}
+	WHERE id_card=#{idCard}
+	</update>
+		<!-- 修改点击发送验证码次数 -->
+	<update id="updateInstalmentValidateCardLimit" parameterType="com.hikootech.mqcash.po.InstalmentValidateCardLimit">
+		UPDATE t_instalment_validate_card_limit
+	SET
+		cur_times=#{curTimes},
+		update_time=#{updateTime},
+		total_times=#{totalTimes},
+		operator=#{operator}
+	WHERE instalment_id=#{instalmentId}
+	</update>
+	
+	<!-- 发送验证码，请求中金返回结果修改 -->
+	<update id="updateRequestValidateBankCardLog" parameterType="com.hikootech.mqcash.po.RequestValidateBankCardLog">
+		UPDATE t_request_validate_bank_card_log
+	SET
+		code=#{code},
+		msg=#{msg},
+		update_time=#{updateTime}
+	WHERE bank_card_log_id=#{bankCardLogId}
+	</update>
+	
+	<!-- 绑定银行卡，请求中金返回结果修改 -->
+	<update id="updateRequestBindBankCardLog" parameterType="com.hikootech.mqcash.po.RequestValidateBankCardLog">
+		UPDATE t_request_validate_bank_card_log
+	SET
+		verify_status=#{verifyStatus},
+		status=#{status},
+		bind_status=#{bindStatus},
+		bank_tx_time=#{bankTxTime},
+		iss_ins_code=#{issInsCode},
+		pay_card_type=#{payCardType},
+		code=#{code},
+		msg=#{msg},
+		response_code=#{responseCode},
+		response_msg=#{responseMsg},
+		update_time=#{updateTime}
+	WHERE bank_card_log_id=#{bankCardLogId}
+	</update>
+	
+	<insert id="insertRequestValidateBankCardLog">
+				INSERT INTO t_request_validate_bank_card_log (
+				bank_card_log_id,
+				cust_ip,
+				cust_ip_int,
+				operation_type,
+				bind_source,
+				bank_card_id,
+				third_pary_binding_id,
+				relation_bank_id,
+				user_id,
+				owner_id_card,
+				owner_name,
+				card_type,
+				card_number,
+				reserve_mobile,
+				bind_status,
+				code,
+				msg,
+				response_code,
+				response_msg,
+				verify_status,
+				status,
+				bank_tx_time,
+				iss_ins_code,
+				pay_card_type,
+				create_time,
+				update_time
+				)
+				VALUES
+				(
+				#{bankCardLogId},
+				 #{custIp},   
+				#{custIpInt},
+				#{operationType},
+				'2',
+				#{bankCardId},
+				#{thirdParyBindingId},
+				#{configBankId},
+				#{userId},
+				#{ownerIdCard},
+				#{ownerName},
+				#{cardType},
+				#{cardNumber},
+				#{reserveMobile},
+				#{bindStatus},
+				#{code},
+				#{msg},
+				#{responseCode},
+				#{responseMsg},
+				#{verifyStatus},
+				#{status},
+				#{bankTxTime},
+				#{issInsCode},
+				#{payCardType},
+				#{createTime},
+				#{updateTime}
+			 )
+	
+	</insert>
+</mapper>

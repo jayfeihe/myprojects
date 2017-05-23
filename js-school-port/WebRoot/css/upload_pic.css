@@ -1,0 +1,27 @@
+.wrap{padding:20px 40px 40px 40px;}
+.wl{ float:left; width: 478px;}
+.wr{ float:left; margin-left: 26px; display: inline; }
+.jy-up-ch{ position: relative; width: 318px;margin:0 auto;}
+.jy-up-ch .bch{ display: block; position: absolute; background-repeat: no-repeat; background-image: url(../images/bch.jpg); }
+.jy-up-ch .bch1{ width: 15px; height: 20px; background-position: 0 0; left: 0; top: 10px; }
+.jy-up-ch .bch2{ width: 39px; height: 24px; background-position: -15px 0px; left: 50%; margin-left: -39px; top: 7px; }
+.jy-up-ch .bch3{ width: 37px; height: 24px; background-position: -54px 0px; left: 50%; top: 7px; }
+.jy-up-ch .bch4{ width: 15px; height: 20px; background-position: -91px 0px; right: 0; top: 10px; }
+.jy-up-ch .bch1:hover{ background-position: 0 -27px; }
+.jy-up-ch .bch2:hover{ background-position: -15px -24px;}
+.jy-up-ch .bch3:hover{ background-position: -54px -24px;}
+.jy-up-ch .bch4:hover{ background-position: -91px -27px;}
+.jc-demo-box{position: relative; background-color: #f1f2f3; width: 476px; height: 234px; overflow: hidden; border: 1px solid #ccc;}
+.jcrop_w{ width: 318px; height: 234px; overflow: hidden; }
+.jcrop_w img{ position: absolute; }
+.pre-1,.pre-2,.pre-3{ border: 1px solid #c8c8c8; padding: 2px; }
+.pre-1{ width: 100px; height: 100px; overflow:hidden; }
+.pre-2{ width: 90px; height: 90px; overflow:hidden; margin-top: 13px; display:none;}
+.pre-3{ width: 48px; height: 48px; overflow:hidden;margin-top: 13px; display:none;}
+.jcrop-holder{margin:0 auto;}
+
+
+
+
+
+

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="催收流程">
+	<start name="开始">
+		<transition to="逾期待分配" comment="逾期待分配" />
+		<transition to="落地催收待分配" comment="落地催收待分配" />
+	</start>
+	<state name="逾期待分配" comment="逾期待分配" role="电话催收主管">
+		<transition to="电话催收处理中" comment="电话催收处理中" />
+		<transition to="落地催收待分配" comment="落地催收待分配" />
+	</state>
+	
+	<state name="电话催收处理中" comment="电话催收处理中" role="电话催收专员">
+		<transition to="欺诈待复核" comment="欺诈待复核" />
+		<transition to="司法待复核" comment="司法待复核" />
+		<transition to="落地催收待分配" comment="落地催收待分配" />
+		<transition to="结束" comment="结束" />
+	</state>
+	
+	<state name="落地催收待分配" comment="落地催收待分配" role="落地催收主管">
+		<transition to="落地催收处理中" comment="落地催收处理中" />
+		<transition to="逾期待分配" comment="逾期待分配" />
+		<transition to="结束" comment="结束" />
+	</state>
+	
+	<state name="落地催收处理中" comment="落地催收处理中" role="落地催收专员">
+		<transition to="欺诈待复核" comment="欺诈待复核" />
+		<transition to="司法待复核" comment="司法待复核" />
+		<transition to="逾期待分配" comment="逾期待分配" />
+		<transition to="外包待审核" comment="外包待审核" />
+		<transition to="结束" comment="结束" />
+	</state>
+	<state name="协催待分配" comment="协催待分配" role="落地催收主管">
+		<transition to="协催处理中" comment="协催处理中" />	
+	</state>
+	
+	<state name="协催处理中" comment="协催处理中" role="落地催收专员">
+		<transition to="欺诈复核处理中" comment="欺诈复核处理中" />
+		<transition to="司法复核处理中" comment="司法复核处理中" />
+		<transition to="落地催收处理中" comment="落地催收处理中" />
+	</state>
+	
+	<state name="欺诈待复核" comment="欺诈待复核" role="欺诈主管">
+		<transition to="欺诈复核处理中" comment="欺诈复核处理中" />
+	</state>
+	
+	<state name="欺诈复核处理中" comment="欺诈复核处理中" role="欺诈复核专员">
+		<transition to="电话催收处理中" comment="电话催收处理中" />
+		<transition to="落地催收处理中" comment="落地催收处理中" />
+		<transition to="协催待分配" comment="协催待分配" />
+		<transition to="落地催收待分配" comment="落地催收待分配" />
+		<transition to="逾期待分配" comment="逾期待分配" />
+		<transition to="欺诈审批处理中" comment="欺诈审批处理中" />
+		<transition to="结束" comment="结束" />
+	</state>
+	
+	<state name="欺诈审批处理中" comment="欺诈审批处理中" role="欺诈审批专员">
+		<transition to="欺诈复核处理中" comment="欺诈复核处理中" />
+		<transition to="结束" comment="结束" />
+	</state>
+	
+	<state name="司法待复核" comment="司法待复核" role="司法主管">
+		<transition to="司法复核处理中" comment="司法复核处理中" />
+	</state>
+	
+	<state name="司法复核处理中" comment="司法复核处理中" role="司法复核专员">
+		<transition to="电话催收处理中" comment="电话催收处理中" />
+		<transition to="落地催收处理中" comment="落地催收处理中" />
+		<transition to="协催待分配" comment="协催待分配" />
+		<transition to="落地催收待分配" comment="落地催收待分配" />
+		<transition to="逾期待分配" comment="逾期待分配" />
+		<transition to="司法审批处理中" comment="司法审批处理中" />
+		<transition to="结束" comment="结束" />
+	</state>
+	
+	<state name="司法审批处理中" comment="司法审批处理中" role="司法审批专员">
+		<transition to="司法复核处理中" comment="司法复核处理中" />
+		<transition to="结束" comment="结束" />
+	</state>
+	<state name="外包待审核" comment="外包待审核" role="外包主管">
+		<transition to="逾期待分配" comment="逾期待分配" />
+		<transition to="落地催收待分配" comment="落地催收待分配" />
+		<transition to="落地催收处理中" comment="落地催收处理中" />
+		<transition to="外包催收处理中" comment="外包催收处理中" />
+		<transition to="结束" comment="结束" />
+	</state>
+	<state name="外包催收处理中" comment="外包催收处理中" role="">
+		<transition to="结束" comment="结束" />
+	</state>
+	<end name="结束" comment="结束"/>
+</process>

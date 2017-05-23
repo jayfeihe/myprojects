@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.loan.dao.ContactDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.audit.loan.model.Contact" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="loan_id" property="loanId"/><!-- 申请ID -->
+	<result column="name" property="name"/><!-- 姓名 -->
+	<result column="relation" property="relation"/><!-- 关系 -->
+	<result column="company" property="company"/><!-- 单位 -->
+	<result column="tel" property="tel"/><!-- 联系方式 -->
+	<result column="source" property="source"/><!-- 来源 -->
+	<result column="state" property="state"/><!-- 状态 -->
+</resultMap>
+       
+<!-- T_CONTACT table all fields -->
+<sql id="Column_List" >
+	 id,loan_id,name,relation,company,tel,source,state
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and loan_id =  #{loanId}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="relation != null and relation != ''" >
+	    and relation =  #{relation}
+	</if>
+<if test="company != null and company != ''" >
+	    and company =  #{company}
+	</if>
+<if test="tel != null and tel != ''" >
+	    and tel =  #{tel}
+	</if>
+<if test="source != null and source != ''" >
+	    and source =  #{source}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_CONTACT_SEQ') From dual -->
+			Select T_CONTACT_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_CONTACT(id,loan_id,name,relation,company,tel,source,state)
+ values( #{id, jdbcType=INTEGER},#{loanId, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{relation, jdbcType=VARCHAR},#{company, jdbcType=VARCHAR},#{tel, jdbcType=VARCHAR},#{source, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_CONTACT set 
+	<trim  suffixOverrides="," >
+	loan_id =  #{loanId, jdbcType=VARCHAR},
+	name =  #{name, jdbcType=VARCHAR},
+	relation =  #{relation, jdbcType=VARCHAR},
+	company =  #{company, jdbcType=VARCHAR},
+	tel =  #{tel, jdbcType=VARCHAR},
+	source =  #{source, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_CONTACT  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_CONTACT set 
+	<trim  suffixOverrides="," >
+
+	<if test="loanId != null and loanId != '' " >
+	    loan_id =  #{loanId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="name != null and name != '' " >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+
+	<if test="relation != null and relation != '' " >
+	    relation =  #{relation, jdbcType=VARCHAR},
+	</if>
+
+	<if test="company != null and company != '' " >
+	    company =  #{company, jdbcType=VARCHAR},
+	</if>
+
+	<if test="tel != null and tel != '' " >
+	    tel =  #{tel, jdbcType=VARCHAR},
+	</if>
+
+	<if test="source != null and source != '' " >
+	    source =  #{source, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 T_CONTACT -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CONTACT  where id = #{id}
+</select>
+
+<!-- 根据申请编号查询 T_CONTACT -->
+<select id="queryByLoanId" resultMap="ResultMap" parameterType="string">
+	select <include refid="Column_List" /> 
+	 from T_CONTACT  where loan_id = #{loanId,jdbcType=VARCHAR} and state = '1'
+</select>
+
+<!-- T_CONTACT 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CONTACT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询T_CONTACT列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_CONTACT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+</mapper>   

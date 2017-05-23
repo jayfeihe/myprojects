@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="信用借款流程">
+	<start name="开始">
+		<transition to="录入申请" comment="录入申请" />
+	</start>
+	<state name="录入申请" comment="录入申请" role="信用风险专员">
+		<transition to="结束" comment="结束"/>
+		<transition to="放弃" comment="放弃"/>
+		<transition to="审核" comment="审核"/>
+		<transition to="拒件" comment="拒件"/>
+	</state>
+	<state name="审核" comment="审核" role="信用审核专员,信用审核组长">
+		<transition to="审批" comment="审批"/>
+		<transition to="录入申请" comment="录入申请"/>
+		<transition to="反欺诈" comment="反欺诈"/>
+		<transition to="拒件" comment="拒件"/>
+	</state>
+	<state name="审批" comment="审批" role="信用审批专员,信用审批组长">
+		<transition to="审核" comment="审核"/>	
+		<transition to="拒件" comment="拒件"/>	
+		<transition to="签约" comment="签约"/>
+		<transition to="特殊审批" comment="特殊审批"/>
+		<transition to="反欺诈" comment="反欺诈"/>
+		<transition to="推送管理" comment="推送管理"/>
+	</state>
+	<state name="特殊审批" comment="特殊审批" role="信用高级审批员">
+		<transition to="审批" comment="审批"/>	
+		<transition to="拒件" comment="拒件"/>	
+		<transition to="签约" comment="签约"/>
+		<transition to="反欺诈" comment="反欺诈"/>
+		<transition to="推送管理" comment="推送管理"/>
+	</state>
+	<state name="反欺诈" comment="反欺诈" role="系统">
+		<transition to="审核" comment="审核"/>	
+		<transition to="审批" comment="审批"/>	
+		<transition to="特殊审批" comment="特殊审批"/>	
+		<transition to="签约" comment="签约"/>	
+	</state>
+	<state name="拒件" comment="拒件"  role="系统">
+		<transition to="结束" comment="结束"/>
+	</state>
+	<state name="签约" comment="签约" role="信用风险专员">
+		<transition to="复核" comment="复核"/>
+		<transition to="放弃" comment="放弃"/>
+		<transition to="反欺诈" comment="反欺诈"/>
+	</state>
+	<state name="复核" comment="复核" role="信用复核专员">
+		<transition to="放款" comment="放款"/>
+		<transition to="签约" comment="签约"/>
+	</state>
+	<state name="放款" comment="放款" role="信用放款专员">
+		<transition to="复核" comment="复核"/>
+		<transition to="拒件" comment="拒件"/>	
+		<transition to="结束" comment="结束"/>
+	</state>
+	<state name="放弃" comment="放弃" role="系统">
+		<transition to="结束" comment="结束"/>
+	</state>
+	<state name="推送管理" comment="推送管理" role="推送管理专员">
+		<transition to="放弃" comment="放弃"/>
+		<transition to="结束" comment="结束"/>
+	</state>
+	
+	<end name="结束" comment="结束"/>
+</process>

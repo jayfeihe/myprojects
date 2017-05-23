@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+    <!--引入jdbc配置文件-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!--配置数据连接池-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${driverClass}" />
+		<property name="jdbcUrl" value="${jdbcUrl}" />
+		<property name="user" value="${user}" />
+		<property name="password" value="${pwd}" />
+
+		<property name="minPoolSize" value="3" />
+		<property name="maxPoolSize" value="20" />
+		<property name="initialPoolSize" value="5" />
+		<property name="maxIdleTime" value="3600" />
+		<property name="acquireIncrement" value="3" />
+
+		<property name="maxStatementsPerConnection" value="0" />
+		<property name="idleConnectionTestPeriod" value="3000" />
+		<property name="acquireRetryAttempts" value="10" />
+		<property name="breakAfterAcquireFailure" value="false" />
+	</bean>
+
+    <!--配置sqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--配置数据连接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--配置mybatis全局配置文件-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+    </bean>
+
+    <!--配置Dao扫描,动态实现Dao接口-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--注入sqlSessionFactory-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!--定义扫描的包接口-->
+        <property name="basePackage" value="com.greenkoo"/>
+    </bean>
+</beans>

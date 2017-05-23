@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.collection.judicial.dao.CollectionApplicationDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.collection.judicial.model.CollectionApplication" >
+	<result column="id" property="id"/><!-- id -->
+	<result column="contract_no" property="contractNo"/><!-- 合同编号 -->
+	<result column="apply_type" property="applyType"/><!-- 申请类型 -->
+	<result column="collection_way" property="collectionWay"/><!-- 催收渠道 -->
+	<result column="distribution_state" property="distributionState"/><!-- 分配状态 -->
+	<result column="apply_uid" property="applyUid"/><!-- 申请人 -->
+	<result column="apply_time" property="applyTime"/><!-- 申请时间 -->
+	<result column="apply_text" property="applyText"/><!-- 申请内容 -->
+	<result column="check_uid" property="checkUid"/><!-- 复核人 -->
+	<result column="check_time" property="checkTime"/><!-- 复核时间 -->
+	<result column="check_text" property="checkText"/><!-- 复核意见 -->
+	<result column="check_result" property="checkResult"/><!-- 复核结果 -->
+	<result column="approval_uid" property="approvalUid"/><!-- 审批人 -->
+	<result column="approval_time" property="approvalTime"/><!-- 审批时间 -->
+	<result column="approval_text" property="approvalText"/><!-- 审批意见 -->
+	<result column="approval_result" property="approvalResult"/><!-- 审批结果 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="remark" property="remark"/><!-- 备注 -->
+	<result column="create_uid" property="createUid"/><!-- 创建人 -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="update_uid" property="updateUid"/><!-- 修改人 -->
+	<result column="update_time" property="updateTime"/><!-- 修改时间 -->
+</resultMap>
+       
+<!-- T_COLLECTION_APPLICATION table all fields -->
+<sql id="Column_List" >
+	 id,contract_no,apply_type,collection_way,distribution_state,apply_uid,apply_time,apply_text,check_uid,check_time,check_text,check_result,approval_uid,approval_time,approval_text,approval_result,state,remark,create_uid,create_time,update_uid,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1 
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="contractNo != null and contractNo != ''" >
+	    and contract_no =  #{contractNo}
+	</if>
+<if test="applyType != null and applyType != ''" >
+	    and apply_type =  #{applyType}
+	</if>
+<if test="collectionWay != null and collectionWay != ''" >
+	    and collection_way =  #{collectionWay}
+	</if>
+<if test="distributionState != null and distributionState != ''" >
+	    and distribution_state =  #{distributionState}
+	</if>
+<if test="applyUid != null and applyUid != ''" >
+	    and apply_uid =  #{applyUid}
+	</if>
+<if test="applyTime != null and applyTime != ''" >
+	    and apply_time =  #{applyTime}
+	</if>
+<if test="applyText != null and applyText != ''" >
+	    and apply_text =  #{applyText}
+	</if>
+<if test="checkUid != null and checkUid != ''" >
+	    and check_uid =  #{checkUid}
+	</if>
+<if test="checkTime != null and checkTime != ''" >
+	    and check_time =  #{checkTime}
+	</if>
+<if test="checkText != null and checkText != ''" >
+	    and check_text =  #{checkText}
+	</if>
+<if test="checkResult != null and checkResult != ''" >
+	    and check_result =  #{checkResult}
+	</if>
+<if test="approvalUid != null and approvalUid != ''" >
+	    and approval_uid =  #{approvalUid}
+	</if>
+<if test="approvalTime != null and approvalTime != ''" >
+	    and approval_time =  #{approvalTime}
+	</if>
+<if test="approvalText != null and approvalText != ''" >
+	    and approval_text =  #{approvalText}
+	</if>
+<if test="approvalResult != null and approvalResult != ''" >
+	    and approval_result =  #{approvalResult}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="createUid != null and createUid != ''" >
+	    and create_uid =  #{createUid}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateUid != null and updateUid != ''" >
+	    and update_uid =  #{updateUid}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_COLLECTION_APPLICATION_SEQ') From dual
+			<!-- Select T_COLLECTION_APPLICATION_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_COLLECTION_APPLICATION(id,contract_no,apply_type,collection_way,distribution_state,apply_uid,apply_time,apply_text,check_uid,check_time,check_text,check_result,approval_uid,approval_time,approval_text,approval_result,state,remark,create_uid,create_time,update_uid,update_time)
+ values( #{id, jdbcType=INTEGER},#{contractNo, jdbcType=VARCHAR},#{applyType, jdbcType=VARCHAR},#{collectionWay, jdbcType=VARCHAR},#{distributionState, jdbcType=VARCHAR},#{applyUid, jdbcType=VARCHAR},#{applyTime, jdbcType=TIMESTAMP},#{applyText, jdbcType=VARCHAR},#{checkUid, jdbcType=VARCHAR},#{checkTime, jdbcType=TIMESTAMP},#{checkText, jdbcType=VARCHAR},#{checkResult, jdbcType=VARCHAR},#{approvalUid, jdbcType=VARCHAR},#{approvalTime, jdbcType=TIMESTAMP},#{approvalText, jdbcType=VARCHAR},#{approvalResult, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{createUid, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateUid, jdbcType=VARCHAR},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_COLLECTION_APPLICATION set 
+	<trim  suffixOverrides="," >
+	contract_no =  #{contractNo, jdbcType=VARCHAR},
+	apply_type =  #{applyType, jdbcType=VARCHAR},
+	collection_way =  #{collectionWay, jdbcType=VARCHAR},
+	distribution_state =  #{distributionState, jdbcType=VARCHAR},
+	apply_uid =  #{applyUid, jdbcType=VARCHAR},
+	apply_time =  #{applyTime, jdbcType=TIMESTAMP},
+	apply_text =  #{applyText, jdbcType=VARCHAR},
+	check_uid =  #{checkUid, jdbcType=VARCHAR},
+	check_time =  #{checkTime, jdbcType=TIMESTAMP},
+	check_text =  #{checkText, jdbcType=VARCHAR},
+	check_result =  #{checkResult, jdbcType=VARCHAR},
+	approval_uid =  #{approvalUid, jdbcType=VARCHAR},
+	approval_time =  #{approvalTime, jdbcType=TIMESTAMP},
+	approval_text =  #{approvalText, jdbcType=VARCHAR},
+	approval_result =  #{approvalResult, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	remark =  #{remark, jdbcType=VARCHAR},
+	create_uid =  #{createUid, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_uid =  #{updateUid, jdbcType=VARCHAR},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_COLLECTION_APPLICATION  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_COLLECTION_APPLICATION set 
+	<trim  suffixOverrides="," >
+
+	<if test="contractNo != null and contractNo != '' " >
+	    contract_no =  #{contractNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="applyType != null and applyType != '' " >
+	    apply_type =  #{applyType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="collectionWay != null and collectionWay != '' " >
+	    collection_way =  #{collectionWay, jdbcType=VARCHAR},
+	</if>
+
+	<if test="distributionState != null and distributionState != '' " >
+	    distribution_state =  #{distributionState, jdbcType=VARCHAR},
+	</if>
+
+	<if test="applyUid != null and applyUid != '' " >
+	    apply_uid =  #{applyUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="applyTime != null and applyTime != '' " >
+	    apply_time =  #{applyTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="applyText != null and applyText != '' " >
+	    apply_text =  #{applyText, jdbcType=VARCHAR},
+	</if>
+
+	<if test="checkUid != null and checkUid != '' " >
+	    check_uid =  #{checkUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="checkTime != null and checkTime != '' " >
+	    check_time =  #{checkTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="checkText != null and checkText != '' " >
+	    check_text =  #{checkText, jdbcType=VARCHAR},
+	</if>
+
+	<if test="checkResult != null and checkResult != '' " >
+	    check_result =  #{checkResult, jdbcType=VARCHAR},
+	</if>
+
+	<if test="approvalUid != null and approvalUid != '' " >
+	    approval_uid =  #{approvalUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="approvalTime != null and approvalTime != '' " >
+	    approval_time =  #{approvalTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="approvalText != null and approvalText != '' " >
+	    approval_text =  #{approvalText, jdbcType=VARCHAR},
+	</if>
+
+	<if test="approvalResult != null and approvalResult != '' " >
+	    approval_result =  #{approvalResult, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createUid != null and createUid != '' " >
+	    create_uid =  #{createUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateUid != null and updateUid != '' " >
+	    update_uid =  #{updateUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询  -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_COLLECTION_APPLICATION  where id = #{id}
+</select>
+
+<!--  列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_COLLECTION_APPLICATION 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_COLLECTION_APPLICATION 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

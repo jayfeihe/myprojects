@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.UserDAO">
+	<resultMap type="com.hikootech.mqcash.po.UserInfo" id="userInfoMap">
+		<result property="userId" column="user_id"/>
+		<result property="idCard" column="id_card"/>
+		<result property="name" column="name"/>
+		<result property="idCardAddress" column="id_card_address"/>
+		<result property="contactPhone" column="contact_phone"/>
+		<result property="pwd" column="pwd"/>
+		<result property="pwdLevel" column="pwd_level"/>
+		<result property="sex" column="sex"/>
+		<result property="birthday" column="birthday"/>
+		<result property="provinceId" column="province_id"/>
+		<result property="cityId" column="city_id"/>
+		<result property="areaId" column="area_id"/>
+		<result property="bindMobile" column="bind_mobile"/>
+		<result property="homeAddress" column="home_address"/>
+		<result property="companyProvinceId" column="company_province_id"/>
+		<result property="companyCityId" column="company_city_id"/>
+		<result property="companyAreaId" column="company_area_id"/>
+		<result property="companyName" column="company_name"/>
+		<result property="companyAddress" column="company_address"/>
+		<result property="interesting" column="interesting"/>
+		<result property="headImgUrl" column="head_img_url"/>
+		<result property="userSmType" column="user_sm_type"/>
+		<result property="status" column="status"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.po.UserInfo" id="userInfoNoPwdMap">
+		<result property="userId" column="user_id"/>
+		<result property="idCard" column="id_card"/>
+		<result property="name" column="name"/>
+		<result property="idCardAddress" column="id_card_address"/>
+		<result property="contactPhone" column="contact_phone"/>
+		<result property="pwdLevel" column="pwd_level"/>
+		<result property="sex" column="sex"/>
+		<result property="birthday" column="birthday"/>
+		<result property="provinceId" column="province_id"/>
+		<result property="cityId" column="city_id"/>
+		<result property="areaId" column="area_id"/>
+		<result property="bindMobile" column="bind_mobile"/>
+		<result property="homeAddress" column="home_address"/>
+		<result property="companyName" column="company_name"/>
+		<result property="companyProvinceId" column="company_province_id"/>
+		<result property="companyCityId" column="company_city_id"/>
+		<result property="companyAreaId" column="company_area_id"/>
+		<result property="companyAddress" column="company_address"/>
+		<result property="interesting" column="interesting"/>
+		<result property="headImgUrl" column="head_img_url"/>
+		<result property="userSmType" column="user_sm_type"/>
+		<result property="status" column="status"/>
+		<result property="pwdModSts" column="pwd_mod_sts"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		
+	</resultMap>
+	
+	<sql id="sql_nopwd">
+		user_id, id_card, name, id_card_address, contact_phone, 
+		pwd,pwd_level, sex, birthday, province_id, city_id, area_id, bind_mobile, 
+		home_address, company_name, company_address, company_province_id,company_city_id,company_area_id,
+		interesting, head_img_url,user_sm_type, status,pwd_mod_sts,create_time,update_time
+	</sql>
+
+	<select id="queryUserInfoByIdCard" resultMap="userInfoNoPwdMap">
+		select <include refid="sql_nopwd"/>
+			from t_user_info where id_card = #{value}
+	</select>
+	
+	<select id="queryEffectiveUserInfoByBindMobile" resultMap="userInfoNoPwdMap">
+		select <include refid="sql_nopwd"/>
+		from t_user_info where bind_mobile = #{value} and status = 1
+	</select>
+	
+	<select id="queryUserInfoByBindMobile" resultMap="userInfoNoPwdMap">
+		select <include refid="sql_nopwd"/>
+		from t_user_info where bind_mobile = #{value} and status = 1
+	</select>
+	
+	<select id="queryUserInfoByBindMobileAndPwd" resultMap="userInfoNoPwdMap">
+		select <include refid="sql_nopwd"/>
+		from t_user_info where bind_mobile = #{bindMobile} and pwd = #{pwd} and status = 1
+	</select>
+	
+	
+	<update id="updateUserBaseInfo" parameterType="com.hikootech.mqcash.po.UserInfo"   >
+		UPDATE t_user_info
+			SET   
+		 province_id = #{provinceId}, city_id = #{cityId}, area_id = #{areaId},
+		 home_address=#{homeAddress},
+			company_province_id=#{companyProvinceId},
+			company_city_id=#{companyCityId},
+			company_area_id=#{companyAreaId},
+			 company_address = #{companyAddress},
+			company_name = #{companyName}, 
+			 interesting = #{interesting},
+			 head_img_url = #{headImgUrl},
+			 update_time = #{updateTime}
+			WHERE user_id = #{userId}
+	</update>
+	
+	<update id="updateUserPwdByPwd" parameterType="java.util.Map">
+		update t_user_info t set t.pwd = #{pwd},t.pwd_level=#{pwdLevel}
+			where t.id_card = #{IdCard} and t.pwd=#{oldPwd}
+	</update>
+	<update id="updateUserInitPwd" parameterType="java.util.Map">
+		update t_user_info t set t.pwd = #{pwd},t.pwd_level=#{pwdLevel},t.pwd_mod_sts=1
+			where t.id_card = #{idCard} and t.pwd=#{oldPwd}
+	</update>
+	<!-- 根据手机号修改密码，实际上是验证绑定手机号正确后，根据个人身份证号码修改 -->
+	<update id="updateUserPwdByMobile" parameterType="java.util.Map">
+		update t_user_info t set t.pwd = #{pwd},t.pwd_level=#{pwdLevel}
+			where t.id_card = #{IdCard}
+	</update>
+	
+	<update id="updateBindMobile" parameterType="com.hikootech.mqcash.po.UserInfo">
+		update t_user_info t set t.bind_mobile = #{bindMobile} 
+			where t.user_id = #{userId}
+	</update>
+	
+	<update id="invalidUser">
+		update t_user_info t set t.status = 0
+			where t.id_card = #{idCard} and t.status = 1
+	</update>
+	
+</mapper>

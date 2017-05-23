@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.collection.phone.dao.CollectionRecordDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.collection.phone.model.CollectionRecord" >
+	<result column="id" property="id"/><!-- id -->
+	<result column="collection_uid" property="collectionUid"/><!-- 催收人 -->
+	<result column="collection_way" property="collectionWay"/><!-- 催收渠道 -->
+	<result column="is_help" property="isHelp"/><!-- 是否协催 -->
+	<result column="customer_id" property="customerId"/><!-- 客户id -->
+	<result column="contract_no" property="contractNo"/><!-- 合同编号 -->
+	<result column="id_type" property="idType"/><!-- 证件类型 -->
+	<result column="id_no" property="idNo"/><!-- 证件号码 -->
+	<result column="call_time" property="callTime"/><!-- 拨打时间 -->
+	<result column="late_days" property="lateDays"/><!-- 逾期天数 -->
+	<result column="tel" property="tel"/><!-- 联系方式 -->
+	<result column="answer_relation" property="answerRelation"/><!-- 接听人关系 -->
+	<result column="answer_name" property="answerName"/><!-- 联系人 -->
+	<result column="phone_summary" property="phoneSummary"/><!-- 电催摘要 -->
+	<result column="remark" property="remark"/><!-- 备注 -->
+	<result column="create_uid" property="createUid"/><!-- 创建人 -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="update_uid" property="updateUid"/><!-- 修改人 -->
+	<result column="update_time" property="updateTime"/><!-- 修改时间 -->
+	<result column="collectionName" property="collectionName"/><!--催收人姓名 -->
+	
+</resultMap>
+       
+<!-- T_COLLECTION_RECORD table all fields -->
+<sql id="Column_List" >
+	 id,collection_uid,collection_way,is_help,customer_id,contract_no,id_type,id_no,call_time,late_days,tel,answer_relation,answer_name,key_value as phone_summary,remark,create_uid,create_time,update_uid,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="collectionUid != null and collectionUid != ''" >
+	    and collection_uid =  #{collectionUid}
+	</if>
+<if test="collectionWay != null and collectionWay != ''" >
+	    and collection_way =  #{collectionWay}
+	</if>
+<if test="isHelp != null and isHelp != ''" >
+	    and is_help =  #{isHelp}
+	</if>
+<if test="customerId != null and customerId != ''" >
+	    and customer_id =  #{customerId}
+	</if>
+<if test="contractNo != null and contractNo != ''" >
+	    and contract_no =  #{contractNo}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="callTime != null and callTime != ''" >
+	    and call_time =  #{callTime}
+	</if>
+<if test="lateDays != null and lateDays != ''" >
+	    and late_days =  #{lateDays}
+	</if>
+<if test="tel != null and tel != ''" >
+	    and tel =  #{tel}
+	</if>
+<if test="answerRelation != null and answerRelation != ''" >
+	    and answer_relation =  #{answerRelation}
+	</if>
+<if test="answerName != null and answerName != ''" >
+	    and answer_name =  #{answerName}
+	</if>
+<if test="phoneSummary != null and phoneSummary != ''" >
+	    and phone_summary =  #{phoneSummary}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="createUid != null and createUid != ''" >
+	    and create_uid =  #{createUid}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateUid != null and updateUid != ''" >
+	    and update_uid =  #{updateUid}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_COLLECTION_RECORD_SEQ') From dual
+			<!-- Select T_COLLECTION_RECORD_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_COLLECTION_RECORD(id,collection_uid,collection_way,is_help,customer_id,contract_no,id_type,id_no,call_time,late_days,tel,answer_relation,answer_name,phone_summary,remark,create_uid,create_time,update_uid,update_time)
+ values( #{id, jdbcType=INTEGER},#{collectionUid, jdbcType=VARCHAR},#{collectionWay, jdbcType=VARCHAR},#{isHelp, jdbcType=VARCHAR},#{customerId, jdbcType=VARCHAR},#{contractNo, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{callTime, jdbcType=TIMESTAMP},#{lateDays, jdbcType=INTEGER},#{tel, jdbcType=VARCHAR},#{answerRelation, jdbcType=VARCHAR},#{answerName, jdbcType=VARCHAR},#{phoneSummary, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{createUid, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateUid, jdbcType=VARCHAR},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_COLLECTION_RECORD set 
+	<trim  suffixOverrides="," >
+	collection_uid =  #{collectionUid, jdbcType=VARCHAR},
+	collection_way =  #{collectionWay, jdbcType=VARCHAR},
+	is_help =  #{isHelp, jdbcType=VARCHAR},
+	customer_id =  #{customerId, jdbcType=VARCHAR},
+	contract_no =  #{contractNo, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	call_time =  #{callTime, jdbcType=TIMESTAMP},
+	late_days =  #{lateDays, jdbcType=INTEGER},
+	tel =  #{tel, jdbcType=VARCHAR},
+	answer_relation =  #{answerRelation, jdbcType=VARCHAR},
+	answer_name =  #{answerName, jdbcType=VARCHAR},
+	phone_summary =  #{phoneSummary, jdbcType=VARCHAR},
+	remark =  #{remark, jdbcType=VARCHAR},
+	create_uid =  #{createUid, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_uid =  #{updateUid, jdbcType=VARCHAR},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_COLLECTION_RECORD  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_COLLECTION_RECORD set 
+	<trim  suffixOverrides="," >
+
+	<if test="collectionUid != null and collectionUid != '' " >
+	    collection_uid =  #{collectionUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="collectionWay != null and collectionWay != '' " >
+	    collection_way =  #{collectionWay, jdbcType=VARCHAR},
+	</if>
+
+	<if test="isHelp != null and isHelp != '' " >
+	    is_help =  #{isHelp, jdbcType=VARCHAR},
+	</if>
+
+	<if test="customerId != null and customerId != '' " >
+	    customer_id =  #{customerId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractNo != null and contractNo != '' " >
+	    contract_no =  #{contractNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idType != null and idType != '' " >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idNo != null and idNo != '' " >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="callTime != null and callTime != '' " >
+	    call_time =  #{callTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="lateDays != null and lateDays != ''  or lateDays==0" >
+	    late_days =  #{lateDays, jdbcType=INTEGER},
+	</if>
+
+	<if test="tel != null and tel != '' " >
+	    tel =  #{tel, jdbcType=VARCHAR},
+	</if>
+
+	<if test="answerRelation != null and answerRelation != '' " >
+	    answer_relation =  #{answerRelation, jdbcType=VARCHAR},
+	</if>
+
+	<if test="answerName != null and answerName != '' " >
+	    answer_name =  #{answerName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="phoneSummary != null and phoneSummary != '' " >
+	    phone_summary =  #{phoneSummary, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createUid != null and createUid != '' " >
+	    create_uid =  #{createUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateUid != null and updateUid != '' " >
+	    update_uid =  #{updateUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 催收记录表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_COLLECTION_RECORD  where id = #{id}
+</select>
+
+<!-- 催收记录表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_COLLECTION_RECORD 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询催收记录表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>,collectionName
+	from (select a.*,b.key_value,c.name as collectionName from T_COLLECTION_RECORD  a LEFT JOIN T_DATA_DICTIONARY b  ON a.PHONE_SUMMARY =b.KEY_PROP AND b.key_name='collectionsummary' LEFT JOIN t_user c on a.COLLECTION_UID=c.login_id) t 
+	<include refid="Where_Clause"/>
+	 order by  id desc <!-- add by wangyongiang 20150707 倒序排序 -->
+	<if test="rowS != null and rowE != null " >
+	 
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

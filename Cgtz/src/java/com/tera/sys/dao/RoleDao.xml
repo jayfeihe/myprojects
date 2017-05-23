@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.sys.dao.RoleDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.sys.model.Role" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="name" property="name"/><!-- 名称 -->
+	<result column="description" property="description"/><!-- 描述 -->
+	<result column="lever" property="lever"/><!-- 角色等级(1总部，2分公司，3用户) -->
+	<result column="flag" property="flag"/><!-- 标记(1有，0无) -->
+	<result column="ext1" property="ext1"/><!--  -->
+	<result column="ext2" property="ext2"/><!--  -->
+</resultMap>
+       
+<!-- T_ROLE table all fields -->
+<sql id="Column_List" >
+	 id,name,description,lever,flag,ext1,ext2
+</sql>
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="description != null and description != ''" >
+	    and description =  #{description}
+	</if>
+<if test="lever != null and lever != ''" >
+	    and lever =  #{lever}
+	</if>
+<if test="flag != null and flag != ''" >
+	    and flag =  #{flag}
+	</if>
+<if test="ext1 != null and ext1 != ''" >
+	    and ext1 =  #{ext1}
+	</if>
+<if test="ext2 != null and ext2 != ''" >
+	    and ext2 =  #{ext2}
+	</if>
+</trim>
+</sql>
+
+	<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+	<insert id="addRole" parameterType="Object" >
+	  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+<!-- 				Select nextval('T_ROLE_SEQ') From dual -->
+				Select T_ROLE_SEQ.Nextval From Dual
+	  </selectKey>
+		insert into T_ROLE(id,name,description,lever,flag,ext1,ext2)
+	 	values( #{id, jdbcType=INTEGER},#{name, jdbcType=VARCHAR},#{description, jdbcType=VARCHAR},#{lever, jdbcType=VARCHAR},#{flag, jdbcType=VARCHAR},#{ext1, jdbcType=VARCHAR},#{ext2, jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 删除记录 -->
+	<delete id="deleteRoleByIDs" parameterType="map">
+		delete 	 from T_ROLE where Id In
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<select id="getRoleByIDs" parameterType="Map" resultMap="ResultMap">
+		Select <include refid="Column_List"/> From t_Role Where Id In
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- 角色表 列表总数-->
+	<select id="getRoleCount" resultType="java.lang.Integer" parameterType="map">
+		select count(1) from T_ROLE 
+		<include refid="Where_Clause"/>
+	</select>
+	<!-- 分页查询 -->
+	<select id="queryRole" resultMap="ResultMap" parameterType="map">
+		select 
+		<include refid="Column_List"/>
+		from T_ROLE r <include refid="Where_Clause"/>
+		order by id 
+	</select>
+	
+	<!-- 查询导出 -->
+	<select id="exportRole" resultMap="ResultMap" parameterType="map">
+		select * from t_role
+		<where>
+		<if test="true">1=1</if>
+		<if test="name!=null and name!=''">
+			and name like CONCAT(CONCAT('%', #{name}),'%')
+		</if>
+		</where>
+		order by id desc
+	</select>
+	<!-- 根据id查询 角色表 -->
+	<select id="getRoleById"  resultMap="ResultMap" parameterType="Object">
+		select <include refid="Column_List" /> 
+			 from T_ROLE where id=#{id}
+	</select>
+	
+	<!-- 根据id，修改记录-->  
+	<update id="updateRole" parameterType="Object" >
+ 	update T_ROLE set 
+	<trim  suffixOverrides="," >
+	name =  #{name, jdbcType=VARCHAR},
+	description =  #{description, jdbcType=VARCHAR},
+	lever =  #{lever, jdbcType=VARCHAR},
+	flag =  #{flag, jdbcType=VARCHAR},
+	ext1 =  #{ext1, jdbcType=VARCHAR},
+	ext2 =  #{ext2, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+	
+	<!-- 删除role user 之间的关联 -->
+	<delete id="removeRoleRealById" parameterType="int">
+		delete from t_user_role_rel where user_id=#{id}
+	</delete>
+	
+		<!-- 加入user role 之间的关联 -->
+<!-- 	<insert id="addRoleReal" parameterType="Map"> -->
+<!-- 		insert into t_user_role_rel(user_id, role_id)  -->
+<!-- 		select #{id},t.id from t_role t where t.id in  -->
+<!-- 		<foreach item="item" index="index" collection="roleIds" open="(" separator="," close=")"> -->
+<!-- 			#{item} -->
+<!-- 		</foreach> -->
+<!-- 	</insert> -->
+
+		<!-- 查询所有 -->
+	<select id="getAllRoles" resultMap="ResultMap">
+		select * from t_role order by id desc
+	</select>
+	<select id="getAllRoleByUserId" resultMap="ResultMap" parameterType="int">
+	Select Id, Name, Description,Type,flag From t_Role r where r.id in(
+		select role_id from t_user_role_rel where user_id=#{id}
+	)
+	order by id asc
+	</select>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete 	 from T_ROLE where 1=1 and id=#{id}
+</delete>
+ 
+  	
+  	
+  	<!-- 查询机构信息表列表 -->
+	<select id="getOrgRoleByUserId" resultMap="ResultMap"  parameterType="int">
+		select ROLE_ID id,ORG_ID name,LOGIN_ID  from t_user_ext o where o.USER_ID=#{userId}
+	</select>
+
+	<!-- 根据用户登录ID、机构代码ID 查询所有的岗位信息 -->
+	<select id="getRoleByOrgLoginId" resultMap="ResultMap" parameterType="map">
+		SELECT t.* FROM t_Role t,  T_USER_EXT a, t_org b
+		WHERE a.org_id = b.org_id
+			AND a.role_id = t.id
+		<if test="loginId  != null and loginId != '' ">
+			AND a.login_id = #{loginId}
+		</if>
+		<if test="orgId != null and orgId != '' ">
+			AND b.org_id = #{orgId}
+		</if>
+		order by t.lever desc
+	</select>
+  	
+</mapper>   

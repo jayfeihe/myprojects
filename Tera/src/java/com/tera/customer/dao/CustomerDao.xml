@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.customer.dao.CustomerDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.customer.model.Customer" >
+	<result column="id" property="id"/>
+	<result column="customer_no" property="customerNo"/>
+	<result column="name" property="name"/>
+	<result column="short_name" property="shortName"/>
+	<result column="customer_type" property="customerType"/>
+	
+	<result column="customer_type_name" property="customerTypeName"/>
+	
+	<result column="customer_lever" property="customerLever"/>
+	<result column="eng_name" property="engName"/>
+	<result column="gender" property="gender"/>
+	<result column="birthday" property="birthday"/>
+	<result column="nationality" property="nationality"/>
+	<result column="language" property="language"/>
+	<result column="mother_firat_name" property="motherFiratName"/>
+	<result column="marriage" property="marriage"/>
+	<result column="id_type" property="idType"/>
+	
+	<result column="id_type_name" property="idTypeName"/>
+	
+	<result column="id_no" property="idNo"/>
+	<result column="id_issue_date" property="idIssueDate"/>
+	<result column="id_expiry_date" property="idExpiryDate"/>
+	<result column="id_issue_gov" property="idIssueGov"/>
+	<result column="education" property="education"/>
+	<result column="job" property="job"/>
+	<result column="industry1" property="industry1"/>
+	<result column="industry2" property="industry2"/>
+	<result column="industry3" property="industry3"/>
+	<result column="company_name" property="companyName"/>
+	<result column="work_years" property="workYears"/>
+	<result column="company_scale" property="companyScale"/>
+	<result column="job_duty" property="jobDuty"/>
+	<result column="phone" property="phone"/>
+	<result column="mobile" property="mobile"/>
+	<result column="email" property="email"/>
+	<result column="add_province" property="addProvince"/>
+	<result column="add_city" property="addCity"/>
+	<result column="add_county" property="addCounty"/>
+	<result column="address" property="address"/>
+	<result column="postcode" property="postcode"/>
+	<result column="family" property="family"/>
+	<result column="family_income" property="familyIncome"/>
+	<result column="file_receive" property="fileReceive"/>
+	<result column="requirements" property="requirements"/>
+	<result column="bizz_scope" property="bizzScope"/>
+	<result column="reg_province" property="regProvince"/>
+	<result column="reg_city" property="regCity"/>
+	<result column="reg_county" property="regCounty"/>
+	<result column="reg_address" property="regAddress"/>
+	<result column="company_type" property="companyType"/>
+	<result column="trust_assets" property="trustAssets"/>
+	<result column="trust_settlor" property="trustSettlor"/>
+	<result column="trust_settlor_phone" property="trustSettlorPhone"/>
+	<result column="trust_benefit" property="trustBenefit"/>
+	<result column="trust_benefit_phone" property="trustBenefitPhone"/>
+	<result column="customer_manager" property="customerManager"/>
+	<result column="operator" property="operator"/>
+	<result column="org_id" property="orgId"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+	<result column="app_time" property="appTime"/>
+	<result column="state" property="state"/>
+</resultMap>
+       
+<!-- T_CUSTOMER table all fields -->
+<sql id="Column_List" >
+	 id,customer_no,name,short_name,customer_type,customer_lever,eng_name,gender,birthday,nationality,language,mother_firat_name,marriage,id_type,id_no,id_issue_date,id_expiry_date,id_issue_gov,education,job,industry1,industry2,industry3,company_name,work_years,company_scale,job_duty,phone,mobile,email,add_province,add_city,add_county,address,postcode,family,family_income,file_receive,requirements,bizz_scope,reg_province,reg_city,reg_county,reg_address,company_type,trust_assets,trust_settlor,trust_settlor_phone,trust_benefit,trust_benefit_phone,customer_manager,operator,org_id,create_time,update_time,app_time,state
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="customerNo != null and customerNo != ''" >
+	    and customer_no =  #{customerNo}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="shortName != null and shortName != ''" >
+	    and short_name =  #{shortName}
+	</if>
+<if test="customerType != null and customerType != ''" >
+	    and customer_type =  #{customerType}
+	</if>
+<if test="customerLever != null and customerLever != ''" >
+	    and customer_lever =  #{customerLever}
+	</if>
+<if test="engName != null and engName != ''" >
+	    and eng_name =  #{engName}
+	</if>
+<if test="gender != null and gender != ''" >
+	    and gender =  #{gender}
+	</if>
+<if test="birthday != null and birthday != ''" >
+	    and birthday =  #{birthday}
+	</if>
+<if test="nationality != null and nationality != ''" >
+	    and nationality =  #{nationality}
+	</if>
+<if test="language != null and language != ''" >
+	    and language =  #{language}
+	</if>
+<if test="motherFiratName != null and motherFiratName != ''" >
+	    and mother_firat_name =  #{motherFiratName}
+	</if>
+<if test="marriage != null and marriage != ''" >
+	    and marriage =  #{marriage}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="idIssueDate != null and idIssueDate != ''" >
+	    and id_issue_date =  #{idIssueDate}
+	</if>
+<if test="idExpiryDate != null and idExpiryDate != ''" >
+	    and id_expiry_date =  #{idExpiryDate}
+	</if>
+<if test="idIssueGov != null and idIssueGov != ''" >
+	    and id_issue_gov =  #{idIssueGov}
+	</if>
+<if test="education != null and education != ''" >
+	    and education =  #{education}
+	</if>
+<if test="job != null and job != ''" >
+	    and job =  #{job}
+	</if>
+<if test="industry1 != null and industry1 != ''" >
+	    and industry1 =  #{industry1}
+	</if>
+<if test="industry2 != null and industry2 != ''" >
+	    and industry2 =  #{industry2}
+	</if>
+<if test="industry3 != null and industry3 != ''" >
+	    and industry3 =  #{industry3}
+	</if>
+<if test="companyName != null and companyName != ''" >
+	    and company_name =  #{companyName}
+	</if>
+<if test="workYears != null and workYears != ''" >
+	    and work_years =  #{workYears}
+	</if>
+<if test="companyScale != null and companyScale != ''" >
+	    and company_scale =  #{companyScale}
+	</if>
+<if test="jobDuty != null and jobDuty != ''" >
+	    and job_duty =  #{jobDuty}
+	</if>
+<if test="phone != null and phone != ''" >
+	    and phone =  #{phone}
+	</if>
+<if test="mobile != null and mobile != ''" >
+	    and mobile =  #{mobile}
+	</if>
+<if test="email != null and email != ''" >
+	    and email =  #{email}
+	</if>
+<if test="addProvince != null and addProvince != ''" >
+	    and add_province =  #{addProvince}
+	</if>
+<if test="addCity != null and addCity != ''" >
+	    and add_city =  #{addCity}
+	</if>
+<if test="addCounty != null and addCounty != ''" >
+	    and add_county =  #{addCounty}
+	</if>
+<if test="address != null and address != ''" >
+	    and address =  #{address}
+	</if>
+<if test="postcode != null and postcode != ''" >
+	    and postcode =  #{postcode}
+	</if>
+<if test="family != null and family != ''" >
+	    and family =  #{family}
+	</if>
+<if test="familyIncome != null and familyIncome != ''" >
+	    and family_income =  #{familyIncome}
+	</if>
+<if test="fileReceive != null and fileReceive != ''" >
+	    and file_receive =  #{fileReceive}
+	</if>
+<if test="requirements != null and requirements != ''" >
+	    and requirements =  #{requirements}
+	</if>
+<if test="bizzScope != null and bizzScope != ''" >
+	    and bizz_scope =  #{bizzScope}
+	</if>
+<if test="regProvince != null and regProvince != ''" >
+	    and reg_province =  #{regProvince}
+	</if>
+<if test="regCity != null and regCity != ''" >
+	    and reg_city =  #{regCity}
+	</if>
+<if test="regCounty != null and regCounty != ''" >
+	    and reg_county =  #{regCounty}
+	</if>
+<if test="regAddress != null and regAddress != ''" >
+	    and reg_address =  #{regAddress}
+	</if>
+<if test="companyType != null and companyType != ''" >
+	    and company_type =  #{companyType}
+	</if>
+<if test="trustAssets != null and trustAssets != ''" >
+	    and trust_assets =  #{trustAssets}
+	</if>
+<if test="trustSettlor != null and trustSettlor != ''" >
+	    and trust_settlor =  #{trustSettlor}
+	</if>
+<if test="trustSettlorPhone != null and trustSettlorPhone != ''" >
+	    and trust_settlor_phone =  #{trustSettlorPhone}
+	</if>
+<if test="trustBenefit != null and trustBenefit != ''" >
+	    and trust_benefit =  #{trustBenefit}
+	</if>
+<if test="trustBenefitPhone != null and trustBenefitPhone != ''" >
+	    and trust_benefit_phone =  #{trustBenefitPhone}
+	</if>
+<if test="customerManager != null and customerManager != ''" >
+	    and customer_manager =  #{customerManager}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+<if test="appTime != null and appTime != ''" >
+	    and app_time =  #{appTime}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_CUSTOMER_SEQ') From dual
+			<!-- Select T_CUSTOMER_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_CUSTOMER(id,customer_no,name,short_name,customer_type,customer_lever,eng_name,gender,birthday,nationality,language,mother_firat_name,marriage,id_type,id_no,id_issue_date,id_expiry_date,id_issue_gov,education,job,industry1,industry2,industry3,company_name,work_years,company_scale,job_duty,phone,mobile,email,add_province,add_city,add_county,address,postcode,family,family_income,file_receive,requirements,bizz_scope,reg_province,reg_city,reg_county,reg_address,company_type,trust_assets,trust_settlor,trust_settlor_phone,trust_benefit,trust_benefit_phone,customer_manager,operator,org_id,create_time,update_time,app_time,state)
+ values( #{id, jdbcType=INTEGER},#{customerNo, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{shortName, jdbcType=VARCHAR},#{customerType, jdbcType=VARCHAR},#{customerLever, jdbcType=VARCHAR},#{engName, jdbcType=VARCHAR},#{gender, jdbcType=VARCHAR},#{birthday, jdbcType=DATE},#{nationality, jdbcType=VARCHAR},#{language, jdbcType=VARCHAR},#{motherFiratName, jdbcType=VARCHAR},#{marriage, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{idIssueDate, jdbcType=DATE},#{idExpiryDate, jdbcType=DATE},#{idIssueGov, jdbcType=VARCHAR},#{education, jdbcType=VARCHAR},#{job, jdbcType=VARCHAR},#{industry1, jdbcType=VARCHAR},#{industry2, jdbcType=VARCHAR},#{industry3, jdbcType=VARCHAR},#{companyName, jdbcType=VARCHAR},#{workYears, jdbcType=INTEGER},#{companyScale, jdbcType=VARCHAR},#{jobDuty, jdbcType=VARCHAR},#{phone, jdbcType=VARCHAR},#{mobile, jdbcType=VARCHAR},#{email, jdbcType=VARCHAR},#{addProvince, jdbcType=VARCHAR},#{addCity, jdbcType=VARCHAR},#{addCounty, jdbcType=VARCHAR},#{address, jdbcType=VARCHAR},#{postcode, jdbcType=VARCHAR},#{family, jdbcType=VARCHAR},#{familyIncome, jdbcType=VARCHAR},#{fileReceive, jdbcType=VARCHAR},#{requirements, jdbcType=VARCHAR},#{bizzScope, jdbcType=VARCHAR},#{regProvince, jdbcType=VARCHAR},#{regCity, jdbcType=VARCHAR},#{regCounty, jdbcType=VARCHAR},#{regAddress, jdbcType=VARCHAR},#{companyType, jdbcType=VARCHAR},#{trustAssets, jdbcType=VARCHAR},#{trustSettlor, jdbcType=VARCHAR},#{trustSettlorPhone, jdbcType=VARCHAR},#{trustBenefit, jdbcType=VARCHAR},#{trustBenefitPhone, jdbcType=VARCHAR},#{customerManager, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP},#{appTime, jdbcType=TIMESTAMP},#{state, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_CUSTOMER set 
+	<trim  suffixOverrides="," >
+	customer_no =  #{customerNo, jdbcType=VARCHAR},
+	name =  #{name, jdbcType=VARCHAR},
+	short_name =  #{shortName, jdbcType=VARCHAR},
+	customer_type =  #{customerType, jdbcType=VARCHAR},
+	customer_lever =  #{customerLever, jdbcType=VARCHAR},
+	eng_name =  #{engName, jdbcType=VARCHAR},
+	gender =  #{gender, jdbcType=VARCHAR},
+	birthday =  #{birthday, jdbcType=DATE},
+	nationality =  #{nationality, jdbcType=VARCHAR},
+	language =  #{language, jdbcType=VARCHAR},
+	mother_firat_name =  #{motherFiratName, jdbcType=VARCHAR},
+	marriage =  #{marriage, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	id_issue_date =  #{idIssueDate, jdbcType=DATE},
+	id_expiry_date =  #{idExpiryDate, jdbcType=DATE},
+	id_issue_gov =  #{idIssueGov, jdbcType=VARCHAR},
+	education =  #{education, jdbcType=VARCHAR},
+	job =  #{job, jdbcType=VARCHAR},
+	industry1 =  #{industry1, jdbcType=VARCHAR},
+	industry2 =  #{industry2, jdbcType=VARCHAR},
+	industry3 =  #{industry3, jdbcType=VARCHAR},
+	company_name =  #{companyName, jdbcType=VARCHAR},
+	work_years =  #{workYears, jdbcType=INTEGER},
+	company_scale =  #{companyScale, jdbcType=VARCHAR},
+	job_duty =  #{jobDuty, jdbcType=VARCHAR},
+	phone =  #{phone, jdbcType=VARCHAR},
+	mobile =  #{mobile, jdbcType=VARCHAR},
+	email =  #{email, jdbcType=VARCHAR},
+	add_province =  #{addProvince, jdbcType=VARCHAR},
+	add_city =  #{addCity, jdbcType=VARCHAR},
+	add_county =  #{addCounty, jdbcType=VARCHAR},
+	address =  #{address, jdbcType=VARCHAR},
+	postcode =  #{postcode, jdbcType=VARCHAR},
+	family =  #{family, jdbcType=VARCHAR},
+	family_income =  #{familyIncome, jdbcType=VARCHAR},
+	file_receive =  #{fileReceive, jdbcType=VARCHAR},
+	requirements =  #{requirements, jdbcType=VARCHAR},
+	bizz_scope =  #{bizzScope, jdbcType=VARCHAR},
+	reg_province =  #{regProvince, jdbcType=VARCHAR},
+	reg_city =  #{regCity, jdbcType=VARCHAR},
+	reg_county =  #{regCounty, jdbcType=VARCHAR},
+	reg_address =  #{regAddress, jdbcType=VARCHAR},
+	company_type =  #{companyType, jdbcType=VARCHAR},
+	trust_assets =  #{trustAssets, jdbcType=VARCHAR},
+	trust_settlor =  #{trustSettlor, jdbcType=VARCHAR},
+	trust_settlor_phone =  #{trustSettlorPhone, jdbcType=VARCHAR},
+	trust_benefit =  #{trustBenefit, jdbcType=VARCHAR},
+	trust_benefit_phone =  #{trustBenefitPhone, jdbcType=VARCHAR},
+	customer_manager =  #{customerManager, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	app_time =  #{appTime, jdbcType=TIMESTAMP},
+	state =  #{state, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_CUSTOMER  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_CUSTOMER set 
+	<trim  suffixOverrides="," >
+	<if test="customerNo != null and customerNo != ''" >
+	    customer_no =  #{customerNo, jdbcType=VARCHAR},
+	</if>
+	<if test="name != null and name != ''" >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+	<if test="shortName != null and shortName != ''" >
+	    short_name =  #{shortName, jdbcType=VARCHAR},
+	</if>
+	<if test="customerType != null and customerType != ''" >
+	    customer_type =  #{customerType, jdbcType=VARCHAR},
+	</if>
+	<if test="customerLever != null and customerLever != ''" >
+	    customer_lever =  #{customerLever, jdbcType=VARCHAR},
+	</if>
+	<if test="engName != null and engName != ''" >
+	    eng_name =  #{engName, jdbcType=VARCHAR},
+	</if>
+	<if test="gender != null and gender != ''" >
+	    gender =  #{gender, jdbcType=VARCHAR},
+	</if>
+	<if test="birthday != null and birthday != ''" >
+	    birthday =  #{birthday, jdbcType=DATE},
+	</if>
+	<if test="nationality != null and nationality != ''" >
+	    nationality =  #{nationality, jdbcType=VARCHAR},
+	</if>
+	<if test="language != null and language != ''" >
+	    language =  #{language, jdbcType=VARCHAR},
+	</if>
+	<if test="motherFiratName != null and motherFiratName != ''" >
+	    mother_firat_name =  #{motherFiratName, jdbcType=VARCHAR},
+	</if>
+	<if test="marriage != null and marriage != ''" >
+	    marriage =  #{marriage, jdbcType=VARCHAR},
+	</if>
+	<if test="idType != null and idType != ''" >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+	<if test="idIssueDate != null and idIssueDate != ''" >
+	    id_issue_date =  #{idIssueDate, jdbcType=DATE},
+	</if>
+	<if test="idExpiryDate != null and idExpiryDate != ''" >
+	    id_expiry_date =  #{idExpiryDate, jdbcType=DATE},
+	</if>
+	<if test="idIssueGov != null and idIssueGov != ''" >
+	    id_issue_gov =  #{idIssueGov, jdbcType=VARCHAR},
+	</if>
+	<if test="education != null and education != ''" >
+	    education =  #{education, jdbcType=VARCHAR},
+	</if>
+	<if test="job != null and job != ''" >
+	    job =  #{job, jdbcType=VARCHAR},
+	</if>
+	<if test="industry1 != null and industry1 != ''" >
+	    industry1 =  #{industry1, jdbcType=VARCHAR},
+	</if>
+	<if test="industry2 != null and industry2 != ''" >
+	    industry2 =  #{industry2, jdbcType=VARCHAR},
+	</if>
+	<if test="industry3 != null and industry3 != ''" >
+	    industry3 =  #{industry3, jdbcType=VARCHAR},
+	</if>
+	<if test="companyName != null and companyName != ''" >
+	    company_name =  #{companyName, jdbcType=VARCHAR},
+	</if>
+	<if test="workYears != null and workYears != ''" >
+	    work_years =  #{workYears, jdbcType=INTEGER},
+	</if>
+	<if test="companyScale != null and companyScale != ''" >
+	    company_scale =  #{companyScale, jdbcType=VARCHAR},
+	</if>
+	<if test="jobDuty != null and jobDuty != ''" >
+	    job_duty =  #{jobDuty, jdbcType=VARCHAR},
+	</if>
+	<if test="phone != null and phone != ''" >
+	    phone =  #{phone, jdbcType=VARCHAR},
+	</if>
+	<if test="mobile != null and mobile != ''" >
+	    mobile =  #{mobile, jdbcType=VARCHAR},
+	</if>
+	<if test="email != null and email != ''" >
+	    email =  #{email, jdbcType=VARCHAR},
+	</if>
+	<if test="addProvince != null and addProvince != ''" >
+	    add_province =  #{addProvince, jdbcType=VARCHAR},
+	</if>
+	<if test="addCity != null and addCity != ''" >
+	    add_city =  #{addCity, jdbcType=VARCHAR},
+	</if>
+	<if test="addCounty != null and addCounty != ''" >
+	    add_county =  #{addCounty, jdbcType=VARCHAR},
+	</if>
+	<if test="address != null and address != ''" >
+	    address =  #{address, jdbcType=VARCHAR},
+	</if>
+	<if test="postcode != null and postcode != ''" >
+	    postcode =  #{postcode, jdbcType=VARCHAR},
+	</if>
+	<if test="family != null and family != ''" >
+	    family =  #{family, jdbcType=VARCHAR},
+	</if>
+	<if test="familyIncome != null and familyIncome != ''" >
+	    family_income =  #{familyIncome, jdbcType=VARCHAR},
+	</if>
+	<if test="fileReceive != null and fileReceive != ''" >
+	    file_receive =  #{fileReceive, jdbcType=VARCHAR},
+	</if>
+	<if test="requirements != null and requirements != ''" >
+	    requirements =  #{requirements, jdbcType=VARCHAR},
+	</if>
+	<if test="bizzScope != null and bizzScope != ''" >
+	    bizz_scope =  #{bizzScope, jdbcType=VARCHAR},
+	</if>
+	<if test="regProvince != null and regProvince != ''" >
+	    reg_province =  #{regProvince, jdbcType=VARCHAR},
+	</if>
+	<if test="regCity != null and regCity != ''" >
+	    reg_city =  #{regCity, jdbcType=VARCHAR},
+	</if>
+	<if test="regCounty != null and regCounty != ''" >
+	    reg_county =  #{regCounty, jdbcType=VARCHAR},
+	</if>
+	<if test="regAddress != null and regAddress != ''" >
+	    reg_address =  #{regAddress, jdbcType=VARCHAR},
+	</if>
+	<if test="companyType != null and companyType != ''" >
+	    company_type =  #{companyType, jdbcType=VARCHAR},
+	</if>
+	<if test="trustAssets != null and trustAssets != ''" >
+	    trust_assets =  #{trustAssets, jdbcType=VARCHAR},
+	</if>
+	<if test="trustSettlor != null and trustSettlor != ''" >
+	    trust_settlor =  #{trustSettlor, jdbcType=VARCHAR},
+	</if>
+	<if test="trustSettlorPhone != null and trustSettlorPhone != ''" >
+	    trust_settlor_phone =  #{trustSettlorPhone, jdbcType=VARCHAR},
+	</if>
+	<if test="trustBenefit != null and trustBenefit != ''" >
+	    trust_benefit =  #{trustBenefit, jdbcType=VARCHAR},
+	</if>
+	<if test="trustBenefitPhone != null and trustBenefitPhone != ''" >
+	    trust_benefit_phone =  #{trustBenefitPhone, jdbcType=VARCHAR},
+	</if>
+	<if test="customerManager != null and customerManager != ''" >
+	    customer_manager =  #{customerManager, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="appTime != null and appTime != ''" >
+	    app_time =  #{appTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 财富客户表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select 
+	id,
+	customer_no,
+	NAME,
+	short_name,
+	customer_type,
+	(SELECT key_value FROM t_data_dictionary WHERE KEY_NAME = 'customertype' AND key_prop = t.customer_type ) customer_type_name,
+	customer_lever,
+	eng_name,
+	gender,
+	birthday,
+	nationality,
+	LANGUAGE,
+	mother_firat_name,
+	marriage,
+	id_type,
+	id_no,
+	id_issue_date,
+	id_expiry_date,
+	id_issue_gov,
+	education,
+	job,
+	industry1,
+	industry2,
+	industry3,
+	company_name,
+	work_years,
+	company_scale,
+	job_duty,
+	phone,
+	mobile,
+	email,
+	add_province,
+	add_city,
+	add_county,
+	address,
+	postcode,
+	family,
+	family_income,
+	file_receive,
+	requirements,
+	bizz_scope,
+	reg_province,
+	reg_city,
+	reg_county,
+	reg_address,
+	company_type,
+	trust_assets,
+	trust_settlor,
+	trust_settlor_phone,
+	trust_benefit,
+	trust_benefit_phone,
+	customer_manager,
+	operator,
+	org_id,
+	create_time,
+	update_time,
+	app_time,
+	state
+	FROM T_CUSTOMER  t where 1=1 and id=#{id}
+</select>
+
+<!-- 财富客户表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CUSTOMER 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询财富客户表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+SELECT 
+	id,
+	customer_no,
+	NAME,
+	short_name,
+	customer_type,
+	(SELECT key_value FROM t_data_dictionary WHERE KEY_NAME = 'customertype' AND key_prop = t.customer_type ) customer_type_name,
+	customer_lever,
+	eng_name,
+	gender,
+	birthday,
+	nationality,
+	LANGUAGE,
+	mother_firat_name,
+	marriage,
+	id_type,
+	id_no,
+	id_issue_date,
+	id_expiry_date,
+	id_issue_gov,
+	education,
+	job,
+	industry1,
+	industry2,
+	industry3,
+	company_name,
+	work_years,
+	company_scale,
+	job_duty,
+	phone,
+	mobile,
+	email,
+	add_province,
+	add_city,
+	add_county,
+	address,
+	postcode,
+	family,
+	family_income,
+	file_receive,
+	requirements,
+	bizz_scope,
+	reg_province,
+	reg_city,
+	reg_county,
+	reg_address,
+	company_type,
+	trust_assets,
+	trust_settlor,
+	trust_settlor_phone,
+	trust_benefit,
+	trust_benefit_phone,
+	customer_manager,
+	operator,
+	org_id,
+	create_time,
+	update_time,
+	app_time,
+	state
+	FROM T_CUSTOMER  t
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+	
+<select id="queryCustomerCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CUSTOMER  a
+	WHERE 1=1 
+	and  customer_No IS NOT NULL
+	<if test="states != null and states != '' " >
+		AND a.STATE in
+		<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="orgId != null and orgId != '' " >
+			AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	<!-- 以下是 查询筛选条件  -->	
+	<!-- 营业部以下级别只能查看自己的单子 -->
+	<if test="roleLever != null and roleLever!=''">
+		<!-- 营业部以下级别只能查看自己的单子 -->
+		<if test='roleLever== "0"'>
+			<if test="customerManager != null and customerManager != ''" >
+				    and a.customer_manager =  #{customerManager}
+			</if>
+		</if>
+	</if>
+	<if test="customerType!=null and customerType!=''">
+		AND a.customer_type = #{customerType}
+	</if>	
+	<if test="name!=null and name!=''">
+		AND a.NAME = #{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	
+	<if test="mobile!=null and mobile!=''">
+		AND a.mobile =#{mobile}
+	</if>
+		
+	<if test="createTimeMin!=null and createTimeMin!=''">
+		<![CDATA[
+			AND a.CREATE_TIME >= #{createTimeMin}
+		]]>
+	</if>
+	
+	<if test="createTimeMax!=null and createTimeMax!=''">
+		<![CDATA[
+			AND a.CREATE_TIME < #{createTimeMax}
+		]]>
+	</if>
+		
+</select>
+
+<select id="queryCustomerList" resultMap="ResultMap"  parameterType="map">
+	SELECT 
+	id,
+	customer_no,
+	NAME,
+	short_name,
+	customer_type,
+	(SELECT key_value FROM t_data_dictionary WHERE KEY_NAME = 'customertype' AND key_prop = a.customer_type ) customer_type_name,
+	customer_lever,
+	eng_name,
+	gender,
+	birthday,
+	nationality,
+	LANGUAGE,
+	mother_firat_name,
+	marriage,
+	id_type,
+	CASE 
+        WHEN a.customer_type = '01' 
+		THEN  (SELECT key_value FROM t_data_dictionary WHERE KEY_NAME = 'personidtype' AND key_prop = a.id_type )
+        ELSE  (SELECT key_value FROM t_data_dictionary WHERE KEY_NAME = 'companyidtype' AND key_prop = a.id_type ) 
+	END id_type_name,
+	id_no,
+	id_issue_date,
+	id_expiry_date,
+	id_issue_gov,
+	education,
+	job,
+	industry1,
+	industry2,
+	industry3,
+	company_name,
+	work_years,
+	company_scale,
+	job_duty,
+	phone,
+	mobile,
+	email,
+	add_province,
+	add_city,
+	add_county,
+	address,
+	postcode,
+	family,
+	family_income,
+	file_receive,
+	requirements,
+	bizz_scope,
+	reg_province,
+	reg_city,
+	reg_county,
+	reg_address,
+	company_type,
+	trust_assets,
+	trust_settlor,
+	trust_settlor_phone,
+	trust_benefit,
+	trust_benefit_phone,
+	customer_manager,
+	operator,
+	org_id,
+	create_time,
+	update_time,
+	app_time,
+	state
+	FROM T_CUSTOMER  a
+	WHERE 1=1
+	and  customer_No IS NOT NULL
+	<if test="states != null and states != '' " >
+		AND a.STATE in
+		<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	
+	<if test="orgId != null and orgId != '' " >
+			AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	<!-- 以下是 查询筛选条件  -->	
+	<!-- 营业部以下级别只能查看自己的单子 -->
+	<if test="roleLever != null and roleLever!=''">
+		<!-- 营业部以下级别只能查看自己的单子 -->
+		<if test='roleLever== "0"'>
+			<if test="customerManager != null and customerManager != ''" >
+				    and a.customer_manager =  #{customerManager}
+			</if>
+		</if>
+	</if>		
+	<if test="customerType!=null and customerType!=''">
+		AND a.customer_type = #{customerType}
+	</if>	
+	<if test="name!=null and name!=''">
+		AND a.NAME = #{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	
+	<if test="mobile!=null and mobile!=''">
+		AND a.mobile =#{mobile}
+	</if>
+		
+	<if test="createTimeMin!=null and createTimeMin!=''">
+		<![CDATA[
+			AND a.CREATE_TIME >= #{createTimeMin}
+		]]>
+	</if>
+	
+	<if test="createTimeMax!=null and createTimeMax!=''">
+		<![CDATA[
+			AND a.CREATE_TIME < #{createTimeMax}
+		]]>
+	</if>
+		
+	<if test="rowS != null and rowE != null " >
+      	limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

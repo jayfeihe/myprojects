@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.record.dao.AdPicDao">
+	<update id="update">
+		update 
+			t_ad_pic
+		set 
+			status = #{status},
+			download_times = download_times + 1
+		where
+			data_id = #{dataId}
+	</update>
+	
+	<select id="queryBydataId" resultType="com.greenkoo.record.model.AdPic">
+		select <include refid="columns"/> from t_ad_pic where data_id = #{dataId}
+	</select>
+	
+	<select id="queryByStatus" resultType="com.greenkoo.record.model.AdPic">
+		select <include refid="columns"/> from t_ad_pic where status = #{status}
+	</select>
+	
+	<sql id="columns">
+		data_id,
+		pic_url,
+		status,
+		download_times,
+		create_time
+	</sql>
+</mapper>

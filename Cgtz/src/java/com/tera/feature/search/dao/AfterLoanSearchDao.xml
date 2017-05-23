@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.search.dao.AfterLoanSearchDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.search.model.AfterLoanSearchBean" >
+    <result column="loan_id" property="loanId"/><!-- 申请ID -->
+	<result column="contract_id" property="contractId"/><!--合同号 -->
+	<result column="product" property="product"/><!--产品-->
+	<result column="project_name" property="projectName"/>
+	<result column="org" property="org"/>
+	<result column="org_name" property="orgName"/><!--业务机构  -->
+	<result column="sale_name" property="saleName"/><!--业务员-->
+	<result column="loan_name" property="loanName"/><!--业务员-->
+	<result column="salesman" property="salesman"/><!--业务员-->
+    <result column="late_num" property="lateNum"/><!-- 期数 -->
+	<result column="start_date" property="startDate"/><!-- 合同开始日期 -->
+	<result column="end_date" property="endDate"/><!-- 合同结束日期-->
+    <result column="ret_date" property="retDate"/><!-- 应还日期-->
+    <result column="last_date" property="lastDate"/><!-- 最后还款日期-->
+    <result column="late_days" property="lateDays"/><!--逾期天数-->
+	<result column="loan_amt" property="loanAmt"/><!-- 借款金额 -->
+	<result column="ret_interest" property="retInterest"/><!-- 借款金额 -->
+	<result column="ret_capital" property="retCapital"/><!-- 借款金额 -->
+	<result column="check_report_state" property="checkReportState"/><!-- 逾期报告状态-->
+	<result column="check_state" property="checkState"/><!-- 逾期报告状态-->
+	<result column="state" property="state"/><!--合同状态-->
+	<result column="overdue_type" property="overdueType"/><!--合同状态-->
+	<result column="is_accept" property="isAccept"/><!--合同状态-->
+	
+	<result column="productType" property="productType"/><!-- 逾期报告状态-->
+	<result column="overType" property="overType"/><!--合同状态-->
+	<result column="acceptState" property="acceptState"/><!--合同状态-->
+	<result column="csState" property="csState"/><!--合同状态-->
+	<result column="crState" property="crState"/><!--合同状态-->
+	
+</resultMap>
+       
+<!--稽查清单、稽查任务显示字段 -->
+<!-- TRUNC (SYSDATE - newplan.ret_date) late_days, -->
+<sql id="Column_List" >
+	base.loan_id,
+	CON.CONTRACT_ID,
+	base.PRODUCT,
+	cn.project_name,
+	decode(BASE.PRODUCT,'01','车贷','02','车商贷','03','房贷','04','红木贷','05','海鲜贷','99','其它')productType,
+	base.ORG,
+	(
+		SELECT
+			sss.REMARK
+		FROM
+			T_SALES_CHECK_LOG sss
+		WHERE
+			SSS. ID = (
+				SELECT
+					MAX (s. ID)
+				FROM
+					T_SALES_CHECK_LOG s
+				WHERE
+					s. ROLE = '稽查专员'
+				AND s.CONTRACT_ID = CON.CONTRACT_ID
+			)
+	) remark,
+	(
+		SELECT
+			T .ORG_NAME
+		FROM
+			T_ORG T
+		WHERE
+			T .ORG_ID = BASE.ORG
+	) org_name,
+	con.start_date,
+	concat(concat(newplan.num,'-'),con.num)late_num,
+	newplan.ret_date,
+	newplan.last_date,
+	CASE
+	WHEN NEWPLAN.STATE = '1'
+	AND NEWPLAN.NUM &lt; CON.LATE_NUM THEN
+		30
+	WHEN NEWPLAN.state = '1'
+	AND NEWPLAN.num = CON.LATE_NUM
+	AND CON.IS_LATE = '1' THEN
+		TRUNC (SYSDATE - NEWPLAN.ret_date)
+	WHEN NEWPLAN.STATE = '5' THEN
+		TRUNC (
+			newplan.last_date - newplan.ret_date
+		)
+	ELSE
+		0
+	END late_days,
+	(newplan.PLAN_INTEREST - newplan.REAL_INTEREST)ret_interest,
+	 (newplan.PLAN_CAPITAL - newplan.REAL_CAPITAL)ret_capital,
+	(
+	SELECT
+		nvl(SUM (tt.PLAN_INTEREST) - SUM (tt.REAL_INTEREST),0)
+	FROM
+		T_RET_PLAN tt
+	WHERE
+		TT.NUM &lt; CON.LATE_NUM and tt.state in('1','5') and tt.CONTRACT_ID=CON.CONTRACT_ID
+    ) sumInterestBe,
+	newplan.type overdue_type,
+	decode(con.overdue_type,'1','利息逾期','2','本金逾期')overType,
+	base.LOAN_AMT,
+	users.name sale_name,
+	base. NAME loan_name,
+	con.is_accept,
+	decode(CON.IS_ACCEPT,'0','未受理','1','已受理')acceptState,
+	con.CHECK_STATE,
+	decode(CON.CHECK_STATE,'1','未通过','2','已通过','3','移交法务','4','重点关注')csState,
+	con.CHECK_REPORT_STATE,
+	decode(con.check_report_state,'0','未提交','1','未审核','2','未通过','3','已通过')crState
+</sql>
+
+<!--逾期记录  -->
+<!--逾期天数：当前期数之前，还款状态未还，30天  -->
+<!--逾期天数：当前期数，还款状态未还，并发生逾期，当前日期-应收日期  -->
+<!--逾期天数：还款状态为逾期已结清，最后还款日期-应收日期  -->
+<!--逾期天数：其他，0  -->
+<sql id="Record_List">
+		CON.CONTRACT_ID,
+		 con.start_date,
+		 newplan.ret_date,
+		newplan.last_date,
+		 newplan.num late_num,
+	 	CASE
+	WHEN NEWPLAN.STATE = '1'
+	AND NEWPLAN.NUM &lt; CON.LATE_NUM THEN
+		30
+	WHEN NEWPLAN.state = '1'
+	AND NEWPLAN.num = CON.LATE_NUM
+	AND CON.IS_LATE = '1' THEN
+		TRUNC (SYSDATE - NEWPLAN.ret_date)
+	WHEN NEWPLAN.STATE = '5' THEN
+		TRUNC (
+			newplan.last_date - newplan.ret_date
+		)
+	ELSE
+		0
+	END late_days,
+ newplan.PLAN_INTEREST - newplan.REAL_INTEREST ret_interest,
+ newplan.PLAN_CAPITAL - newplan.REAL_CAPITAL ret_capital,
+ (
+	SELECT
+		base.LOAN_AMT
+	FROM
+		T_LOAN_BASE base
+	WHERE
+		BASE.LOAN_ID = CON.LOAN_ID
+) LOAN_AMT
+</sql>  
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="contractId != null and contractId !=''">
+	    and con.CONTRACT_ID =  #{contractId}
+	</if>
+<if test="loanId != null and loanId !=''">
+	    and base.loan_id =  #{loanId}
+	</if>	
+<if test="state != null and state !=''">
+	    and con.state =  #{state}
+	</if>						
+<if test="checkReportState != null and checkReportState != ''" >
+	    and con.check_report_state =  #{checkReportState}
+	</if>								
+<if test="org != null and org != ''" >
+	    and base.org like  concat(#{org},'%')
+	</if>
+<if test="loanName != null and loanName != ''" >
+	    and base.name like  concat('%',concat(#{loanName},'%'))
+	</if>
+<if test="saleName != null and saleName != ''" >
+	    and users.name like  concat('%',concat(#{saleName},'%'))
+	</if>
+<if test="product != null and product != ''" >
+	    and base.product =  #{product}
+	</if>
+<if test="overdueType != null and overdueType != ''" >
+	   and newplan.type=#{overdueType}
+	</if>
+<if test="checkState != null and checkState != ''" >
+	    and con.check_state =  #{checkState}
+	</if>
+<if test="isAccept != null and isAccept != ''" >
+	    and con.is_accept =  #{isAccept}
+	</if>								
+
+<if test="minStartTime != null and minStartTime != ''" >
+<![CDATA[and con.start_date >=  #{minStartTime}]]>	    
+	</if>
+<if test="maxStartTime != null and maxStartTime != ''" >
+<![CDATA[and con.start_date <=  #{maxStartTime}]]>	
+	</if>	
+<if test="minEndTime != null and minEndTime != ''" >
+<![CDATA[and con.end_date >=  #{minEndTime}]]>	    
+	</if>
+<if test="maxEndTime != null and maxEndTime != ''" >
+<![CDATA[and con.end_date <=  #{maxEndTime}]]>	
+	</if>
+<if test="minRetDate != null and minRetDate != ''" >
+<![CDATA[and newplan.ret_date >=  #{minRetDate}]]>	    
+	</if>
+<if test="maxRetDate != null and maxRetDate != ''" >
+<![CDATA[and newplan.ret_date <=  #{maxRetDate}]]>	
+	</if>						
+</trim>
+</sql>
+   
+<!-- 稽查清单 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from (select <include refid="Column_List" /> 
+	from T_CONTRACT con
+		 LEFT JOIN T_LOAN_BASE base ON CON.LOAN_ID = BASE.LOAN_ID
+		 LEFT JOIN T_RET_PLAN newplan ON newplan.contract_id = con.contract_id AND newplan.num = con.late_num
+	     
+	<include refid="Where_Clause"/>and CON.IS_LATE='1')					
+</select>
+  	
+<!-- 稽查清单列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select <include refid="Column_List" /> 
+	from T_CONTRACT con
+	LEFT JOIN T_CONTRACT_ONLINE cn ON CN.CONTRACT_ID = CON.CONTRACT_ID
+		 LEFT JOIN T_LOAN_BASE base ON CON.LOAN_ID = BASE.LOAN_ID
+		 LEFT JOIN T_RET_PLAN newplan ON newplan.contract_id = con.contract_id
+		 LEFT JOIN T_USER users on users.login_id=base.salesman  
+	<include refid="Where_Clause"/>and CON.IS_LATE='1' and newplan.state in ('1','5') and  newplan.ret_date &lt; sysdate
+	<if test="startDays != null and startDays != ''" >
+       <![CDATA[and TRUNC (SYSDATE - newplan.ret_date) >=  #{startDays}]]>	    
+	</if>
+	<if test="endDays != null and endDays != ''" >
+	<![CDATA[and TRUNC (SYSDATE - newplan.ret_date) <=  #{endDays}]]>	
+		</if>
+		order by con.start_date desc,newplan.num	
+	
+</select>
+<!-- 发生过逾期的合同笔数-->
+<select id="queryLateConCount" resultType="java.lang.Integer"  parameterType="map">
+	SELECT count(DISTINCT(rr.contract_id)) counm
+	from(
+        SELECT
+         <include refid="Column_List" /> 
+	     from T_CONTRACT con
+	     LEFT JOIN T_CONTRACT_ONLINE cn ON CN.CONTRACT_ID = CON.CONTRACT_ID
+		 LEFT JOIN T_LOAN_BASE base ON CON.LOAN_ID = BASE.LOAN_ID
+		 LEFT JOIN T_RET_PLAN newplan ON newplan.contract_id = con.contract_id 
+		 LEFT JOIN T_USER users on users.login_id=base.salesman  
+	<include refid="Where_Clause"/>and CON.IS_LATE='1' and newplan.state in ('1','5') and newplan.ret_date &lt; sysdate 
+	<if test="startDays != null and startDays != ''" >
+       <![CDATA[and TRUNC (SYSDATE - newplan.ret_date) >=  #{startDays}]]>	    
+	</if>
+	<if test="endDays != null and endDays != ''" >
+	<![CDATA[and TRUNC (SYSDATE - newplan.ret_date) <=  #{endDays}]]>	
+		</if>)rr
+	
+</select>
+<!-- 稽查任务列表 -->
+<select id="queryTaskList" resultMap="ResultMap"  parameterType="map">
+	select <include refid="Column_List" /> 
+	from T_CONTRACT con
+	LEFT JOIN T_CONTRACT_ONLINE cn ON CN.CONTRACT_ID = CON.CONTRACT_ID
+		 LEFT JOIN T_LOAN_BASE base ON CON.LOAN_ID = BASE.LOAN_ID
+		 LEFT JOIN T_RET_PLAN newplan ON newplan.contract_id = con.contract_id AND newplan.num = con.late_num
+		 LEFT JOIN T_USER USERS ON USERS .login_id = base.salesman
+	<include refid="Where_Clause"/>and CON.IS_CHECK='1' and newplan.STATE='1' and con.state in('2','4') 
+	<if test="startDays != null and startDays != ''" >
+       <![CDATA[and TRUNC (SYSDATE - newplan.ret_date) >=  #{startDays}]]>	    
+	</if>
+	<if test="endDays != null and endDays != ''" >
+	<![CDATA[and TRUNC (SYSDATE - newplan.ret_date) <=  #{endDays}]]>	
+		</if>		
+</select>
+
+<!--查询逾期记录 -->
+<select id="queryRecordList" resultMap="ResultMap" parameterType="map">
+    select <include refid="Record_List" />
+    FROM T_CONTRACT con
+    LEFT JOIN T_CONTRACT_ONLINE cn ON CN.CONTRACT_ID = CON.CONTRACT_ID
+	LEFT JOIN T_LOAN_BASE base ON CON.LOAN_ID = BASE.LOAN_ID
+	LEFT JOIN T_RET_PLAN newplan ON newplan.contract_id = con.contract_id
+    where 1=1
+    <if test="contractId != null and contractId !=''">
+      and newplan.contract_id=#{contractId}
+    </if>
+    <!--还款计划中未还的，和逾期结清的  -->
+    and newplan.state in ('1','5')
+    <!--还款计划中当前期数之前的记录  -->
+    and newplan.ret_date &lt;= sysdate
+    
+</select>
+
+<!--逾期明细财务报表-->
+<select id="queryDetailList" resultMap="ResultMap" parameterType="map">
+    select <include refid="Column_List" />
+    FROM T_CONTRACT con
+    LEFT JOIN T_CONTRACT_ONLINE cn ON CN.CONTRACT_ID = CON.CONTRACT_ID
+	LEFT JOIN T_LOAN_BASE base ON CON.LOAN_ID = BASE.LOAN_ID
+	LEFT JOIN T_RET_PLAN newplan ON newplan.contract_id = con.contract_id
+	LEFT JOIN T_USER USERS ON USERS .login_id = base.salesman
+    <include refid="Where_Clause"/>
+    <if test="org != null and org !=''">
+          and con.org like concat(#{org},'%')
+    </if>
+    <!--还款计划中未还的，和逾期结清的  -->
+     <if test="contractId != null and contractId !=''">
+          and newplan.state in ('1','5')
+    </if>
+    <!--查询未还的 -->
+    <if test="contractId == null or contractId ==''">    
+          and newplan.state='1'
+    </if>   
+    <!--还款计划中当前日期之前的记录  -->
+    and newplan.ret_date &lt;= sysdate
+    order by con.start_date desc,con.contract_id,newplan.num
+    
+</select>
+</mapper>   

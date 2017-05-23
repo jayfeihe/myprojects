@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.blacklist.dao.BlacklistDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.blacklist.model.Blacklist" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="name" property="name"/><!-- 姓名 -->
+	<result column="id_no" property="idNo"/><!-- 证件号码 -->
+	<result column="app_id" property="appId"/><!-- 申请号 -->
+	<result column="mobile" property="mobile"/><!-- 手机 -->
+	<result column="qq" property="qq"/><!-- QQ -->
+	<result column="wechat" property="wechat"/><!-- 微信号 -->
+	<result column="add_province" property="addProvince"/><!-- 地址-省 -->
+	<result column="add_city" property="addCity"/><!-- 地址-市 -->
+	<result column="add_county" property="addCounty"/><!-- 地址-区县 -->
+	<result column="address" property="address"/><!-- 地址 -->
+	<result column="company" property="company"/><!-- 单位名称 -->
+	<result column="platform" property="platform"/><!-- 逾期平台 -->
+	<result column="default_days" property="defaultDays"/><!-- 逾期天数 -->
+	<result column="default_num" property="defaultNum"/><!-- 逾期笔数 -->
+	<result column="default_amount" property="defaultAmount"/><!-- 逾期金额 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="remark" property="remark"/><!-- 备注 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_BLACKLIST table all fields -->
+<sql id="Column_List" >
+	 id,name,id_no,app_id,mobile,qq,wechat,add_province,add_city,add_county,address,company,platform,default_days,default_num,default_amount,state,remark,operator,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="mobile != null and mobile != ''" >
+	    and mobile =  #{mobile}
+	</if>
+<if test="qq != null and qq != ''" >
+	    and qq =  #{qq}
+	</if>
+<if test="wechat != null and wechat != ''" >
+	    and wechat =  #{wechat}
+	</if>
+<if test="addProvince != null and addProvince != ''" >
+	    and add_province =  #{addProvince}
+	</if>
+<if test="addCity != null and addCity != ''" >
+	    and add_city =  #{addCity}
+	</if>
+<if test="addCounty != null and addCounty != ''" >
+	    and add_county =  #{addCounty}
+	</if>
+<if test="address != null and address != ''" >
+	    and address =  #{address}
+	</if>
+<if test="company != null and company != ''" >
+	    and company =  #{company}
+	</if>
+<if test="platform != null and platform != ''" >
+	    and platform =  #{platform}
+	</if>
+<if test="defaultDays != null and defaultDays != ''" >
+	    and default_days =  #{defaultDays}
+	</if>
+<if test="defaultNum != null and defaultNum != ''" >
+	    and default_num =  #{defaultNum}
+	</if>
+<if test="defaultAmount != null and defaultAmount != ''" >
+	    and default_amount =  #{defaultAmount}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="createTimeMin!=null and createTimeMin!=''">
+		<![CDATA[AND create_time >= #{createTimeMin}]]>
+	</if>
+<if test="createTimeMax!=null and createTimeMax!=''">
+		<![CDATA[AND create_time < DATE_ADD(#{createTimeMax},INTERVAL '1' DAY)]]>
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_BLACKLIST_SEQ') From dual
+		  </selectKey>
+	insert into T_BLACKLIST(id,name,id_no,app_id,mobile,qq,wechat,add_province,add_city,add_county,address,company,platform,default_days,default_num,default_amount,state,remark,operator,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{name, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{appId, jdbcType=VARCHAR},#{mobile, jdbcType=VARCHAR},#{qq, jdbcType=VARCHAR},#{wechat, jdbcType=VARCHAR},#{addProvince, jdbcType=VARCHAR},#{addCity, jdbcType=VARCHAR},#{addCounty, jdbcType=VARCHAR},#{address, jdbcType=VARCHAR},#{company, jdbcType=VARCHAR},#{platform, jdbcType=VARCHAR},#{defaultDays, jdbcType=INTEGER},#{defaultNum, jdbcType=INTEGER},#{defaultAmount, jdbcType=DOUBLE},#{state, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_BLACKLIST set 
+	<trim  suffixOverrides="," >
+	name =  #{name, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	app_id =  #{appId, jdbcType=VARCHAR},
+	mobile =  #{mobile, jdbcType=VARCHAR},
+	qq =  #{qq, jdbcType=VARCHAR},
+	wechat =  #{wechat, jdbcType=VARCHAR},
+	add_province =  #{addProvince, jdbcType=VARCHAR},
+	add_city =  #{addCity, jdbcType=VARCHAR},
+	add_county =  #{addCounty, jdbcType=VARCHAR},
+	address =  #{address, jdbcType=VARCHAR},
+	company =  #{company, jdbcType=VARCHAR},
+	platform =  #{platform, jdbcType=VARCHAR},
+	default_days =  #{defaultDays, jdbcType=INTEGER},
+	default_num =  #{defaultNum, jdbcType=INTEGER},
+	default_amount =  #{defaultAmount, jdbcType=DOUBLE},
+	state =  #{state, jdbcType=VARCHAR},
+	remark =  #{remark, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_BLACKLIST  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_BLACKLIST set 
+	<trim  suffixOverrides="," >
+
+	<if test="name != null and name != '' " >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idNo != null and idNo != '' " >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="appId != null and appId != '' " >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="mobile != null and mobile != '' " >
+	    mobile =  #{mobile, jdbcType=VARCHAR},
+	</if>
+
+	<if test="qq != null and qq != '' " >
+	    qq =  #{qq, jdbcType=VARCHAR},
+	</if>
+
+	<if test="wechat != null and wechat != '' " >
+	    wechat =  #{wechat, jdbcType=VARCHAR},
+	</if>
+
+	<if test="addProvince != null and addProvince != '' " >
+	    add_province =  #{addProvince, jdbcType=VARCHAR},
+	</if>
+
+	<if test="addCity != null and addCity != '' " >
+	    add_city =  #{addCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="addCounty != null and addCounty != '' " >
+	    add_county =  #{addCounty, jdbcType=VARCHAR},
+	</if>
+
+	<if test="address != null and address != '' " >
+	    address =  #{address, jdbcType=VARCHAR},
+	</if>
+
+	<if test="company != null and company != '' " >
+	    company =  #{company, jdbcType=VARCHAR},
+	</if>
+
+	<if test="platform != null and platform != '' " >
+	    platform =  #{platform, jdbcType=VARCHAR},
+	</if>
+
+	<if test="defaultDays != null and defaultDays != ''  or defaultDays==0" >
+	    default_days =  #{defaultDays, jdbcType=INTEGER},
+	</if>
+
+	<if test="defaultNum != null and defaultNum != ''  or defaultNum==0" >
+	    default_num =  #{defaultNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="defaultAmount != null and defaultAmount != ''  or defaultAmount==0" >
+	    default_amount =  #{defaultAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operator != null and operator != '' " >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 黑名单表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_BLACKLIST  where id = #{id}
+</select>
+
+<!-- 黑名单表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_BLACKLIST 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询黑名单表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_BLACKLIST 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

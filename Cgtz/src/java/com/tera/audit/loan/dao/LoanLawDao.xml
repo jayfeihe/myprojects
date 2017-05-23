@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.loan.dao.LoanLawDao" > 
+	
+	<select id="queryListByLoanId" parameterType="map" 
+			resultType="com.tera.audit.loan.model.form.LoanLawQBean" >
+			SELECT 
+			t1.ID AS id,
+			t1.LOAN_ID AS loanId,
+			t1.NAME AS checkTarget,
+			t1.ID_NO AS idNo,
+			t1.TEL AS tel,
+			t1.LAW_STATE AS lawState,
+			t1.LAW_CHECK_STATE AS lawCheckState,
+			'1' AS targetType,
+			'0' AS isOrig
+		FROM t_loan_app t1
+		WHERE 1=1 
+		<if test="loanId != null">
+			AND t1.loan_id = #{loanId}
+		</if>
+		
+		UNION ALL
+		
+		SELECT 
+			t2.ID AS id,
+			t2.LOAN_ID AS loanId,
+			t2.NAME AS checkTarget,
+			t2.ID_NO AS idNo,
+			t2.TEL AS tel,
+			t2.LAW_STATE AS lawState,
+			t2.LAW_CHECK_STATE AS lawCheckState,
+			'2' AS targetType,
+			'0' AS isOrig
+		FROM t_loan_guar t2
+		WHERE 1=1 
+		<if test="loanId != null">
+			AND t2.loan_id = #{loanId}
+		</if>
+		
+		<!-- 续贷查询原来申请的诉讼信息 -->
+		<if test="origLoanId != null">
+		UNION
+			
+			SELECT 
+				t1.ID AS id,
+				t1.LOAN_ID AS loanId,
+				t1.NAME AS checkTarget,
+				t1.ID_NO AS idNo,
+				t1.TEL AS tel,
+				t1.LAW_STATE AS lawState,
+				t1.LAW_CHECK_STATE AS lawCheckState,
+				'1' AS targetType,
+				'1' AS isOrig
+			FROM t_loan_app t1
+			WHERE 1=1 
+			AND t1.loan_id IN 
+				(
+					SELECT LOAN_ID FROM T_LOAN_BASE WHERE LOAN_ID = #{origLoanId}
+					UNION
+					SELECT LOAN_ID FROM T_LOAN_BASE WHERE ORIG_LOAN_ID = #{origLoanId} AND LOAN_ID != #{loanId}
+				)
+
+		UNION 
+			
+			SELECT 
+				t2.ID AS id,
+				t2.LOAN_ID AS loanId,
+				t2.NAME AS checkTarget,
+				t2.ID_NO AS idNo,
+				t2.TEL AS tel,
+				t2.LAW_STATE AS lawState,
+				t2.LAW_CHECK_STATE AS lawCheckState,
+				'2' AS targetType,
+				'1' AS isOrig
+			FROM t_loan_guar t2
+			WHERE 1=1 
+			AND t2.loan_id IN
+				(
+					SELECT LOAN_ID FROM T_LOAN_BASE WHERE LOAN_ID = #{origLoanId}
+					UNION
+					SELECT LOAN_ID FROM T_LOAN_BASE WHERE ORIG_LOAN_ID = #{origLoanId} AND LOAN_ID != #{loanId}
+				)
+		</if>
+		ORDER BY ID
+	</select>
+</mapper>

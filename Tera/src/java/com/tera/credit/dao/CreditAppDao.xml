@@ -1,0 +1,2096 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.credit.dao.CreditAppDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.credit.model.CreditApp" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="app_code" property="appCode"/><!-- 申请编码 -->
+	<result column="customer_source" property="customerSource"/><!-- 客户来源 -->
+	<result column="customer_id" property="customerId"/><!-- 客户ID -->
+	<result column="belong_channel" property="belongChannel"/><!-- 所属渠道 -->
+	<result column="product" property="product"/><!-- 产品 -->
+	<result column="period" property="period"/><!-- 期限 -->
+	<result column="srevice_fee_rate" property="sreviceFeeRate"/><!-- 服务费率 -->
+	<result column="interest_rate" property="interestRate"/><!-- 借款利率 -->
+	<result column="amount" property="amount"/><!-- 借款金额 -->
+	<result column="useage1" property="useage1"/><!-- 借款用途1 -->
+	<result column="useage2" property="useage2"/><!-- 借款用途2 -->
+	<result column="name" property="name"/><!-- 姓名 -->
+	<result column="mobile" property="mobile"/><!-- 手机号 -->
+	<result column="id_type" property="idType"/><!-- 证件类型 -->
+	<result column="id_no" property="idNo"/><!-- 证件号码 -->
+	<result column="diploma" property="diploma"/><!-- 学历 -->
+	<result column="wechat" property="wechat"/><!-- 微信 -->
+	<result column="email" property="email"/><!-- 邮箱 -->
+	<result column="without_children" property="withoutChildren"/><!-- 有无子女 -->
+	<result column="children_size" property="childrenSize"/><!-- 子女个数 -->
+	<result column="marriage" property="marriage"/><!-- 婚姻 -->
+	<result column="koseki_province" property="kosekiProvince"/><!-- 户籍-省 -->
+	<result column="koseki_city" property="kosekiCity"/><!-- 户籍-市 -->
+	<result column="add_nature" property="addNature"/><!-- 居住性质 -->
+	<result column="add_year" property="addYear"/><!-- 居住时间 -->
+	<result column="add_province" property="addProvince"/><!-- 居住地址-省 -->
+	<result column="add_city" property="addCity"/><!-- 居住地址-市 -->
+	<result column="add_county" property="addCounty"/><!-- 居住地址-区县 -->
+	<result column="address" property="address"/><!-- 居住地址 -->
+	<result column="phone" property="phone"/><!-- 住宅电话 -->
+	<result column="com_name" property="comName"/><!-- 单位名称 -->
+	<result column="com_province" property="comProvince"/><!-- 单位地址-省 -->
+	<result column="com_city" property="comCity"/><!-- 单位地址-市 -->
+	<result column="com_county" property="comCounty"/><!-- 单位地址-区县 -->
+	<result column="com_address" property="comAddress"/><!-- 单位地址 -->
+	<result column="com_duty" property="comDuty"/><!-- 单位担任职务 -->
+	<result column="com_type" property="comType"/><!-- 单位类型 -->
+	<result column="com_phone" property="comPhone"/><!-- 单位电话 -->
+	<result column="com_add_date" property="comAddDate"/><!-- 入职时间 -->
+	<result column="income" property="income"/><!-- 年收入 -->
+	<result column="monthly_payments" property="monthlyPayments"/><!-- 月还款额 -->
+	<result column="acc_name" property="accName"/><!-- 开户行名称 -->
+	<result column="account" property="account"/><!-- 开户行帐号 -->
+	<result column="spouse_name" property="spouseName"/><!-- 配偶姓名 -->
+	<result column="spouse_mobile" property="spouseMobile"/><!-- 配偶手机 -->
+	<result column="spouse_id_type" property="spouseIdType"/><!-- 配偶证件类型 -->
+	<result column="spouse_id_no" property="spouseIdNo"/><!-- 配偶证件号码 -->
+	<result column="spouse_income" property="spouseIncome"/><!-- 配偶年收入 -->
+	<result column="spouse_job" property="spouseJob"/><!-- 配偶职业 -->
+	<result column="spouse_com_name" property="spouseComName"/><!-- 配偶单位名称 -->
+	<result column="spouse_com_province" property="spouseComProvince"/><!-- 配偶单位地址-省 -->
+	<result column="spouse_com_city" property="spouseComCity"/><!-- 配偶单位地址-市 -->
+	<result column="spouse_com_county" property="spouseComCounty"/><!-- 配偶单位地址-区县 -->
+	<result column="spouse_com_address" property="spouseComAddress"/><!-- 配偶单位地址 -->
+	<result column="firm_name" property="firmName"/><!-- 商号名称 -->
+	<result column="firm_main_business" property="firmMainBusiness"/><!-- 主营业务 -->
+	<result column="firm_income" property="firmIncome"/><!-- 年营业额 -->
+	<result column="firm_share" property="firmShare"/><!-- 占股比例 -->
+	<result column="firm_province" property="firmProvince"/><!-- 商号地址-省 -->
+	<result column="firm_city" property="firmCity"/><!-- 商号地址-市 -->
+	<result column="firm_county" property="firmCounty"/><!-- 商号地址-区县 -->
+	<result column="firm_address" property="firmAddress"/><!-- 商号地址 -->
+	<result column="firm_manage_date" property="firmManageDate"/><!-- 本地经营时间 -->
+	<result column="match_type" property="matchType"/><!-- 撮合类型 -->
+	<result column="staff_no" property="staffNo"/><!-- 营销人员 -->
+	<result column="input_time" property="inputTime"/><!-- 进件时间 -->
+	<result column="customer_manager" property="customerManager"/><!-- 客户经理 -->
+	<result column="sale_refuse_describe" property="saleRefuseDescribe"/><!-- 前端拒贷反馈销售描述 -->
+	<result column="sale_refuse_code1" property="saleRefuseCode1"/><!-- 前端拒贷码1 -->
+	<result column="sale_refuse_code2" property="saleRefuseCode2"/><!-- 前端拒贷码2 -->
+	<result column="remark" property="remark"/><!-- 申请描述 -->
+	<result column="rule_grade" property="ruleGrade"/><!-- 规则评分 -->
+	<result column="rule_score" property="ruleScore"/><!-- 规则等级 -->
+	<result column="grade_remind" property="gradeRemind"/><!-- 评级提醒 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+
+	<result column="TASK_STATE" property="taskState"/><!-- 流程当前节点 -->
+	<result column="TASK_PROCESSER_ID" property="taskProcesserId"/><!-- 流程待处理人 登录ID -->
+	<result column="TASK_PROCESSER" property="taskProcesser"/><!-- 流程待处理人 -->
+	<result column="decisionAmount" property="decisionAmount"/><!-- 最终决策 金额 -->
+	<result column="decisionProduct" property="decisionProduct"/><!-- 最终决策 产品 -->
+	<result column="decisionPeriod" property="decisionPeriod"/><!-- 最终决策 期限 -->
+	<result column="decisionOperator" property="decisionOperator"/><!-- 最终决策 操作人 -->
+	<result column="contractNo" property="contractNo"/><!-- 合同编号 -->
+	<result column="STAFF_NAME" property="staffName"/><!-- 营销人员名称 -->
+	<result column="ORG_NAME" property="orgName"/><!--  机构名称 -->
+	<result column="VERIFY_NAME" property="verifyName"/><!--审核人名字 -->
+	<result column="CHANNEL_TYPE" property="channelType"/><!--渠道 -->
+	
+	<result column="SIGN_PROVINCE" property="signProvince"/><!--签约省 -->
+	<result column="SIGN_CITY" property="signCity"/><!--签约市 -->
+	<result column="BANK_NAME" property="bankName"/><!--开户行 -->
+	<result column="BANK_ACCOUNT" property="bankAccount"/><!--开户行账号 -->
+	<result column="SIGN_DATE" property="signDate"/><!--签约时间 -->
+	<result column="LENDING_DATE" property="lendingDate"/><!--推送时间 -->
+	<result column="LOAN_AMOUNT" property="loanAmount"/><!--合同金额 -->
+	<result column="monthAmount" property="monthAmount"/><!--月还款额 -->
+	<result column="CHANNEL_STATE" property="channelState"/><!--月还款额 -->
+	
+</resultMap>
+       
+<!-- T_CREDIT_APP table all fields -->
+<sql id="Column_List" >
+	 id,app_id,app_code,customer_source,customer_id,belong_channel,product,period,srevice_fee_rate,interest_rate,amount,useage1,useage2,name,mobile,id_type,id_no,diploma,wechat,email,without_children,children_size,marriage,koseki_province,koseki_city,add_nature,add_year,add_province,add_city,add_county,address,phone,com_name,com_province,com_city,com_county,com_address,com_duty,com_type,com_phone,com_add_date,income,monthly_payments,acc_name,account,spouse_name,spouse_mobile,spouse_id_type,spouse_id_no,spouse_income,spouse_job,spouse_com_name,spouse_com_province,spouse_com_city,spouse_com_county,spouse_com_address,firm_name,firm_main_business,firm_income,firm_share,firm_province,firm_city,firm_county,firm_address,firm_manage_date,match_type,staff_no,input_time,customer_manager,sale_refuse_describe,sale_refuse_code1,sale_refuse_code2,state,operator,org_id,create_time,update_time,remark,rule_grade,rule_score,grade_remind
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="appCode != null and appCode != ''" >
+	    and app_code =  #{appCode}
+	</if>
+<if test="customerSource != null and customerSource != ''" >
+	    and customer_source =  #{customerSource}
+	</if>
+<if test="customerId != null and customerId != ''" >
+	    and customer_id =  #{customerId}
+	</if>
+<if test="belongChannel != null and belongChannel != ''" >
+	    and belong_channel =  #{belongChannel}
+	</if>
+<if test="product != null and product != ''" >
+	    and product =  #{product}
+	</if>
+<if test="period != null and period != ''" >
+	    and period =  #{period}
+	</if>
+<if test="sreviceFeeRate != null and sreviceFeeRate != ''" >
+	    and srevice_fee_rate =  #{sreviceFeeRate}
+	</if>
+<if test="interestRate != null and interestRate != ''" >
+	    and interest_rate =  #{interestRate}
+	</if>
+<if test="amount != null and amount != ''" >
+	    and amount =  #{amount}
+	</if>
+<if test="useage1 != null and useage1 != ''" >
+	    and useage1 =  #{useage1}
+	</if>
+<if test="useage2 != null and useage2 != ''" >
+	    and useage2 =  #{useage2}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="mobile != null and mobile != ''" >
+	    and mobile =  #{mobile}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="diploma != null and diploma != ''" >
+	    and diploma =  #{diploma}
+	</if>
+<if test="wechat != null and wechat != ''" >
+	    and wechat =  #{wechat}
+	</if>
+<if test="email != null and email != ''" >
+	    and email =  #{email}
+	</if>
+<if test="withoutChildren != null and withoutChildren != ''" >
+	    and without_children =  #{withoutChildren}
+	</if>
+<if test="childrenSize != null and childrenSize != ''" >
+	    and children_size =  #{childrenSize}
+	</if>
+<if test="marriage != null and marriage != ''" >
+	    and marriage =  #{marriage}
+	</if>
+<if test="kosekiProvince != null and kosekiProvince != ''" >
+	    and koseki_province =  #{kosekiProvince}
+	</if>
+<if test="kosekiCity != null and kosekiCity != ''" >
+	    and koseki_city =  #{kosekiCity}
+	</if>
+<if test="addNature != null and addNature != ''" >
+	    and add_nature =  #{addNature}
+	</if>
+<if test="addYear != null and addYear != ''" >
+	    and add_year =  #{addYear}
+	</if>
+<if test="addProvince != null and addProvince != ''" >
+	    and add_province =  #{addProvince}
+	</if>
+<if test="addCity != null and addCity != ''" >
+	    and add_city =  #{addCity}
+	</if>
+<if test="addCounty != null and addCounty != ''" >
+	    and add_county =  #{addCounty}
+	</if>
+<if test="address != null and address != ''" >
+	    and address =  #{address}
+	</if>
+<if test="phone != null and phone != ''" >
+	    and phone =  #{phone}
+	</if>
+<if test="comName != null and comName != ''" >
+	    and com_name =  #{comName}
+	</if>
+<if test="comProvince != null and comProvince != ''" >
+	    and com_province =  #{comProvince}
+	</if>
+<if test="comCity != null and comCity != ''" >
+	    and com_city =  #{comCity}
+	</if>
+<if test="comCounty != null and comCounty != ''" >
+	    and com_county =  #{comCounty}
+	</if>
+<if test="comAddress != null and comAddress != ''" >
+	    and com_address =  #{comAddress}
+	</if>
+<if test="comDuty != null and comDuty != ''" >
+	    and com_duty =  #{comDuty}
+	</if>
+<if test="comType != null and comType != ''" >
+	    and com_type =  #{comType}
+	</if>
+<if test="comPhone != null and comPhone != ''" >
+	    and com_phone =  #{comPhone}
+	</if>
+<if test="comAddDate != null and comAddDate != ''" >
+	    and com_add_date =  #{comAddDate}
+	</if>
+<if test="income != null and income != ''" >
+	    and income =  #{income}
+	</if>
+<if test="monthlyPayments != null and monthlyPayments != ''" >
+	    and monthly_payments =  #{monthlyPayments}
+	</if>
+<if test="accName != null and accName != ''" >
+	    and acc_name =  #{accName}
+	</if>
+<if test="account != null and account != ''" >
+	    and account =  #{account}
+	</if>
+<if test="spouseName != null and spouseName != ''" >
+	    and spouse_name =  #{spouseName}
+	</if>
+<if test="spouseMobile != null and spouseMobile != ''" >
+	    and spouse_mobile =  #{spouseMobile}
+	</if>
+<if test="spouseIdType != null and spouseIdType != ''" >
+	    and spouse_id_type =  #{spouseIdType}
+	</if>
+<if test="spouseIdNo != null and spouseIdNo != ''" >
+	    and spouse_id_no =  #{spouseIdNo}
+	</if>
+<if test="spouseIncome != null and spouseIncome != ''" >
+	    and spouse_income =  #{spouseIncome}
+	</if>
+<if test="spouseJob != null and spouseJob != ''" >
+	    and spouse_job =  #{spouseJob}
+	</if>
+<if test="spouseComName != null and spouseComName != ''" >
+	    and spouse_com_name =  #{spouseComName}
+	</if>
+<if test="spouseComProvince != null and spouseComProvince != ''" >
+	    and spouse_com_province =  #{spouseComProvince}
+	</if>
+<if test="spouseComCity != null and spouseComCity != ''" >
+	    and spouse_com_city =  #{spouseComCity}
+	</if>
+<if test="spouseComCounty != null and spouseComCounty != ''" >
+	    and spouse_com_county =  #{spouseComCounty}
+	</if>
+<if test="spouseComAddress != null and spouseComAddress != ''" >
+	    and spouse_com_address =  #{spouseComAddress}
+	</if>
+<if test="firmName != null and firmName != ''" >
+	    and firm_name =  #{firmName}
+	</if>
+<if test="firmMainBusiness != null and firmMainBusiness != ''" >
+	    and firm_main_business =  #{firmMainBusiness}
+	</if>
+<if test="firmIncome != null and firmIncome != ''" >
+	    and firm_income =  #{firmIncome}
+	</if>
+<if test="firmShare != null and firmShare != ''" >
+	    and firm_share =  #{firmShare}
+	</if>
+<if test="firmProvince != null and firmProvince != ''" >
+	    and firm_province =  #{firmProvince}
+	</if>
+<if test="firmCity != null and firmCity != ''" >
+	    and firm_city =  #{firmCity}
+	</if>
+<if test="firmCounty != null and firmCounty != ''" >
+	    and firm_county =  #{firmCounty}
+	</if>
+<if test="firmAddress != null and firmAddress != ''" >
+	    and firm_address =  #{firmAddress}
+	</if>
+<if test="firmManageDate != null and firmManageDate != ''" >
+	    and firm_manage_date =  #{firmManageDate}
+	</if>
+<if test="matchType != null and matchType != ''" >
+	    and match_type =  #{matchType}
+	</if>
+<if test="staffNo != null and staffNo != ''" >
+	    and staff_no =  #{staffNo}
+	</if>
+<if test="inputTime != null and inputTime != ''" >
+	    and input_time =  #{inputTime}
+	</if>
+<if test="customerManager != null and customerManager != ''" >
+	    and customer_manager =  #{customerManager}
+	</if>
+<if test="saleRefuseDescribe != null and saleRefuseDescribe != ''" >
+	    and sale_refuse_describe =  #{saleRefuseDescribe}
+	</if>
+<if test="saleRefuseCode1 != null and saleRefuseCode1 != ''" >
+	    and sale_refuse_code1 =  #{saleRefuseCode1}
+	</if>
+<if test="saleRefuseCode2 != null and saleRefuseCode2 != ''" >
+	    and sale_refuse_code2 =  #{saleRefuseCode2}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="ruleGrade != null and ruleGrade != ''" >
+	    and rule_grade =  #{ruleGrade}
+	</if>
+<if test="ruleScore != null and ruleScore != ''" >
+	    and rule_score =  #{ruleScore}
+	</if>
+<if test="gradeRemind != null and gradeRemind != ''" >
+	    and grade_remind =  #{gradeRemind}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_CREDIT_APP_SEQ') From dual
+			<!-- Select T_CREDIT_APP_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_CREDIT_APP(id,app_id,app_code,customer_source,customer_id,belong_channel,product,period,srevice_fee_rate,interest_rate,amount,useage1,useage2,name,mobile,id_type,id_no,diploma,wechat,email,without_children,children_size,marriage,koseki_province,koseki_city,add_nature,add_year,add_province,add_city,add_county,address,phone,com_name,com_province,com_city,com_county,com_address,com_duty,com_type,com_phone,com_add_date,income,monthly_payments,acc_name,account,spouse_name,spouse_mobile,spouse_id_type,spouse_id_no,spouse_income,spouse_job,spouse_com_name,spouse_com_province,spouse_com_city,spouse_com_county,spouse_com_address,firm_name,firm_main_business,firm_income,firm_share,firm_province,firm_city,firm_county,firm_address,firm_manage_date,match_type,staff_no,input_time,customer_manager,sale_refuse_describe,sale_refuse_code1,sale_refuse_code2,state,operator,org_id,create_time,update_time,remark,rule_grade,rule_score,grade_remind)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{appCode, jdbcType=VARCHAR},#{customerSource, jdbcType=VARCHAR},#{customerId, jdbcType=VARCHAR},#{belongChannel, jdbcType=VARCHAR},#{product, jdbcType=VARCHAR},#{period, jdbcType=INTEGER},#{sreviceFeeRate, jdbcType=DOUBLE},#{interestRate, jdbcType=DOUBLE},#{amount, jdbcType=DOUBLE},#{useage1, jdbcType=VARCHAR},#{useage2, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{mobile, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{diploma, jdbcType=VARCHAR},#{wechat, jdbcType=VARCHAR},#{email, jdbcType=VARCHAR},#{withoutChildren, jdbcType=INTEGER},#{childrenSize, jdbcType=INTEGER},#{marriage, jdbcType=VARCHAR},#{kosekiProvince, jdbcType=VARCHAR},#{kosekiCity, jdbcType=VARCHAR},#{addNature, jdbcType=VARCHAR},#{addYear, jdbcType=INTEGER},#{addProvince, jdbcType=VARCHAR},#{addCity, jdbcType=VARCHAR},#{addCounty, jdbcType=VARCHAR},#{address, jdbcType=VARCHAR},#{phone, jdbcType=VARCHAR},#{comName, jdbcType=VARCHAR},#{comProvince, jdbcType=VARCHAR},#{comCity, jdbcType=VARCHAR},#{comCounty, jdbcType=VARCHAR},#{comAddress, jdbcType=VARCHAR},#{comDuty, jdbcType=VARCHAR},#{comType, jdbcType=VARCHAR},#{comPhone, jdbcType=VARCHAR},#{comAddDate, jdbcType=DATE},#{income, jdbcType=DOUBLE},#{monthlyPayments, jdbcType=DOUBLE},#{accName, jdbcType=VARCHAR},#{account, jdbcType=VARCHAR},#{spouseName, jdbcType=VARCHAR},#{spouseMobile, jdbcType=VARCHAR},#{spouseIdType, jdbcType=VARCHAR},#{spouseIdNo, jdbcType=VARCHAR},#{spouseIncome, jdbcType=DOUBLE},#{spouseJob, jdbcType=VARCHAR},#{spouseComName, jdbcType=VARCHAR},#{spouseComProvince, jdbcType=VARCHAR},#{spouseComCity, jdbcType=VARCHAR},#{spouseComCounty, jdbcType=VARCHAR},#{spouseComAddress, jdbcType=VARCHAR},#{firmName, jdbcType=VARCHAR},#{firmMainBusiness, jdbcType=VARCHAR},#{firmIncome, jdbcType=DOUBLE},#{firmShare, jdbcType=DOUBLE},#{firmProvince, jdbcType=VARCHAR},#{firmCity, jdbcType=VARCHAR},#{firmCounty, jdbcType=VARCHAR},#{firmAddress, jdbcType=VARCHAR},#{firmManageDate, jdbcType=DATE},#{matchType, jdbcType=VARCHAR},#{staffNo, jdbcType=VARCHAR},#{inputTime, jdbcType=TIMESTAMP},#{customerManager, jdbcType=VARCHAR},
+ 		#{saleRefuseDescribe, jdbcType=VARCHAR},#{saleRefuseCode1, jdbcType=VARCHAR},#{saleRefuseCode2, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP},#{remark, jdbcType=VARCHAR},#{ruleGrade, jdbcType=VARCHAR},#{ruleScore, jdbcType=VARCHAR},#{gradeRemind, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_CREDIT_APP set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	app_code =  #{appCode, jdbcType=VARCHAR},
+	customer_source =  #{customerSource, jdbcType=VARCHAR},
+	customer_id =  #{customerId, jdbcType=VARCHAR},
+	belong_channel =  #{belongChannel, jdbcType=VARCHAR},
+	product =  #{product, jdbcType=VARCHAR},
+	period =  #{period, jdbcType=INTEGER},
+	srevice_fee_rate =  #{sreviceFeeRate, jdbcType=DOUBLE},
+	interest_rate =  #{interestRate, jdbcType=DOUBLE},
+	amount =  #{amount, jdbcType=DOUBLE},
+	useage1 =  #{useage1, jdbcType=VARCHAR},
+	useage2 =  #{useage2, jdbcType=VARCHAR},
+	name =  #{name, jdbcType=VARCHAR},
+	mobile =  #{mobile, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	diploma =  #{diploma, jdbcType=VARCHAR},
+	wechat =  #{wechat, jdbcType=VARCHAR},
+	email =  #{email, jdbcType=VARCHAR},
+	without_children =  #{withoutChildren, jdbcType=INTEGER},
+	children_size =  #{childrenSize, jdbcType=INTEGER},
+	marriage =  #{marriage, jdbcType=VARCHAR},
+	koseki_province =  #{kosekiProvince, jdbcType=VARCHAR},
+	koseki_city =  #{kosekiCity, jdbcType=VARCHAR},
+	add_nature =  #{addNature, jdbcType=VARCHAR},
+	add_year =  #{addYear, jdbcType=INTEGER},
+	add_province =  #{addProvince, jdbcType=VARCHAR},
+	add_city =  #{addCity, jdbcType=VARCHAR},
+	add_county =  #{addCounty, jdbcType=VARCHAR},
+	address =  #{address, jdbcType=VARCHAR},
+	phone =  #{phone, jdbcType=VARCHAR},
+	com_name =  #{comName, jdbcType=VARCHAR},
+	com_province =  #{comProvince, jdbcType=VARCHAR},
+	com_city =  #{comCity, jdbcType=VARCHAR},
+	com_county =  #{comCounty, jdbcType=VARCHAR},
+	com_address =  #{comAddress, jdbcType=VARCHAR},
+	com_duty =  #{comDuty, jdbcType=VARCHAR},
+	com_type =  #{comType, jdbcType=VARCHAR},
+	com_phone =  #{comPhone, jdbcType=VARCHAR},
+	com_add_date =  #{comAddDate, jdbcType=DATE},
+	income =  #{income, jdbcType=DOUBLE},
+	monthly_payments =  #{monthlyPayments, jdbcType=DOUBLE},
+	acc_name =  #{accName, jdbcType=VARCHAR},
+	account =  #{account, jdbcType=VARCHAR},
+	spouse_name =  #{spouseName, jdbcType=VARCHAR},
+	spouse_mobile =  #{spouseMobile, jdbcType=VARCHAR},
+	spouse_id_type =  #{spouseIdType, jdbcType=VARCHAR},
+	spouse_id_no =  #{spouseIdNo, jdbcType=VARCHAR},
+	spouse_income =  #{spouseIncome, jdbcType=DOUBLE},
+	spouse_job =  #{spouseJob, jdbcType=VARCHAR},
+	spouse_com_name =  #{spouseComName, jdbcType=VARCHAR},
+	spouse_com_province =  #{spouseComProvince, jdbcType=VARCHAR},
+	spouse_com_city =  #{spouseComCity, jdbcType=VARCHAR},
+	spouse_com_county =  #{spouseComCounty, jdbcType=VARCHAR},
+	spouse_com_address =  #{spouseComAddress, jdbcType=VARCHAR},
+	firm_name =  #{firmName, jdbcType=VARCHAR},
+	firm_main_business =  #{firmMainBusiness, jdbcType=VARCHAR},
+	firm_income =  #{firmIncome, jdbcType=DOUBLE},
+	firm_share =  #{firmShare, jdbcType=DOUBLE},
+	firm_province =  #{firmProvince, jdbcType=VARCHAR},
+	firm_city =  #{firmCity, jdbcType=VARCHAR},
+	firm_county =  #{firmCounty, jdbcType=VARCHAR},
+	firm_address =  #{firmAddress, jdbcType=VARCHAR},
+	firm_manage_date =  #{firmManageDate, jdbcType=DATE},
+	match_type =  #{matchType, jdbcType=VARCHAR},
+	staff_no =  #{staffNo, jdbcType=VARCHAR},
+	input_time =  #{inputTime, jdbcType=TIMESTAMP},
+	customer_manager =  #{customerManager, jdbcType=VARCHAR},
+	sale_refuse_describe =  #{saleRefuseDescribe, jdbcType=VARCHAR},
+	sale_refuse_code1 =  #{saleRefuseCode1, jdbcType=VARCHAR},
+	sale_refuse_code2 =  #{saleRefuseCode2, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	remark =  #{remark, jdbcType=VARCHAR},
+	rule_grade =  #{ruleGrade, jdbcType=VARCHAR},
+	rule_score =  #{ruleScore, jdbcType=VARCHAR},
+	grade_remind =  #{gradeRemind, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_CREDIT_APP  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_CREDIT_APP set 
+	<trim  suffixOverrides="," >
+
+	<if test="appId != null and appId != '' " >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="appCode != null and appCode != '' " >
+	    app_code =  #{appCode, jdbcType=VARCHAR},
+	</if>
+
+	<if test="customerSource != null and customerSource != '' " >
+	    customer_source =  #{customerSource, jdbcType=VARCHAR},
+	</if>
+
+	<if test="customerId != null and customerId != '' " >
+	    customer_id =  #{customerId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="belongChannel != null and belongChannel != '' " >
+	    belong_channel =  #{belongChannel, jdbcType=VARCHAR},
+	</if>
+
+	<if test="product != null and product != '' " >
+	    product =  #{product, jdbcType=VARCHAR},
+	</if>
+
+	<if test="period != null and period != '' " >
+	    period =  #{period, jdbcType=INTEGER},
+	</if>
+
+	<if test="sreviceFeeRate != null and sreviceFeeRate != '' " >
+	    srevice_fee_rate =  #{sreviceFeeRate, jdbcType=DOUBLE},
+	</if>
+
+	<if test="interestRate != null and interestRate != ''" >
+	    interest_rate =  #{interestRate, jdbcType=DOUBLE},
+	</if>
+
+	<if test="amount != null and amount != ''" >
+	    amount =  #{amount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="useage1 != null and useage1 != '' " >
+	    useage1 =  #{useage1, jdbcType=VARCHAR},
+	</if>
+
+	<if test="useage2 != null and useage2 != '' " >
+	    useage2 =  #{useage2, jdbcType=VARCHAR},
+	</if>
+
+	<if test="name != null and name != '' " >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+
+	<if test="mobile != null and mobile != '' " >
+	    mobile =  #{mobile, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idType != null and idType != '' " >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idNo != null and idNo != '' " >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="diploma != null and diploma != '' " >
+	    diploma =  #{diploma, jdbcType=VARCHAR},
+	</if>
+
+	<if test="wechat != null and wechat != '' " >
+	    wechat =  #{wechat, jdbcType=VARCHAR},
+	</if>
+
+	<if test="email != null and email != '' " >
+	    email =  #{email, jdbcType=VARCHAR},
+	</if>
+
+	<if test="withoutChildren != null and withoutChildren != ''" >
+	    without_children =  #{withoutChildren, jdbcType=INTEGER},
+	</if>
+
+	<if test="childrenSize != null and childrenSize != ''" >
+	    children_size =  #{childrenSize, jdbcType=INTEGER},
+	</if>
+
+	<if test="marriage != null and marriage != '' " >
+	    marriage =  #{marriage, jdbcType=VARCHAR},
+	</if>
+
+	<if test="kosekiProvince != null and kosekiProvince != '' " >
+	    koseki_province =  #{kosekiProvince, jdbcType=VARCHAR},
+	</if>
+
+	<if test="kosekiCity != null and kosekiCity != '' " >
+	    koseki_city =  #{kosekiCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="addNature != null and addNature != '' " >
+	    add_nature =  #{addNature, jdbcType=VARCHAR},
+	</if>
+
+	<if test="addYear != null and addYear != ''" >
+	    add_year =  #{addYear, jdbcType=INTEGER},
+	</if>
+
+	<if test="addProvince != null and addProvince != '' " >
+	    add_province =  #{addProvince, jdbcType=VARCHAR},
+	</if>
+
+	<if test="addCity != null and addCity != '' " >
+	    add_city =  #{addCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="addCounty != null and addCounty != '' " >
+	    add_county =  #{addCounty, jdbcType=VARCHAR},
+	</if>
+
+	<if test="address != null and address != '' " >
+	    address =  #{address, jdbcType=VARCHAR},
+	</if>
+
+	<if test="phone != null and phone != '' " >
+	    phone =  #{phone, jdbcType=VARCHAR},
+	</if>
+
+	<if test="comName != null and comName != '' " >
+	    com_name =  #{comName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="comProvince != null and comProvince != '' " >
+	    com_province =  #{comProvince, jdbcType=VARCHAR},
+	</if>
+
+	<if test="comCity != null and comCity != '' " >
+	    com_city =  #{comCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="comCounty != null and comCounty != '' " >
+	    com_county =  #{comCounty, jdbcType=VARCHAR},
+	</if>
+
+	<if test="comAddress != null and comAddress != '' " >
+	    com_address =  #{comAddress, jdbcType=VARCHAR},
+	</if>
+
+	<if test="comDuty != null and comDuty != '' " >
+	    com_duty =  #{comDuty, jdbcType=VARCHAR},
+	</if>
+
+	<if test="comType != null and comType != '' " >
+	    com_type =  #{comType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="comPhone != null and comPhone != '' " >
+	    com_phone =  #{comPhone, jdbcType=VARCHAR},
+	</if>
+
+	<if test="comAddDate != null and comAddDate != '' " >
+	    com_add_date =  #{comAddDate, jdbcType=DATE},
+	</if>
+
+	<if test="income != null and income != ''" >
+	    income =  #{income, jdbcType=DOUBLE},
+	</if>
+
+	<if test="monthlyPayments != null and monthlyPayments != ''" >
+	    monthly_payments =  #{monthlyPayments, jdbcType=DOUBLE},
+	</if>
+
+	<if test="accName != null and accName != '' " >
+	    acc_name =  #{accName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="account != null and account != '' " >
+	    account =  #{account, jdbcType=VARCHAR},
+	</if>
+
+	<if test="spouseName != null and spouseName != '' " >
+	    spouse_name =  #{spouseName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="spouseMobile != null and spouseMobile != '' " >
+	    spouse_mobile =  #{spouseMobile, jdbcType=VARCHAR},
+	</if>
+
+	<if test="spouseIdType != null and spouseIdType != '' " >
+	    spouse_id_type =  #{spouseIdType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="spouseIdNo != null and spouseIdNo != '' " >
+	    spouse_id_no =  #{spouseIdNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="spouseIncome != null and spouseIncome != ''" >
+	    spouse_income =  #{spouseIncome, jdbcType=DOUBLE},
+	</if>
+
+	<if test="spouseJob != null and spouseJob != '' " >
+	    spouse_job =  #{spouseJob, jdbcType=VARCHAR},
+	</if>
+
+	<if test="spouseComName != null and spouseComName != '' " >
+	    spouse_com_name =  #{spouseComName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="spouseComProvince != null and spouseComProvince != '' " >
+	    spouse_com_province =  #{spouseComProvince, jdbcType=VARCHAR},
+	</if>
+
+	<if test="spouseComCity != null and spouseComCity != '' " >
+	    spouse_com_city =  #{spouseComCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="spouseComCounty != null and spouseComCounty != '' " >
+	    spouse_com_county =  #{spouseComCounty, jdbcType=VARCHAR},
+	</if>
+
+	<if test="spouseComAddress != null and spouseComAddress != '' " >
+	    spouse_com_address =  #{spouseComAddress, jdbcType=VARCHAR},
+	</if>
+
+	<if test="firmName != null and firmName != '' " >
+	    firm_name =  #{firmName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="firmMainBusiness != null and firmMainBusiness != '' " >
+	    firm_main_business =  #{firmMainBusiness, jdbcType=VARCHAR},
+	</if>
+
+	<if test="firmIncome != null and firmIncome != ''" >
+	    firm_income =  #{firmIncome, jdbcType=DOUBLE},
+	</if>
+
+	<if test="firmShare != null and firmShare != ''" >
+	    firm_share =  #{firmShare, jdbcType=DOUBLE},
+	</if>
+
+	<if test="firmProvince != null and firmProvince != '' " >
+	    firm_province =  #{firmProvince, jdbcType=VARCHAR},
+	</if>
+
+	<if test="firmCity != null and firmCity != '' " >
+	    firm_city =  #{firmCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="firmCounty != null and firmCounty != '' " >
+	    firm_county =  #{firmCounty, jdbcType=VARCHAR},
+	</if>
+
+	<if test="firmAddress != null and firmAddress != '' " >
+	    firm_address =  #{firmAddress, jdbcType=VARCHAR},
+	</if>
+
+	<if test="firmManageDate != null and firmManageDate != '' " >
+	    firm_manage_date =  #{firmManageDate, jdbcType=DATE},
+	</if>
+
+	<if test="matchType != null and matchType != '' " >
+	    match_type =  #{matchType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="staffNo != null and staffNo != '' " >
+	    staff_no =  #{staffNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="inputTime != null and inputTime != '' " >
+	    input_time =  #{inputTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="customerManager != null and customerManager != '' " >
+	    customer_manager =  #{customerManager, jdbcType=VARCHAR},
+	</if>
+
+	<if test="saleRefuseDescribe != null and saleRefuseDescribe != '' " >
+	    sale_refuse_describe =  #{saleRefuseDescribe, jdbcType=VARCHAR},
+	</if>
+
+	<if test="saleRefuseCode1 != null and saleRefuseCode1 != '' " >
+	    sale_refuse_code1 =  #{saleRefuseCode1, jdbcType=VARCHAR},
+	</if>
+
+	<if test="saleRefuseCode2 != null and saleRefuseCode2 != '' " >
+	    sale_refuse_code2 =  #{saleRefuseCode2, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operator != null and operator != '' " >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="ruleGrade != null and ruleGrade != '' " >
+	    rule_grade =  #{ruleGrade, jdbcType=VARCHAR},
+	</if>
+
+	<if test="ruleScore != null and ruleScore != '' " >
+	    rule_score =  #{ruleScore, jdbcType=VARCHAR},
+	</if>
+	<if test="gradeRemind != null" >
+	    grade_remind =  #{gradeRemind, jdbcType=VARCHAR},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 信用贷款申请表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CREDIT_APP  where id = #{id}
+</select>
+
+<!--催收              根据合同单号查询 信用贷款申请表         add  zhangguo  20150724-->
+<select id="queryByContractNo"  resultMap="ResultMap" parameterType="Object">
+	SELECT a.id,app_id,app_code, firm_name,firm_main_business,firm_income,firm_share,firm_province,
+	firm_city,firm_county,firm_address,firm_manage_date
+	FROM t_credit_app a,t_contract b 
+	WHERE a.APP_ID = b.LOAN_APP_ID 
+	AND b.CONTRACT_NO = #{contractNo}
+</select>
+
+
+
+<!-- 信用贷款申请表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CREDIT_APP 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询信用贷款申请表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_CREDIT_APP 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 得到申请序号 -->
+<select id="getAppIdCode" resultType="string">
+	SELECT LPAD (nextval('T_CREDIT_APP_DALIY_SEQ'),4,'0') FROM DUAL
+</select>
+
+  <!-- 流程 列表查询-->
+<select id="queryBpmLoanAppCount" resultType="java.lang.Integer" parameterType="map">
+	SELECT COUNT(1) FROM (<include refid="BpmLoanAppSql"/>) t
+</select>
+ 
+ <!-- 流程 列表查询-->
+<select id="queryBpmLoanAppList" resultMap="ResultMap"  parameterType="map">
+	SELECT * FROM (<include refid="BpmLoanAppSql"/>) t 
+	<if test="rowS != null and rowE != null " >
+		LIMIT #{rowS} , #{rowE}
+	</if>
+</select>
+
+<!-- 流程列表查询SQL -->
+<sql id="BpmLoanAppSql">
+	SELECT
+	a.ID,
+	a.APP_ID,
+	a.APP_CODE,
+	a.CUSTOMER_SOURCE,
+	a.CUSTOMER_ID,
+	a.BELONG_CHANNEL,
+	(SELECT ct.`CHANNEL_NAME` FROM t_channel_total ct WHERE ct.`CHANNEL_CODE` = a.BELONG_CHANNEL) belongChannelName,
+	a.PRODUCT,
+	a.PERIOD,
+	a.SREVICE_FEE_RATE,
+	a.INTEREST_RATE,
+	a.AMOUNT,
+	a.USEAGE1,
+	a.USEAGE2,
+	a.NAME,
+	a.MOBILE,
+	a.ID_TYPE,
+	a.ID_NO,
+	a.DIPLOMA,
+	a.WECHAT,
+	a.EMAIL,
+	a.WITHOUT_CHILDREN,
+	a.CHILDREN_SIZE,
+	a.MARRIAGE,
+	a.KOSEKI_PROVINCE,
+	a.KOSEKI_CITY,
+	a.ADD_NATURE,
+	a.ADD_YEAR,
+	a.ADD_PROVINCE,
+	a.ADD_CITY,
+	a.ADD_COUNTY,
+	a.ADDRESS,
+	a.PHONE,
+	a.COM_NAME,
+	a.COM_PROVINCE,
+	a.COM_CITY,
+	a.COM_COUNTY,
+	a.COM_ADDRESS,
+	a.COM_DUTY,
+	a.COM_ADD_DATE,
+	a.INCOME,
+	a.MONTHLY_PAYMENTS,
+	a.ACC_NAME,
+	a.ACCOUNT,
+	a.SPOUSE_NAME,
+	a.SPOUSE_MOBILE,
+	a.SPOUSE_ID_TYPE,
+	a.SPOUSE_ID_NO,
+	a.SPOUSE_INCOME,
+	a.SPOUSE_JOB,
+	a.SPOUSE_COM_NAME,
+	a.SPOUSE_COM_PROVINCE,
+	a.SPOUSE_COM_CITY,
+	a.SPOUSE_COM_COUNTY,
+	a.SPOUSE_COM_ADDRESS,
+	a.FIRM_NAME,
+	a.FIRM_MAIN_BUSINESS,
+	a.FIRM_INCOME,
+	a.FIRM_SHARE,
+	a.FIRM_PROVINCE,
+	a.FIRM_CITY,
+	a.FIRM_COUNTY,
+	a.FIRM_ADDRESS,
+	a.FIRM_MANAGE_DATE,
+	a.MATCH_TYPE,
+	a.STAFF_NO,
+	a.INPUT_TIME,
+	a.CUSTOMER_MANAGER,
+	a.SALE_REFUSE_DESCRIBE,
+	a.SALE_REFUSE_CODE1,
+	a.SALE_REFUSE_CODE2,
+	a.STATE,
+	a.OPERATOR,
+	a.ORG_ID,
+	a.CREATE_TIME,
+	a.UPDATE_TIME,
+	b.state TASK_STATE,
+	b.PROCESSER TASK_PROCESSER_ID,
+	(SELECT u.`NAME` FROM `t_user` u WHERE u.`LOGIN_ID`=b.PROCESSER) TASK_PROCESSER,
+	s.`NAME` STAFF_NAME,
+	(SELECT t.`DEPART_NAME` FROM t_depart t WHERE t.`ID` = s.`DEPART_ID` AND t.`state` = '1') staffTeam,
+	(SELECT t.`NAME` FROM t_sales t WHERE t.`DEPART_ID` = s.`DEPART_ID` AND t.`LEVEL` = '3' AND t.`state` = '1' LIMIT 1) teamManager,
+	(SELECT o.`ORG_NAME` FROM `t_org` o WHERE o.`ORG_ID`=a.ORG_ID) ORG_NAME,
+	t1.`NAME` VERIFY_NAME,
+	t1.`NAME` creditDecisionOperator,
+	t1.DECISION creditDecisionCode
+FROM  T_CREDIT_APP a
+INNER JOIN t_bpm_task b ON a.APP_ID = b.BIZ_KEY 
+LEFT JOIN t_sales s ON a.STAFF_NO = s.STAFF_NO
+<!-- 关联审核 -->
+LEFT JOIN 
+(SELECT c.APP_ID,u.`NAME`,c.DECISION,c.BELONG_CHANNEL FROM t_credit_decision c,t_user u WHERE c.OPERATOR = u.LOGIN_ID AND c.TYPE = '1' AND c.STATE = '1') t1 ON
+t1.APP_ID = a.APP_ID
+	WHERE 1=1 
+	<if test="appId!=null and appId!=''">
+		AND a.APP_ID =#{appId}
+	</if>
+	<if test="appCode!=null and appCode!=''">
+		AND a.APP_CODE =#{appCode}
+	</if>
+	<if test="states != null and states != '' " >
+		AND a.STATE in
+		<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="nonStates != null and nonStates != '' " >
+		AND a.STATE not in
+		<foreach item="item" index="index" collection="nonStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="bpmStates != null and bpmStates != '' " >
+		AND b.STATE in
+		<foreach item="item" index="index" collection="bpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="nonBpmStates != null and nonBpmStates != '' " >
+		AND b.STATE not in
+		<foreach item="item" index="index" collection="nonBpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="processer != null" >
+		AND b.PROCESSER = #{processer}
+	</if>
+	<if test="nonProcesser != null" >
+		AND b.PROCESSER != #{nonProcesser}
+	</if>
+	<if test="orgId != null and orgId != '' " >
+		AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	<!-- 以下是 查询筛选条件  -->
+	<if test="roleLever != null and roleLever!=''">
+		<!-- 营业部以下级别只能查看自己的单子 -->
+		<if test="roleLever ==0">
+			<if test="customerManager != null and customerManager != ''" >
+				and a.customer_manager =  #{customerManager}
+			</if>
+		</if>
+	</if>
+	<if test="name!=null and name!=''">
+		AND a.NAME =#{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	<if test="mobile!=null and mobile!=''">
+		AND a.mobile =#{mobile}
+	</if>
+	<if test="staffNo!=null and staffNo!=''">
+		AND a.STAFF_NO =#{staffNo}
+	</if>
+	<if test="belongChannel!=null and belongChannel!=''">
+		AND a.BELONG_CHANNEL =#{belongChannel}
+	</if>
+	<if test="product!=null and product!=''">
+		AND a.PRODUCT =#{product}
+	</if>
+	<if test="operator!=null and operator!=''">
+		AND a.OPERATOR =#{operator}
+	</if>
+	<if test="amountMin!=null and amountMin!=''">
+		<![CDATA[AND a.amount >= #{amountMin}]]>
+	</if>
+	<if test="amountMax!=null and amountMax!=''">
+		<![CDATA[AND a.amount < #{amountMax}]]>
+	</if>
+	<if test="createTimeMin!=null and createTimeMin!=''">
+		<![CDATA[AND a.CREATE_TIME >= #{createTimeMin}]]>
+	</if>
+	<if test="createTimeMax!=null and createTimeMax!=''">
+		<![CDATA[AND a.CREATE_TIME < #{createTimeMax}]]>
+	</if>
+	<if test="inputTimeMin!=null and inputTimeMin!=''">
+		<![CDATA[AND a.INPUT_TIME >= #{inputTimeMin}]]>
+	</if>
+	<if test="inputTimeMax!=null and inputTimeMax!=''">
+		<![CDATA[AND a.INPUT_TIME < #{inputTimeMax}]]>
+	</if>
+	<if test="updateTimeMin!=null and updateTimeMin!=''">
+		<![CDATA[AND a.UPDATE_TIME >= #{updateTimeMin}]]>
+	</if>
+	<if test="updateTimeMax!=null and updateTimeMax!=''">
+		<![CDATA[AND a.UPDATE_TIME < #{updateTimeMax}]]>
+	</if>
+	<if test="stateTask !=null and stateTask !='' and stateTask !='waitTask'">
+		AND EXISTS (
+			select 1 from  t_bpm_log log where 
+			log.BIZ_KEY=b.BIZ_KEY 
+			<if test="bpmLogStates !=null and bpmLogStates !=''">
+				AND log.STATE=#{bpmLogStates}
+			</if>
+			<if test="bpmLogOperator !=null and bpmLogOperator !=''">
+				AND log.OPERATOR=#{bpmLogOperator}
+			</if>
+		)
+	</if>
+	<if test="departId != null and departId != ''">
+		AND s.depart_id = #{departId}
+	</if>
+<!-- 	 根据进件时间排序 -->
+	ORDER BY  ISNULL(a.INPUT_TIME),a.INPUT_TIME, a.ID ASC
+</sql>
+
+
+ <!-- 流程 列表查询-->
+<select id="queryBpmAppAndContractList" resultMap="ResultMap"  parameterType="map">
+SELECT
+	a.ID,
+	a.APP_ID,
+	a.APP_CODE,
+	a.CUSTOMER_SOURCE,
+	a.CUSTOMER_ID,
+	a.BELONG_CHANNEL,
+	(SELECT ct.`CHANNEL_NAME` FROM t_channel_total ct WHERE ct.`CHANNEL_CODE` = a.BELONG_CHANNEL) belongChannelName,
+	a.PRODUCT,
+	a.PERIOD,
+	a.SREVICE_FEE_RATE,
+	a.INTEREST_RATE,
+	a.AMOUNT,
+	a.USEAGE1,
+	a.USEAGE2,
+	a.NAME,
+	a.MOBILE,
+	a.ID_TYPE,
+	a.ID_NO,
+	a.DIPLOMA,
+	a.WECHAT,
+	a.EMAIL,
+	a.WITHOUT_CHILDREN,
+	a.CHILDREN_SIZE,
+	a.MARRIAGE,
+	a.KOSEKI_PROVINCE,
+	a.KOSEKI_CITY,
+	a.ADD_NATURE,
+	a.ADD_YEAR,
+	a.ADD_PROVINCE,
+	a.ADD_CITY,
+	a.ADD_COUNTY,
+	a.ADDRESS,
+	a.PHONE,
+	a.COM_NAME,
+	a.COM_PROVINCE,
+	a.COM_CITY,
+	a.COM_COUNTY,
+	a.COM_ADDRESS,
+	a.COM_DUTY,
+	a.COM_ADD_DATE,
+	a.INCOME,
+	a.MONTHLY_PAYMENTS,
+	a.ACC_NAME,
+	a.ACCOUNT,
+	a.SPOUSE_NAME,
+	a.SPOUSE_MOBILE,
+	a.SPOUSE_ID_TYPE,
+	a.SPOUSE_ID_NO,
+	a.SPOUSE_INCOME,
+	a.SPOUSE_JOB,
+	a.SPOUSE_COM_NAME,
+	a.SPOUSE_COM_PROVINCE,
+	a.SPOUSE_COM_CITY,
+	a.SPOUSE_COM_COUNTY,
+	a.SPOUSE_COM_ADDRESS,
+	a.FIRM_NAME,
+	a.FIRM_MAIN_BUSINESS,
+	a.FIRM_INCOME,
+	a.FIRM_SHARE,
+	a.FIRM_PROVINCE,
+	a.FIRM_CITY,
+	a.FIRM_COUNTY,
+	a.FIRM_ADDRESS,
+	a.FIRM_MANAGE_DATE,
+	a.MATCH_TYPE,
+	a.STAFF_NO,
+	a.INPUT_TIME,
+	a.CUSTOMER_MANAGER,
+	a.SALE_REFUSE_DESCRIBE,
+	a.SALE_REFUSE_CODE1,
+	a.SALE_REFUSE_CODE2,
+	a.STATE,
+	a.OPERATOR,
+	a.ORG_ID,
+	a.CREATE_TIME,
+	a.UPDATE_TIME,
+	a.REMARK,
+	b.state TASK_STATE,
+	c.AMOUNT decisionAmount,
+	c.BELONG_CHANNEL decisionChannel,
+	(SELECT ct.`CHANNEL_NAME` FROM t_channel_total ct WHERE ct.`CHANNEL_CODE` = c.BELONG_CHANNEL) decisionChannelName,
+	c.PRODUCT decisionProduct,
+	c.PERIOD decisionPeriod,
+	c.OPERATOR decisionOperator,
+	c.UPDATE_TIME decisionUpdateTime,
+	d.CONTRACT_NO contractNo,
+	b.PROCESSER TASK_PROCESSER_ID,
+	(SELECT u.`NAME` FROM `t_user` u WHERE u.`LOGIN_ID`=b.PROCESSER LIMIT 1) TASK_PROCESSER,
+	(SELECT s.`NAME` FROM `t_sales` s WHERE s.`STAFF_NO`=a.STAFF_NO LIMIT 1) STAFF_NAME,
+	(SELECT o.`ORG_NAME` FROM `t_org` o WHERE o.`ORG_ID`=a.ORG_ID LIMIT 1) ORG_NAME,
+	(SELECT u.`NAME` FROM `t_user` u WHERE u.`LOGIN_ID` = (SELECT t.`OPERATOR` FROM t_bpm_log t WHERE t.`BIZ_KEY` = a.APP_ID AND t.`STATE` = '复核' ORDER BY t.`ID` DESC LIMIT 1)) reviewOperator,
+	
+	d.`SIGN_PROVINCE`,
+	d.`SIGN_CITY`,
+	d.`BANK_NAME`,
+	d.`BANK_ACCOUNT`,
+	d.`SIGN_DATE`,
+	d.`LENDING_DATE`,
+	d.`LOAN_AMOUNT`,
+	(SELECT (rp.`INTEREST_RECEIVABLE` + rp.`PRINCIPAL_RECEIVABLE`) monthAmount FROM t_loan_repay_plan rp WHERE rp.`CONTRACT_NO` = d.`CONTRACT_NO` LIMIT 1) monthAmount,
+	d.`CHANNEL_STATE`
+	
+FROM  (T_CREDIT_APP a LEFT JOIN t_contract d on a.APP_ID=d.LOAN_APP_ID) , t_bpm_task b ,t_credit_decision c 
+	WHERE 	a.APP_ID = b.BIZ_KEY AND a.APP_ID = c.APP_ID
+			AND c.TYPE='0'
+	<if test="appId!=null and appId!=''">
+		AND a.APP_ID =#{appId}
+	</if>
+	<if test="contractNo!=null and contractNo!=''">
+		AND d.CONTRACT_NO =#{contractNo}
+	</if>
+	<if test="decisionAmountMin!=null and decisionAmountMin!=''">
+		<![CDATA[AND d.AMOUNT >= #{decisionAmountMin}]]>
+	</if>
+	<if test="decisionAmountMax!=null and decisionAmountMax!=''">
+		<![CDATA[AND d.AMOUNT <= #{decisionAmountMax}]]>
+	</if>
+	<if test="decisionProduct!=null and decisionProduct!=''">
+		AND d.decisionProduct =#{decisionProduct}
+	</if>
+	<if test="decisionPeriod!=null and decisionPeriod!=''">
+		AND d.PERIOD =#{decisionPeriod}
+	</if>
+	<if test="channelType!=null and channelType!=''">
+		AND d.CHANNEL_TYPE =#{channelType}
+	</if>
+	<if test="decisionOperator!=null and decisionOperator!=''">
+		AND d.OPERATOR =#{decisionOperator}
+	</if>
+	
+	<if test="appCode!=null and appCode!=''">
+		AND a.APP_CODE =#{appCode}
+	</if>
+	<if test="states != null and states != '' " >
+		AND a.STATE in
+		<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	
+	<if test="nonStates != null and nonStates != '' " >
+		AND a.STATE not in
+		<foreach item="item" index="index" collection="nonStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="bpmStates != null and bpmStates != '' " >
+		AND b.STATE in
+		<foreach item="item" index="index" collection="bpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="nonBpmStates != null and nonBpmStates != '' " >
+		AND b.STATE not in
+		<foreach item="item" index="index" collection="nonBpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="processer != null and processer != ''" >
+		AND b.PROCESSER = #{processer}
+	</if>
+	<if test="orgId != null and orgId != '' " >
+		AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	
+	<if test="customerManager != null and customerManager != ''" >
+		and a.customer_manager =  #{customerManager}
+	</if>
+	
+	<if test="saleRefuseDescribe != null and saleRefuseDescribe != '' " >
+	    and a.sale_refuse_describe =  #{saleRefuseDescribe}
+	</if>
+	
+	<if test="saleRefuseCode1 != null and saleRefuseCode1 != ''" >
+	    and a.sale_refuse_code1 =  #{saleRefuseCode1}
+	</if>
+	
+	<if test="saleRefuseCode2 != null and saleRefuseCode2 != ''" >
+	    and a.sale_refuse_code2 =  #{saleRefuseCode2}
+	</if>
+	
+	<if test="name!=null and name!=''">
+		AND a.NAME =#{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	<if test="mobile!=null and mobile!=''">
+		AND a.mobile =#{mobile}
+	</if>
+	<if test="staffNo!=null and staffNo!=''">
+		AND a.STAFF_NO =#{staffNo}
+	</if>
+	<if test="belongChannel!=null and belongChannel!=''">
+		AND a.BELONG_CHANNEL =#{belongChannel}
+	</if>
+	<if test="product!=null and product!=''">
+		AND a.PRODUCT =#{product}
+	</if>
+	<if test="operator!=null and operator!=''">
+		AND a.OPERATOR =#{operator}
+	</if>
+	<if test="amountMin!=null and amountMin!=''">
+		<![CDATA[AND a.amount >= #{amountMin}]]>
+	</if>
+	<if test="amountMax!=null and amountMax!=''">
+		<![CDATA[AND a.amount < #{amountMax}]]>
+	</if>
+	<if test="createTimeMin!=null and createTimeMin!=''">
+		<![CDATA[AND a.CREATE_TIME >= #{createTimeMin}]]>
+	</if>
+	<if test="createTimeMax!=null and createTimeMax!=''">
+		<![CDATA[AND a.CREATE_TIME < #{createTimeMax}]]>
+	</if>
+	<if test="inputTimeMin!=null and inputTimeMin!=''">
+		<![CDATA[AND a.INPUT_TIME >= #{inputTimeMin}]]>
+	</if>
+	<if test="inputTimeMax!=null and inputTimeMax!=''">
+		<![CDATA[AND a.INPUT_TIME < #{inputTimeMax}]]>
+	</if>
+	<if test="updateTimeMin!=null and updateTimeMin!=''">
+		<![CDATA[AND a.UPDATE_TIME >= #{updateTimeMin}]]>
+	</if>
+	<if test="updateTimeMax!=null and updateTimeMax!=''">
+		<![CDATA[AND a.UPDATE_TIME < #{updateTimeMax}]]>
+	</if>
+	<if test="product1!=null and product1!=''">
+		<![CDATA[AND c.PRODUCT = #{product1}]]>
+	</if>
+
+	<if test="platformName !=null and platformName !=''">
+		<![CDATA[AND d.CHANNEL_TYPE = #{platformName} ]]>
+	</if>
+	
+	<!--根据进件时间排序 -->
+	ORDER BY  ISNULL(a.INPUT_TIME),a.INPUT_TIME, a.ID ASC
+	<if test="rowS != null and rowE != null " >
+		limit #{rowS} , #{rowE}
+	</if>
+</select>
+  <!-- 流程 列表查询-->
+<select id="queryBpmAppAndContractCount" resultType="java.lang.Integer" parameterType="map">
+	SELECT count(1) 
+	FROM  (T_CREDIT_APP a LEFT JOIN t_contract d on a.APP_ID=d.LOAN_APP_ID) , t_bpm_task b ,t_credit_decision c 
+	WHERE 	a.APP_ID = b.BIZ_KEY AND a.APP_ID = c.APP_ID
+			AND c.TYPE='0'
+	<if test="appId!=null and appId!=''">
+		AND a.APP_ID =#{appId}
+	</if>
+	<if test="contractNo!=null and contractNo!=''">
+		AND d.CONTRACT_NO =#{contractNo}
+	</if>
+	<if test="decisionAmountMin!=null and decisionAmountMin!=''">
+		<![CDATA[AND d.AMOUNT >= #{decisionAmountMin}]]>
+	</if>
+	<if test="decisionAmountMax!=null and decisionAmountMax!=''">
+		<![CDATA[AND d.AMOUNT <= #{decisionAmountMax}]]>
+	</if>
+	<if test="decisionProduct!=null and decisionProduct!=''">
+		AND d.decisionProduct =#{decisionProduct}
+	</if>
+	<if test="decisionPeriod!=null and decisionPeriod!=''">
+		AND d.PERIOD =#{decisionPeriod}
+	</if>
+	<if test="decisionOperator!=null and decisionOperator!=''">
+		AND d.OPERATOR =#{decisionOperator}
+	</if>
+	<if test="appCode!=null and appCode!=''">
+		AND a.APP_CODE =#{appCode}
+	</if>
+	<if test="states != null and states != '' " >
+		AND a.STATE in
+		<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="nonStates != null and nonStates != '' " >
+		AND a.STATE not in
+		<foreach item="item" index="index" collection="nonStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="bpmStates != null and bpmStates != '' " >
+		AND b.STATE in
+		<foreach item="item" index="index" collection="bpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="nonBpmStates != null and nonBpmStates != '' " >
+		AND b.STATE not in
+		<foreach item="item" index="index" collection="nonBpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="processer != null and processer != ''" >
+		AND b.PROCESSER = #{processer}
+	</if>
+	<if test="orgId != null and orgId != '' " >
+		AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	
+	<if test="customerManager != null and customerManager != ''" >
+		and a.customer_manager =  #{customerManager}
+	</if>
+	
+	<if test="saleRefuseDescribe != null and saleRefuseDescribe != '' " >
+	    sale_refuse_describe =  #{saleRefuseDescribe}
+	</if>
+	
+	<if test="saleRefuseCode1 != null and saleRefuseCode1 != ''" >
+	    and sale_refuse_code1 =  #{saleRefuseCode1}
+	</if>
+	
+	<if test="saleRefuseCode2 != null and saleRefuseCode2 != ''" >
+	    and sale_refuse_code2 =  #{saleRefuseCode2}
+	</if>
+	
+	<if test="name!=null and name!=''">
+		AND a.NAME =#{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	<if test="mobile!=null and mobile!=''">
+		AND a.mobile =#{mobile}
+	</if>
+	<if test="staffNo!=null and staffNo!=''">
+		AND a.STAFF_NO =#{staffNo}
+	</if>
+	<if test="belongChannel!=null and belongChannel!=''">
+		AND a.BELONG_CHANNEL =#{belongChannel}
+	</if>
+	<if test="product!=null and product!=''">
+		AND a.PRODUCT =#{product}
+	</if>
+	<if test="operator!=null and operator!=''">
+		AND a.OPERATOR =#{operator}
+	</if>
+	<if test="amountMin!=null and amountMin!=''">
+		<![CDATA[AND a.amount >= #{amountMin}]]>
+	</if>
+	<if test="amountMax!=null and amountMax!=''">
+		<![CDATA[AND a.amount < #{amountMax}]]>
+	</if>
+	<if test="createTimeMin!=null and createTimeMin!=''">
+		<![CDATA[AND a.CREATE_TIME >= #{createTimeMin}]]>
+	</if>
+	<if test="createTimeMax!=null and createTimeMax!=''">
+		<![CDATA[AND a.CREATE_TIME < #{createTimeMax}]]>
+	</if>
+	<if test="inputTimeMin!=null and inputTimeMin!=''">
+		<![CDATA[AND a.INPUT_TIME >= #{inputTimeMin}]]>
+	</if>
+	<if test="inputTimeMax!=null and inputTimeMax!=''">
+		<![CDATA[AND a.INPUT_TIME < #{inputTimeMax}]]>
+	</if>
+	<if test="product1!=null and product1!=''">
+		<![CDATA[AND c.PRODUCT = #{product1}]]>
+	</if>
+	<if test="platformName !=null and platformName !=''">
+		<![CDATA[AND d.CHANNEL_TYPE = #{platformName} ]]>
+	</if>
+</select>
+
+ <!-- 信用贷款 列表查询-->
+<select id="queryCreditQueryList" resultMap="ResultMap"  parameterType="map">
+
+SELECT 
+	a.id,
+	a.app_id, 
+	a.name, 
+	a.input_time, 
+	a.belong_channel,
+	(SELECT ct.`CHANNEL_NAME` FROM t_channel_total ct WHERE ct.`CHANNEL_CODE` = a.belong_channel) belongChannelName,
+	a.product, 
+	a.amount, 
+	a.period,
+	b.update_time decisionDate, 
+	b.belong_channel decisionChannel, 
+	(SELECT ct.`CHANNEL_NAME` FROM t_channel_total ct WHERE ct.`CHANNEL_CODE` = b.belong_channel) decisionChannelName, 
+	b.product decisionProduct, 
+	b.period decisionPeriod, 
+	b.amount decisionAmount, 
+   	(SELECT loan_amount FROM t_contract t WHERE t.loan_app_id = a.app_id ORDER BY t.id LIMIT 1) contractAmount,
+	(SELECT r.INTEREST_RECEIVABLE + r.PRINCIPAL_RECEIVABLE FROM t_loan_repay_plan r, t_contract c  WHERE r.CONTRACT_NO = c.CONTRACT_NO AND c.loan_app_id = a.app_id ORDER BY r.id LIMIT 1) methodAmount,
+	a.state,
+	(SELECT o.`ORG_NAME` FROM t_org o WHERE o.`ORG_ID` = a.`ORG_ID`) orgId
+FROM t_credit_app a  LEFT JOIN t_credit_decision b ON a.app_id = b.app_id AND b.type = 0
+LEFT JOIN t_bpm_task c ON  a.app_id = c.BIZ_KEY WHERE 1=1 
+	<if test="orgIdLike != null and orgIdLike != '' " >
+		AND a.ORG_ID LIKE CONCAT(#{orgIdLike},'%')
+	</if>
+	<if test="name!=null and name!=''">
+		AND a.NAME =#{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	<if test="appId!=null and appId!=''">
+		AND a.APP_ID =#{appId}
+	</if>
+	<if test="inputTimeMin!=null and inputTimeMin!=''">
+		<![CDATA[AND a.INPUT_TIME >= #{inputTimeMin}]]>
+	</if>
+	<if test="inputTimeMax!=null and inputTimeMax!=''">
+		<![CDATA[AND a.INPUT_TIME < #{inputTimeMax}]]>
+	</if>
+	<if test="belongChannel!=null and belongChannel!=''">
+		AND a.BELONG_CHANNEL =#{belongChannel}
+	</if>
+	<if test="product!=null and product!=''">
+		AND a.PRODUCT =#{product}
+	</if>
+	<if test="orgId != null and orgId != '' " >
+		AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	<if test="stateTask!=null and stateTask!=''">
+		AND c.STATE =#{stateTask}
+	</if>
+	<if test="rowS != null and rowE != null " >
+		limit #{rowS} , #{rowE}
+	</if>
+</select>
+  <!-- 信用贷款 列表总量-->
+<select id="queryCreditQueryCount" resultType="java.lang.Integer" parameterType="map">
+	SELECT 
+	COUNT(1)
+FROM t_credit_app a  LEFT JOIN t_credit_decision b ON a.app_id = b.app_id AND b.type = 0
+LEFT JOIN t_bpm_task c ON  a.app_id = c.BIZ_KEY WHERE 1=1 
+	<if test="name!=null and name!=''">
+		AND a.NAME =#{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	<if test="appId!=null and appId!=''">
+		AND a.APP_ID =#{appId}
+	</if>
+	<if test="inputTimeMin!=null and inputTimeMin!=''">
+		<![CDATA[AND a.INPUT_TIME >= #{inputTimeMin}]]>
+	</if>
+	<if test="inputTimeMax!=null and inputTimeMax!=''">
+		<![CDATA[AND a.INPUT_TIME < #{inputTimeMax}]]>
+	</if>
+	<if test="belongChannel!=null and belongChannel!=''">
+		AND a.BELONG_CHANNEL =#{belongChannel}
+	</if>
+	<if test="product!=null and product!=''">
+		AND a.PRODUCT =#{product}
+	</if>
+	<if test="orgIdLike != null and orgIdLike != '' " >
+		AND a.ORG_ID LIKE CONCAT(#{orgIdLike},'%')
+	</if>
+	<if test="stateTask!=null and stateTask!=''">
+		AND c.STATE =#{stateTask}
+	</if>
+</select>
+
+<!-- 前端拒贷   -->
+<select id="getSaleReTimeFreezeList" resultMap="ResultMap"  parameterType="Object">
+  	SELECT * FROM t_credit_app a WHERE a.`STATE` IN ('2','13')
+  	<if test="_skiprows != null and _pagesize != null " >
+      LIMIT #{_skiprows}, #{_pagesize}
+    </if>	
+</select>
+
+<!-- 申请查重 -->
+<select id="repeatCheckQuery" resultType="com.tera.credit.model.form.RepeatCheckQBean" parameterType="map">
+	
+	<!-- 同单位名称、单位地址、居住地址查重 -->
+	<if test="repeatType != null and repeatType == '1'.toString()">
+		SELECT 
+			a.app_id AS appId,
+			a.`NAME` AS name,
+			a.SPOUSE_NAME AS spouseName
+		FROM t_credit_app a
+		WHERE 1=1
+		AND a.app_id != #{appId}
+		AND a.state != '1'
+		
+		<!-- 单位名称 -->
+		<if test="comName != null and comName != ''">
+			AND a.COM_NAME = #{comName}
+		</if>
+	
+		<!-- 单位地址 -->
+		<if test="comAddress != null and comAddress != ''">
+			AND a.COM_PROVINCE = #{comProvince}
+			AND a.COM_CITY = #{comCity}
+			AND a.COM_COUNTY = #{comCounty}
+			AND a.COM_ADDRESS = #{comAddress}
+		</if>
+	
+		<!-- 居住地址 -->
+		<if test="address != null and address != ''">
+			AND a.ADD_PROVINCE = #{addProvice}
+			AND a.ADD_CITY = #{addCity}
+			AND a.ADD_COUNTY = #{addCounty}
+			AND a.ADDRESS = #{address}
+		</if>
+	
+	</if>
+	
+	<!-- 借款人联系方式同历史借款人联系方式比较 -->
+	<if test="repeatType != null and repeatType == '2'.toString()">
+		<!-- 借款人手机号码与历史借款人联系方式查重 -->
+		<if test="mobile != null and mobile != ''">
+			(
+			SELECT 
+				a.app_id AS appId,
+				a.`NAME` AS name,
+				a.SPOUSE_NAME AS spouseName
+			FROM t_credit_app a
+			WHERE 1=1
+			AND a.app_id != #{appId}
+			AND a.state != '1'
+			AND a.MOBILE = #{mobile}
+			) UNION (
+				SELECT 
+					a.app_id AS appId,
+					a.`NAME` AS name,
+					a.SPOUSE_NAME AS spouseName
+				FROM t_credit_app a
+				WHERE 1=1
+				AND a.app_id != #{appId}
+				AND a.state != '1'
+				AND a.PHONE = #{mobile}
+			) UNION (
+				SELECT 
+					a.app_id AS appId,
+					a.`NAME` AS name,
+					a.SPOUSE_NAME AS spouseName
+				FROM t_credit_app a
+				WHERE 1=1
+				AND a.app_id != #{appId}
+				AND a.state != '1'
+				AND a.COM_PHONE = #{mobile}
+			)
+		</if>
+		<!-- 借款人固话与与历史借款人联系方式查重 -->
+		<if test="phone != null and phone != ''">
+			(
+			SELECT 
+				a.app_id AS appId,
+				a.`NAME` AS name,
+				a.SPOUSE_NAME AS spouseName
+			FROM t_credit_app a
+			WHERE 1=1
+			AND a.app_id != #{appId}
+			AND a.state != '1'
+			AND a.MOBILE = #{phone}
+			) UNION (
+				SELECT 
+					a.app_id AS appId,
+					a.`NAME` AS name,
+					a.SPOUSE_NAME AS spouseName
+				FROM t_credit_app a
+				WHERE 1=1
+				AND a.app_id != #{appId}
+				AND a.state != '1'
+				AND a.PHONE = #{phone}
+			) UNION (
+				SELECT 
+					a.app_id AS appId,
+					a.`NAME` AS name,
+					a.SPOUSE_NAME AS spouseName
+				FROM t_credit_app a
+				WHERE 1=1
+				AND a.app_id != #{appId}
+				AND a.state != '1'
+				AND a.COM_PHONE = #{phone}
+			)
+		</if>
+		<!-- 借款人单位电话与历史借款人联系方式查重 -->
+		<if test="comPhone != null and comPhone != ''">
+			(
+			SELECT 
+				a.app_id AS appId,
+				a.`NAME` AS name,
+				a.SPOUSE_NAME AS spouseName
+			FROM t_credit_app a
+			WHERE 1=1
+			AND a.app_id != #{appId}
+			AND a.state != '1'
+			AND a.MOBILE = #{comPhone}
+			) UNION (
+				SELECT 
+					a.app_id AS appId,
+					a.`NAME` AS name,
+					a.SPOUSE_NAME AS spouseName
+				FROM t_credit_app a
+				WHERE 1=1
+				AND a.app_id != #{appId}
+				AND a.state != '1'
+				AND a.PHONE = #{comPhone}
+			) UNION (
+				SELECT 
+					a.app_id AS appId,
+					a.`NAME` AS name,
+					a.SPOUSE_NAME AS spouseName
+				FROM t_credit_app a
+				WHERE 1=1
+				AND a.app_id != #{appId}
+				AND a.state != '1'
+				AND a.COM_PHONE = #{comPhone}
+			)
+		</if>
+		<!-- 借款人配偶电话与历史借款人联系方式查重 -->
+		<if test="spouseMobile != null and spouseMobile != ''">
+			(
+			SELECT 
+				a.app_id AS appId,
+				a.`NAME` AS name,
+				a.SPOUSE_NAME AS spouseName
+			FROM t_credit_app a
+			WHERE 1=1
+			AND a.app_id != #{appId}
+			AND a.state != '1'
+			AND a.MOBILE = #{spouseMobile}
+			) UNION (
+				SELECT 
+					a.app_id AS appId,
+					a.`NAME` AS name,
+					a.SPOUSE_NAME AS spouseName
+				FROM t_credit_app a
+				WHERE 1=1
+				AND a.app_id != #{appId}
+				AND a.state != '1'
+				AND a.PHONE = #{spouseMobile}
+			) UNION (
+				SELECT 
+					a.app_id AS appId,
+					a.`NAME` AS name,
+					a.SPOUSE_NAME AS spouseName
+				FROM t_credit_app a
+				WHERE 1=1
+				AND a.app_id != #{appId}
+				AND a.state != '1'
+				AND a.COM_PHONE = #{spouseMobile}
+			)
+		</if>
+	</if>
+	
+	<!-- 借款人联系方式同历史借款人配偶联系方式比较 -->
+	<if test="repeatType != null and repeatType == '3'.toString()">
+		SELECT 
+			a.app_id AS appId,
+			a.`NAME` AS name,
+			a.SPOUSE_NAME AS spouseName
+		FROM t_credit_app a
+		WHERE 1=1
+		AND a.app_id != #{appId}
+		AND a.state != '1'
+		<if test="mobile != null and mobile != ''">
+			AND a.SPOUSE_MOBILE = #{mobile}
+		</if>
+		<!-- 借款人固话与历史借款人配偶电话查重 -->
+		<if test="phone != null and phone != ''">
+			AND a.SPOUSE_MOBILE = #{phone}
+		</if>
+		<!-- 借款人单位电话与历史借款人配偶电话查重 -->
+		<if test="comPhone != null and comPhone != ''">
+			AND a.SPOUSE_MOBILE = #{comPhone}
+		</if>
+		<!-- 借款人配偶电话与历史借款人配偶电话查重 -->
+		<if test="spouseMobile != null and spouseMobile != ''">
+			AND a.SPOUSE_MOBILE = #{spouseMobile}
+		</if>
+		
+	</if>
+
+	<!-- 借款人联系方式同历史联系人联系方式比较 -->
+	<if test="repeatType != null and repeatType == '4'.toString()">
+		<!-- 借款人手机号码同历史联系人联系方式查重 -->
+		<if test="mobile != null and mobile != ''">
+			(
+			SELECT 
+				c.app_id AS appId,
+				c.`NAME` AS name
+			FROM t_credit_contact c
+			WHERE 1=1
+			AND c.app_id != #{appId}
+			AND c.MOBILE = #{mobile}
+			) UNION (
+				SELECT 
+					c.app_id AS appId,
+					c.`NAME` AS name
+				FROM t_credit_contact c
+				WHERE 1=1
+				AND c.app_id != #{appId}
+				AND c.PHONE = #{mobile}
+			)
+		</if>
+		<!-- 借款人固话与历史联系人联系方式查重 -->
+		<if test="phone != null and phone != ''">
+			(
+			SELECT 
+				c.app_id AS appId,
+				c.`NAME` AS name
+			FROM t_credit_contact c
+			WHERE 1=1
+			AND c.app_id != #{appId}
+			AND c.MOBILE = #{phone}
+			) UNION (
+				SELECT 
+					c.app_id AS appId,
+					c.`NAME` AS name
+				FROM t_credit_contact c
+				WHERE 1=1
+				AND c.app_id != #{appId}
+				AND c.PHONE = #{phone}
+			)
+		</if>
+		<!-- 借款人单位电话与历史联系人联系方式查重 -->
+		<if test="comPhone != null and comPhone != ''">
+			(
+			SELECT 
+				c.app_id AS appId,
+				c.`NAME` AS name
+			FROM t_credit_contact c
+			WHERE 1=1
+			AND c.app_id != #{appId}
+			AND c.MOBILE = #{comPhone}
+			) UNION (
+				SELECT 
+					c.app_id AS appId,
+					c.`NAME` AS name
+				FROM t_credit_contact c
+				WHERE 1=1
+				AND c.app_id != #{appId}
+				AND c.PHONE = #{comPhone}
+			)
+		</if>
+		<!-- 借款人配偶电话与历史常用联系人联系方式查重 -->
+		<if test="spouseMobile != null and spouseMobile != ''">
+			(
+			SELECT 
+				c.app_id AS appId,
+				c.`NAME` AS name
+			FROM t_credit_contact c
+			WHERE 1=1
+			AND c.app_id != #{appId}
+			AND c.MOBILE = #{spouseMobile}
+			) UNION (
+				SELECT 
+					c.app_id AS appId,
+					c.`NAME` AS name
+				FROM t_credit_contact c
+				WHERE 1=1
+				AND c.app_id != #{appId}
+				AND c.PHONE = #{spouseMobile}
+			)
+		</if>
+	</if>
+
+	<!-- 借款人联系方式同历史面审调查新加联系方式比较 -->
+	<if test="repeatType != null and repeatType == '5'.toString()">
+		SELECT
+			t.app_id AS appId,
+			t.`NAME` AS name
+		FROM t_credit_interview t
+		WHERE 1=1
+		AND t.app_id != #{appId}
+		AND t.IS_ADD = '1'
+		
+		<!-- 借款人手机号码与历史面审调查新加联系方式查重 -->
+		<if test="mobile != null and mobile != ''">
+			AND t.PHONE = #{mobile}
+		</if>
+		<!-- 借款人固话与历史面审调查新加联系方式查重 -->
+		<if test="phone != null and phone != ''">
+			AND t.PHONE = #{phone}
+		</if>
+		<!-- 借款人单位电话与历史面审调查新加联系方式查重 -->
+		<if test="comPhone != null and comPhone != ''">
+			AND t.PHONE = #{comPhone}
+		</if>
+		<!-- 借款人配偶电话与历史面审调查新加联系方式查重 -->
+		<if test="spouseMobile != null and spouseMobile != ''">
+			AND t.PHONE = #{spouseMobile}
+		</if>
+	</if>
+
+	<!-- 联系人联系方式同历史中的借款人联系方式查重 -->
+	<if test="repeatType != null and repeatType == '6'.toString()">
+		<!-- 常用联系人号码与借款人联系方式查重 -->
+		<if test="contactMobile != null and contactMobile != ''">
+			(
+			SELECT 
+				a.app_id AS appId,
+				a.`NAME` AS name,
+				a.SPOUSE_NAME AS spouseName
+			FROM t_credit_app a
+			WHERE 1=1
+			AND a.app_id != #{appId}
+			AND a.state != '1'	
+			AND a.MOBILE = #{contactMobile}
+			) UNION (
+				SELECT 
+				a.app_id AS appId,
+				a.`NAME` AS name,
+				a.SPOUSE_NAME AS spouseName
+			FROM t_credit_app a
+			WHERE 1=1
+			AND a.app_id != #{appId}
+			AND a.state != '1'	
+			AND a.PHONE = #{contactMobile}
+			) UNION (
+				SELECT 
+				a.app_id AS appId,
+				a.`NAME` AS name,
+				a.SPOUSE_NAME AS spouseName
+			FROM t_credit_app a
+			WHERE 1=1
+			AND a.app_id != #{appId}
+			AND a.state != '1'	
+			AND a.COM_PHONE = #{contactMobile}
+			) UNION (
+				SELECT 
+				a.app_id AS appId,
+				a.`NAME` AS name,
+				a.SPOUSE_NAME AS spouseName
+			FROM t_credit_app a
+			WHERE 1=1
+			AND a.app_id != #{appId}
+			AND a.state != '1'	
+			AND a.SPOUSE_MOBILE = #{contactMobile}
+			)
+		</if>
+		<!-- 经营联系人号码与借款人联系方式查重 -->
+		<if test="contactPhone != null and contactPhone != ''">
+			(
+			SELECT 
+				a.app_id AS appId,
+				a.`NAME` AS name,
+				a.SPOUSE_NAME AS spouseName
+			FROM t_credit_app a
+			WHERE 1=1
+			AND a.app_id != #{appId}
+			AND a.state != '1'	
+			AND a.MOBILE = #{contactPhone}
+			) UNION (
+				SELECT 
+				a.app_id AS appId,
+				a.`NAME` AS name,
+				a.SPOUSE_NAME AS spouseName
+			FROM t_credit_app a
+			WHERE 1=1
+			AND a.app_id != #{appId}
+			AND a.state != '1'	
+			AND a.PHONE = #{contactPhone}
+			) UNION (
+				SELECT 
+				a.app_id AS appId,
+				a.`NAME` AS name,
+				a.SPOUSE_NAME AS spouseName
+			FROM t_credit_app a
+			WHERE 1=1
+			AND a.app_id != #{appId}
+			AND a.state != '1'	
+			AND a.COM_PHONE = #{contactPhone}
+			) UNION (
+				SELECT 
+				a.app_id AS appId,
+				a.`NAME` AS name,
+				a.SPOUSE_NAME AS spouseName
+			FROM t_credit_app a
+			WHERE 1=1
+			AND a.app_id != #{appId}
+			AND a.state != '1'	
+			AND a.SPOUSE_MOBILE = #{contactPhone}
+			)
+		</if>
+	</if>
+
+	<!-- 联系人方式同历史中的联系人联系方式查重 -->
+	<if test="repeatType != null and repeatType == '7'.toString()">
+		<!-- 同历史常用联系人查重 -->
+		<if test="contactMobile != null and contactMobile != ''">
+			(
+			SELECT 
+				c.app_id AS appId,
+				c.`NAME` AS name
+			FROM t_credit_contact c
+			WHERE 1=1
+			AND c.app_id != #{appId}
+			AND c.MOBILE = #{contactMobile}
+			) UNION (
+				SELECT 
+				c.app_id AS appId,
+				c.`NAME` AS name
+			FROM t_credit_contact c
+			WHERE 1=1
+			AND c.app_id != #{appId}
+			AND c.PHONE = #{contactMobile}
+			)
+		</if>
+		<!-- 同历史经营联系人查重 -->
+		<if test="contactPhone != null and contactPhone != ''">
+			(
+			SELECT 
+				c.app_id AS appId,
+				c.`NAME` AS name
+			FROM t_credit_contact c
+			WHERE 1=1
+			AND c.app_id != #{appId}
+			AND c.MOBILE = #{contactPhone}
+			) UNION (
+				SELECT 
+				c.app_id AS appId,
+				c.`NAME` AS name
+			FROM t_credit_contact c
+			WHERE 1=1
+			AND c.app_id != #{appId}
+			AND c.PHONE = #{contactPhone}
+			)
+		</if>
+	</if>
+
+	<!-- 联系人方式同历面审调查表中新添加联系方式查重 -->
+	<if test="repeatType != null and repeatType == '8'.toString()">
+		SELECT
+			t.app_id AS appId,
+			t.`NAME` AS name
+		FROM t_credit_interview t
+		WHERE 1=1
+		AND t.app_id != #{appId}
+		AND t.IS_ADD = '1'
+		<!-- 常用联系人 -->
+		<if test="contactMobile != null and contactMobile != ''">
+			AND t.PHONE = #{contactMobile}
+		</if>
+		<!-- 经营联系人 -->
+		<if test="contactPhone != null and contactPhone != ''">
+			AND t.PHONE = #{contactPhone}
+		</if>
+	</if>
+
+	<!-- 身份证查重 -->
+	<if test="repeatType != null and repeatType == '9'.toString()">
+		SELECT 
+			a.app_id AS appId,
+			a.`NAME` AS name,
+			a.SPOUSE_NAME AS spouseName
+		FROM t_credit_app a
+		WHERE 1=1
+		AND a.app_id != #{appId}
+		AND a.state != '1'
+		<!-- 同历史借款人身份证比较 -->
+		<if test="idNoType != null and idNoType == '0'.toString()">
+			<if test="idNO != null and idNO != ''">
+				AND a.ID_NO = #{idNO}
+			</if>
+			<if test="spouseIdNO != null and spouseIdNO != ''">
+				AND a.ID_NO = #{spouseIdNO}
+			</if>
+		</if>
+		<!-- 同历史借款人配偶身份证比较 -->
+		<if test="idNoType != null and idNoType == '1'.toString()">
+			<if test="idNO != null and idNO != ''">
+				AND a.SPOUSE_ID_NO = #{idNO}
+			</if>
+			<if test="spouseIdNO != null and spouseIdNO != ''">
+				AND a.SPOUSE_ID_NO = #{spouseIdNO}
+			</if>
+		</if>
+	</if>
+</select>
+
+<!-- 夫妻分别借款 -->
+<select id="coupleSeparateLoan" resultType="com.tera.credit.model.form.RepeatCheckQBean" parameterType="map">
+	(SELECT
+		a.APP_ID AS appId,
+		a.ID_NO AS idNo, 
+		a.`NAME` AS name,
+		a.SPOUSE_ID_NO AS spouseIdNo,
+		a.SPOUSE_NAME AS spouseName,
+		'0' AS flag
+	FROM
+		t_credit_app a,
+		t_contract b,
+		t_loan_repay_plan c
+	WHERE
+		a.APP_ID = b.LOAN_APP_ID
+	AND a.state = '23'
+	AND b.CONTRACT_NO = c.CONTRACT_NO
+	AND c.STATE IN ('0','1','3')
+	AND c.PERIOD_NUM = (
+		SELECT
+			MAX(c1.PERIOD_NUM)
+		FROM
+			t_loan_repay_plan c1
+		WHERE
+			c1.CONTRACT_NO = c.CONTRACT_NO
+	)
+	AND a.`NAME` = #{spouseName} 
+	AND a.ID_NO = #{spouseIdNo}
+	AND a.PRODUCT NOT LIKE '精英贷%')
+	UNION
+	(SELECT
+		a.APP_ID AS appId,
+		a.ID_NO AS idNo, 
+		a.`NAME` AS name,
+		a.SPOUSE_ID_NO AS spouseIdNo,
+		a.SPOUSE_NAME AS spouseName,
+		'1' AS flag
+	FROM
+		t_credit_app a,
+		t_contract b,
+		t_loan_repay_plan c
+	WHERE
+		a.APP_ID = b.LOAN_APP_ID
+	AND a.state = '23'
+	AND b.CONTRACT_NO = c.CONTRACT_NO
+	AND c.STATE != '2'
+	AND c.PERIOD_NUM = (
+		SELECT
+			MAX(c1.PERIOD_NUM)
+		FROM
+			t_loan_repay_plan c1
+		WHERE
+			c1.CONTRACT_NO = c.CONTRACT_NO
+	)
+	AND a.SPOUSE_NAME = #{name} 
+	AND a.SPOUSE_ID_NO = #{idNo}
+	AND a.PRODUCT NOT LIKE '精英贷%')
+</select>
+
+</mapper>   

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.loan.dao.LoanRenewDao" > 
+	
+	<select id="queryList" parameterType="map" resultType="com.tera.audit.loan.model.form.LoanRenewQBean">
+		SELECT
+			T2.ID AS id,
+			T2.LOAN_ID AS loanId,
+			T2.NAME AS name, 
+			T2.ID_NO AS idNo,
+			T1.LOAN_AMT AS contractAmt,
+			T3.LEAVE_AMT AS renewAmt,
+			(SELECT d.KEY_VALUE FROM t_data_dictionary d WHERE T2.PRODUCT = d.KEY_PROP AND d.KEY_NAME = 'productType') AS productName,
+			(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = T2.SALESMAN) AS salesman,
+			(SELECT o.ORG_NAME FROM t_org o WHERE o.ORG_ID = T2.ORG) AS orgName,
+			T1.CONTRACT_ID AS contractId
+			
+		FROM T_CONTRACT T1
+		LEFT JOIN T_LOAN_BASE T2 ON T2.LOAN_ID = T1.LOAN_ID
+		LEFT JOIN (SELECT (p.PLAN_CAPITAL - p.REAL_CAPITAL) LEAVE_AMT,p.CONTRACT_ID FROM t_ret_plan p WHERE p.TYPE = '2') T3 ON T1.CONTRACT_ID = T3.CONTRACT_ID
+		WHERE T1.state = '2' AND T2.IS_RENEW IN ('0','1')
+		<!-- 当前日期要晚于合同结束日期 -->
+		<![CDATA[AND TO_CHAR(SYSDATE,'YYYY-MM-DD') > TO_CHAR(T1.END_DATE,'YYYY-MM-DD')]]> 
+		
+		<if test="orgId != null and orgId != ''">
+			AND T2.ORG LIKE CONCAT(#{orgId},'%')
+		</if>
+		
+		<if test="contractId != null and contractId != ''">
+			AND T1.contract_id = #{contractId}
+		</if>
+		
+		<if test="name != null and name != ''">
+			AND T2.NAME = #{name}
+		</if>
+		
+		<if test="idNo != null and idNo != ''">
+			AND T2.ID_NO = #{idNo}
+		</if>
+		
+		<if test="product != null and product != ''">
+			AND T2.PRODUCT = #{product}
+		</if>
+		
+		<if test="salesman != null and salesman != ''">
+			AND T2.SALESMAN = #{salesman}
+		</if>
+		
+		<if test="salesmanName != null and salesmanName != ''">
+			AND T2.SALESMAN IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{salesmanName})
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.product.dao.TrustProductDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.product.model.TrustProduct" >
+	<result column="id" property="id"/>
+	<result column="product_id" property="productId"/>
+	<result column="period" property="period"/>
+	<result column="company" property="company"/>
+	<result column="interest_rate" property="interestRate"/>
+	<result column="start_amount" property="startAmount"/>
+	<result column="useage" property="useage"/>
+	<result column="operator" property="operator"/>
+	<result column="org_id" property="orgId"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+</resultMap>
+
+<!-- 杨长收添加 -->
+<resultMap id="TrustProResultMap" type="com.tera.lend.model.form.TrustProductQBean" >
+	<result column="id" property="id"/>
+	<result column="product_id" property="productId"/>
+	<result column="period" property="period"/>
+	<result column="company" property="company"/>
+	<result column="interest_rate" property="interestRate"/>
+	<result column="start_amount" property="startAmount"/>
+	<result column="useage" property="useage"/>
+	<result column="productname" property="trustProname"/>
+
+</resultMap>
+
+<!-- 杨长收添加 -->
+<sql id="TrustProColumn_List" >
+	 t_trust_product.id,
+	 t_trust_product.product_id,
+	 t_trust_product.period,
+	 t_trust_product.company,
+	 t_trust_product.interest_rate,
+	 t_trust_product.start_amount,
+	 t_trust_product.useage,
+	 t_product.name as productname
+</sql>
+
+<!-- 杨长收添加查询条件 -->
+<sql id="TrustProWhere_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and t_trust_product.id =  #{id}
+	</if>
+<if test="productId != null and productId != ''" >
+	    and t_trust_product.product_id =  #{productId}
+	</if>
+<if test="trustProname != null and trustProname != ''" >
+	    and t_product.name =  #{trustProname}
+	</if>
+<if test="period != null and period != ''" >
+	    and t_trust_product.period =  #{period}
+	</if>
+<if test="company != null and company != ''" >
+	    and t_trust_product.company =  #{company}
+	</if>
+<if test="interestRate != null and interestRate != ''" >
+	    and t_trust_product.interest_rate =  #{interestRate}
+	</if>
+<if test="startAmount != null and startAmount != ''" >
+	    and t_trust_product.start_amount =  #{startAmount}
+	</if>
+<if test="useage != null and useage != ''" >
+	    and t_trust_product.useage =  #{useage}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and t_trust_product.operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and t_trust_product.org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and t_trust_product.create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and t_trust_product.update_time =  #{updateTime}
+	</if>
+<if test="prostartMoneyMin != null and prostartMoneyMin != ''" >
+	    and t_trust_product.start_amount <![CDATA[>=]]>  #{prostartMoneyMin}
+	</if>
+<if test="prostartMoneyMax != null and prostartMoneyMax != ''" >
+	    and t_trust_product.start_amount <![CDATA[<=]]>  #{prostartMoneyMax}
+	</if>
+<if test="selectedTrustProIds != null and selectedTrustProIds != ''" >
+	    and t_trust_product.ID in
+	    <foreach item="item" index="index" collection="selectedTrustProIds" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+
+</trim>
+</sql>
+       
+<!-- T_TRUST_PRODUCT table all fields -->
+<sql id="Column_List" >
+	 id,product_id,period,company,interest_rate,start_amount,useage,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="productId != null and productId != ''" >
+	    and product_id =  #{productId}
+	</if>
+<if test="period != null and period != ''" >
+	    and period =  #{period}
+	</if>
+<if test="company != null and company != ''" >
+	    and company =  #{company}
+	</if>
+<if test="interestRate != null and interestRate != ''" >
+	    and interest_rate =  #{interestRate}
+	</if>
+<if test="startAmount != null and startAmount != ''" >
+	    and start_amount =  #{startAmount}
+	</if>
+<if test="useage != null and useage != ''" >
+	    and useage =  #{useage}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_TRUST_PRODUCT_SEQ') From dual
+			<!-- Select T_TRUST_PRODUCT_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_TRUST_PRODUCT(id,product_id,period,company,interest_rate,start_amount,useage,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{productId, jdbcType=VARCHAR},#{period, jdbcType=INTEGER},#{company, jdbcType=VARCHAR},#{interestRate, jdbcType=DOUBLE},#{startAmount, jdbcType=DOUBLE},#{useage, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_TRUST_PRODUCT set 
+	<trim  suffixOverrides="," >
+	id =  #{id, jdbcType=INTEGER},
+	product_id =  #{productId, jdbcType=VARCHAR},
+	period =  #{period, jdbcType=INTEGER},
+	company =  #{company, jdbcType=VARCHAR},
+	interest_rate =  #{interestRate, jdbcType=DOUBLE},
+	start_amount =  #{startAmount, jdbcType=DOUBLE},
+	useage =  #{useage, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_TRUST_PRODUCT  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_TRUST_PRODUCT set 
+	<trim  suffixOverrides="," >
+	<if test="productId != null and productId != ''" >
+	    product_id =  #{productId, jdbcType=VARCHAR},
+	</if>
+	<if test="period != null and period != ''" >
+	    period =  #{period, jdbcType=INTEGER},
+	</if>
+	<if test="company != null and company != ''" >
+	    company =  #{company, jdbcType=VARCHAR},
+	</if>
+	<if test="interestRate != null and interestRate != ''" >
+	    interest_rate =  #{interestRate, jdbcType=DOUBLE},
+	</if>
+	<if test="startAmount != null and startAmount != ''" >
+	    start_amount =  #{startAmount, jdbcType=DOUBLE},
+	</if>
+	<if test="useage != null and useage != ''" >
+	    useage =  #{useage, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 信托产品 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_TRUST_PRODUCT  where id = #{id}
+</select>
+
+<!-- 信托产品 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_TRUST_PRODUCT 
+	<include refid="Where_Clause"/>
+</select>
+
+<!-- 杨长收添加信托产品 列表总数-->
+<select id="queryTrustProCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_TRUST_PRODUCT,T_PRODUCT
+	<include refid="TrustProWhere_Clause"/>
+	AND T_TRUST_PRODUCT.PRODUCT_ID = T_PRODUCT.ID
+</select>
+
+<!-- 添加查询信托产品列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="TrustProColumn_List"/>
+	from T_TRUST_PRODUCT 
+	<include refid="TrustProWhere_Clause"/>
+	AND T_TRUST_PRODUCT.PRODUCT_ID = T_PRODUCT.ID
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 杨长收查询信托产品列表 -->
+<select id="queryTrustProList" resultMap="TrustProResultMap"  parameterType="map">
+	select 
+	<include refid="TrustProColumn_List"/>
+	from T_TRUST_PRODUCT ,T_PRODUCT
+	<include refid="TrustProWhere_Clause"/>
+	AND T_TRUST_PRODUCT.PRODUCT_ID = T_PRODUCT.ID
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

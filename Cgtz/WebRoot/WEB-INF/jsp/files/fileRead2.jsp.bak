@@ -1,0 +1,184 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ include file="/WEB-INF/jsp/sys/include.jsp"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<link href="css/img.css" rel="stylesheet"></link>
+	<script src="js/cropping/cropper.min.js"></script>
+</head>
+<body>
+
+ <c:if test="${not empty imgCount and imgCount gt 0 }">
+	<div id="toolbar" style="font-size: 14px;" ><strong>图片资料</strong><hr width="100%" size=2 color=#D3D3D3 align=center noshade></div>
+	 <table width="100%">
+		 <tr>
+		 	<td colspan="3">
+		 	<a class="category_a" href="javascript:void(0)" onclick="javascript:showImage2('${loanId }','${bizKey}','','${sec }');">全部[${imgCount }张]</a> &nbsp; &nbsp;
+		 	<c:forEach items="${imgCategories}" var="img" varStatus="status" >
+					<a class="category_a" href="javascript:showImage2('${loanId }','${bizKey}','${img.category}','${sec }');">
+						${img.category}[${img.categoryCount }张]
+					</a> &nbsp;&nbsp;
+			</c:forEach>
+		 	</td>
+		 </tr>
+		 <tr>
+			 <!-- <td> </td> -->
+			 <td align="center">
+			 	 <input type="button" value="上一张" class="prev2" />
+				 <input type="button"  value="左旋" onclick="$('#showImg2.container > img').cropper('rotate', -45);" />
+				 &nbsp; &nbsp; &nbsp;
+				
+					 当前第<input id="imgPageOffset2" style="width:20px;text-align: center; border: 0; " readonly="readonly" type="text" value="1"/>张,
+					 共<input id="imgTotal2" style="width:20px;text-align: center; border: 0; " readonly="readonly" type="text" value=""/>张
+				
+				 &nbsp; &nbsp; &nbsp;
+				 <input type="button"  value="右旋" onclick="$('#showImg2.container > img').cropper('rotate', 45);" />
+				 <input type="button"  value="下一张"  class="next2"  />
+			 </td>
+			 <!-- <td> </td> -->
+	 	</tr>
+	 	
+	 	<tr>
+	 		<td align="center">
+	 			<!-- <div id="imgName2"></div> -->
+	 			<input id="imgName2" style="text-align: center; border: 0; " readonly="readonly" type="text" value=""/> 
+	 		</td>
+	 	</tr>
+	 	
+			<tr>
+				<!-- <td width="72px"><input type="button" value="上一张" class="prev2" /></td> -->
+				<td align="center">
+					<div id= "showImg2" class="container" style="width: 600px;border:10px solid #D3D3D3;border-radius:5px;background-color: #fafafa;">
+						<img width="100%" src="" id="imgshow2">
+					</div>
+				</td>
+				<!-- <td width="72px"><input type="button"  value="下一张"  class="next"  /></td> -->
+			</tr>
+	</table>
+	
+	<script type="text/javascript">
+	var index=null;
+	var i =0;		//当前 查看的图片索引
+	function showImage2(loanId,bizKey,category,sec){
+		var imgurl="<%=basePath%>files/getImgs.do?timestamp=" + (new Date()).getTime();
+		if(loanId!=null&& loanId!=""){
+			imgurl=imgurl+"&loanId="+loanId;
+			if(bizKey!=null&& bizKey!=""){
+				imgurl=imgurl+"&bizKey="+bizKey;
+			}
+			if(category!=null && category!=""){
+				imgurl=imgurl+"&category="+category;
+			}
+			if(sec != null && sec != '') {
+				imgurl=imgurl+"&sec="+sec;
+			}
+			$.ajax({
+				url: imgurl,
+				async : false,// 同步提交
+				success : function(data) {
+					if(data.length>0){
+						index=new Array();
+						<%-- $("#imgshow").attr("src","<%=basePath%>files/imgRead.do?imgurl="+data[0].filePath); --%>
+						$("#showImg2.container > img").cropper("replace", "<%=basePath%>files/imgRead.do?imgurl="+data[0].filePath);
+						$("#imgshow2").attr("alt",data[0].category+"_"+data[0].fileName);
+						i=0;
+						
+						$("#imgPageOffset2").val(i+1);
+						$("#imgTotal2").val(data.length);
+						$("#imgName2").val(data[0].fileName);
+						
+						for(var j=0;j<data.length;j++){
+							index[j] = data[j];
+						}
+					}
+				},
+				error : function() {
+					
+					$.messager.alert('消息', '数据加载失败,请联系系统管理员！');
+				}
+				
+			});
+		}
+	}
+	$("input.next2").click(function(){
+		 if(i< (index.length-1)){
+			 i++;
+		 	<%-- $("#imgshow").attr("src","<%=basePath%>files/imgRead.do?imgurl="+data[i].filePath); --%>
+			$("#showImg2.container > img").cropper("replace", "<%=basePath%>files/imgRead.do?imgurl="+index[i].filePath);
+			$("#imgshow2").attr("alt",index[i].category+"_"+index[i].fileName);
+			$("#imgPageOffset2").val(i+1);
+			$("#imgName2").val(index[i].fileName);
+			
+		 }else{
+	//		 alert("到头了!");
+		 }
+	});
+	 $("input.prev2").click(function(){
+		  if(i> 0 && i < index.length){
+			    i--;
+				<%-- $("#imgshow").attr("src","<%=basePath%>files/imgRead.do?imgurl="+data[i].filePath); --%>
+				$("#showImg2.container > img").cropper("replace", "<%=basePath%>files/imgRead.do?imgurl="+index[i].filePath);
+				
+				$("#imgshow2").attr("alt",index[i].category+"_"+index[i].fileName);
+				$("#imgPageOffset2").val(i+1);
+				$("#imgName2").val(index[i].fileName);
+				
+		  }else{
+		  }
+	 });
+	 
+	 $(".category_a").click(function(){
+		$(".category_a").css("color","#000");
+		$(this).css("color","#F00");
+	 });
+	//   $(document).ready(function(){
+		
+		$('#showImg2.container > img').cropper({
+			aspectRatio: 16 / 9,
+			background:false,
+			minContainerWidth:600,
+			minContainerHeight:300,
+			minCanvasWidth:600,
+			crop: function(data) {},
+			built: function () {
+				$('#showImg2.container > img').cropper("clear")
+				$('#showImg2.container > img').cropper("setDragMode", "move");
+			}
+		});
+		
+		showImage2("${loanId}","${bizKey}","",'${sec}');
+	// });
+	 </script>
+  </c:if>
+ 
+  <c:if test="${not empty fileCount and fileCount gt 0 }">
+  	<div id="toolbar" style="font-size: 14px;" ><strong>文件资料</strong><hr width="100%" size=2 color=#D3D3D3 align=center noshade></div>
+  		<table id="table" class="datatable" summary="list of members in EE Studay">
+				<tr>
+					<th scope="col">序号</th>
+					<th scope="col">申请编号</th>
+					<th scope="col">分类</th>
+					<th scope="col">上传时间</th>
+					<th scope="col">文件名</th>
+
+				</tr>
+				<c:forEach items="${ pm.data}" var="data" varStatus="status">
+					<tr>
+						<td style="text-align: center;">${ status.index+pm.rowS+1}</td>
+						<td>${data.loanId}</td>
+						<td>${data.category}</td>
+						<td>${data.createTimeStr}</td>
+						<td><a href="<%=basePath%>files/download.do?filePath=${data.filePath}&fileName=${data.fileName}">${data.fileName}</a></td>
+					</tr>
+				</c:forEach>
+		</table>
+		<div id="pageStyle">
+		${ pm.pageNavigation}
+		</div>
+  </c:if>
+</body>
+</html>

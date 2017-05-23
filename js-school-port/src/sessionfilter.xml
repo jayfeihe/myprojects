@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<sessionfilter>
+	<checks>
+		<check>/updateUserInfo/viewInfo.jhtml</check>
+		<check>/instalmentManage/instalmentBill.jhtml</check>
+		<check>/contractManage/userContract.jhtml</check>
+	</checks>
+	
+	<ignores>
+		<ignore>/passwdport/toLogin.jhtml</ignore>
+		<ignore>/passwdport/loginBySM.jhtml</ignore>
+		<ignore>/passwdport/loginByPwd.jhtml</ignore>
+		<ignore>/passwdport/logout.jhtml</ignore>
+		<ignore>/passwdport/checkLoginErrorTimes.jhtml</ignore>
+		<ignore>/passwdport/sendLoginSM.jhtml</ignore>
+		<ignore>/passwdport/generateValidationCode.jhtml</ignore>
+		<ignore>/updateUserInfo/generateValidationCodeForUpdate.jhtml</ignore>
+		
+		<ignore>/</ignore>
+		<ignore>/index.jsp</ignore>
+	</ignores>
+</sessionfilter>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.sys.dao.SysOperationRecordDao">
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.String" order="BEFORE" keyProperty="id">
+			Select UUID() From dual
+		</selectKey>
+		insert into t_sys_operation_record (<include refid="columns"/>)
+		values (#{id},
+				#{account},
+				#{ipAddress},
+				#{menuId},
+				#{nickName},
+				#{operationDesc},
+				#{operationUrl},
+				#{requestParams},
+				#{operationType},
+				#{createTime})
+	</insert>
+	
+	<select id="queryCount" resultType="int">
+		select count(*) from t_sys_operation_record <include refid="conditions"/>
+	</select>
+	
+	<select id="queryList" parameterType="map" resultType="com.greenkoo.sys.model.SysOperationRecord">
+		select <include refid="columns"/> from t_sys_operation_record <include refid="conditions"/>
+		order by create_time desc
+		<if test="pageOffset != null and pageSize != null " >
+	      limit #{pageOffset} , #{pageSize}
+	    </if>
+	</select>
+	
+	<sql id="columns">
+		id              ,
+		account         ,
+		ip_address      ,
+		menu_id         ,
+		nick_name       ,
+		operation_desc  ,
+		operation_url   ,
+		request_params  ,
+		operation_type  ,
+		create_time     
+	</sql>
+	
+	<sql id="conditions">
+		<where>
+			<if test="createTimeMin != null and createTimeMin != ''">
+				and DATE_FORMAT(create_time,'%Y-%m-%d') <![CDATA[>=]]> #{createTimeMin}
+			</if>
+			<if test="createTimeMax != null and createTimeMax != ''">
+				and DATE_FORMAT(create_time,'%Y-%m-%d') <![CDATA[<=]]> #{createTimeMax}
+			</if>
+		</where>
+	</sql>
+</mapper>

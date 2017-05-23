@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.sys.dao.UserExtDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.sys.model.UserExt" >
+	<result column="login_id" property="loginId"/><!--  -->
+	<result column="org_id" property="orgId"/><!--  -->
+	<result column="dept_id" property="deptId"/><!--  -->
+	<result column="role_id" property="roleId"/><!--  -->
+</resultMap>
+       
+<!-- T_USER_EXT table all fields -->
+<sql id="Column_List" >
+	 login_id,org_id,dept_id,role_id
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="loginId != null and loginId != ''" >
+	    and login_id =  #{loginId}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="deptId != null and deptId != ''" >
+	    and dept_id =  #{deptId}
+	</if>
+<if test="roleId != null and roleId != ''" >
+	    and role_id =  #{roleId}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+	insert into T_USER_EXT(login_id,org_id,dept_id,role_id)
+ values( #{loginId, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{deptId, jdbcType=INTEGER},#{roleId, jdbcType=INTEGER})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_USER_EXT set 
+	<trim  suffixOverrides="," >
+	login_id =  #{loginId, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	dept_id =  #{deptId, jdbcType=INTEGER},
+	role_id =  #{roleId, jdbcType=INTEGER},
+	</trim>
+ 	where login_id = #{login_id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_USER_EXT  where login_id = #{login_id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_USER_EXT set 
+	<trim  suffixOverrides="," >
+	<if test="loginId != null and loginId != '' " >
+	    login_id =  #{loginId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="deptId != null and deptId != '' " >
+	    dept_id =  #{deptId, jdbcType=INTEGER},
+	</if>
+
+	<if test="roleId != null and roleId != '' " >
+	    role_id =  #{roleId, jdbcType=INTEGER},
+	</if>
+
+	</trim>
+	where login_id = #{login_id}
+</update>
+
+<!-- 根据id查询 用户信息扩展表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_USER_EXT  where login_id = #{login_id} 
+	 AND ROWNUM = 1
+	 <!-- limit 1 -->
+</select>
+
+<!-- 用户信息扩展表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_USER_EXT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询用户信息扩展表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_USER_EXT 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

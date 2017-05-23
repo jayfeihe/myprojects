@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.asset.dao.AssetDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.asset.model.Asset" >
+	<result column="id" property="id"/><!-- 押品id -->
+	<result column="loan_id" property="loanId"/><!-- 申请ID -->
+	<result column="type" property="type"/><!-- 类型 -->
+	<result column="var" property="var"/><!-- 品种 -->
+	<result column="sizes" property="size"/><!-- 规格 -->
+	<result column="remark" property="remark"/><!-- 说明 -->
+	<result column="car_type" property="carType"/><!-- 车辆型号 -->
+	<result column="license" property="license"/><!-- 车牌号 -->
+	<result column="car_age" property="carAge"/><!-- 车辆年限 -->
+	<result column="eng_code" property="engCode"/><!-- 发动机号 -->
+	<result column="mile" property="mile"/><!-- 里程 -->
+	<result column="frame_code" property="frameCode"/><!-- 车架号 -->
+	<result column="bill_price" property="billPrice"/><!-- 开票价格 -->
+	<result column="tran_times" property="tranTimes"/><!-- 过户次数 -->
+	<result column="pro_date" property="proDate"/><!-- 出厂日期 -->
+	<result column="buy_date" property="buyDate"/><!-- 购买日期 -->
+	<result column="house_property_code" property="housePropertyCode"/><!-- 房产证号 -->
+	<result column="land_code" property="landCode"/><!-- 土地证号 -->
+	<result column="area" property="area"/><!-- 房屋面积 -->
+	<result column="direction" property="direction"/><!-- 房屋朝向 -->
+	<result column="prvn" property="prvn"/><!-- 所在省 -->
+	<result column="city" property="city"/><!-- 所在市 -->
+	<result column="ctry" property="ctry"/><!-- 所在县 -->
+	<result column="addr" property="addr"/><!-- 所在地址 -->
+	<result column="eval_price" property="evalPrice"/><!-- 评估金额 -->
+	<result column="eval_name" property="evalName"/><!-- 评估者 -->
+	<result column="eval_remark" property="evalRemark"/><!-- 评估说明 -->
+	<result column="is_set" property="isSet"/><!-- 担保物权是否设定 -->
+	<result column="warehouse_id" property="warehouseId"/><!-- 资产所在仓库 -->
+	<result column="asset_remark" property="assetRemark"/><!-- 资产说明 -->
+	<result column="asset_addr" property="assetAddr"/><!-- 资产所在地址（仓库写仓库地址，房子就是自己地址） -->
+	<result column="audit_price_state" property="auditPriceState"/><!-- 最新核价结果 -->
+	<result column="audit_price_remark" property="auditPriceRemark"/><!-- 核价说明 -->
+	<result column="audit_prifce_time" property="auditPriceTime"/><!-- 核价时间 -->
+	<result column="audit_price_uid" property="auditPriceUid"/><!-- 核价人 -->
+	<result column="is_value_change" property="isValueChange"/><!-- 价值是否变动（1是，0否） -->
+	<result column="latest_price" property="latestPrice"/><!-- 最新金额 -->
+	<result column="change_remark" property="changeRemark"/><!-- 变动说明 -->
+	<result column="change_time" property="changeTime"/><!-- 变动时间 -->
+	<result column="change_uid" property="changeUid"/><!-- 变动操作人 -->
+	<result column="latest_check" property="latestCheck"/><!-- 最新检查情况 -->
+	<result column="check_time" property="checkTime"/><!-- 检查时间 -->
+	<result column="check_remark" property="checkRemark"/><!-- 检查说明 -->
+	<result column="check_uid" property="checkUid"/><!-- 检查操作人 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="sell_amt" property="sellAmt"/><!-- 处置金额 -->
+	<result column="sell_input_uid" property="sellInputUid"/><!-- 处置录入人 -->
+	<result column="sell_way" property="sellWay"/><!-- 处置渠道 -->
+	<result column="sell_org" property="sellOrg"/><!-- 处置负责部门 -->
+	<result column="sell_remark" property="sellRemark"/><!-- 处置说明 -->
+	<result column="sell_time" property="sellTime"/><!-- 处置时间 -->
+	<result column="create_uid" property="createUid"/><!--  -->
+	<result column="create_time" property="createTime"/><!--  -->
+	<result column="update_uid" property="updateUid"/><!--  -->
+	<result column="update_time" property="updateTime"/><!--  -->
+	<result column="reserve_des" property="reserveDes"/><!-- 保管物品说明 -->
+	<result column="contract_id" property="contractId"/>
+	<!--关联合同号contract_id  -->
+</resultMap>
+       
+<!-- T_COLLATERAL table all fields -->
+<sql id="Column_List" >
+	 t1.loan_id,
+	 t2.contract_id,
+	 t1. ID,
+	 t1. TYPE,
+	 t1.var,
+	 t1.sizes,
+	 t1.remark,
+	 t1.car_type,
+	 t1.license,
+	 t1.car_age,
+	 t1.eng_code,
+	 t1.mile,
+	 t1.frame_code,
+	 t1.bill_price,
+	 t1.tran_times,
+	 t1.pro_date,
+	 t1.buy_date,
+	 t1.house_property_code,
+	 t1.land_code,
+	 t1.area,
+	 t1.direction,
+	 t1.prvn,
+	 t1.city,
+	 t1.ctry,
+	 t1.addr,
+	 t1.eval_price,
+	 t1.eval_name,
+	 t1.eval_remark,
+	 t1.is_set,
+	 t1.warehouse_id,
+	 t1.asset_remark,
+	 t1.asset_addr,
+	 t1.audit_price_state,
+	 t1.audit_price_remark,
+	 t1.audit_prifce_time,
+	 t1.audit_price_uid,
+	 t1.is_value_change,
+	 t1.latest_price,
+	 t1.change_remark,
+	 t1.change_time,
+	 t1.change_uid,
+	 t1.latest_check,
+	 t1.check_time,
+	 t1.check_remark,
+	 t1.check_uid,
+	 t1.state,
+	 t1.sell_amt,
+	 t1.sell_input_uid,
+	 t1.sell_way,
+	 t1.sell_org,
+	 t1.sell_remark,
+	 t1.sell_time,
+	 t1.create_uid,
+	 t1.create_time,
+	 t1.update_uid,
+	 t1.update_time,
+	 t1.reserve_des
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="loanId != null and loanId !=''">
+	    and t1.loan_id =  #{loanId}
+	</if>
+<if test="type != null and type != ''" >
+	    and t1.type =  #{type}
+	</if>
+<if test="var != null and var != ''" >
+	    and t1.var =  #{var}
+	</if>
+<if test="size != null and size != ''" >
+	    and t1.sizes =  #{size}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and t1.remark =  #{remark}
+	</if>
+<if test="carType != null and carType != ''" >
+	    and t1.car_type =  #{carType}
+	</if>
+<if test="license != null and license != ''" >
+	    and t1.license =  #{license}
+	</if>
+<if test="carAge != null and carAge != ''" >
+	    and t1.car_age =  #{carAge}
+	</if>
+<if test="engCode != null and engCode != ''" >
+	    and t1.eng_code =  #{engCode}
+	</if>
+<if test="mile != null and mile != ''" >
+	    and t1.mile =  #{mile}
+	</if>
+<if test="frameCode != null and frameCode != ''" >
+	    and t1.frame_code =  #{frameCode}
+	</if>
+<if test="billPrice != null and billPrice != ''" >
+	    and t1.bill_price =  #{billPrice}
+	</if>
+<if test="tranTimes != null and tranTimes != ''" >
+	    and t1.tran_times =  #{tranTimes}
+	</if>
+<if test="proDate != null and proDate != ''" >
+	    and t1.pro_date =  #{proDate}
+	</if>
+<if test="buyDate != null and buyDate != ''" >
+	    and t1.buy_date =  #{buyDate}
+	</if>
+<if test="housePropertyCode != null and housePropertyCode != ''" >
+	    and t1.house_property_code =  #{housePropertyCode}
+	</if>
+<if test="landCode != null and landCode != ''" >
+	    and t1.land_code =  #{landCode}
+	</if>
+<if test="area != null and area != ''" >
+	    and t1.area =  #{area}
+	</if>
+<if test="direction != null and direction != ''" >
+	    and t1.direction =  #{direction}
+	</if>
+<if test="prvn != null and prvn != ''" >
+	    and t1.prvn =  #{prvn}
+	</if>
+<if test="city != null and city != ''" >
+	    and t1.city =  #{city}
+	</if>
+<if test="ctry != null and ctry != ''" >
+	    and t1.ctry =  #{ctry}
+	</if>
+<if test="addr != null and addr != ''" >
+	    and t1.addr =  #{addr}
+	</if>
+<if test="evalPrice != null and evalPrice != ''" >
+	    and t1.eval_price =  #{evalPrice}
+	</if>
+<if test="evalName != null and evalName != ''" >
+	    and t1.eval_name =  #{evalName}
+	</if>
+<if test="evalRemark != null and evalRemark != ''" >
+	    and t1.eval_remark =  #{evalRemark}
+	</if>
+<if test="isSet != null and isSet != ''" >
+	    and t1.is_set =  #{isSet}
+	</if>
+<if test="warehouseId != null and warehouseId != ''" >
+	    and t1.warehouse_id =  #{warehouseId}
+	</if>
+<if test="assetRemark != null and assetRemark != ''" >
+	    and t1.asset_remark =  #{assetRemark}
+	</if>
+<if test="assetAddr != null and assetAddr != ''" >
+	    and t1.asset_addr =  #{assetAddr}
+	</if>
+<if test="auditPriceState != null and auditPriceState != ''" >
+	    and t1.audit_price_state =  #{auditPriceState}
+	</if>
+<if test="auditPriceRemark != null and auditPriceRemark != ''" >
+	    and t1.audit_price_remark =  #{auditPriceRemark}
+	</if>
+<if test="auditPrifceTime != null and auditPrifceTime != ''" >
+	    and t1.audit_prifce_time =  #{auditPrifceTime}
+	</if>
+<if test="auditPriceUid != null and auditPriceUid != ''" >
+	    and t1.audit_price_uid =  #{auditPriceUid}
+	</if>
+<if test="isValueChange != null and isValueChange != ''" >
+	    and t1.is_value_change =  #{isValueChange}
+	</if>
+<if test="latestPrice != null and latestPrice != ''" >
+	    and t1.latest_price =  #{latestPrice}
+	</if>
+<if test="changeRemark != null and changeRemark != ''" >
+	    and t1.change_remark =  #{changeRemark}
+	</if>
+<if test="changeTime != null and changeTime != ''" >
+	    and t1.change_time =  #{changeTime}
+	</if>
+<if test="changeUid != null and changeUid != ''" >
+	    and t1.change_uid =  #{changeUid}
+	</if>
+<if test="latestCheck != null and latestCheck != ''" >
+	    and t1.latest_check =  #{latestCheck}
+	</if>
+<!-- <if test="checkTime != null and checkTime != ''" >
+	    and t1.check_time =  #{checkTime}
+	</if> -->
+<if test="checkRemark != null and checkRemark != ''" >
+	    and t1.check_remark =  #{checkRemark}
+	</if>
+<if test="checkUid != null and checkUid != ''" >
+	    and t1.check_uid =  #{checkUid}
+	</if>
+<if test="state != null and state != ''" >
+	    and t1.state =  #{state}
+	</if>
+<if test="sellAmt != null and sellAmt != ''" >
+	    and t1.sell_amt =  #{sellAmt}
+	</if>
+<if test="sellInputUid != null and sellInputUid != ''" >
+	    and t1.sell_input_uid =  #{sellInputUid}
+	</if>
+<if test="sellWay != null and sellWay != ''" >
+	    and t1.sell_way =  #{sellWay}
+	</if>
+<if test="sellOrg != null and sellOrg != ''" >
+	    and t1.sell_org =  #{sellOrg}
+	</if>
+<if test="sellRemark != null and sellRemark != ''" >
+	    and t1.sell_remark =  #{sellRemark}
+	</if>
+<if test="sellTime != null and sellTime != ''" >
+	    and t1.sell_time =  #{sellTime}
+	</if>
+<if test="createUid != null and createUid != ''" >
+	    and t1.create_uid =  #{createUid}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and t1.create_time =  #{createTime}
+	</if>
+<if test="updateUid != null and updateUid != ''" >
+	    and t1.update_uid =  #{updateUid}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and t1.update_time =  #{updateTime}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and t2.contract_id =  #{contractId}
+	</if>
+<if test="id != null and id != ''" >
+	    and t1.id =  #{id}
+	</if>
+<if test="beginCheckTime != null and beginCheckTime != ''" >
+<![CDATA[and t1.check_time >= #{beginCheckTime}]]>	    
+</if>
+
+<if test="endCheckTime != null and endCheckTime != ''" >
+<![CDATA[and t1.check_time <= #{endCheckTime}+1]]>	    
+</if>		
+</trim>
+</sql>
+   
+<!-- 质押、抵押物信息 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from (
+	  select <include refid="Column_List" /> 
+	  from T_COLLATERAL  t1
+      left join T_CONTRACT  t2 on t2.loan_id=t1.loan_id                                         
+	<include refid="Where_Clause"/>and t1.STATE in('1','2','3') and t2.STATE in('2','4'))
+
+</select>
+  	
+<!-- 查询(抵押物)资产列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select <include refid="Column_List" /> 
+	from T_COLLATERAL  t1
+    left join T_CONTRACT  t2 on t2.loan_id=t1.loan_id                                         
+	<include refid="Where_Clause"/>and t1.STATE in('1','2','3')  and t2.STATE in('2','4')
+	order by t2.contract_id
+</select>
+</mapper>   

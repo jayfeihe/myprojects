@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.loan.dao.LoanAppContactDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.loan.model.LoanAppContact" >
+	<result column="id" property="id"/>
+	<result column="app_id" property="appId"/>
+	<result column="customer_no" property="customerNo"/>
+	<result column="main_flag" property="mainFlag"/>
+	<result column="type" property="type"/>
+	<result column="contact_type" property="contactType"/>
+	<result column="collateral_id" property="collateralId"/>
+	<result column="name" property="name"/>
+	<result column="gender" property="gender"/>
+	<result column="marriage" property="marriage"/>
+	<result column="id_type" property="idType"/>
+	<result column="id_no" property="idNo"/>
+	<result column="id_issue_date" property="idIssueDate"/>
+	<result column="id_expiry_date" property="idExpiryDate"/>
+	<result column="id_issue_gov" property="idIssueGov"/>
+	<result column="mobile" property="mobile"/>
+	<result column="phone" property="phone"/>
+	<result column="email" property="email"/>
+	<result column="reason" property="reason"/>
+	<result column="add_provice" property="addProvice"/>
+	<result column="add_city" property="addCity"/>
+	<result column="add_county" property="addCounty"/>
+	<result column="address" property="address"/>
+	<result column="postcode" property="postcode"/>
+	<result column="name2" property="name2"/>
+	<result column="gender2" property="gender2"/>
+	<result column="id_type2" property="idType2"/>
+	<result column="id_no2" property="idNo2"/>
+	<result column="id_issue_date2" property="idIssueDate2"/>
+	<result column="phone2" property="phone2"/>
+	<result column="operator" property="operator"/>
+	<result column="org_id" property="orgId"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+</resultMap>
+       
+<!-- T_LOAN_APP_CONTACT table all fields -->
+<sql id="Column_List" >
+	 id,app_id,customer_no,main_flag,type,contact_type,collateral_id,name,gender,marriage,id_type,id_no,id_issue_date,id_expiry_date,id_issue_gov,mobile,phone,email,reason,add_provice,add_city,add_county,address,postcode,name2,gender2,id_type2,id_no2,id_issue_date2,phone2,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="customerNo != null and customerNo != ''" >
+	    and customer_no =  #{customerNo}
+	</if>
+<if test="mainFlag != null and mainFlag != ''" >
+	    and main_flag =  #{mainFlag}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="contactType != null and contactType != ''" >
+	    and contact_type =  #{contactType}
+	</if>
+<if test="collateralId != null and collateralId != ''" >
+	    and collateral_id =  #{collateralId}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="gender != null and gender != ''" >
+	    and gender =  #{gender}
+	</if>
+<if test="marriage != null and marriage != ''" >
+	    and marriage =  #{marriage}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="idIssueDate != null and idIssueDate != ''" >
+	    and id_issue_date =  #{idIssueDate}
+	</if>
+<if test="idExpiryDate != null and idExpiryDate != ''" >
+	    and id_expiry_date =  #{idExpiryDate}
+	</if>
+<if test="idIssueGov != null and idIssueGov != ''" >
+	    and id_issue_gov =  #{idIssueGov}
+	</if>
+<if test="mobile != null and mobile != ''" >
+	    and mobile =  #{mobile}
+	</if>
+<if test="phone != null and phone != ''" >
+	    and phone =  #{phone}
+	</if>
+<if test="email != null and email != ''" >
+	    and email =  #{email}
+	</if>
+<if test="reason != null and reason != ''" >
+	    and reason =  #{reason}
+	</if>
+<if test="addProvice != null and addProvice != ''" >
+	    and add_provice =  #{addProvice}
+	</if>
+<if test="addCity != null and addCity != ''" >
+	    and add_city =  #{addCity}
+	</if>
+<if test="addCounty != null and addCounty != ''" >
+	    and add_county =  #{addCounty}
+	</if>
+<if test="address != null and address != ''" >
+	    and address =  #{address}
+	</if>
+<if test="postcode != null and postcode != ''" >
+	    and postcode =  #{postcode}
+	</if>
+<if test="name2 != null and name2 != ''" >
+	    and name2 =  #{name2}
+	</if>
+<if test="gender2 != null and gender2 != ''" >
+	    and gender2 =  #{gender2}
+	</if>
+<if test="idType2 != null and idType2 != ''" >
+	    and id_type2 =  #{idType2}
+	</if>
+<if test="idNo2 != null and idNo2 != ''" >
+	    and id_no2 =  #{idNo2}
+	</if>
+<if test="idIssueDate2 != null and idIssueDate2 != ''" >
+	    and id_issue_date2 =  #{idIssueDate2}
+	</if>
+<if test="phone2 != null and phone2 != ''" >
+	    and phone2 =  #{phone2}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_LOAN_APP_CONTACT_SEQ') From dual
+			<!-- Select T_LOAN_APP_CONTACT_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_LOAN_APP_CONTACT(id,app_id,customer_no,main_flag,type,contact_type,collateral_id,name,gender,marriage,id_type,id_no,id_issue_date,id_expiry_date,id_issue_gov,mobile,phone,email,reason,add_provice,add_city,add_county,address,postcode,name2,gender2,id_type2,id_no2,id_issue_date2,phone2,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{customerNo, jdbcType=VARCHAR},#{mainFlag, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{contactType, jdbcType=VARCHAR},#{collateralId, jdbcType=INTEGER},#{name, jdbcType=VARCHAR},#{gender, jdbcType=VARCHAR},#{marriage, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{idIssueDate, jdbcType=DATE},#{idExpiryDate, jdbcType=DATE},#{idIssueGov, jdbcType=VARCHAR},#{mobile, jdbcType=VARCHAR},#{phone, jdbcType=VARCHAR},#{email, jdbcType=VARCHAR},#{reason, jdbcType=VARCHAR},#{addProvice, jdbcType=VARCHAR},#{addCity, jdbcType=VARCHAR},#{addCounty, jdbcType=VARCHAR},#{address, jdbcType=VARCHAR},#{postcode, jdbcType=VARCHAR},#{name2, jdbcType=VARCHAR},#{gender2, jdbcType=VARCHAR},#{idType2, jdbcType=VARCHAR},#{idNo2, jdbcType=VARCHAR},#{idIssueDate2, jdbcType=DATE},#{phone2, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_LOAN_APP_CONTACT set 
+	<trim  suffixOverrides="," >
+	id =  #{id, jdbcType=INTEGER},
+	app_id =  #{appId, jdbcType=VARCHAR},
+	customer_no =  #{customerNo, jdbcType=VARCHAR},
+	main_flag =  #{mainFlag, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	contact_type =  #{contactType, jdbcType=VARCHAR},
+	collateral_id =  #{collateralId, jdbcType=INTEGER},
+	name =  #{name, jdbcType=VARCHAR},
+	gender =  #{gender, jdbcType=VARCHAR},
+	marriage =  #{marriage, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	id_issue_date =  #{idIssueDate, jdbcType=DATE},
+	id_expiry_date =  #{idExpiryDate, jdbcType=DATE},
+	id_issue_gov =  #{idIssueGov, jdbcType=VARCHAR},
+	mobile =  #{mobile, jdbcType=VARCHAR},
+	phone =  #{phone, jdbcType=VARCHAR},
+	email =  #{email, jdbcType=VARCHAR},
+	reason =  #{reason, jdbcType=VARCHAR},
+	add_provice =  #{addProvice, jdbcType=VARCHAR},
+	add_city =  #{addCity, jdbcType=VARCHAR},
+	add_county =  #{addCounty, jdbcType=VARCHAR},
+	address =  #{address, jdbcType=VARCHAR},
+	postcode =  #{postcode, jdbcType=VARCHAR},
+	name2 =  #{name2, jdbcType=VARCHAR},
+	gender2 =  #{gender2, jdbcType=VARCHAR},
+	id_type2 =  #{idType2, jdbcType=VARCHAR},
+	id_no2 =  #{idNo2, jdbcType=VARCHAR},
+	id_issue_date2 =  #{idIssueDate2, jdbcType=DATE},
+	phone2 =  #{phone2, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_LOAN_APP_CONTACT  where id = #{id}
+</delete>
+
+<delete id="deleteByAppIdAndCollateralSeqFlag" parameterType="map">
+	delete from T_LOAN_APP_CONTACT where app_id = #{appId} and COLLATERAL_ID=#{collateralSeqFlag}
+</delete>
+
+
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_LOAN_APP_CONTACT set 
+	<trim  suffixOverrides="," >
+	<if test="appId != null and appId != ''" >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+	<if test="customerNo != null and customerNo != ''" >
+	    customer_no =  #{customerNo, jdbcType=VARCHAR},
+	</if>
+	<if test="mainFlag != null and mainFlag != ''" >
+	    main_flag =  #{mainFlag, jdbcType=VARCHAR},
+	</if>
+	<if test="type != null and type != ''" >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+	<if test="contactType != null and contactType != ''" >
+	    contact_type =  #{contactType, jdbcType=VARCHAR},
+	</if>
+	<if test="collateralId != null and collateralId != ''" >
+	    collateral_id =  #{collateralId, jdbcType=INTEGER},
+	</if>
+	<if test="name != null and name != ''" >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+	<if test="gender != null and gender != ''" >
+	    gender =  #{gender, jdbcType=VARCHAR},
+	</if>
+	<if test="marriage != null and marriage != ''" >
+	    marriage =  #{marriage, jdbcType=VARCHAR},
+	</if>
+	<if test="idType != null and idType != ''" >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+	<if test="idIssueDate != null and idIssueDate != ''" >
+	    id_issue_date =  #{idIssueDate, jdbcType=DATE},
+	</if>
+	<if test="idExpiryDate != null and idExpiryDate != ''" >
+	    id_expiry_date =  #{idExpiryDate, jdbcType=DATE},
+	</if>
+	<if test="idIssueGov != null and idIssueGov != ''" >
+	    id_issue_gov =  #{idIssueGov, jdbcType=VARCHAR},
+	</if>
+	<if test="mobile != null and mobile != ''" >
+	    mobile =  #{mobile, jdbcType=VARCHAR},
+	</if>
+	<if test="phone != null and phone != ''" >
+	    phone =  #{phone, jdbcType=VARCHAR},
+	</if>
+	<if test="email != null and email != ''" >
+	    email =  #{email, jdbcType=VARCHAR},
+	</if>
+	<if test="reason != null and reason != ''" >
+	    reason =  #{reason, jdbcType=VARCHAR},
+	</if>
+	<if test="addProvice != null and addProvice != ''" >
+	    add_provice =  #{addProvice, jdbcType=VARCHAR},
+	</if>
+	<if test="addCity != null and addCity != ''" >
+	    add_city =  #{addCity, jdbcType=VARCHAR},
+	</if>
+	<if test="addCounty != null and addCounty != ''" >
+	    add_county =  #{addCounty, jdbcType=VARCHAR},
+	</if>
+	<if test="address != null and address != ''" >
+	    address =  #{address, jdbcType=VARCHAR},
+	</if>
+	<if test="postcode != null and postcode != ''" >
+	    postcode =  #{postcode, jdbcType=VARCHAR},
+	</if>
+	<if test="name2 != null and name2 != ''" >
+	    name2 =  #{name2, jdbcType=VARCHAR},
+	</if>
+	<if test="gender2 != null and gender2 != ''" >
+	    gender2 =  #{gender2, jdbcType=VARCHAR},
+	</if>
+	<if test="idType2 != null and idType2 != ''" >
+	    id_type2 =  #{idType2, jdbcType=VARCHAR},
+	</if>
+	<if test="idNo2 != null and idNo2 != ''" >
+	    id_no2 =  #{idNo2, jdbcType=VARCHAR},
+	</if>
+	<if test="idIssueDate2 != null and idIssueDate2 != ''" >
+	    id_issue_date2 =  #{idIssueDate2, jdbcType=DATE},
+	</if>
+	<if test="phone2 != null and phone2 != ''" >
+	    phone2 =  #{phone2, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 借款申请联系人表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_LOAN_APP_CONTACT  where id = #{id}
+</select>
+
+<!-- 借款申请联系人表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LOAN_APP_CONTACT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询借款申请联系人表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LOAN_APP_CONTACT 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<select id="queryCollList" resultMap="ResultMap"  parameterType="map">
+	select *from T_LOAN_APP_CONTACT 
+	where 1=1 and COLLATERAL_ID>0
+	<if test="appId != null" >
+		and APP_ID=#{appId}
+    </if>
+	<if test="contactType != null" >
+		and CONTACT_TYPE=#{contactType}
+    </if>
+	<if test="collateralId != null" >
+		and COLLATERAL_ID=#{collateralId}
+    </if>
+	order by ID
+</select>
+
+  	
+</mapper>   

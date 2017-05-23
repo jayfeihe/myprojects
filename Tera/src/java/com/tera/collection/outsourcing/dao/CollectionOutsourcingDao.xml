@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.collection.outsourcing.dao.CollectionOutsourcingDao" > 
+<!-- Result Map-->
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+<trim  suffixOverrides="," >
+	<if test="contractNo != null and contractNo != ''" >
+	    and b.contract_no =  #{contractNo}
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    and b.id_no =  #{idNo}
+	</if>
+	<if test="customerName != null and customerName != ''" >
+	    and b.customer_name =  #{customerName}
+	</if>
+	<if test="applyType != null and applyType != ''" >
+	    and a.apply_type =  #{applyType}
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    and b.org_id like CONCAT(#{orgId},'%')
+	</if>
+	<if test="state != null and state != ''" >
+	    and a.state =#{state}
+	</if>
+	<if test="distributionState != null and distributionState != ''" >
+	    and a.distribution_state =  #{distributionState}
+	</if>
+	<if test="lateDaysMax != null and lateDaysMax != ''" >
+	   <![CDATA[AND b.late_days <= #{lateDaysMax}]]>
+	</if>
+	<if test="lateDaysMin != null and lateDaysMin != ''" >
+	     <![CDATA[and b.late_days >=  #{lateDaysMin}]]>
+	</if>
+</trim>
+	<if test="orderByType=='1'.toString()">
+		order by a.apply_time DESC
+	</if>
+	<if test="orderByType=='2'.toString()">
+		order by a.check_time DESC
+	</if>
+	<if test="orderByType=='3'.toString()">
+		order by a.approval_time DESC
+	</if>
+	<if test="orderByType=='4'.toString()">
+		order by a.update_time DESC
+	</if>
+</sql>
+<sql id="Column_List">
+b.id as id,
+b.contract_no as contractNo,
+b.id_no as idNo,
+b.customer_name as customerName,
+b.customer_tel as customerTel,
+b.contract_amount as contractAmount,
+b.product as product,
+b.late_age as lateAge,
+b.late_days as lateDays,
+b.loan_platform as loanPlatform,
+b.repayment_date as repaymentDate,
+b.org_id as orgId,
+(select org_name from t_org where org_id=b.org_id) orgName,
+b.penalty as penalty,
+b.default_fee as defaultFee,
+b.delay as delay,
+b.srevice_fee as sreviceFee,
+b.principal as principal,
+b.interest as interest,
+b.reduce as reduce,
+b.month_amount_all as monthAmountAll,
+b.amount_all as amountAll,
+b.period_all as periodAll,
+b.period_cur as periodCur,
+b.period_late_his as periodLateHis,
+b.period_finish as periodFinish,
+b.follow_time as followTime,
+b.collection_uid_cur as collectionUidCur,
+a.state as state,
+a.check_uid as checkUid,
+(select name from t_user where login_id=a.check_uid) checkName,
+a.check_result as checkResult,
+a.check_time as checkTime,
+a.check_text as checkText,
+a.apply_uid as applyUid,
+(select name from t_user where login_id=a.apply_uid) applyName,
+a.apply_time as applyTime,
+a.apply_text as applyText,
+a.collection_way as collectionWay
+</sql>
+      	
+  	<!-- 外包催收基本表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from t_collection_base b 
+	inner join t_collection_application a 
+	on b.contract_no=a.contract_no 
+	WHERE 1=1 and a.state not in ("0","5")
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 外包催收信息基本表列表 -->
+<select id="queryList" resultType="com.tera.collection.outsourcing.model.CollectionOutsourcing"  parameterType="map">
+	select 
+	<include refid="Column_List"></include>
+	from t_collection_base b 
+	inner join t_collection_application a 
+	on b.contract_no=a.contract_no 
+	WHERE 1=1 and a.state not in ("0","5")
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+<!-- 通过主键获取 -->
+<select id="queryById" resultType="com.tera.collection.outsourcing.model.CollectionOutsourcing"  parameterType="Object">
+	select 
+	<include refid="Column_List"></include>
+	from t_collection_base b 
+	inner join t_collection_application a 
+	on b.contract_no=a.contract_no 
+	where b.id = #{id}
+</select>
+
+</mapper>   

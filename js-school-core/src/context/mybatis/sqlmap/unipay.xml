@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.UnipayDAO">
+	<resultMap id="report" type="com.hikootech.mqcash.po.unipay.UnipayPersonalReport">
+		<result property="id" column="id"/>
+		<result property="cardNumber" column="card_number"/>
+		<result property="result" column="result"/>
+		<result property="hasHouse" column="has_house"/>
+		<result property="hasCar" column="has_car"/>
+		<result property="housePurTime" column="house_pur_time"/>
+		<result property="carPurTime" column="car_pur_time"/>
+		<result property="houseValue" column="house_value"/>
+		<result property="carValue" column="car_value"/>
+		<result property="repaymentAbility" column="repayment_ability"/>
+		<result property="businessTrip" column="business_trip"/>
+		<result property="marriageConsume" column="marriage_consume"/>
+		<result property="employed" column="employed"/>
+		<result property="childInvest" column="child_invest"/>
+		<result property="nightConsume" column="night_consume"/>
+		<result property="city" column="city"/>
+		<result property="workRegion" column="work_region"/>
+		<result property="freeRegion" column="free_region"/>
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+	
+	<resultMap id="score" type="com.hikootech.mqcash.po.unipay.UnipayPersonalScore">
+		<result property="busId" column="bus_id"/>
+		<result property="reportId" column="report_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="idCard" column="id_card"/>
+		<result property="cityCode" column="city_code"/>
+		<result property="name" column="name"/>
+		
+		<result property="upa1" column="upa1"/>
+		<result property="upa2" column="upa2"/>
+		<result property="upa3" column="upa3"/>
+		<result property="upa4" column="upa4"/>
+		<result property="upa5" column="upa5"/>
+		<result property="upa6" column="upa6"/>
+		
+		<result property="upb1" column="upb1"/>
+		<result property="upb2" column="upb2"/>
+		<result property="upb3" column="upb3"/>
+		<result property="upb4" column="upb4"/>
+		<result property="upb5" column="upb5"/>
+		<result property="upb6" column="upb6"/>
+		
+		<result property="upf1" column="upf1"/>
+		<result property="upf2" column="upf2"/>
+		<result property="upf3" column="upf3"/>
+		<result property="upf4" column="upf4"/>
+		<result property="upf5" column="upf5"/>
+		<result property="upf6" column="upf6"/>
+	</resultMap>
+	
+	<resultMap id="unipayCategory" type="com.hikootech.mqcash.po.unipay.UnipayPersonalConsumeCategory">
+		<result property="id" column="id"/>
+		<result property="reportId" column="report_id"/>
+		<result property="name" column="name"/>
+		<result property="amount" column="amount"/>
+		<result property="count" column="count"/>
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+	<resultMap id="unipayCity" type="com.hikootech.mqcash.po.unipay.UnipayPersonalConsumeCity">
+		<result property="id" column="id"/>
+		<result property="reportId" column="report_id"/>
+		<result property="name" column="name"/>
+		<result property="amount" column="amount"/>
+		<result property="count" column="count"/>
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+	<resultMap id="unipayConsume" type="com.hikootech.mqcash.po.unipay.UnipayPersonalMonthConsume">
+		<result property="id" column="id"/>
+		<result property="reportId" column="report_id"/>
+		<result property="amount" column="amount"/>
+		<result property="count" column="count"/>
+		<result property="amountRanking" column="amount_ranking"/>
+		<result property="countRanking" column="count_ranking"/>
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+	<resultMap id="unipayCredit" type="com.hikootech.mqcash.po.unipay.UnipayPersonalTransCredit">
+		<result property="id" column="id"/>
+		<result property="reportId" column="report_id"/>
+		<result property="name" column="name"/>
+		<result property="amount" column="amount"/>
+		<result property="count" column="count"/>
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+	
+	<insert id="insertUnipayReport" parameterType="com.hikootech.mqcash.po.unipay.UnipayPersonalReport">
+		insert into t_unipay_personal_report (id,card_number,result,has_house,
+		has_car,house_pur_time,car_pur_time,house_value,car_value,repayment_ability,business_trip,
+		marriage_consume,employed,child_invest,night_consume,city,work_region,free_region,create_time)
+		values (#{id},#{cardNumber},#{result},#{hasHouse},#{hasCar},
+		#{housePurTime},#{carPurTime},#{houseValue},#{carValue},#{repaymentAbility},#{businessTrip},
+		#{marriageConsume},#{employed},#{childInvest},#{nightConsume},#{city},#{workRegion},#{freeRegion},#{createTime})
+	</insert>
+	
+	<insert id="insertUnipayConsumeCategory" parameterType="com.hikootech.mqcash.po.unipay.UnipayPersonalConsumeCategory">
+		insert into t_unipay_personal_consume_cateory (id,report_id,name,amount,count,create_time)
+		values (#{id},#{reportId},#{name},#{amount},#{count},#{createTime})
+	</insert>
+	
+	<insert id="insertUnipayConsumeCity" parameterType="com.hikootech.mqcash.po.unipay.UnipayPersonalConsumeCity">
+		insert into t_unipay_personal_consume_city (id,report_id,name,amount,count,create_time)
+		values (#{id},#{reportId},#{name},#{amount},#{count},#{createTime})
+	</insert>
+	
+	<insert id="insertUnipayMonthConsume" parameterType="com.hikootech.mqcash.po.unipay.UnipayPersonalMonthConsume">
+		insert into t_unipay_personal_month_consume (id,report_id,month,amount,count,amount_ranking,count_ranking,create_time)
+		values (#{id},#{reportId},#{month},#{amount},#{count},#{amountRanking},#{countRanking},#{createTime})
+	</insert>
+	
+	<insert id="insertUnipayTransCredit" parameterType="com.hikootech.mqcash.po.unipay.UnipayPersonalTransCredit">
+		insert into t_unipay_personal_trans_credit (id,report_id,name,amount,count,create_time)
+		values (#{id},#{reportId},#{name},#{amount},#{count},#{createTime})
+	</insert>
+	
+	<insert id="insertUnipayPersonalScore" parameterType="com.hikootech.mqcash.po.unipay.UnipayPersonalScore">
+		insert into t_unipay_personal_score (bus_id,report_id,id_card,name,city_code,upa1,upa2,upa3,upa4,upa5,upa6,upb1,upb2,upb3,upb4,upb5,upb6,upf1,upf2,upf3,upf4,upf5,upf6,create_time)
+		values (#{busId},#{reportId},#{idCard},#{name},#{cityCode},#{upa1},#{upa2},#{upa3},#{upa4},#{upa5},#{upa6},
+		#{upb1},#{upb2},#{upb3},#{upb4},#{upb5},#{upb6},
+		#{upf1},#{upf2},#{upf3},#{upf4},#{upf5},#{upf6},#{createTime})
+	</insert>
+	
+	<select id="queryUnipayReport" parameterType="java.lang.String" resultMap="report">
+		select * from t_unipay_personal_report where card_number=#{cardNumber} order by create_time desc limit 1
+	</select>
+	
+	<select id="getUnipayPersonalScore" parameterType="java.lang.String" resultMap="score">
+		select * from t_unipay_personal_score where bus_id=#{busId}
+	</select>
+	
+	<select id="getCityCode" parameterType="java.lang.String" resultType="java.lang.String">
+		select city_code from t_unipay_city where city_name=#{cityName}
+	</select>
+	
+	<select id="listCityCode" resultType="com.hikootech.mqcash.po.unipay.UnipayCity">
+		select unipay_code unipayCode,city_name cityName,city_code cityCode from t_unipay_city
+	</select>
+	
+	<select id="listUnipayConsumeCategory" parameterType="java.lang.String" resultMap="unipayCategory">
+		select * from t_unipay_personal_consume_cateory where report_id=#{reportId}
+	</select>
+	<select id="listUnipayConsumeCity" parameterType="java.lang.String" resultMap="unipayCity">
+		select * from t_unipay_personal_consume_city where report_id=#{reportId}
+	</select>
+	<select id="listUnipayMonthConsume" parameterType="java.lang.String" resultMap="unipayConsume">
+		select * from t_unipay_personal_month_consume where report_id=#{reportId}
+	</select>
+	<select id="listUnipayTransCredit" parameterType="java.lang.String" resultMap="unipayCredit">
+		select * from t_unipay_personal_trans_credit where report_id=#{reportId}
+	</select>
+</mapper>

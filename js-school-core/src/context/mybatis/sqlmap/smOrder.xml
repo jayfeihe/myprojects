@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.SmOrderDAO">
+	<resultMap type="com.hikootech.mqcash.po.SmOrder" id="SmOrderResultMap">
+		<result property="smOrderId" column="sms_order_id"/>
+		<result property="mobileNumber" column="mobile_number"/>
+		<result property="data" column="data"/>
+		<result property="sendType" column="send_type"/>
+		<result property="bookTime" column="book_time"/>
+		<result property="sendTime" column="send_time"/>
+		<result property="sendStatus" column="send_status"/>
+		<result property="templateId" column="template_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="operator" column="operator"/>
+	</resultMap>
+	<insert id="insertSmOrder" parameterType="com.hikootech.mqcash.po.SmOrder">
+		INSERT INTO t_sms_order
+	(sms_order_id, mobile_number, `data`,send_type, book_time, send_time, send_status, template_id, create_time, update_time, operator)
+	VALUES (#{smOrderId}, #{mobileNumber}, #{data},#{sendType}, #{bookTime}, #{sendTime}, #{sendStatus}, #{templateId}, #{createTime}, #{updateTime}, #{operator})
+	</insert>
+	
+	<select id="querySmOrderToSend" parameterType="java.util.Map" resultMap="SmOrderResultMap">
+	select * from t_sms_order t where send_type=#{sendType} and send_status=#{sendStatus} 
+							and book_time &gt;= #{startDate} and book_time &lt; #{endDate}
+							order by sms_order_id 
+							limit #{start},#{size}
+	</select>
+	<select id="querySmOrderToSendNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(1) from t_sms_order t where send_type=#{sendType} and send_status=#{sendStatus} 
+							and book_time &gt;= #{startDate} and book_time &lt; #{endDate}
+	</select>
+	 
+	<update id="updateSmOrderById" parameterType="com.hikootech.mqcash.po.SmOrder">
+		update t_sms_order set send_status=#{sendStatus} ,send_time=#{sendTime},update_time=#{updateTime}
+		    where sms_order_id=#{smOrderId}
+	</update>
+	<update id="deleteAllSmOrder" >
+		delete from t_sms_order  
+	</update>
+	
+	<select id="querySmOrderTotalRow" parameterType="java.util.Map" resultType="java.lang.Long">
+		select count(*) from t_sms_order t
+		<where>
+			<if test="startTime!=null and startTime!=''"> t.book_time &gt;= #{startTime}</if>
+			<if test="endTime!=null and endTime!=''"> and t.book_time &lt; #{endTime}</if>
+			<if test="sendStatus!=null"> and t.send_status = #{sendStatus}</if>
+			<if test="sendType!=null"> and t.send_type = #{sendType}</if>
+		</where>
+	</select>
+	
+	<select id="querySmOrderList" resultMap="SmOrderResultMap" parameterType="java.util.Map">
+		select t.* from t_sms_order t
+		<where>
+			<if test="startTime!=null and startTime!=''"> t.book_time &gt;= #{startTime}</if>
+			<if test="endTime!=null and endTime!=''"> and t.book_time &lt; #{endTime}</if>
+			<if test="sendStatus!=null"> and t.send_status = #{sendStatus}</if>
+			<if test="sendType!=null"> and t.send_type = #{sendType}</if>
+		</where>
+		order by t.sms_order_id
+		<if test="start!=null and pageSize!=null">
+			limit #{start},#{pageSize}
+		</if>
+	</select>
+</mapper>

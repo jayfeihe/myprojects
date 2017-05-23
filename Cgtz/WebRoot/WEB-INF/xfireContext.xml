@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+			
+	<!-- 需要发布成Webservice的接口，请在此文档中声明 -->
+	
+	<import resource="classpath:org/codehaus/xfire/spring/xfire.xml" />
+	
+	<!-- ===================xfire配置====================
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="urlMap">
+			<map>
+				<entry key="/suggest.do">
+					<ref bean="suggest" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="suggest" class="org.codehaus.xfire.spring.remoting.XFireExporter">
+		<property name="serviceFactory">
+			<ref bean="xfire.serviceFactory" />
+		</property>
+		<property name="xfire">
+			<ref bean="xfire" />
+		</property>
+		<property name="serviceBean">
+			<ref bean="suggestBean" />
+		</property>
+		<property name="serviceClass">
+			<value>com.firsttech.insure.webservice.SuggestService
+			</value>
+		</property>
+	</bean>
+
+	<bean id="suggestBean" class="com.firsttech.insure.webservice.impl.SuggestServiceImpl"> 
+	</bean>
+
+	===================xfire配置==================== -->
+
+</beans>

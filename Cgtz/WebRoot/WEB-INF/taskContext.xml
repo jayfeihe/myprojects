@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:task="http://www.springframework.org/schema/task"  
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xsi:schemaLocation="
+    	http://www.springframework.org/schema/beans  
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+		http://www.springframework.org/schema/tx  
+		http://www.springframework.org/schema/tx/spring-tx-3.0.xsd  
+		http://www.springframework.org/schema/aop  
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
+		http://www.springframework.org/schema/context  
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/jee 
+		http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		">
+    
+    <task:scheduler id="scheduler" pool-size="10" />
+	
+   
+	
+	 
+	<!-- Run every 5 seconds -->
+		
+	<task:scheduled-tasks scheduler="scheduler">
+		<!-- 
+
+			*(秒0-59) *(分钟0-59) *(小时0-23) *(日期1-31) *(月份1-12或是JAN-DEC) *(星期1-7或是SUN-SAT)  
+			-->
+			
+			<!-- ====================催收逾期自动分单,每天凌晨跑一次  ========================== -->
+
+		<task:scheduled ref="clltBatchService" method="autoDisCllt" cron="0 0 1 * * *" /> 
+		
+			
+			<!-- ====================稽查任务，每周一凌晨跑一次========================== -->
+
+		<task:scheduled ref="clltBatchService" method="autoCreateCheckTask" cron="0 0 2 * * 1" /> 
+		
+		
+			<!-- ==================== 每天晚上记录一次，统计各个分公司的存量情况========================== -->
+
+		<task:scheduled ref="clltBatchService" method="recordAcct" cron="0 0 23 * * *" /> 
+		
+		
+			<!-- ====================每月1号统计上个月的新增和续贷的笔数，金额，记录========================== -->
+
+		<task:scheduled ref="clltBatchService" method="createMonthAcct" cron="0 30 2 1 * *" /> 
+		
+	    <!-- ==================== 每天晚上记录一次，统计各个分公司当天逾期情况========================== -->
+
+		<task:scheduled ref="clltBatchService" method="orgOverdue" cron="0 0 3 * * *" /> 		
+	</task:scheduled-tasks>
+
+</beans>

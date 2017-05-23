@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.account.dao.MarginInfoDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.audit.account.model.MarginInfo" >
+	<result column="id" property="id"/><!--  -->
+	<result column="contract_id" property="contractId"/><!--  -->
+	<result column="amt" property="amt"/><!--  -->
+	<result column="get_time" property="getTime"/><!--  -->
+	<result column="state" property="state"/><!-- 1未处理2退还借款人3垫付本金 -->
+	<result column="remarks" property="remarks"/><!--  -->
+	<result column="handle_time" property="handleTime"/><!-- 处理时间 -->
+	<result column="create_time" property="createTime"/><!--  -->
+	<result column="update_time" property="updateTime"/><!--  -->
+	<result column="late_num" property="num"/><!--  -->
+	<result column="loan_name" property="loanName"/><!--  -->
+	<result column="con_amt" property="conAmt"/><!-- 处理时间 -->
+	<result column="start_date" property="startDate"/><!--  -->
+	<result column="end_date" property="endDate"/><!--  -->
+	
+</resultMap>
+       
+<!-- T_MARGIN_INFO table all fields -->
+<sql id="Column_List" >
+	TM. ID,
+	base.org orgId,
+	(select t.org_name from t_org t where t.org_id=base.org)orgName,
+	TM.contract_id,
+	TM.amt,
+	TM.get_time,
+	TM.state,
+	TM.remarks,
+	TM.handle_time,
+	TM.create_time,
+	TM.update_time,
+	base.name loan_name,
+	tc.START_DATE,
+	tc.END_DATE,
+	tc.LOAN_AMT con_amt,
+	tc.late_num
+	 
+</sql>
+
+<sql id="Read_List" >
+	ID,
+	contract_id,
+	amt,
+	get_time,
+	state,
+	remarks,
+	handle_time,
+	create_time,
+	update_time
+	 
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="orgId != null and orgId != ''" >
+	    and base.org like  concat(#{orgId},'%')
+	</if>	
+<if test="contractId != null and contractId != ''" >
+	    and tm.contract_id =  #{contractId}
+	</if>
+<if test="loanName != null and loanName != ''" >
+	    and base.name like  concat(#{loanName},'%')
+	</if>	
+<if test="minStartDate != null and minStartDate != ''" >
+<![CDATA[and tc.start_date>=#{minStartDate}]]>
+	</if>
+<if test="maxStartDate != null and maxStartDate != ''" >
+<![CDATA[and tc.start_date<=#{maxStartDate}]]>
+	</if>
+<if test="minEndDate != null and minEndDate != ''" >
+<![CDATA[and tc.end_date>=#{minEndDate}]]>
+	</if>
+<if test="maxEndDate != null and maxEndDate != ''" >
+<![CDATA[and tc.end_date<=#{maxEndDate}]]>
+	</if>
+<if test="minHandleDate != null and minHandleDate != ''" >
+<![CDATA[and tm.handle_time>=#{minHandleDate}]]>
+	</if>
+<if test="maxHandleDate != null and maxHandleDate != ''" >
+<![CDATA[and tm.handle_time<=#{maxHandleDate}+1]]>
+	</if>				
+<if test="state != null and state != ''" >
+	    and tm.state =  #{state}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+
+			Select T_MARGIN_INFO_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_MARGIN_INFO(id,contract_id,amt,get_time,state,remarks,handle_time,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{contractId, jdbcType=VARCHAR},#{amt, jdbcType=DOUBLE},#{getTime, jdbcType=TIMESTAMP},#{state, jdbcType=VARCHAR},#{remarks, jdbcType=VARCHAR},#{handleTime, jdbcType=TIMESTAMP},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_MARGIN_INFO set 
+	<trim  suffixOverrides="," >
+	id =  #{id, jdbcType=INTEGER},
+	contract_id =  #{contractId, jdbcType=VARCHAR},
+	amt =  #{amt, jdbcType=DOUBLE},
+	get_time =  #{getTime, jdbcType=TIMESTAMP},
+	state =  #{state, jdbcType=VARCHAR},
+	remarks =  #{remarks, jdbcType=VARCHAR},
+	handle_time =  #{handleTime, jdbcType=TIMESTAMP},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where  id= #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_MARGIN_INFO  where  id= #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_MARGIN_INFO set 
+	<trim  suffixOverrides="," >
+	<if test="id != null and id != ''  or id==0" >
+	    id =  #{id, jdbcType=INTEGER},
+	</if>
+
+	<if test="contractId != null and contractId != '' " >
+	    contract_id =  #{contractId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="amt != null and amt != ''  or amt==0" >
+	    amt =  #{amt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="getTime != null and getTime != '' " >
+	    get_time =  #{getTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remarks != null and remarks != '' " >
+	    remarks =  #{remarks, jdbcType=VARCHAR},
+	</if>
+
+	<if test="handleTime != null and handleTime != '' " >
+	    handle_time =  #{handleTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where  id= #{id}
+</update>
+
+<!-- 根据id查询 保证金信息表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Read_List" /> 
+	 from T_MARGIN_INFO  where  id= #{id}
+</select>
+
+<!-- 保证金信息表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from (select 
+	<include refid="Column_List"/>
+	from T_MARGIN_INFO TM
+	LEFT JOIN T_CONTRACT tc ON TM.CONTRACT_ID = tc.CONTRACT_ID
+	LEFT JOIN T_LOAN_BASE base on tc.loan_id=base.loan_id 
+	<include refid="Where_Clause"/>)
+</select>
+  	
+<!-- 查询保证金信息表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_MARGIN_INFO TM
+	LEFT JOIN T_CONTRACT tc ON TM.CONTRACT_ID = tc.CONTRACT_ID
+	LEFT JOIN T_LOAN_BASE base on tc.loan_id=base.loan_id 
+	<include refid="Where_Clause"/>
+	order by tc.start_date desc
+</select>
+  	
+</mapper>   

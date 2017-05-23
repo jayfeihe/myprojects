@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.tera.bpm.dao.BpmLogDao">
+	<!-- 分页头 -->
+	<sql id="pagehead">
+	<![CDATA[
+		select * from (
+		select a_.*, rownum rn
+		from(
+	]]>
+	</sql>
+	
+	<!-- 分页尾 -->
+	<sql id="pagefoot" >
+	<![CDATA[
+		) a_
+		where rownum <= #{rowE}
+		)
+		where rn >= #{rowS}
+	 ]]>
+	</sql>
+	
+	<!-- count头-->
+	<sql id="counthead" >
+		select count(1) from (
+	</sql>
+	
+	<!-- count尾-->
+	<sql id="countfoot" >
+		)
+	</sql>
+	<resultMap id="ResultMap" type="com.tera.bpm.model.BpmLog" >
+		<result column="id" property="id"/>
+		<result column="task_id" property="taskId"/>
+		<result column="process_name" property="processName"/>
+		<result column="biz_key" property="bizKey"/>
+		<result column="state" property="state"/>
+		<result column="processer" property="processer"/>
+		<result column="operators" property="operator"/>
+		<result column="operatorName" property="operatorName"/>
+		<result column="intime" property="intime"/>
+		<result column="outtime" property="outtime"/>
+		<result column="dicision" property="dicision"/>
+		<result column="remark" property="remark"/>
+		<result column="log_content1" property="logContent1"/>
+		<result column="log_content2" property="logContent2"/>
+		<result column="log_content3" property="logContent3"/>
+		<result column="log_content4" property="logContent4"/>
+		<result column="log_content5" property="logContent5"/>
+		<result column="log_content6" property="logContent6"/>
+		<result column="log_content7" property="logContent7"/>
+		<result column="log_content8" property="logContent8"/>
+		<result column="log_content9" property="logContent9"/>
+		<result column="log_content10" property="logContent10"/>
+	</resultMap>
+       
+	<insert id="addBpmLog" parameterType="Object">
+		<selectKey keyProperty="id" resultType="long" order="BEFORE">
+<!-- 			Select Nextval('T_BPM_LOG_SEQ') From Dual -->
+				Select T_BPM_LOG_SEQ.Nextval From Dual
+		</selectKey>
+		Insert Into T_Bpm_Log (Id, task_Id, BIZ_KEY, state, processer, operators, intime)
+		Values
+  		(#{id}, #{taskId}, #{bizKey}, #{state}, #{processer}, #{operator}, #{intime})
+	</insert>
+	
+	<insert id="addBpmLogMap" parameterType="map">
+		<selectKey keyProperty="id" resultType="long" order="BEFORE">
+<!-- 			Select  Nextval('T_BPM_LOG_SEQ') From Dual -->
+				Select T_BPM_LOG_SEQ.Nextval From Dual
+		</selectKey>
+		Insert Into T_Bpm_Log (Id, task_Id, BIZ_KEY, state, processer, operators, intime,decision,remark, log_Content1, log_Content2, log_Content3, log_Content4, log_Content5, log_Content6, log_Content7, log_Content8, log_Content9, log_Content10)
+		Values
+  		(#{id}, #{taskId}, #{bizKey}, #{state}, #{processer}, #{operator}, #{intime},#{decision,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR}, #{logContent1}, #{logContent2}, #{logContent3}, #{logContent4}, #{logContent5}, #{logContent6}, #{logContent7}, #{logContent8}, #{logContent9}, #{logContent10})
+	</insert>
+	
+	<select id="getBpmLog" resultMap="ResultMap" parameterType="map">
+		Select C.id,
+			   C.task_Id,
+			   A.process_name,
+			   C.BIZ_KEY,
+			   C.state,
+			   C.processer,
+         	   C.operators,			   
+			   C.intime,
+			   C.outtime,
+			   C.decision,
+			   C.remark,
+			   C.log_Content1,
+			   C.log_Content2,
+			   C.log_Content3,
+			   C.log_Content4,
+			   C.log_Content5,
+			   C.log_Content6,
+			   C.log_Content7,
+			   C.log_Content8,
+			   C.log_Content9,
+			   C.log_Content10,
+			   (SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID=c.operators) operatorName
+		From T_Bpm_Def A, T_Bpm_Task B, T_Bpm_Log C
+		<where>
+		<if test="true">
+			A.Id = B.Def_id And B.Id = C.Task_id
+		</if>
+		<if test="taskId!=null and taskId!=0">
+			and C.Task_id = #{taskId}
+		</if>
+		<if test="state!=null and state!=''">
+			And C.State = #{state}
+		</if>
+		<if test="processName!=null and processName!=''">
+			And A.Process_name = #{processName}
+		</if>
+		<if test="bizKey!=null and bizKey!=''">
+			And C.BIZ_KEY = #{bizKey}
+		</if>
+		</where>
+		order by C.Id desc
+	</select>
+	
+	<select id="getBpmLogNoDesc" resultMap="ResultMap" parameterType="map">
+		Select C.id,
+			   C.task_Id,
+			   A.process_name,
+			   C.BIZ_KEY,
+			   C.state,
+			   C.processer,
+	           C.operators,			   
+			   C.intime,
+			   C.outtime,
+			   C.decision,
+			   C.remark,
+			   C.log_Content1,
+			   C.log_Content2,
+			   C.log_Content3,
+			   C.log_Content4,
+			   C.log_Content5,
+			   C.log_Content6,
+			   C.log_Content7,
+			   C.log_Content8,
+			   C.log_Content9,
+			   C.log_Content10,
+			   (SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID=c.operators) operatorName
+		From T_Bpm_Def A, T_Bpm_Task B, T_Bpm_Log C
+		<where>
+		<if test="true">
+			A.Id = B.Def_id And B.Id = C.Task_id
+		</if>
+		<if test="taskId!=null and taskId!=0">
+			and C.Task_id = #{taskId}
+		</if>
+		<if test="state!=null and state!=''">
+			And C.State = #{state}
+		</if>
+		<if test="processName!=null and processName!=''">
+			And A.Process_name = #{processName}
+		</if>
+		<if test="bizKey!=null and bizKey!=''">
+			And C.BIZ_KEY = #{bizKey}
+		</if>
+		</where>
+		order by C.Id
+	</select>
+	
+	<select id="getBpmLogByTaskId" resultMap="ResultMap"  parameterType="long">
+		Select id,task_id,biz_key,state,processer,operators,intime,outtime,log_content1,log_content2,log_content3,log_content4,log_content5,log_content6,log_content7,log_content8,log_content9,log_content10 From T_Bpm_Log Where task_Id = #{taskId}
+	</select>
+
+	<delete id="deleteBpmLogById" parameterType="long">
+		Delete T_Bpm_Log Where Id = #{id}
+	</delete>
+	
+	<delete id="deleteBpmLogByTaskId" parameterType="long">
+		 Delete T_Bpm_Log Where task_Id = #{taskId}
+	</delete>
+	
+	<update id="updateBpmLog"  parameterType="Object">
+		Update T_Bpm_Log Set BIZ_KEY = #{bizKey}, state = #{state}, processer = #{processer},
+		operators = #{operator}, outTime = #{outtime},
+        log_Content1 =  #{logContent1},
+        log_Content2 =  #{logContent2},
+        log_Content3 =  #{logContent3},
+        log_Content4 =  #{logContent4},
+        log_Content5 =  #{logContent5},
+        log_Content6 =  #{logContent6},
+        log_Content7 =  #{logContent7},
+        log_Content8 =  #{logContent8},
+        log_Content9 =  #{logContent9},
+        log_Content10 =  #{logContent10}
+ 		Where Id = #{id}
+	</update>
+
+	<update id="updateBpmLogMap"  parameterType="map">
+		Update T_Bpm_Log Set BIZ_KEY = #{bizKey}, state = #{state}, processer = #{processer},
+		operators = #{operator}, outTime = #{outtime,jdbcType=TIMESTAMP},
+		decision = #{decision,jdbcType=VARCHAR},
+		remark = #{remark,jdbcType=VARCHAR},
+        log_Content1 =  #{logContent1,jdbcType=VARCHAR},
+        log_Content2 =  #{logContent2,jdbcType=VARCHAR},
+        log_Content3 =  #{logContent3,jdbcType=VARCHAR},
+        log_Content4 =  #{logContent4,jdbcType=VARCHAR},
+        log_Content5 =  #{logContent5,jdbcType=VARCHAR},
+        log_Content6 =  #{logContent6,jdbcType=VARCHAR},
+        log_Content7 =  #{logContent7,jdbcType=VARCHAR},
+        log_Content8 =  #{logContent8,jdbcType=VARCHAR},
+        log_Content9 =  #{logContent9,jdbcType=VARCHAR},
+        log_Content10 =  #{logContent10,jdbcType=VARCHAR}
+ 		Where Id = #{id}
+	</update>
+
+	<select id="getLastBpmLog" resultMap="ResultMap" parameterType="map">
+		select D.id,
+			   D.task_Id,
+			   D.BIZ_KEY,
+			   D.state,
+			   D.processer,
+         	   D.operators,			   
+			   D.intime,
+			   D.outtime,
+			   D.decision,
+			   D.remark,
+			   D.log_Content1,
+			   D.log_Content2,
+			   D.log_Content3,
+			   D.log_Content4,
+			   D.log_Content5,
+			   D.log_Content6,
+			   D.log_Content7,
+			   D.log_Content8,
+			   D.log_Content9,
+			   D.log_Content10 from (Select C.* From T_Bpm_Def A, T_Bpm_Task B, T_Bpm_Log C
+		<where>
+		<if test="true">
+			A.Id = B.Def_id And B.Id = C.Task_id
+		</if>
+		<if test="taskId!=null and taskId!=0">
+			and C.Task_id = #{taskId}
+		</if>
+		<if test="state!=null and state!=''">
+			And C.State = #{state}
+		</if>
+		<if test="processName!=null and processName!=''">
+			And A.Process_name = #{processName}
+		</if>
+		<if test="bizKey!=null and bizKey!=''">
+			And C.biz_Key = #{bizKey}
+		</if>
+		</where>
+		order by C.Id desc) D <!-- limit 1 -->
+		WHERE ROWNUM = 1
+		
+	</select>
+
+</mapper>

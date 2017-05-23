@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.loan.dao.CollateralDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.audit.loan.model.Collateral" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="loan_id" property="loanId"/><!-- 申请ID -->
+	<result column="type" property="type"/><!-- 类型 -->
+	<result column="var" property="var"/><!-- 品种 -->
+	<result column="sizes" property="size"/><!-- 规格 -->
+	<result column="remark" property="remark"/><!-- 说明 -->
+	<result column="car_type" property="carType"/><!-- 车辆型号 -->
+	<result column="license" property="license"/><!-- 车牌号 -->
+	<result column="car_age" property="carAge"/><!-- 车辆年限 -->
+	<result column="eng_code" property="engCode"/><!-- 发动机号 -->
+	<result column="mile" property="mile"/><!-- 里程 -->
+	<result column="frame_code" property="frameCode"/><!-- 车架号 -->
+	<result column="bill_price" property="billPrice"/><!-- 开票价格 -->
+	<result column="tran_times" property="tranTimes"/><!-- 过户次数 -->
+	<result column="pro_date" property="proDate"/><!-- 出厂日期 -->
+	<result column="buy_date" property="buyDate"/><!-- 购买日期 -->
+	<result column="house_property_code" property="housePropertyCode"/><!-- 房产证号 -->
+	<result column="land_code" property="landCode"/><!-- 土地证号 -->
+	<result column="area" property="area"/><!-- 房屋面积 -->
+	<result column="direction" property="direction"/><!-- 房屋朝向 -->
+	<result column="prvn" property="prvn"/><!-- 所在省 -->
+	<result column="city" property="city"/><!-- 所在市 -->
+	<result column="ctry" property="ctry"/><!-- 所在县 -->
+	<result column="addr" property="addr"/><!-- 所在地址 -->
+	<result column="eval_price" property="evalPrice"/><!-- 评估金额 -->
+	<result column="eval_name" property="evalName"/><!-- 评估者 -->
+	<result column="eval_remark" property="evalRemark"/><!-- 评估说明 -->
+	<result column="is_set" property="isSet"/><!-- 担保物权是否设定 -->
+	<result column="warehouse_id" property="warehouseId"/><!-- 资产所在仓库 -->
+	<result column="asset_remark" property="assetRemark"/><!-- 资产说明 -->
+	<result column="asset_addr" property="assetAddr"/><!-- 资产所在地址（仓库写仓库地址，房子就是自己地址） -->
+	<result column="audit_price_state" property="auditPriceState"/><!-- 最新核价结果 -->
+	<result column="audit_price_remark" property="auditPriceRemark"/><!-- 核价说明 -->
+	<result column="audit_prifce_time" property="auditPriceTime"/><!-- 核价时间 -->
+	<result column="audit_price_uid" property="auditPriceUid"/><!-- 核价人 -->
+	<result column="is_value_change" property="isValueChange"/><!-- 价值是否变动（1是，0否） -->
+	<result column="latest_price" property="latestPrice"/><!-- 最新金额 -->
+	<result column="change_remark" property="changeRemark"/><!-- 变动说明 -->
+	<result column="change_time" property="changeTime"/><!-- 变动时间 -->
+	<result column="change_uid" property="changeUid"/><!-- 变动操作人 -->
+	<result column="latest_check" property="latestCheck"/><!-- 最新检查情况 -->
+	<result column="check_time" property="checkTime"/><!-- 检查时间 -->
+	<result column="check_remark" property="checkRemark"/><!-- 检查说明 -->
+	<result column="check_uid" property="checkUid"/><!-- 检查操作人 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="sell_amt" property="sellAmt"/><!-- 处置金额 -->
+	<result column="sell_input_uid" property="sellInputUid"/><!-- 处置录入人 -->
+	<result column="sell_way" property="sellWay"/><!-- 处置渠道 -->
+	<result column="sell_org" property="sellOrg"/><!-- 处置负责部门 -->
+	<result column="sell_remark" property="sellRemark"/><!-- 处置说明 -->
+	<result column="sell_time" property="sellTime"/><!-- 处置时间 -->
+	<result column="create_uid" property="createUid"/><!--  -->
+	<result column="create_time" property="createTime"/><!--  -->
+	<result column="update_uid" property="updateUid"/><!--  -->
+	<result column="update_time" property="updateTime"/><!--  -->
+	<result column="reserve_des" property="reserveDes"/><!-- 保管物品说明 -->
+	
+	<result column="isOrig" property="isOrig"/><!-- 是否是原先申请  -->
+</resultMap>
+       
+<!-- T_COLLATERAL table all fields -->
+<sql id="Column_List" >
+	 id,loan_id,type,var,sizes,remark,car_type,license,car_age,eng_code,mile,frame_code,bill_price,tran_times,pro_date,buy_date,house_property_code,land_code,area,direction,prvn,city,ctry,addr,eval_price,eval_name,eval_remark,is_set,warehouse_id,asset_remark,asset_addr,audit_price_state,audit_price_remark,audit_prifce_time,audit_price_uid,is_value_change,latest_price,change_remark,change_time,change_uid,latest_check,check_time,check_remark,check_uid,state,sell_amt,sell_input_uid,sell_way,sell_org,sell_remark,sell_time,create_uid,create_time,update_uid,update_time,reserve_des
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="loanId != null" >
+	    and loan_id =  #{loanId}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="var != null and var != ''" >
+	    and var =  #{var}
+	</if>
+<if test="size != null and size != ''" >
+	    and sizes =  #{size}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="carType != null and carType != ''" >
+	    and car_type =  #{carType}
+	</if>
+<if test="license != null and license != ''" >
+	    and license =  #{license}
+	</if>
+<if test="carAge != null and carAge != ''" >
+	    and car_age =  #{carAge}
+	</if>
+<if test="engCode != null and engCode != ''" >
+	    and eng_code =  #{engCode}
+	</if>
+<if test="mile != null and mile != ''" >
+	    and mile =  #{mile}
+	</if>
+<if test="frameCode != null and frameCode != ''" >
+	    and frame_code =  #{frameCode}
+	</if>
+<if test="billPrice != null and billPrice != ''" >
+	    and bill_price =  #{billPrice}
+	</if>
+<if test="tranTimes != null and tranTimes != ''" >
+	    and tran_times =  #{tranTimes}
+	</if>
+<if test="proDate != null and proDate != ''" >
+	    and pro_date =  #{proDate}
+	</if>
+<if test="buyDate != null and buyDate != ''" >
+	    and buy_date =  #{buyDate}
+	</if>
+<if test="housePropertyCode != null and housePropertyCode != ''" >
+	    and house_property_code =  #{housePropertyCode}
+	</if>
+<if test="landCode != null and landCode != ''" >
+	    and land_code =  #{landCode}
+	</if>
+<if test="area != null and area != ''" >
+	    and area =  #{area}
+	</if>
+<if test="direction != null and direction != ''" >
+	    and direction =  #{direction}
+	</if>
+<if test="prvn != null and prvn != ''" >
+	    and prvn =  #{prvn}
+	</if>
+<if test="city != null and city != ''" >
+	    and city =  #{city}
+	</if>
+<if test="ctry != null and ctry != ''" >
+	    and ctry =  #{ctry}
+	</if>
+<if test="addr != null and addr != ''" >
+	    and addr =  #{addr}
+	</if>
+<if test="evalPrice != null and evalPrice != ''" >
+	    and eval_price =  #{evalPrice}
+	</if>
+<if test="evalName != null and evalName != ''" >
+	    and eval_name =  #{evalName}
+	</if>
+<if test="evalRemark != null and evalRemark != ''" >
+	    and eval_remark =  #{evalRemark}
+	</if>
+<if test="isSet != null and isSet != ''" >
+	    and is_set =  #{isSet}
+	</if>
+<if test="warehouseId != null and warehouseId != ''" >
+	    and warehouse_id =  #{warehouseId}
+	</if>
+<if test="assetRemark != null and assetRemark != ''" >
+	    and asset_remark =  #{assetRemark}
+	</if>
+<if test="assetAddr != null and assetAddr != ''" >
+	    and asset_addr =  #{assetAddr}
+	</if>
+<if test="auditPriceState != null and auditPriceState != ''" >
+	    and audit_price_state =  #{auditPriceState}
+	</if>
+<if test="auditPriceRemark != null and auditPriceRemark != ''" >
+	    and audit_price_remark =  #{auditPriceRemark}
+	</if>
+<if test="auditPriceTime != null and auditPriceTime != ''" >
+	    and audit_prifce_time =  #{auditPriceTime}
+	</if>
+<if test="auditPriceUid != null and auditPriceUid != ''" >
+	    and audit_price_uid =  #{auditPriceUid}
+	</if>
+<if test="isValueChange != null and isValueChange != ''" >
+	    and is_value_change =  #{isValueChange}
+	</if>
+<if test="latestPrice != null and latestPrice != ''" >
+	    and latest_price =  #{latestPrice}
+	</if>
+<if test="changeRemark != null and changeRemark != ''" >
+	    and change_remark =  #{changeRemark}
+	</if>
+<if test="changeTime != null and changeTime != ''" >
+	    and change_time =  #{changeTime}
+	</if>
+<if test="changeUid != null and changeUid != ''" >
+	    and change_uid =  #{changeUid}
+	</if>
+<if test="latestCheck != null and latestCheck != ''" >
+	    and latest_check =  #{latestCheck}
+	</if>
+<if test="checkTime != null and checkTime != ''" >
+	    and check_time =  #{checkTime}
+	</if>
+<if test="checkRemark != null and checkRemark != ''" >
+	    and check_remark =  #{checkRemark}
+	</if>
+<if test="checkUid != null and checkUid != ''" >
+	    and check_uid =  #{checkUid}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="sellAmt != null and sellAmt != ''" >
+	    and sell_amt =  #{sellAmt}
+	</if>
+<if test="sellInputUid != null and sellInputUid != ''" >
+	    and sell_input_uid =  #{sellInputUid}
+	</if>
+<if test="sellWay != null and sellWay != ''" >
+	    and sell_way =  #{sellWay}
+	</if>
+<if test="sellOrg != null and sellOrg != ''" >
+	    and sell_org =  #{sellOrg}
+	</if>
+<if test="sellRemark != null and sellRemark != ''" >
+	    and sell_remark =  #{sellRemark}
+	</if>
+<if test="sellTime != null and sellTime != ''" >
+	    and sell_time =  #{sellTime}
+	</if>
+<if test="createUid != null and createUid != ''" >
+	    and create_uid =  #{createUid}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateUid != null and updateUid != ''" >
+	    and update_uid =  #{updateUid}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_COLLATERAL_SEQ') From dual -->
+			Select T_COLLATERAL_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_COLLATERAL(id,loan_id,type,var,sizes,remark,car_type,license,car_age,eng_code,mile,frame_code,bill_price,tran_times,pro_date,buy_date,house_property_code,land_code,area,direction,prvn,city,ctry,addr,eval_price,eval_name,eval_remark,is_set,warehouse_id,asset_remark,asset_addr,audit_price_state,audit_price_remark,audit_prifce_time,audit_price_uid,is_value_change,latest_price,change_remark,change_time,change_uid,latest_check,check_time,check_remark,check_uid,state,sell_amt,sell_input_uid,sell_way,sell_org,sell_remark,sell_time,create_uid,create_time,update_uid,update_time,reserve_des)
+ values( #{id, jdbcType=INTEGER},#{loanId, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{var, jdbcType=VARCHAR},#{size, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{carType, jdbcType=VARCHAR},#{license, jdbcType=VARCHAR},#{carAge, jdbcType=VARCHAR},#{engCode, jdbcType=VARCHAR},#{mile, jdbcType=VARCHAR},#{frameCode, jdbcType=VARCHAR},#{billPrice, jdbcType=DOUBLE},#{tranTimes, jdbcType=VARCHAR},#{proDate, jdbcType=DATE},#{buyDate, jdbcType=DATE},#{housePropertyCode, jdbcType=VARCHAR},#{landCode, jdbcType=VARCHAR},#{area, jdbcType=VARCHAR},#{direction, jdbcType=VARCHAR},#{prvn, jdbcType=VARCHAR},#{city, jdbcType=VARCHAR},#{ctry, jdbcType=VARCHAR},#{addr, jdbcType=VARCHAR},#{evalPrice, jdbcType=DOUBLE},#{evalName, jdbcType=VARCHAR},#{evalRemark, jdbcType=VARCHAR},#{isSet, jdbcType=VARCHAR},#{warehouseId, jdbcType=INTEGER},#{assetRemark, jdbcType=VARCHAR},#{assetAddr, jdbcType=VARCHAR},#{auditPriceState, jdbcType=VARCHAR},#{auditPriceRemark, jdbcType=VARCHAR},#{auditPriceTime, jdbcType=TIMESTAMP},#{auditPriceUid, jdbcType=VARCHAR},#{isValueChange, jdbcType=VARCHAR},#{latestPrice, jdbcType=DOUBLE},#{changeRemark, jdbcType=VARCHAR},#{changeTime, jdbcType=TIMESTAMP},#{changeUid, jdbcType=VARCHAR},#{latestCheck, jdbcType=VARCHAR},#{checkTime, jdbcType=TIMESTAMP},#{checkRemark, jdbcType=VARCHAR},#{checkUid, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{sellAmt, jdbcType=DOUBLE},#{sellInputUid, jdbcType=VARCHAR},#{sellWay, jdbcType=VARCHAR},#{sellOrg, jdbcType=VARCHAR},#{sellRemark, jdbcType=VARCHAR},#{sellTime, jdbcType=TIMESTAMP},#{createUid, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateUid, jdbcType=VARCHAR},#{updateTime, jdbcType=TIMESTAMP},#{reserveDes, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_COLLATERAL set 
+	<trim  suffixOverrides="," >
+	loan_id =  #{loanId, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	var =  #{var, jdbcType=VARCHAR},
+	sizes =  #{size, jdbcType=VARCHAR},
+	remark =  #{remark, jdbcType=VARCHAR},
+	car_type =  #{carType, jdbcType=VARCHAR},
+	license =  #{license, jdbcType=VARCHAR},
+	car_age =  #{carAge, jdbcType=VARCHAR},
+	eng_code =  #{engCode, jdbcType=VARCHAR},
+	mile =  #{mile, jdbcType=VARCHAR},
+	frame_code =  #{frameCode, jdbcType=VARCHAR},
+	bill_price =  #{billPrice, jdbcType=DOUBLE},
+	tran_times =  #{tranTimes, jdbcType=VARCHAR},
+	pro_date =  #{proDate, jdbcType=DATE},
+	buy_date =  #{buyDate, jdbcType=DATE},
+	house_property_code =  #{housePropertyCode, jdbcType=VARCHAR},
+	land_code =  #{landCode, jdbcType=VARCHAR},
+	area =  #{area, jdbcType=VARCHAR},
+	direction =  #{direction, jdbcType=VARCHAR},
+	prvn =  #{prvn, jdbcType=VARCHAR},
+	city =  #{city, jdbcType=VARCHAR},
+	ctry =  #{ctry, jdbcType=VARCHAR},
+	addr =  #{addr, jdbcType=VARCHAR},
+	eval_price =  #{evalPrice, jdbcType=DOUBLE},
+	eval_name =  #{evalName, jdbcType=VARCHAR},
+	eval_remark =  #{evalRemark, jdbcType=VARCHAR},
+	is_set =  #{isSet, jdbcType=VARCHAR},
+	warehouse_id =  #{warehouseId, jdbcType=INTEGER},
+	asset_remark =  #{assetRemark, jdbcType=VARCHAR},
+	asset_addr =  #{assetAddr, jdbcType=VARCHAR},
+	audit_price_state =  #{auditPriceState, jdbcType=VARCHAR},
+	audit_price_remark =  #{auditPriceRemark, jdbcType=VARCHAR},
+	audit_prifce_time =  #{auditPriceTime, jdbcType=TIMESTAMP},
+	audit_price_uid =  #{auditPriceUid, jdbcType=VARCHAR},
+	is_value_change =  #{isValueChange, jdbcType=VARCHAR},
+	latest_price =  #{latestPrice, jdbcType=DOUBLE},
+	change_remark =  #{changeRemark, jdbcType=VARCHAR},
+	change_time =  #{changeTime, jdbcType=TIMESTAMP},
+	change_uid =  #{changeUid, jdbcType=VARCHAR},
+	latest_check =  #{latestCheck, jdbcType=VARCHAR},
+	check_time =  #{checkTime, jdbcType=TIMESTAMP},
+	check_remark =  #{checkRemark, jdbcType=VARCHAR},
+	check_uid =  #{checkUid, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	sell_amt =  #{sellAmt, jdbcType=DOUBLE},
+	sell_input_uid =  #{sellInputUid, jdbcType=VARCHAR},
+	sell_way =  #{sellWay, jdbcType=VARCHAR},
+	sell_org =  #{sellOrg, jdbcType=VARCHAR},
+	sell_remark =  #{sellRemark, jdbcType=VARCHAR},
+	sell_time =  #{sellTime, jdbcType=TIMESTAMP},
+	create_uid =  #{createUid, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_uid =  #{updateUid, jdbcType=VARCHAR},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	reserve_des =  #{reserveDes, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_COLLATERAL  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_COLLATERAL set 
+	<trim  suffixOverrides="," >
+
+	<if test="loanId != null and loanId != '' " >
+	    loan_id =  #{loanId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="type != null and type != '' " >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+
+	<if test="var != null and var != '' " >
+	    var =  #{var, jdbcType=VARCHAR},
+	</if>
+
+	<if test="size != null and size != '' " >
+	    sizes =  #{size, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="carType != null and carType != '' " >
+	    car_type =  #{carType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="license != null and license != '' " >
+	    license =  #{license, jdbcType=VARCHAR},
+	</if>
+
+	<if test="carAge != null and carAge != '' " >
+	    car_age =  #{carAge, jdbcType=VARCHAR},
+	</if>
+
+	<if test="engCode != null and engCode != '' " >
+	    eng_code =  #{engCode, jdbcType=VARCHAR},
+	</if>
+
+	<if test="mile != null and mile != '' " >
+	    mile =  #{mile, jdbcType=VARCHAR},
+	</if>
+
+	<if test="frameCode != null and frameCode != '' " >
+	    frame_code =  #{frameCode, jdbcType=VARCHAR},
+	</if>
+
+	<if test="billPrice != null and billPrice != ''  or billPrice==0" >
+	    bill_price =  #{billPrice, jdbcType=DOUBLE},
+	</if>
+
+	<if test="tranTimes != null and tranTimes != '' " >
+	    tran_times =  #{tranTimes, jdbcType=VARCHAR},
+	</if>
+
+	<if test="proDate != null and proDate != '' " >
+	    pro_date =  #{proDate, jdbcType=DATE},
+	</if>
+
+	<if test="buyDate != null and buyDate != '' " >
+	    buy_date =  #{buyDate, jdbcType=DATE},
+	</if>
+
+	<if test="housePropertyCode != null and housePropertyCode != '' " >
+	    house_property_code =  #{housePropertyCode, jdbcType=VARCHAR},
+	</if>
+
+	<if test="landCode != null and landCode != '' " >
+	    land_code =  #{landCode, jdbcType=VARCHAR},
+	</if>
+
+	<if test="area != null and area != '' " >
+	    area =  #{area, jdbcType=VARCHAR},
+	</if>
+
+	<if test="direction != null and direction != '' " >
+	    direction =  #{direction, jdbcType=VARCHAR},
+	</if>
+
+	<if test="prvn != null and prvn != '' " >
+	    prvn =  #{prvn, jdbcType=VARCHAR},
+	</if>
+
+	<if test="city != null and city != '' " >
+	    city =  #{city, jdbcType=VARCHAR},
+	</if>
+
+	<if test="ctry != null and ctry != '' " >
+	    ctry =  #{ctry, jdbcType=VARCHAR},
+	</if>
+
+	<if test="addr != null and addr != '' " >
+	    addr =  #{addr, jdbcType=VARCHAR},
+	</if>
+
+	<if test="evalPrice != null and evalPrice != ''  or evalPrice==0" >
+	    eval_price =  #{evalPrice, jdbcType=DOUBLE},
+	</if>
+
+	<if test="evalName != null and evalName != '' " >
+	    eval_name =  #{evalName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="evalRemark != null and evalRemark != '' " >
+	    eval_remark =  #{evalRemark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="isSet != null and isSet != '' " >
+	    is_set =  #{isSet, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="warehouseId != null and warehouseId != ''  or warehouseId==0" >
+	    warehouse_id =  #{warehouseId, jdbcType=INTEGER},
+	</if>
+
+	<if test="assetRemark != null and assetRemark != '' " >
+	    asset_remark =  #{assetRemark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="assetAddr != null and assetAddr != '' " >
+	    asset_addr =  #{assetAddr, jdbcType=VARCHAR},
+	</if>
+
+	<if test="auditPriceState != null and auditPriceState != '' " >
+	    audit_price_state =  #{auditPriceState, jdbcType=VARCHAR},
+	</if>
+
+	<if test="auditPriceRemark != null and auditPriceRemark != '' " >
+	    audit_price_remark =  #{auditPriceRemark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="auditPriceTime != null and auditPriceTime != '' " >
+	    audit_prifce_time =  #{auditPriceTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="auditPriceUid != null and auditPriceUid != '' " >
+	    audit_price_uid =  #{auditPriceUid, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="isValueChange != null and isValueChange != '' " >
+	    is_value_change =  #{isValueChange, jdbcType=VARCHAR},
+	</if>
+
+	<if test="latestPrice != null and latestPrice != ''  or latestPrice==0" >
+	    latest_price =  #{latestPrice, jdbcType=DOUBLE},
+	</if>
+
+	<if test="changeRemark != null and changeRemark != '' " >
+	    change_remark =  #{changeRemark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="changeTime != null and changeTime != '' " >
+	    change_time =  #{changeTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="changeUid != null and changeUid != '' " >
+	    change_uid =  #{changeUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="latestCheck != null and latestCheck != '' " >
+	    latest_check =  #{latestCheck, jdbcType=VARCHAR},
+	</if>
+
+	<if test="checkTime != null and checkTime != '' " >
+	    check_time =  #{checkTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="checkRemark != null and checkRemark != '' " >
+	    check_remark =  #{checkRemark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="checkUid != null and checkUid != '' " >
+	    check_uid =  #{checkUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="sellAmt != null and sellAmt != ''  or sellAmt==0" >
+	    sell_amt =  #{sellAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="sellInputUid != null and sellInputUid != '' " >
+	    sell_input_uid =  #{sellInputUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="sellWay != null and sellWay != '' " >
+	    sell_way =  #{sellWay, jdbcType=VARCHAR},
+	</if>
+
+	<if test="sellOrg != null and sellOrg != '' " >
+	    sell_org =  #{sellOrg, jdbcType=VARCHAR},
+	</if>
+
+	<if test="sellRemark != null and sellRemark != '' " >
+	    sell_remark =  #{sellRemark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="sellTime != null and sellTime != '' " >
+	    sell_time =  #{sellTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="createUid != null and createUid != '' " >
+	    create_uid =  #{createUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateUid != null and updateUid != '' " >
+	    update_uid =  #{updateUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	
+	<if test="reserveDes != null and reserveDes != '' " >
+		reserve_des =  #{reserveDes, jdbcType=VARCHAR},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 更新核价信息 -->
+<update id="updatePriceInfo" parameterType="Object" >
+	update T_COLLATERAL set 
+	<trim  suffixOverrides="," >
+	    audit_price_state =  #{auditPriceState, jdbcType=VARCHAR},
+	    audit_price_remark =  #{auditPriceRemark, jdbcType=VARCHAR},
+	    audit_prifce_time =  #{auditPriceTime, jdbcType=TIMESTAMP},
+	    audit_price_uid =  #{auditPriceUid, jdbcType=VARCHAR},
+	    <if test="updateUid != null and updateUid != '' " >
+		    update_uid =  #{updateUid, jdbcType=VARCHAR},
+		</if>
+		<if test="updateTime != null and updateTime != '' " >
+		    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+		</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 质押、抵押物信息 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_COLLATERAL  where id = #{id}
+</select>
+
+<!-- 质押、抵押物信息 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_COLLATERAL 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询质押、抵押物信息列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_COLLATERAL 
+	<include refid="Where_Clause"/>
+</select>
+
+<!-- 根据loanId查找 -->
+<select id="queryListByLoanId" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	,'0' AS isOrig
+	from T_COLLATERAL 
+	WHERE 1=1
+	AND loan_id =  #{loanId}
+	<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+	<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+	
+	<!-- 续贷查询原来申请的抵押物信息 -->
+	<if test="origLoanId != null">
+		UNION
+		select 
+		<include refid="Column_List"/>
+		,'1' AS isOrig
+		from T_COLLATERAL 
+		WHERE 1=1 
+		AND loan_id IN 
+		(
+			SELECT LOAN_ID FROM T_LOAN_BASE WHERE LOAN_ID = #{origLoanId}
+			UNION
+			SELECT LOAN_ID FROM T_LOAN_BASE WHERE ORIG_LOAN_ID = #{origLoanId} AND LOAN_ID != #{loanId}
+		) 
+		<if test="type != null and type != ''" >
+		    and type =  #{type}
+		</if>
+		<if test="state != null and state != ''" >
+	    and state =  #{state}
+		</if>
+	</if>
+		ORDER BY ID
+</select>
+
+</mapper>   

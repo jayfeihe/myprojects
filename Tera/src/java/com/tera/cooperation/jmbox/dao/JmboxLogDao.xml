@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.cooperation.jmbox.dao.JmboxLogDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.cooperation.jmbox.model.JmboxLog" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="contract_no" property="contractNo"/><!-- 合同号 -->
+	<result column="type" property="type"/><!-- 类型 -->
+	<result column="jm_project_id" property="jmProjectId"/><!-- 融资项目ID -->
+	<result column="jm_chinese_name" property="jmChineseName"/><!-- 融资客户名 -->
+	<result column="jm_identity_number" property="jmIdentityNumber"/><!-- 融资客户身份证号码 -->
+	<result column="jm_status" property="jmStatus"/><!-- 结果状态 -->
+	<result column="jm_message" property="jmMessage"/><!-- 结果信息 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+
+<!-- <resultMap id="resultDCInfo" type="com.tera.cooperation.jmbox.model.form.DefaultCustomersInfo" >
+	<result column="projectId" property="projectId"/>ID
+</resultMap> -->
+
+<!-- T_JMBOX_LOG table all fields -->
+<sql id="Column_List" >
+	 id,app_id,contract_no,type,jm_project_id,jm_chinese_name,jm_identity_number,jm_status,jm_message,operator,org_id,state,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="contractNo != null and contractNo != ''" >
+	    and contract_no =  #{contractNo}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="jmProjectId != null and jmProjectId != ''" >
+	    and jm_project_id =  #{jmProjectId}
+	</if>
+<if test="jmChineseName != null and jmChineseName != ''" >
+	    and jm_chinese_name =  #{jmChineseName}
+	</if>
+<if test="jmIdentityNumber != null and jmIdentityNumber != ''" >
+	    and jm_identity_number =  #{jmIdentityNumber}
+	</if>
+<if test="jmStatus != null and jmStatus != ''" >
+	    and jm_status =  #{jmStatus}
+	</if>
+<if test="jmMessage != null and jmMessage != ''" >
+	    and jm_message =  #{jmMessage}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_JMBOX_LOG_SEQ') From dual
+			<!-- Select T_JMBOX_LOG_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_JMBOX_LOG(id,app_id,contract_no,type,jm_project_id,jm_chinese_name,jm_identity_number,jm_status,jm_message,operator,org_id,state,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{contractNo, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{jmProjectId, jdbcType=VARCHAR},#{jmChineseName, jdbcType=VARCHAR},#{jmIdentityNumber, jdbcType=VARCHAR},#{jmStatus, jdbcType=VARCHAR},#{jmMessage, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_JMBOX_LOG set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	contract_no =  #{contractNo, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	jm_project_id =  #{jmProjectId, jdbcType=VARCHAR},
+	jm_chinese_name =  #{jmChineseName, jdbcType=VARCHAR},
+	jm_identity_number =  #{jmIdentityNumber, jdbcType=VARCHAR},
+	jm_status =  #{jmStatus, jdbcType=VARCHAR},
+	jm_message =  #{jmMessage, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_JMBOX_LOG  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_JMBOX_LOG set 
+	<trim  suffixOverrides="," >
+
+	<if test="appId != null and appId != '' " >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractNo != null and contractNo != '' " >
+	    contract_no =  #{contractNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="type != null and type != '' " >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+
+	<if test="jmProjectId != null and jmProjectId != '' " >
+	    jm_project_id =  #{jmProjectId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="jmChineseName != null and jmChineseName != '' " >
+	    jm_chinese_name =  #{jmChineseName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="jmIdentityNumber != null and jmIdentityNumber != '' " >
+	    jm_identity_number =  #{jmIdentityNumber, jdbcType=VARCHAR},
+	</if>
+
+	<if test="jmStatus != null and jmStatus != '' " >
+	    jm_status =  #{jmStatus, jdbcType=VARCHAR},
+	</if>
+
+	<if test="jmMessage != null and jmMessage != '' " >
+	    jm_message =  #{jmMessage, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operator != null and operator != '' " >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 积木盒子交互日志表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_JMBOX_LOG  where id = #{id}
+</select>
+
+<!-- 积木盒子交互日志表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_JMBOX_LOG 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询积木盒子交互日志表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_JMBOX_LOG 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	<!-- 积木盒子交互日志表 列表总数-->
+<select id="getDefaultCustomersCount" resultType="java.lang.Integer"  parameterType="map">
+SELECT  COUNT(1)
+FROM t_contract t 
+WHERE t.CHANNEL_TYPE = 'JM' 
+		AND EXISTS(
+				SELECT 1 
+					FROM t_loan_repay_plan a 
+					WHERE a.CONTRACT_NO = t.CONTRACT_NO 
+							AND a.PENALTY_RECEIVABLE > 0 
+							AND a.state IN('1','3') )
+</select>
+  	
+<!-- 查询积木盒子交互日志表列表 -->
+<select id="getDefaultCustomersList" resultType="com.tera.cooperation.jmbox.model.form.DefaultCustomersInfo"  parameterType="map">
+
+SELECT 
+	t.CHANNEL_KEY_ID projectId,
+	t.LOAN_NAME customerName,
+	t.LOAN_ID_NO idCard,
+	<![CDATA[
+	(SELECT SUM(PRINCIPAL_RECEIVABLE-PRINCIPAL_RECEIVED) FROM t_loan_repay_plan a 
+	WHERE a.CONTRACT_NO = t.CONTRACT_NO AND a.repayment_date <= NOW()) moneyOverDue,
+	(SELECT SUM(INTEREST_RECEIVABLE-INTEREST_RECEIVED) FROM t_loan_repay_plan a 
+	WHERE a.CONTRACT_NO = t.CONTRACT_NO AND a.repayment_date <= NOW()) interestOverDue,
+	(SELECT (SELECT SUM(PRINCIPAL_RECEIVABLE) FROM t_loan_repay_plan b WHERE  b.CONTRACT_NO = t.CONTRACT_NO) -SUM(PRINCIPAL_RECEIVED) FROM t_loan_repay_plan a 
+	WHERE a.CONTRACT_NO = t.CONTRACT_NO AND a.repayment_date <= NOW()) moneyLeave,
+	(SELECT MIN(repayment_date) FROM t_loan_repay_plan a 
+	WHERE a.CONTRACT_NO = t.CONTRACT_NO AND a.repayment_date <= NOW() AND a.state IN('1','3')) payDate,
+	(SELECT MAX(PAY_DATE) FROM t_loan_repay_plan a 
+	WHERE a.CONTRACT_NO = t.CONTRACT_NO AND a.repayment_date <= NOW()) loanBackDate,
+	(SELECT MAX(DATEDIFF(CURDATE(),a.repayment_date)) FROM t_loan_repay_plan a 
+	WHERE a.CONTRACT_NO = t.CONTRACT_NO AND a.repayment_date <= NOW() AND a.state IN('1','3')) dueDays,
+	'' reason,
+	(SELECT COUNT(*) FROM t_loan_repay_plan a 
+	WHERE a.CONTRACT_NO = t.CONTRACT_NO AND a.repayment_date <= NOW() AND PENALTY_RECEIVABLE > 0 ) overdueNumber
+  FROM t_contract t 
+  WHERE t.CHANNEL_TYPE = 'JM' AND EXISTS(
+										SELECT 1 FROM t_loan_repay_plan a 
+											WHERE a.CONTRACT_NO = t.CONTRACT_NO AND a.PENALTY_RECEIVABLE > 0 AND a.state IN('1','3') )
+	]]>  
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+</mapper>   

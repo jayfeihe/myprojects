@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.car.dao.CarRepeatDetailDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.car.model.CarRepeatDetail" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="repeat_app_id" property="repeatAppId"/><!-- 重复申请ID -->
+	<result column="type" property="type"/><!-- 类型 -->
+	<result column="value" property="value"/><!-- 值 -->
+	<result column="comment" property="comment"/><!-- 备注 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_CAR_REPEAT_DETAIL table all fields -->
+<sql id="Column_List" >
+	 id,app_id,repeat_app_id,type,value,comment,state,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="repeatAppId != null and repeatAppId != ''" >
+	    and repeat_app_id =  #{repeatAppId}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="value != null and value != ''" >
+	    and value =  #{value}
+	</if>
+<if test="comment != null and comment != ''" >
+	    and comment =  #{comment}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_CAR_REPEAT_DETAIL_SEQ') From dual
+			<!-- Select T_CAR_REPEAT_DETAIL_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_CAR_REPEAT_DETAIL(id,app_id,repeat_app_id,type,value,comment,state,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{repeatAppId, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{value, jdbcType=VARCHAR},#{comment, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_CAR_REPEAT_DETAIL set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	repeat_app_id =  #{repeatAppId, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	value =  #{value, jdbcType=VARCHAR},
+	comment =  #{comment, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_CAR_REPEAT_DETAIL  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_CAR_REPEAT_DETAIL set 
+	<trim  suffixOverrides="," >
+	<if test="appId != null and appId != ''" >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+	<if test="repeatAppId != null and repeatAppId != ''" >
+	    repeat_app_id =  #{repeatAppId, jdbcType=VARCHAR},
+	</if>
+	<if test="type != null and type != ''" >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+	<if test="value != null and value != ''" >
+	    value =  #{value, jdbcType=VARCHAR},
+	</if>
+	<if test="comment != null and comment != ''" >
+	    comment =  #{comment, jdbcType=VARCHAR},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 信用贷款申请查重信息详细表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CAR_REPEAT_DETAIL  where id = #{id}
+</select>
+
+<!-- 信用贷款申请查重信息详细表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CAR_REPEAT_DETAIL 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询信用贷款申请查重信息详细表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_CAR_REPEAT_DETAIL 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 查询信用贷款申请查重信息概要列表 -->
+<select id="queryListGroupBy" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_CAR_REPEAT_DETAIL 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+    GROUP BY VALUE
+</select>
+ 
+<!-- 根据 身份正 查询 重复信息 -->
+<select id="repeatQueryByNoId" resultMap="ResultMap"  parameterType="map">
+SELECT a.`APP_ID` repeat_app_id,
+CONCAT('身份证号[',#{idNo},']与申请(APP_ID:',a.`APP_ID`,')重复') COMMENT
+	<if test="idNo != null and idNo != ''" >
+	 ,#{idNo} VALUE
+	</if>
+	<if test="appId != null and appId != ''" >
+	  ,#{appId} APP_ID
+	</if>
+	<if test="type != null and type != ''" >
+	  ,#{type} TYPE
+	</if>
+	FROM T_CAR_APP a 
+	WHERE 1=1
+	<if test="appId != null and appId != ''" >
+	   AND a.`APP_ID` !=#{appId}
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	  AND a.`ID_NO`=#{idNo}
+	</if>
+</select>
+
+<!-- 根据 联系方式 查询 重复信息 -->
+<select id="repeatQueryByContact" resultMap="ResultMap"  parameterType="map">
+SELECT a.`APP_ID` REPEAT_APP_ID,
+CONCAT('当前号码与申请(APP_ID:',a.`APP_ID`,
+CASE WHEN a.`TYPE`='01' THEN ')的本人手机重复'
+WHEN a.`TYPE`='02' THEN ')的家庭固化重复'
+WHEN a.`TYPE`='03' THEN ')的单位电话重复'
+WHEN a.`TYPE`='04' THEN ')的联系人重复'
+ELSE'' END ) COMMENT,a.PHONE VALUE
+	<if test="appId != null and appId != ''" >
+	  ,#{appId} APP_ID
+	</if>
+	<if test="type != null and type != ''" >
+	  ,#{type} TYPE
+	</if>
+	FROM T_CAR_INTERVIEW a 
+	WHERE a.STATE='1'
+	<if test="appId != null and appId != ''" >
+	   AND a.APP_ID !=#{appId}
+	</if>
+	<if test="contacts != null and contacts.length!=0" >
+	   AND a.PHONE in
+	  <foreach item="item" index="index" collection="contacts" open="(" separator="," close=")">
+	   #{item}
+	  </foreach>
+	</if>
+</select>
+
+<!-- 根据 KEY Value  查询 申请表与面审表 的重复信息 -->
+<select id="repeatQueryByKeyValue" resultMap="ResultMap"  parameterType="map">
+SELECT *FROM (
+	SELECT i.`APP_ID` repeat_app_id,
+CONCAT(
+<if test="address != null and address != ''" >'居住地址',</if>
+<if test="comAddress != null and comAddress != ''" >'单位地址',</if>
+<if test="comName != null and comName != ''" >'单位名称',</if>
+'与申请(APP_ID:',i.`APP_ID`,')重复') COMMENT
+<if test="address != null and address != ''" >,'${address}' VALUE</if>
+<if test="comAddress != null and comAddress != ''" >,'${comAddress}' VALUE</if>
+<if test="comName != null and comName != ''" >,'${comName}' VALUE</if>
+<if test="appId != null and appId != ''" >
+  ,#{appId} APP_ID
+</if>
+<if test="type != null and type != ''" >
+  ,#{type} TYPE
+</if>
+FROM T_CAR_INTERVIEW i WHERE  i.STATE='1'
+	<if test="appId != null and appId != ''" >
+	  AND i.APP_ID !=#{appId}
+	</if>
+	<if test="address != null and address != ''" >
+		AND i.`ADDRESS`=#{address} AND i.`ADDRESS_FLAG`='0'
+	</if>
+	<if test="comAddress != null and comAddress != ''" >
+		 AND i.`COM_ADDRESS`=#{comAddress} AND i.`COM_ADDRESS_FLAG`='0'
+	</if>
+	<if test="comName != null and comName != ''" >
+		AND i.`COM_NAME`=#{comName} AND i.`COM_NAME_FLAG`='0'
+	</if>
+UNION
+SELECT a.`APP_ID` repeat_app_id,
+CONCAT(
+<if test="address != null and address != ''" >'居住地址',</if>
+<if test="comAddress != null and comAddress != ''" >'单位地址',</if>
+<if test="comName != null and comName != ''" >'单位名称',</if>
+'与申请(APP_ID:',a.`APP_ID`,')重复') COMMENT
+<if test="address != null and address != ''" >,'${address}' VALUE</if>
+<if test="comAddress != null and comAddress != ''" >,'${comAddress}' VALUE</if>
+<if test="comName != null and comName != ''" >,'${comName}' VALUE</if>
+<if test="appId != null and appId != ''" >
+  ,#{appId} APP_ID
+</if>
+<if test="type != null and type != ''" >
+  ,#{type} TYPE
+</if>
+FROM T_CAR_APP a WHERE  1=1
+	<if test="appId != null and appId != ''" >
+	  AND a.`APP_ID` !=#{appId}
+	</if>
+	<if test="address != null and address != ''" >
+		AND a.`ADDRESS`=#{address}
+	</if>
+	<if test="comAddress != null and comAddress != ''" >
+		AND a.`COM_ADDRESS`=#{comAddress}
+	</if>
+	<if test="comName != null and comName != ''" >
+		AND a.`COM_NAME`=#{comName}
+	</if>
+) crd
+</select>
+
+
+
+<!-- 删除记录 根据申请ID清空 当前申请的 重复记录 -->
+<delete id="deleteByAppId" parameterType="string">
+	delete from T_CAR_REPEAT_DETAIL  where APP_ID = #{value}
+</delete>
+
+
+
+
+
+
+
+
+</mapper>   

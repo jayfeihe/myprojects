@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.report.dao.BranchStockDao">
+
+	<select id="queryList" parameterType="map" resultType="com.tera.report.model.BranchStockQBean">
+		SELECT 
+			T.ORG_ID AS orgId,            <!-- 机构id -->
+			(SELECT O.ORG_NAME FROM T_ORG O WHERE O.ORG_ID = T.ORG_ID) AS orgName,   <!-- 机构名称 -->
+			T.PRODUCT AS product,         <!-- 产品 -->
+			(SELECT d.KEY_VALUE FROM t_data_dictionary d WHERE T.PRODUCT = d.KEY_PROP AND d.KEY_NAME = 'productType') AS productName,<!-- 产品名称 -->
+			T.NOR_NUM AS noExpireNum,     <!-- 未到期未收回笔数 -->
+			T.NOR_AMT AS noExpireAmt,     <!-- 未到期未收回金额-->
+			T.OVER_NUM AS expireNum,      <!-- 到期未收回笔数 -->
+			T.OVER_AMT AS expireAmt,      <!-- 到期未收回金额-->
+			T.ALL_NUM AS totalNum,        <!-- 总笔数-->
+			T.ALL_AMT AS totalAmt,        <!-- 总金额-->
+			T.TRAN_NUM AS tranNum,        <!-- 转贷笔数-->
+			T.TRAN_AMT AS tranAmt,        <!-- 转贷金额-->
+			T.TRAN_RATE AS tranRate,      <!-- 转贷比-->
+			T.TRAN_FEW_AMT AS low3Amt,    <!-- 转贷次数小于等于3次的金额-->
+			T.TRAN_MORE_AMT AS high3Amt   <!-- 转贷次数大于3次的金额-->
+		FROM T_REPORT_ACCT T
+		
+		<where>
+			1=1
+			<if test="createDate != null and createDate != ''">
+				AND TO_CHAR(T.CREATE_DATE,'yyyy-mm-dd') = #{createDate}
+			</if>
+			<if test="orgId != null and orgId != ''">
+				AND T.ORG_ID LIKE CONCAT(#{orgId},'%')
+			</if>
+			<!--机构权限限制  -->
+			<if test="orgs != null and orgs.size() >0 " >
+			and t.org_id in
+			                <foreach item="item" index="index" collection="orgs" open="(" separator="," close=")">
+									#{item}
+							</foreach>	
+	</if>
+		</where>
+		ORDER BY T.ORG_ID
+	</select>
+	
+</mapper>

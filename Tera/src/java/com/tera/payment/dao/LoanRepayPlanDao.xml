@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.payment.dao.LoanRepayPlanDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.payment.model.LoanRepayPlan" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="contract_no" property="contractNo"/><!-- 合同号 -->
+	<result column="repay_method" property="repayMethod"/><!-- 还款方式 -->
+	<result column="repayment_date" property="repaymentDate"/><!-- 还款日 -->
+	<result column="start_date" property="startDate"/><!-- 开始日期 -->
+	<result column="end_date" property="endDate"/><!-- 结束日期 -->
+	<result column="period_num" property="periodNum"/><!-- 期数 -->
+	<result column="srevice_fee_receivable" property="sreviceFeeReceivable"/><!-- 当月应收服务费 -->
+	<result column="srevice_fee_received" property="sreviceFeeReceived"/><!-- 当月实收服务费 -->
+	<result column="interest_receivable" property="interestReceivable"/><!-- 当月应收利息 -->
+	<result column="interest_received" property="interestReceived"/><!-- 当月实收利息 -->
+	<result column="principal_receivable" property="principalReceivable"/><!-- 当月应收本金 -->
+	<result column="principal_received" property="principalReceived"/><!-- 当月实收本金 -->
+	<result column="penalty_receivable" property="penaltyReceivable"/><!-- 当月应收罚息 -->
+	<result column="penalty_received" property="penaltyReceived"/><!-- 当月实收罚息 -->
+	<result column="default_receivable" property="defaultReceivable"/><!-- 当月应收违约金 -->
+	<result column="default_received" property="defaultReceived"/><!-- 当月实收违约金 -->
+	<result column="delay_receivable" property="delayReceivable"/><!-- 应收滞纳金 -->
+	<result column="delay_received" property="delayReceived"/><!-- 实收滞纳金 -->
+	<result column="rest_principal" property="restPrincipal"/><!-- 剩余本金 -->
+	<result column="penalty_reduce" property="penaltyReduce"/><!-- 罚息减免 -->
+	<result column="delay_reduce" property="delayReduce"/><!-- 滞纳金减免 -->
+	<result column="pay_date" property="payDate"/><!-- 实际还款日期 -->
+	<result column="default_flag" property="defaultFlag"/><!-- 违约记账标志 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_LOAN_REPAY_PLAN table all fields -->
+<sql id="Column_List" >
+	 id,contract_no,repay_method,repayment_date,start_date,end_date,period_num,srevice_fee_receivable,srevice_fee_received,interest_receivable,interest_received,principal_receivable,principal_received,penalty_receivable,penalty_received,default_receivable,default_received,delay_receivable,delay_received,rest_principal,penalty_reduce,delay_reduce,pay_date,default_flag,state,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="contractNo != null and contractNo != ''" >
+	    and contract_no =  #{contractNo}
+	</if>
+<if test="repayMethod != null and repayMethod != ''" >
+	    and repay_method =  #{repayMethod}
+	</if>
+<if test="repaymentDate != null and repaymentDate != ''" >
+	    and repayment_date =  #{repaymentDate}
+	</if>
+<if test="startDate != null and startDate != ''" >
+	    and start_date =  #{startDate}
+	</if>
+<if test="endDate != null and endDate != ''" >
+	    and end_date =  #{endDate}
+	</if>
+<if test="periodNum != null and periodNum != ''" >
+	    and period_num =  #{periodNum}
+	</if>
+<if test="sreviceFeeReceivable != null and sreviceFeeReceivable != ''" >
+	    and srevice_fee_receivable =  #{sreviceFeeReceivable}
+	</if>
+<if test="sreviceFeeReceived != null and sreviceFeeReceived != ''" >
+	    and srevice_fee_received =  #{sreviceFeeReceived}
+	</if>
+<if test="interestReceivable != null and interestReceivable != ''" >
+	    and interest_receivable =  #{interestReceivable}
+	</if>
+<if test="interestReceived != null and interestReceived != ''" >
+	    and interest_received =  #{interestReceived}
+	</if>
+<if test="principalReceivable != null and principalReceivable != ''" >
+	    and principal_receivable =  #{principalReceivable}
+	</if>
+<if test="principalReceived != null and principalReceived != ''" >
+	    and principal_received =  #{principalReceived}
+	</if>
+<if test="penaltyReceivable != null and penaltyReceivable != ''" >
+	    and penalty_receivable =  #{penaltyReceivable}
+	</if>
+<if test="penaltyReceived != null and penaltyReceived != ''" >
+	    and penalty_received =  #{penaltyReceived}
+	</if>
+<if test="defaultReceivable != null and defaultReceivable != ''" >
+	    and default_receivable =  #{defaultReceivable}
+	</if>
+<if test="defaultReceived != null and defaultReceived != ''" >
+	    and default_received =  #{defaultReceived}
+	</if>
+<if test="delayReceivable != null and delayReceivable != ''" >
+	    and delay_receivable =  #{delayReceivable}
+	</if>
+<if test="delayReceived != null and delayReceived != ''" >
+	    and delay_received =  #{delayReceived}
+	</if>
+<if test="restPrincipal != null and restPrincipal != ''" >
+	    and rest_principal =  #{restPrincipal}
+	</if>
+<if test="penaltyReduce != null and penaltyReduce != ''" >
+	    and penalty_reduce =  #{penaltyReduce}
+	</if>
+<if test="delayReduce != null and delayReduce != ''" >
+	    and delay_reduce =  #{delayReduce}
+	</if>
+<if test="payDate != null and payDate != ''" >
+	    and pay_date =  #{payDate}
+	</if>
+<if test="defaultFlag != null and defaultFlag != ''" >
+	    and default_flag =  #{defaultFlag}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_LOAN_REPAY_PLAN_SEQ') From dual
+			<!-- Select T_LOAN_REPAY_PLAN_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_LOAN_REPAY_PLAN(id,contract_no,repay_method,repayment_date,start_date,end_date,period_num,srevice_fee_receivable,srevice_fee_received,interest_receivable,interest_received,principal_receivable,principal_received,penalty_receivable,penalty_received,default_receivable,default_received,delay_receivable,delay_received,rest_principal,penalty_reduce,delay_reduce,pay_date,default_flag,state,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{contractNo, jdbcType=VARCHAR},#{repayMethod, jdbcType=VARCHAR},#{repaymentDate, jdbcType=DATE},#{startDate, jdbcType=DATE},#{endDate, jdbcType=DATE},#{periodNum, jdbcType=INTEGER},#{sreviceFeeReceivable, jdbcType=DOUBLE},#{sreviceFeeReceived, jdbcType=DOUBLE},#{interestReceivable, jdbcType=DOUBLE},#{interestReceived, jdbcType=DOUBLE},#{principalReceivable, jdbcType=DOUBLE},#{principalReceived, jdbcType=DOUBLE},#{penaltyReceivable, jdbcType=DOUBLE},#{penaltyReceived, jdbcType=DOUBLE},#{defaultReceivable, jdbcType=DOUBLE},#{defaultReceived, jdbcType=DOUBLE},#{delayReceivable, jdbcType=DOUBLE},#{delayReceived, jdbcType=DOUBLE},#{restPrincipal, jdbcType=DOUBLE},#{penaltyReduce, jdbcType=DOUBLE},#{delayReduce, jdbcType=DOUBLE},#{payDate, jdbcType=DATE},#{defaultFlag, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_LOAN_REPAY_PLAN set 
+	<trim  suffixOverrides="," >
+	contract_no =  #{contractNo, jdbcType=VARCHAR},
+	repay_method =  #{repayMethod, jdbcType=VARCHAR},
+	repayment_date =  #{repaymentDate, jdbcType=DATE},
+	start_date =  #{startDate, jdbcType=DATE},
+	end_date =  #{endDate, jdbcType=DATE},
+	period_num =  #{periodNum, jdbcType=INTEGER},
+	srevice_fee_receivable =  #{sreviceFeeReceivable, jdbcType=DOUBLE},
+	srevice_fee_received =  #{sreviceFeeReceived, jdbcType=DOUBLE},
+	interest_receivable =  #{interestReceivable, jdbcType=DOUBLE},
+	interest_received =  #{interestReceived, jdbcType=DOUBLE},
+	principal_receivable =  #{principalReceivable, jdbcType=DOUBLE},
+	principal_received =  #{principalReceived, jdbcType=DOUBLE},
+	penalty_receivable =  #{penaltyReceivable, jdbcType=DOUBLE},
+	penalty_received =  #{penaltyReceived, jdbcType=DOUBLE},
+	default_receivable =  #{defaultReceivable, jdbcType=DOUBLE},
+	default_received =  #{defaultReceived, jdbcType=DOUBLE},
+	delay_receivable =  #{delayReceivable, jdbcType=DOUBLE},
+	delay_received =  #{delayReceived, jdbcType=DOUBLE},
+	rest_principal =  #{restPrincipal, jdbcType=DOUBLE},
+	penalty_reduce =  #{penaltyReduce, jdbcType=DOUBLE},
+	delay_reduce =  #{delayReduce, jdbcType=DOUBLE},
+	pay_date =  #{payDate, jdbcType=DATE},
+	default_flag =  #{defaultFlag, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_LOAN_REPAY_PLAN  where id = #{id}
+</delete>
+
+
+<!-- 根据合同 编号，清空还款计划 -->
+<delete id="deleteByContractNo" parameterType="Object">
+	DELETE FROM T_LOAN_REPAY_PLAN  WHERE CONTRACT_NO = #{VALUE}
+</delete>
+
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_LOAN_REPAY_PLAN set 
+	<trim  suffixOverrides="," >
+	<if test="contractNo != null and contractNo != ''" >
+	    contract_no =  #{contractNo, jdbcType=VARCHAR},
+	</if>
+	<if test="repayMethod != null and repayMethod != ''" >
+	    repay_method =  #{repayMethod, jdbcType=VARCHAR},
+	</if>
+	<if test="repaymentDate != null and repaymentDate != ''" >
+	    repayment_date =  #{repaymentDate, jdbcType=DATE},
+	</if>
+	<if test="startDate != null and startDate != ''" >
+	    start_date =  #{startDate, jdbcType=DATE},
+	</if>
+	<if test="endDate != null and endDate != ''" >
+	    end_date =  #{endDate, jdbcType=DATE},
+	</if>
+	<if test="periodNum != null and periodNum != '' or periodNum == 0" >
+	    period_num =  #{periodNum, jdbcType=INTEGER},
+	</if>
+	<if test="sreviceFeeReceivable != null and sreviceFeeReceivable != '' or sreviceFeeReceivable == 0" >
+	    srevice_fee_receivable =  #{sreviceFeeReceivable, jdbcType=DOUBLE},
+	</if>
+	<if test="sreviceFeeReceived != null and sreviceFeeReceived != '' or sreviceFeeReceived == 0" >
+	    srevice_fee_received =  #{sreviceFeeReceived, jdbcType=DOUBLE},
+	</if>
+	<if test="interestReceivable != null and interestReceivable != '' or interestReceivable == 0" >
+	    interest_receivable =  #{interestReceivable, jdbcType=DOUBLE},
+	</if>
+	<if test="interestReceived != null and interestReceived != '' or interestReceived == 0" >
+	    interest_received =  #{interestReceived, jdbcType=DOUBLE},
+	</if>
+	<if test="principalReceivable != null and principalReceivable != '' or principalReceivable == 0" >
+	    principal_receivable =  #{principalReceivable, jdbcType=DOUBLE},
+	</if>
+	<if test="principalReceived != null and principalReceived != '' or principalReceived == 0" >
+	    principal_received =  #{principalReceived, jdbcType=DOUBLE},
+	</if>
+	<if test="penaltyReceivable != null and penaltyReceivable != '' or penaltyReceivable == 0" >
+	    penalty_receivable =  #{penaltyReceivable, jdbcType=DOUBLE},
+	</if>
+	<if test="penaltyReceived != null and penaltyReceived != '' or penaltyReceived == 0" >
+	    penalty_received =  #{penaltyReceived, jdbcType=DOUBLE},
+	</if>
+	<if test="defaultReceivable != null and defaultReceivable != '' or defaultReceivable == 0" >
+	    default_receivable =  #{defaultReceivable, jdbcType=DOUBLE},
+	</if>
+	<if test="defaultReceived != null and defaultReceived != '' or defaultReceived == 0" >
+	    default_received =  #{defaultReceived, jdbcType=DOUBLE},
+	</if>
+	<if test="delayReceivable != null and delayReceivable != '' or delayReceivable == 0" >
+	    delay_receivable =  #{delayReceivable, jdbcType=DOUBLE},
+	</if>
+	<if test="delayReceived != null and delayReceived != '' or delayReceived == 0" >
+	    delay_received =  #{delayReceived, jdbcType=DOUBLE},
+	</if>
+	<if test="restPrincipal != null and restPrincipal != '' or restPrincipal == 0" >
+	    rest_principal =  #{restPrincipal, jdbcType=DOUBLE},
+	</if>
+	<if test="penaltyReduce != null and penaltyReduce != '' or penaltyReduce == 0" >
+	    penalty_reduce =  #{penaltyReduce, jdbcType=DOUBLE},
+	</if>
+	<if test="delayReduce != null and delayReduce != '' or delayReduce == 0" >
+	    delay_reduce =  #{delayReduce, jdbcType=DOUBLE},
+	</if>
+	<if test="payDate != null and payDate != ''" >
+	    pay_date =  #{payDate, jdbcType=DATE},
+	</if>
+	<if test="defaultFlag != null and defaultFlag != ''" >
+	    default_flag =  #{defaultFlag, jdbcType=VARCHAR},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 借款还款计划表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_LOAN_REPAY_PLAN  where id = #{id}
+</select>
+
+<!-- 借款还款计划表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LOAN_REPAY_PLAN 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询借款还款计划表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LOAN_REPAY_PLAN 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+
+<!-- 查询借款还款计划表列表 -->
+<select id="queryListExt" resultMap="ResultMap"  parameterType="map">
+	SELECT 
+	<include refid="Column_List"/>
+	FROM T_LOAN_REPAY_PLAN 
+	<include refid="Where_Clause"/>
+	<if test="states != null and states != ''" >
+	    AND STATE IN
+		<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>	
+	<if test="noStates != null and noStates != ''" >
+	    AND STATE NOT IN
+		<foreach item="item" index="index" collection="noStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="existPenalty != null and existPenalty == 'true' " >
+		<![CDATA[AND PENALTY_RECEIVABLE >0]]>
+	</if>
+	order by period_num
+<!-- 	<if test="rowS != null and rowE != null " >
+      LIMIT #{rowS} , #{rowE}
+    </if> -->
+</select>
+
+
+<!-- 查询未还款的记录-->
+<select id="queryListPay" resultMap="ResultMap"  parameterType="map">
+	SELECT * FROM t_loan_repay_plan WHERE state in ('1','3')
+	<![CDATA[
+	 and REPAYMENT_DATE <  CURDATE() 
+	]]>
+	<if test="_skiprows != null and _pagesize != null " >
+      LIMIT #{_skiprows}, #{_pagesize}
+    </if>	
+</select>
+  	
+<!-- 借款还款计划关联支付表返回还款信息及划款状态-->
+<select id="queryFyLoanStateList" resultMap="ResultMap"  parameterType="map">
+	SELECT t.*,
+	(SELECT p.`REASON` FROM t_payment p WHERE t.`CONTRACT_NO` = p.`CONTRACT_NO` AND t.`PERIOD_NUM` = p.`PERIOD_NUM` LIMIT 1) fyLoanState
+	FROM t_loan_repay_plan t where 1=1
+	<if test="id != null and id != ''" >
+	    and t.id =  #{id}
+	</if>
+	<if test="contractNo != null and contractNo != ''" >
+	    and t.contract_no =  #{contractNo}
+	</if>
+	<if test="repayMethod != null and repayMethod != ''" >
+	    and t.repay_method =  #{repayMethod}
+	</if>
+	<if test="repaymentDate != null and repaymentDate != ''" >
+	    and t.repayment_date =  #{repaymentDate}
+	</if>
+	<if test="startDate != null and startDate != ''" >
+	    and t.start_date =  #{startDate}
+	</if>
+	<if test="endDate != null and endDate != ''" >
+	    and t.end_date =  #{endDate}
+	</if>
+	<if test="periodNum != null and periodNum != ''" >
+	    and t.period_num =  #{periodNum}
+	</if>
+	<if test="sreviceFeeReceivable != null and sreviceFeeReceivable != ''" >
+	    and t.srevice_fee_receivable =  #{sreviceFeeReceivable}
+	</if>
+	<if test="sreviceFeeReceived != null and sreviceFeeReceived != ''" >
+	    and t.srevice_fee_received =  #{sreviceFeeReceived}
+	</if>
+	<if test="interestReceivable != null and interestReceivable != ''" >
+	    and t.interest_receivable =  #{interestReceivable}
+	</if>
+	<if test="interestReceived != null and interestReceived != ''" >
+	    and t.interest_received =  #{interestReceived}
+	</if>
+	<if test="principalReceivable != null and principalReceivable != ''" >
+	    and t.principal_receivable =  #{principalReceivable}
+	</if>
+	<if test="principalReceived != null and principalReceived != ''" >
+	    and t.principal_received =  #{principalReceived}
+	</if>
+	<if test="penaltyReceivable != null and penaltyReceivable != ''" >
+	    and t.penalty_receivable =  #{penaltyReceivable}
+	</if>
+	<if test="penaltyReceived != null and penaltyReceived != ''" >
+	    and t.penalty_received =  #{penaltyReceived}
+	</if>
+	<if test="defaultReceivable != null and defaultReceivable != ''" >
+	    and t.default_receivable =  #{defaultReceivable}
+	</if>
+	<if test="defaultReceived != null and defaultReceived != ''" >
+	    and t.default_received =  #{defaultReceived}
+	</if>
+	<if test="delayReceivable != null and delayReceivable != ''" >
+	    and t.delay_receivable =  #{delayReceivable}
+	</if>
+	<if test="delayReceived != null and delayReceived != ''" >
+	    and t.delay_received =  #{delayReceived}
+	</if>
+	<if test="restPrincipal != null and restPrincipal != ''" >
+	    and t.rest_principal =  #{restPrincipal}
+	</if>
+	<if test="penaltyReduce != null and penaltyReduce != ''" >
+	    and t.penalty_reduce =  #{penaltyReduce}
+	</if>
+	<if test="delayReduce != null and delayReduce != ''" >
+	    and t.delay_reduce =  #{delayReduce}
+	</if>
+	<if test="payDate != null and payDate != ''" >
+	    and t.pay_date =  #{payDate}
+	</if>
+	<if test="defaultFlag != null and defaultFlag != ''" >
+	    and t.default_flag =  #{defaultFlag}
+	</if>
+	<if test="state != null and state != ''" >
+	    and t.state =  #{state}
+	</if>
+	<if test="operator != null and operator != ''" >
+	    and t.operator =  #{operator}
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    and t.org_id =  #{orgId}
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    and t.create_time =  #{createTime}
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    and t.update_time =  #{updateTime}
+	</if>
+</select>
+<!-- 电催逾期计算-->
+<select id="queryLateDaysCallList" resultMap="ResultMap"  parameterType="map">
+	SELECT t.*,
+	(SELECT p.`REASON` FROM t_payment p WHERE t.`CONTRACT_NO` = p.`CONTRACT_NO` AND t.`PERIOD_NUM` = p.`PERIOD_NUM` LIMIT 1) fyLoanState
+	FROM t_loan_repay_plan t where 1=1
+	<if test="id != null and id != ''" >
+	    and t.id =  #{id}
+	</if>
+	<if test="contractNo != null and contractNo != ''" >
+	    and t.contract_no =  #{contractNo}
+	</if>
+	<if test="repayMethod != null and repayMethod != ''" >
+	    and t.repay_method =  #{repayMethod}
+	</if>
+	<if test="repaymentDate != null and repaymentDate != ''" >
+	    and t.repayment_date <![CDATA[<  #{repaymentDate}]]>
+	</if>
+	<if test="startDate != null and startDate != ''" >
+	    and t.start_date =  #{startDate}
+	</if>
+	<if test="endDate != null and endDate != ''" >
+	    and t.end_date =  #{endDate}
+	</if>
+	<if test="periodNum != null and periodNum != ''" >
+	    and t.period_num =  #{periodNum}
+	</if>
+	<if test="sreviceFeeReceivable != null and sreviceFeeReceivable != ''" >
+	    and t.srevice_fee_receivable =  #{sreviceFeeReceivable}
+	</if>
+	<if test="sreviceFeeReceived != null and sreviceFeeReceived != ''" >
+	    and t.srevice_fee_received =  #{sreviceFeeReceived}
+	</if>
+	<if test="interestReceivable != null and interestReceivable != ''" >
+	    and t.interest_receivable =  #{interestReceivable}
+	</if>
+	<if test="interestReceived != null and interestReceived != ''" >
+	    and t.interest_received =  #{interestReceived}
+	</if>
+	<if test="principalReceivable != null and principalReceivable != ''" >
+	    and t.principal_receivable =  #{principalReceivable}
+	</if>
+	<if test="principalReceived != null and principalReceived != ''" >
+	    and t.principal_received =  #{principalReceived}
+	</if>
+	<if test="penaltyReceivable != null and penaltyReceivable != ''" >
+	    and t.penalty_receivable =  #{penaltyReceivable}
+	</if>
+	<if test="penaltyReceived != null and penaltyReceived != ''" >
+	    and t.penalty_received =  #{penaltyReceived}
+	</if>
+	<if test="defaultReceivable != null and defaultReceivable != ''" >
+	    and t.default_receivable =  #{defaultReceivable}
+	</if>
+	<if test="defaultReceived != null and defaultReceived != ''" >
+	    and t.default_received =  #{defaultReceived}
+	</if>
+	<if test="delayReceivable != null and delayReceivable != ''" >
+	    and t.delay_receivable =  #{delayReceivable}
+	</if>
+	<if test="delayReceived != null and delayReceived != ''" >
+	    and t.delay_received =  #{delayReceived}
+	</if>
+	<if test="restPrincipal != null and restPrincipal != ''" >
+	    and t.rest_principal =  #{restPrincipal}
+	</if>
+	<if test="penaltyReduce != null and penaltyReduce != ''" >
+	    and t.penalty_reduce =  #{penaltyReduce}
+	</if>
+	<if test="delayReduce != null and delayReduce != ''" >
+	    and t.delay_reduce =  #{delayReduce}
+	</if>
+	<if test="payDate != null and payDate != ''" >
+	    and t.pay_date =  #{payDate}
+	</if>
+	<if test="defaultFlag != null and defaultFlag != ''" >
+	    and t.default_flag =  #{defaultFlag}
+	</if>
+	<if test="state != null and state != ''" >
+	    and t.state in  ('1','3')
+	</if>
+	<if test="operator != null and operator != ''" >
+	    and t.operator =  #{operator}
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    and t.org_id =  #{orgId}
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    and t.create_time =  #{createTime}
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    and t.update_time =  #{updateTime}
+	</if>
+</select>
+
+
+<!-- 查询逾期的统计记录（催收Jesse）-->
+<select id="queryListLateStatistics" resultMap="ResultMap"  parameterType="map">
+SELECT CONTRACT_NO,MIN(REPAYMENT_DATE) REPAYMENT_DATE,START_DATE,END_DATE,max(PERIOD_NUM) PERIOD_NUM,sum(PRINCIPAL_RECEIVABLE) PRINCIPAL_RECEIVABLE,sum(PRINCIPAL_RECEIVED) PRINCIPAL_RECEIVED,
+SUM(SREVICE_FEE_RECEIVABLE) SREVICE_FEE_RECEIVABLE,SUM(SREVICE_FEE_RECEIVED) SREVICE_FEE_RECEIVED,SUM(INTEREST_RECEIVABLE) INTEREST_RECEIVABLE,SUM(INTEREST_RECEIVED) INTEREST_RECEIVED,
+SUM(PENALTY_RECEIVABLE) PENALTY_RECEIVABLE,SUM(PENALTY_RECEIVED) PENALTY_RECEIVED,SUM(DEFAULT_RECEIVABLE) DEFAULT_RECEIVABLE,SUM(DEFAULT_RECEIVED) DEFAULT_RECEIVED,SUM(DELAY_RECEIVABLE) DELAY_RECEIVABLE,
+SUM(DELAY_RECEIVED) DELAY_RECEIVED,SUM(REST_PRINCIPAL) REST_PRINCIPAL,SUM(PENALTY_REDUCE) PENALTY_REDUCE,SUM(DELAY_REDUCE) DELAY_REDUCE
+from t_loan_repay_plan where
+<![CDATA[
+	REPAYMENT_DATE<CURDATE() 
+	]]>
+	<if test="contractNo != null and contractNo != ''" >
+	    and CONTRACT_NO =  #{contractNo}
+	</if>
+ and state in(1,3) GROUP BY CONTRACT_NO
+</select>
+
+<!--排序查询某合同的所有逾期记录（Jesse）-->
+<select id="queryListLateByNo" resultMap="ResultMap"  parameterType="map">
+	SELECT * FROM t_loan_repay_plan WHERE state in ('1','3')
+	and contract_no =  #{contractNo}
+	<![CDATA[
+	 and REPAYMENT_DATE <  CURDATE() 
+	]]>
+	ORDER BY REPAYMENT_DATE 
+</select>
+
+<!--根据合同号查询当前所在期的信息（Jesse）-->
+<select id="queryCurInfo" resultMap="ResultMap"  parameterType="map">
+	SELECT * FROM t_loan_repay_plan WHERE
+	 contract_no =  #{contractNo}
+	<![CDATA[
+	 and REPAYMENT_DATE >= CURDATE() 
+	]]>
+	ORDER BY REPAYMENT_DATE  LIMIT 0,1
+</select>
+
+<!--根据合同号查询当前所在期的信息（Jesse）-->
+<select id="queryLastInfo" resultMap="ResultMap"  parameterType="map">
+	SELECT * FROM t_loan_repay_plan WHERE
+	contract_no =  #{contractNo}
+	ORDER BY REPAYMENT_DATE DESC LIMIT 0,1
+</select>
+  	
+ <!--根据合同号查询合同历史逾期记录数量（Jesse）-->
+<select id="queryLateHisNum" resultType="java.lang.Integer"  parameterType="map">
+	SELECT count(1) FROM t_loan_repay_plan WHERE  contract_no =  #{contractNo}
+	<![CDATA[
+	and DELAY_RECEIVABLE >0
+	]]>
+	
+</select>
+</mapper>   

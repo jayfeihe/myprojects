@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.record.dao.DataRecordDao">
+	<update id="update">
+		update 
+			t_data_record
+		set
+			adpic_url    = #{adpicUrl},
+			adpic_width  = #{adpicWidth	},
+			adpic_height = #{adpicHeight},
+			thumb_width  = #{thumbWidth	},
+			thumb_height = #{thumbHeight}
+		where 
+			id = #{id}
+	</update>
+</mapper>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.sys.dao.MenuDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.sys.model.Menu" >
+	<result column="id" property="id"/>
+	<result column="name" property="name"/>
+	<result column="description" property="description"/>
+	<result column="url" property="url"/>
+	<result column="parent_id" property="parentId"/>
+	<result column="ordernum" property="ordernum"/>
+	<result column="type" property="type"/>
+	<result column="state" property="state"/>
+</resultMap>
+       
+<!-- T_MENU table all fields -->
+<sql id="Column_List" >
+	 id,name,description,url,parent_id,ordernum,type,state
+</sql>
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="id != 0 and id != null" >
+	    and id =  #{id}
+	</if>
+	 	<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+	 	<if test="description != null and description != ''" >
+	    and description =  #{description}
+	</if>
+	 	<if test="url != null and url != ''" >
+	    and url =  #{url}
+	</if>
+	<if test="parentId != 0 and parentId != null" >
+	    and parent_id =  #{parentId}
+	</if>
+	<if test="type != null" >
+	    and type =  #{type}
+	</if>
+</trim>
+</sql>
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="addMenu" parameterType="Object" >
+	<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+		Select nextval('T_MENU_SEQ') From dual
+  	</selectKey>
+  	insert into T_MENU(<include refid="Column_List"/>)
+ 	values( #{id, jdbcType=INTEGER},#{name, jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},
+ 	#{url,jdbcType=VARCHAR},#{parentId, jdbcType=INTEGER},#{ordernum, jdbcType=INTEGER}
+ 	,#{type, jdbcType=INTEGER},#{state, jdbcType=INTEGER})
+</insert>
+<!-- 根据id，修改记录-->  
+ <update id="updateMenu" parameterType="Object" >
+  update T_MENU set name=#{name, jdbcType=VARCHAR}, description=#{description, jdbcType=VARCHAR}, 
+  url=#{url, jdbcType=VARCHAR}, parent_id=#{parentId, jdbcType=INTEGER}, 
+  ordernum=#{ordernum, jdbcType=INTEGER},type=#{type, jdbcType=INTEGER}
+  where id=#{id}
+ </update>
+	<!-- 删除记录 -->
+	 <delete id="removeMenuRealById" parameterType="int">
+		delete 	 from t_role_menu_rel where ROLE_ID=#{id}
+	</delete>
+	<delete id="deleteMenuByIDs" parameterType="Map">
+		delete 	 from T_MENU Where Id In
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	<!-- 逻辑删除 -->
+	<update id="deleteMenu" parameterType="Map">
+		update T_MENU set STATE=#{state, jdbcType=VARCHAR} where Id =#{id}
+	</update>
+	
+	<!-- 根据id查询 菜单表 -->
+	<select id="getMenuById"  resultMap="ResultMap" parameterType="int">
+		select <include refid="Column_List" /> 
+			 from T_MENU where 1=1 and id=#{id}
+	</select>
+		<!-- 导出查询 -->
+	<select id="exportMenu" resultMap="ResultMap" parameterType="map">
+		select * from t_menu
+		<where>
+		<if test="true">1=1</if>
+		<if test="name!=null and name!=''">
+			and name like CONCAT(CONCAT('%', #{name}),'%')
+		</if>
+		<if test="parentId!=null and parentId!=0">
+			and parent_id =#{parentId}
+		</if>
+		</where>
+		order by id desc
+	</select>
+
+
+	<!-- 查询记录数 -->
+	<select id="getMenuCount" resultType="int" parameterType="map">
+		select count(1) from T_MENU 
+	<include refid="Where_Clause"/>
+	</select>
+
+	<select id="getAllMenu" resultMap="ResultMap">
+		select <include refid="Column_List"/> from T_MENU ORDER BY ordernum
+	</select>
+	<select id="getAvailableMenu" resultMap="ResultMap">
+		select <include refid="Column_List"/> from T_MENU where state="1" ORDER BY ordernum
+	</select>
+	
+<!-- 	<select id="getMenuByUserId" resultMap="ResultMap" parameterType="int"> -->
+<!-- 		Select <include refid="Column_List"/> from T_MENU m -->
+<!-- 		 where m.Id in -->
+<!-- 		       ( -->
+<!-- 		        select distinct rm.menu_id -->
+<!-- 		          from t_role_menu_rel rm -->
+<!-- 		         where rm.role_id in -->
+<!-- 		               (select ur.role_id from t_user_role_rel ur where ur.user_id = #{userId}) -->
+<!-- 		        ) -->
+<!-- 		 ORDER BY ordernum  -->
+<!-- 	</select> -->
+	
+	<select id="getMenuByOrgAndUser" resultMap="ResultMap" parameterType="map">
+		Select <include refid="Column_List"/> from T_MENU m
+		 where state="1" and m.Id in
+		       (
+		        select distinct rm.menu_id
+		          from t_role_menu_rel rm
+		         where rm.role_id in
+		               (select ur.role_id from t_user_ext ur where ur.user_id = #{userId} and ur.ORG_ID=#{orgId})
+		        )
+		 ORDER BY ordernum 
+	</select>
+	
+	
+		<!-- 分页查询  -->
+	<select id="queryMenu" resultMap="ResultMap" parameterType="map">
+		Select <include refid="Column_List"/> from T_MENU
+		<include refid="Where_Clause"/> ORDER BY ordernum
+		<if test="rowS != null and rowE != null " >
+	      limit #{rowS} , #{rowE}
+	    </if>
+	</select>
+
+	<select id="getMenuByRoleId" resultMap="ResultMap" parameterType="int">
+		select <include refid="Column_List"/> from T_MENU m 
+			where m.id in(
+				select menu_id from t_role_menu_rel where role_id=#{id}
+			)
+	</select>
+  		<!-- 加入menu role 之间的关联 -->
+	<insert id="addMenuReal" parameterType="Map">
+		insert into t_role_menu_rel(role_id, menu_id) 
+		select #{id},t.id from t_menu t where t.id in 
+		<foreach item="item" index="index" collection="menuIds" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</insert>
+	<select id="getMenusByParentId" parameterType="int" resultMap="ResultMap">
+		select <include refid="Column_List"/>  
+		From t_Menu Where PARENT_ID =#{parentId}
+		ORDER BY ordernum desc
+	</select>
+	<select id="getParentMenusById" parameterType="int" resultMap="ResultMap">
+		select <include refid="Column_List"/>  
+		From t_Menu t Where t.id =(select m.PARENT_ID from t_menu m where m.id=#{id})
+		ORDER BY ordernum desc
+	</select>
+	
+	<select id="getLevelNab" resultMap="ResultMap" parameterType="map">
+		Select  <include refid="Column_List"/> from T_Menu m
+      	<where>
+			<if test="true">1=1</if>
+			<if test="option!=null and option=='up'">
+			<![CDATA[and m.ORDERNUM<#{ordernum} ]]>    
+			</if>
+			<if test="option!=null and option=='down'">
+			<![CDATA[and m.ORDERNUM>#{ordernum} ]]>    
+			</if>
+			<if test="true">
+				and m.PARENT_ID=#{parentId}
+			</if>
+		</where>
+		 ORDER BY ordernum
+	</select>
+	
+		<!-- 获取所有父级菜单 -->
+	<select id="getAllParentMenus" resultMap="ResultMap" >
+	Select * from T_Menu where type=0 
+	ORDER BY ordernum
+	</select>
+	
+</mapper>   

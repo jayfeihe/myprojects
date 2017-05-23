@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${bizzPackage}.${modelPackage}.dao.${className}Dao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="${bizzPackage}.${modelPackage}.model.$!{className}" >
+#foreach($item in $!{columnDatas})
+	<result column="$!item.columnName" property="$item.propName"/><!-- $!item.columnComment -->
+#end
+</resultMap>
+       
+<!-- $!{tableName} table all fields -->
+<sql id="Column_List" >
+	 $!{SQL.columnFields}
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+#foreach($item in $!{columnDatas})
+		#set($testStr = $!item.propName + " != null" + " and " + $!item.propName + " != ''")
+<if test="$!testStr" >
+	    and $!item.columnName =  #{$!item.propName}
+	</if>
+#end
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+#if  ($keyType =='02')
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="${primaryKey}" >
+	#if  ($databaseType =='mysql')
+		Select nextval('${tableName}_SEQ') From dual
+	#end
+	#if  ($databaseType =='oracle')
+		Select ${tableName}_SEQ.Nextval From dual
+	#end
+  </selectKey>
+#end
+	$!{SQL.insert}
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update ${tableName} set 
+	<trim  suffixOverrides="," >
+#foreach($item in $!{columnDatas})
+#if($!item.columnName != ${primaryKey})
+	$!item.columnName =  #{$!item.propName, jdbcType=$!item.jdbcType},
+#end
+#end
+	</trim>
+ 	where ${primaryKey} = #{${primaryKey}}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from ${tableName}  where ${primaryKey} = #{${primaryKey}}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update ${tableName} set 
+	<trim  suffixOverrides="," >
+#foreach($item in $!{columnDatas})
+#if($!item.jdbcType == 'INTEGER' or $!item.jdbcType == 'DOUBLE')
+#set($testStr = $!item.propName + " != null" + " and " + $!item.propName + " != '' " + " or " + $!item.propName + "==0")
+#if($!item.columnName != ${primaryKey})
+	<if test="$!testStr" >
+	    $!item.columnName =  #{$!item.propName, jdbcType=$!item.jdbcType},
+	</if>
+#end
+#else
+#set($testStr = $!item.propName + " != null" + " and " + $!item.propName + " != '' ")
+#if($!item.columnName != ${primaryKey})
+	<if test="$!testStr" >
+	    $!item.columnName =  #{$!item.propName, jdbcType=$!item.jdbcType},
+	</if>
+#end
+#end
+
+#end
+	</trim>
+	where ${primaryKey} = #{${primaryProp}}
+</update>
+
+<!-- 根据id查询 ${tableComment} -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from ${tableName}  where ${primaryKey} = #{${primaryProp}}
+</select>
+
+<!-- ${tableComment} 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from ${tableName} 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询${tableComment}列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from ${tableName} 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

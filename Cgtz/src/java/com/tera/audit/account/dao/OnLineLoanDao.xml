@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.account.dao.OnLineLoanDao" > 
+	<select id="queryList" parameterType="map" 
+			resultType="com.tera.audit.account.model.form.OnLineLoanQBean">
+			
+			SELECT 
+				T3.id id,
+				T3.LOAN_ID loanId,
+				T3.NAME name,
+				T3.ID_NO idNo,
+				T3.PRODUCT product,
+				(SELECT d.KEY_VALUE FROM t_data_dictionary d WHERE T3.PRODUCT = d.KEY_PROP AND d.KEY_NAME = 'productType') productName,
+				T1.CONTRACT_ID contractId,
+				T1.ONLINE_CON_ID onLineContractId,
+				T1.ONLINE_AMT onLineAmt,
+				T1.RET_WAY onLineRetWay,
+				T1.STATE onLineState,
+				T2.GET_LOAN_WAY getLoanWay
+				
+			FROM T_CONTRACT_ONLINE T1
+			LEFT JOIN T_CONTRACT T2 ON T1.CONTRACT_ID = T2.CONTRACT_ID
+			LEFT JOIN T_LOAN_BASE T3 ON T1.LOAN_ID = T3.LOAN_ID
+			WHERE T1.STATE = '1'
+			
+			<if test="contractId != null and contractId != ''">
+				AND T1.CONTRACT_ID = #{contractId}
+			</if>
+			<if test="onLineContractId != null and onLineContractId != ''">
+				AND T1.ONLINE_CON_ID = #{onLineContractId}
+			</if>
+			<if test="name != null and name != ''">
+				AND T3.NAME = #{name}
+			</if>
+			<if test="idNo != null and idNo != ''">
+				AND T3.ID_NO = #{idNo}
+			</if>
+			<if test="product != null and product != ''">
+				AND T3.PRODUCT = #{product}
+			</if>
+	</select>
+</mapper>

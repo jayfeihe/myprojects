@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:task="http://www.springframework.org/schema/task"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+http://www.springframework.org/schema/tx  
+http://www.springframework.org/schema/tx/spring-tx-3.0.xsd  
+http://www.springframework.org/schema/aop  
+http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
+http://www.springframework.org/schema/context  
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/task
+http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+    
+    <task:scheduler id="scheduler" pool-size="10" />
+	
+    <bean id="runScheduler" class="com.tera.batch.scheduler.RunScheduler" >
+		<property name="jobLauncher" ref="jobLauncher"></property>
+		<property name="jobRegistry" ref="jobRegistry"></property>
+	</bean>
+	
+	 
+	<!-- Run every 5 seconds -->
+	<task:scheduled-tasks scheduler="scheduler">
+		<!-- 
+		*(秒0-59) *(分钟0-59) *(小时0-23) *(日期1-31) *(月份1-12或是JAN-DEC) *(星期1-7或是SUN-SAT)  
+		x/y表达一个等步长序列，x为起始值，y为增量步长值。
+		-->
+		<!-- 自动撮合，不切分算法 -->
+<!-- 		<task:scheduled ref="runScheduler" method="autoMatchJobRun" cron="0 40 * * * *" />  -->
+		
+		<!-- 自动撮合，切分算法 -->
+<!-- 		<task:scheduled ref="runScheduler" method="autoMatchSplitJobRun" cron="0 55 * * * *" />  -->
+		
+		<!-- 第三方代付，发送支付报文 -->
+<!-- 		<task:scheduled ref="runScheduler" method="daifuJobRun" cron="0 10 9-22/1 * * *" />  -->
+		
+		<!-- 第三方代收 -->
+<!-- 		<task:scheduled ref="runScheduler" method="daishouJobRun" cron="0 0 9,19 * * *" /> 		 -->
+		
+		<!-- 第三方代付，查询支付结果 -->
+<!--		<task:scheduled ref="runScheduler" method="paymentQueryJobRun" cron="30 0/10 * * * *" /> -->
+		
+		<!-- 处理合同到期，出借方、借款方计算头寸，处理需重新撮合的记录，每日凌晨执行-->
+<!-- 		<task:scheduled ref="runScheduler" method="handleJobRun" cron="0 30 0 * * *" />  -->
+		
+		<!-- 还款计划，计算罚息 ，每日凌晨执行-->
+		<task:scheduled ref="runScheduler" method="repayPlanJobRun" cron="0 0 0 * * *" /> 
+	
+		<!-- 清理超一个工作日未签合同的撮合结果，每日凌晨执行 -->
+		<task:scheduled ref="runScheduler" method="cleanMatchJobRun" cron="0 20 0 * * *" /> 
+		
+		<!-- 清理序列seq，每日凌晨执行-->
+		<task:scheduled ref="runScheduler" method="initSeqJobRun" cron="0 0 0 * * *" /> 
+		
+		<!-- 积木盒子 项目 状态查询-->
+<!-- 		<task:scheduled ref="runScheduler" method="jMProjectQueryJobRun" cron="0 0 2 * * *" />  -->
+		
+		<!-- 规则分单-->
+		<task:scheduled ref="runScheduler" method="assignJobRun" cron="0 0/15 9-21 * * *" /> 
+		
+		<!-- 签约状态超过30天未操作,自动冻结进行前端拒贷-->
+		<task:scheduled ref="runScheduler" method="saleReTimeFreezeJobRun" cron="0 5 21 * * *" /> 
+		
+		<!-- 推送违约客户信息 到 积木 -->
+<!-- 		<task:scheduled ref="runScheduler" method="jMSendDefaultInfoJobRun" cron="0 0 2 * * *" />  -->
+		
+		<!-- 催收预处理 -->
+		<task:scheduled ref="runScheduler" method="collectionJobRun" cron="0 0 3 * * *" /> 
+		
+		<!-- 发送定时短信-->
+		<task:scheduled ref="runScheduler" method="sendMsgJobRun" cron="0 0 4 * * *" /> 
+		
+		<!-- 短信回执查询 -->
+		<task:scheduled ref="runScheduler" method="msgJobRun" cron="0 0 8-22 * * *" /> 
+		
+		<!-- 软银服务费付款 -->
+<!-- 		<task:scheduled ref="runScheduler" method="RYJobRun" cron="0 0 1 * * *" />  -->
+		
+		<!-- 投资啦服务费付款 -->
+<!-- 		<task:scheduled ref="runScheduler" method="TZJobRun" cron="0 0 1 * * *" />  -->
+
+	</task:scheduled-tasks>
+</beans>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.overdue.dao.SalesMenClltDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.overdue.model.SalesMenCllt" >
+	<!--合同表  -->
+	<result column="contract_id" property="contractId"/><!-- 合同id -->
+	<result column="loan_id" property="loanId"/><!-- 申请ID -->
+	<result column="late_num" property="lateNum"/><!-- 期数 -->
+	<result column="overdue_type" property="overdueType"/><!--逾期类型-->
+	<result column="check_report_state" property="checkReportState"/><!-- 报告状态 -->
+	<result column="org_audit_result" property="orgAuditResult"/><!-- 分公司经理意见 -->
+	<result column="is_accept" property="isAccept"/><!-- 受理状态 -->
+	<result column="check_state" property="checkState"/><!-- 稽查标识 -->
+	<!--申请表  -->
+	<result column="tel" property="tel"/><!-- 贷款类别 -->
+	<result column="product" property="product"/><!-- 贷款类别 -->
+	<result column="salesman" property="salesman"/><!-- 业务员 -->
+	<result column="loan_name" property="loanName"/><!-- 申请人/机构-->
+	<result column="id_type" property="idType"/><!-- 证件类型-->
+	<result column="id_no" property="idNo"/><!-- 证件类型-->
+	<result column="loan_amt" property="loanAmt"/><!-- 借款金额-->
+	<!--机构表  -->
+	<result column="org_name" property="orgName"/><!-- 机构名称-->
+	<result column="org" property="org"/><!-- 机构名称-->
+	<!--user表 -->
+	<result column="sale_name" property="saleName"/><!-- 业务员姓名-->
+	<result column="login_id" property="loginId"/><!-- loginId-->
+	<result column="role_id" property="roleId"/><!-- loginId-->
+	<!--还款计划表 -->
+	<result column="ret_date" property="retDate"/><!-- 逾期还款日 -->
+	<result column="late_days" property="lateDays"/><!-- 逾期天数 -->
+	<result column="plan_interest" property="planInterest"/><!--应还利息-->
+	<result column="real_interest" property="realInterest"/><!--实还利息-->
+	<result column="plan_capital" property="planCapital"/><!--应还本金-->
+	<result column="real_capital" property="realCapital"/><!--实还本金-->
+	<result column="due_interest" property="dueInterest"/><!-- 利息逾期金额-->
+	<result column="due_capital" property="dueCapital"/><!--本金逾期金额-->
+</resultMap>
+
+<sql id="Column_List" >
+	con.CONTRACT_ID,
+	con.LOAN_ID,
+	con.OVERDUE_TYPE,
+	con.LATE_NUM,
+	con.CHECK_REPORT_STATE,
+	con.IS_ACCEPT,
+	con.CHECK_STATE,
+	(select t.org_audit_result from t_overdue_report t where t.loan_id=con.loan_id and t.contract_id=con.contract_id and t.num=con.late_num)org_audit_result,
+	base.NAME loan_name,
+	(
+		SELECT
+			T .tel
+		FROM
+			t_loan_app T
+		WHERE
+			T .MAIN_FLAG = '1'
+		AND (
+			T .loan_id = base.loan_id
+			OR T .LOAN_ID = base.orig_loan_id
+		)
+	) tel,
+	base.PRODUCT,
+	base.SALESMAN,
+	(
+		SELECT
+			NAME
+		FROM
+			T_USER
+		WHERE
+			base.SALESMAN = T_USER.LOGIN_ID
+	) sale_name,
+  (SELECT ROLE_ID from T_USER_EXT where T_USER_EXT.LOGIN_ID=BASE.SALESMAN)role_id,
+	base.LOAN_AMT,
+	base.ID_TYPE,
+	base.ID_NO,
+	(
+		SELECT
+			org_name
+		FROM
+			T_ORG
+		WHERE
+			T_ORG.ORG_ID = BASE.ORG
+	) org_name,
+	base.org,
+	newplan.RET_DATE ret_date,
+	TRUNC (SYSDATE - newplan.RET_DATE) AS late_days,
+	newplan.REAL_CAPITAL,
+	newplan.PLAN_CAPITAL,
+	newplan.REAL_INTEREST,
+	newplan.PLAN_INTEREST,
+	newplan.PLAN_CAPITAL - newplan.REAL_CAPITAL  AS due_capital,
+	newplan.PLAN_INTEREST -newplan.REAL_INTEREST   AS due_interest
+</sql>
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="contractId != null and contractId != ''" >
+	    and con.contract_id =  #{contractId}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and con.loan_id =  #{loanId}
+	</if>
+<if test="overdueType != null and overdueType != ''" >
+	    and con.overdue_type =  #{overdueType}
+	</if>		
+<if test="lateNum != null and lateNum != ''" >
+	    and con.late_num =  #{lateNum}
+	</if>
+<if test="isAccept != null and isAccept != ''" >
+	    and con.is_accept =  #{isAccept}
+	</if>
+<if test="checkReportState != null and checkReportState != ''" >
+	    and con.check_report_state =  #{checkReportState}
+	</if>
+<if test="salesman != null and salesman != ''" >
+	    and base.salesman =  #{salesman}
+	</if>
+<if test="org != null and org != ''" >
+	    and con.org like  concat(#{org},'%')
+	</if>	
+<if test="loanName != null and loanName != ''" >
+	    and base.name like   concat('%',concat(#{loanName},'%'))
+	</if>
+<if test="idType != null and idType != ''" >
+	    and base.id_type =  #{idType}
+	</if>
+<if test="product != null and product != ''" >
+	    and base.product =  #{product}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and base.id_no =  #{idNo}
+	</if>
+<if test="saleName != null and saleName != ''" >
+	    and sale_name like  concat('%',concat(#{saleName},'%'))
+	</if>	
+<if test="orgName != null and orgName != ''" >
+    and org_name =  #{orgName}
+</if>
+<if test="roleId != null and roleId != ''" >
+    and role_id =  #{roleId}
+</if>
+<if test="minRetDate != null and minRetDate != ''" >
+<![CDATA[and newplan.ret_date >=  #{minRetDate}]]>    
+</if>	
+<if test="maxRetDate != null and maxRetDate != ''" >
+<![CDATA[and newplan.ret_date <=  #{maxRetDate}]]>    
+</if>
+</trim>
+</sql>
+
+<!-- 业务员，稽查人员催收跟进记录表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1)  from (select 
+	<include refid="Column_List"/>
+	from t_contract con
+	LEFT JOIN t_loan_base base ON base.LOAN_ID = con.LOAN_ID
+	LEFT JOIN t_ret_plan newplan ON newplan.NUM = con.LATE_NUM AND con.CONTRACT_ID = newplan.CONTRACT_ID  
+	<include refid="Where_Clause"/> and con.IS_LATE='1' and con.state in('2','4') and newplan.state='1'	
+	) 
+</select>
+  	
+<!-- 查询业务员，稽查人员催收跟进记录表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from t_contract con
+	LEFT JOIN t_loan_base base ON base.LOAN_ID = con.LOAN_ID
+	LEFT JOIN t_ret_plan newplan ON newplan.NUM = con.LATE_NUM AND con.CONTRACT_ID = newplan.CONTRACT_ID  
+	<include refid="Where_Clause"/> and con.IS_LATE='1' and con.state in('2','4') and newplan.state='1'
+	order by con.contract_id
+</select>
+  	
+</mapper>   

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.file.dao.FilesDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.file.model.Files" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="biz_key" property="bizKey"/><!-- 业务ID -->
+	<result column="scene_type" property="sceneType"/><!-- 所属场景 -->
+	<result column="category" property="category"/><!-- 分类 -->
+	<result column="sub_category" property="subCategory"/><!-- 子分类 -->
+	<result column="file_name" property="fileName"/><!-- 文件名 -->
+	<result column="file_path" property="filePath"/><!-- 文件路径 -->
+	<result column="group_name" property="groupName"/><!-- 文件路径 -->
+	<result column="save_name" property="saveName"/><!-- 文件路径 -->
+	<result column="ext" property="ext"/><!-- 1图片2文件3视频 -->
+	<result column="loan_id" property="loanId"/><!-- 申请Id -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operators" property="operator"/><!-- 操作员 -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="update_time" property="updateTime"/><!-- 修改时间 -->
+</resultMap>
+       
+<!-- T_FILES table all fields -->
+<sql id="Column_List" >
+	 id,biz_key,scene_type,category,sub_category,file_name,file_path,group_name,save_name,ext,loan_id,state,operators,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="bizKey != null and bizKey != ''" >
+	    and biz_key =  #{bizKey}
+	</if>
+<if test="sceneType != null and sceneType != ''" >
+	    and scene_type =  #{sceneType}
+	</if>
+<if test="category != null and category != ''" >
+	    and category =  #{category}
+	</if>
+<if test="subCategory != null and subCategory != ''" >
+	    and sub_category =  #{subCategory}
+	</if>
+<if test="fileName != null and fileName != ''" >
+	    and file_name =  #{fileName}
+	</if>
+<if test="filePath != null and filePath != ''" >
+	    and file_path =  #{filePath}
+	</if>
+<if test="groupName != null and groupName != ''" >
+	    and group_name =  #{groupName}
+	</if>
+<if test="saveName != null and saveName != ''" >
+	    and save_name =  #{saveName}
+	</if>
+<if test="ext != null and ext != ''" >
+	    and ext =  #{ext}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and loan_id =  #{loanId}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operators =  #{operator}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+<if test="exts != null and exts.length > 0 ">
+	and ext in
+	<foreach item="item" index="index" collection="exts" open="(" separator="," close=")">
+			#{item}
+	</foreach>
+</if>
+<if test="ids != null and ids.length > 0 ">
+	and id in
+	<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+			#{item}
+	</foreach>
+</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+<!-- 			Select nextval('T_FILES_SEQ') From dual -->
+			Select T_FILES_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_FILES(id,biz_key,scene_type,category,sub_category,file_name,file_path,group_name,save_name,ext,loan_id,state,operators,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{bizKey, jdbcType=VARCHAR},#{sceneType, jdbcType=VARCHAR},#{category, jdbcType=VARCHAR},#{subCategory, jdbcType=VARCHAR},#{fileName, jdbcType=VARCHAR},#{filePath, jdbcType=VARCHAR},#{groupName, jdbcType=VARCHAR},#{saveName, jdbcType=VARCHAR},#{ext, jdbcType=VARCHAR},#{loanId, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_FILES set 
+	<trim  suffixOverrides="," >
+	biz_key =  #{bizKey, jdbcType=VARCHAR},
+	scene_type =  #{sceneType, jdbcType=VARCHAR},
+	category =  #{category, jdbcType=VARCHAR},
+	sub_category =  #{subCategory, jdbcType=VARCHAR},
+	file_name =  #{fileName, jdbcType=VARCHAR},
+	file_path =  #{filePath, jdbcType=VARCHAR},
+	group_name =  #{groupName, jdbcType=VARCHAR},
+	save_name =  #{saveName, jdbcType=VARCHAR},
+	ext =  #{ext, jdbcType=VARCHAR},
+	loan_id =  #{loanId, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	operators =  #{operator, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_FILES  where id = #{id}
+</delete>
+
+<!-- 删除记录 -->
+<delete id="deleteByMap" parameterType="map">
+	delete from T_FILES  <include refid="Where_Clause"/>
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_FILES set 
+	<trim  suffixOverrides="," >
+
+	<if test="bizKey != null and bizKey != '' " >
+	    biz_key =  #{bizKey, jdbcType=VARCHAR},
+	</if>
+
+	<if test="sceneType != null and sceneType != '' " >
+	    scene_type =  #{sceneType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="category != null and category != '' " >
+	    category =  #{category, jdbcType=VARCHAR},
+	</if>
+
+	<if test="subCategory != null and subCategory != '' " >
+	    sub_category =  #{subCategory, jdbcType=VARCHAR},
+	</if>
+
+	<if test="fileName != null and fileName != '' " >
+	    file_name =  #{fileName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="filePath != null and filePath != '' " >
+	    file_path =  #{filePath, jdbcType=VARCHAR},
+	</if>
+	<if test="groupName != null and groupName != ''" >
+	    and group_name =  #{groupName}
+	</if>
+	<if test="saveName != null and saveName != ''" >
+	    and save_name =  #{saveName}
+	</if>
+
+	<if test="ext != null and ext != '' " >
+	    ext =  #{ext, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanId != null and loanId != '' " >
+	    loan_id =  #{loanId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operator != null and operator != '' " >
+	    operators =  #{operator, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 文件存储 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_FILES  where id = #{id}
+</select>
+
+<!-- 文件存储 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_FILES 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询文件存储列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_FILES 
+	<include refid="Where_Clause"/>
+	ORDER BY create_time
+</select>
+ 
+ <!-- 查找各大类影像的个数 -->
+<select id="queryCategoryCount" resultType="com.tera.file.model.Files" parameterType="map">
+	select category, count(id) AS categoryCount from T_FILES <include refid="Where_Clause"/>  group by category
+</select>
+</mapper>   

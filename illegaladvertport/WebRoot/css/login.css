@@ -1,0 +1,231 @@
+#top h1{
+  height:50px;
+  line-height:50px;
+  font-size: 36px;
+  color: #3690dc;
+  padding-left:20px;
+  background:url('../images/biao.jpg') no-repeat left 3px;
+}
+
+.login {
+    max-width: 340px;
+    min-height: 500px;
+    padding: 20px;
+    margin: 0 auto;
+    
+}
+
+.login h2{
+      color: black;
+    font-size: 36px;
+}
+
+.login #account{
+    background-image: url(../images/tb9.png) !important;
+    background-size: 45px 48px;
+    background-repeat: no-repeat;
+    padding-left: 45px;
+    /* letter-spacing: 2px; */
+    height:50px;
+   /*  line-height:50px; */
+}
+
+.login #passwd{
+    background-image: url(../images/tb10.png) !important;
+    background-size: 45px 48px;
+    background-repeat: no-repeat;
+    padding-left: 45px;
+    /* letter-spacing: 2px; */
+     height:50px;
+    /* line-height:50px; */
+}
+
+
+.login .form-signin-heading{
+    font-size: 30px;
+    color: #3690dc;
+    margin: 20px;
+    margin-top:80px;
+}
+
+.login .forget{
+  cursor: pointer;
+  color:#f88566;
+}
+
+.login .form-control{
+  border-radius: 0px;
+  color:#bfbfbf;
+  height: 45px;
+  border:1px solid #bfbfbf;
+  margin-bottom: 15px;
+  padding: 15px;
+  /* letter-spacing: 5px; */
+}
+.sub-box{
+    position:relative;
+}
+.sub-box img{
+  position: absolute;
+  left:15px;
+  top:3px;
+}
+.btn-login{
+  background: #3690dc!important;
+  border:1px solid #3690dc!important;
+  border-radius: 0px;
+  color:#fff;
+  height: 45px;
+  line-height: 9px;
+  margin: 20px 0px 0px;
+  font-size: 15px;
+  font-weight: normal;
+  background:url("../images/btn.jpg") no-repeat 50px center;
+}
+
+.btn-login:hover{
+  border:1px solid #3690dc;
+  color:#fff;
+}
+
+.btn-block{
+  letter-spacing: 22px;
+  padding-left:32px !important;
+}
+
+.login .checkbox{
+  text-align: left;
+  color: #a9aab2;
+  font-size:14px;
+}
+
+input[type=checkbox]{
+    appearance: none;
+    -webkit-appearance: none;
+    border: 2px solid #bfc1cd;
+    width: 14px;
+    height: 14px;
+    border-radius: 12px;
+    margin-top: 2px;
+}
+
+input[type=checkbox].loginc{
+    border: 2px solid #bfc1cd;
+    background: #F2F3F7;
+    /* position: relative;  */
+}
+input[type=checkbox].loginc:checked{
+		background-color: #F2F3F7;
+}
+input[type=checkbox].loginc:checked:after{
+    content:"";
+		width: 6px;
+		height: 6px;
+		display: inline-block;
+		background: #3490DD;
+		border-radius:3px;
+		position: absolute;
+		left: 2px;
+		top: 2px;
+}
+
+input[type=checkbox]:focus {
+    outline: none;
+}
+
+footer{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    margin: 0 auto;
+    height: 25px;
+    font-size: 12px;
+    color: #959595;
+    text-align: center;
+}
+
+footer p{
+  font-size: 12px;
+}
+
+/*
+CSS Reset
+http://meyerweb.com/eric/tools/css/reset/
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+
+
+
+/* particleground demo */
+
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+    background: #ffffff;
+    color: #fff;
+    line-height: 1.3;
+    -webkit-font-smoothing: antialiased;
+    font-family: 微软雅黑;
+}
+body{
+	background: #F2F3F7;
+}
+input[type=checkbox] {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid #bfc1cd;
+  width: 14px;
+  height: 14px;
+  border-radius: 12px;
+  margin-top: 4px; }
+
+input[type=checkbox]:active, input[type=checkbox]:checked {
+  background: #323841; }
+
+
+#particles {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#intro {
+  position: absolute;
+  display:none;
+  left: 0;
+  top: 50%;
+  padding: 0 20px;
+  width: 100%;
+  text-align: center;
+}

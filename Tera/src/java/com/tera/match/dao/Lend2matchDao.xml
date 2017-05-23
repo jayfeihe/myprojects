@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.match.dao.Lend2matchDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.match.model.Lend2match" >
+	<result column="id" property="id"/>
+	<result column="lend_app_id" property="lendAppId"/>
+	<result column="type" property="type"/>
+	<result column="match_type" property="matchType"/>
+	<result column="app_time" property="appTime"/>
+	<result column="lend_amount" property="lendAmount"/>
+	<result column="lend_product" property="lendProduct"/>
+	<result column="lend_interest_rate" property="lendInterestRate"/>
+	<result column="lend_service_rate" property="lendServiceRate"/>
+	<result column="lend_period" property="lendPeriod"/>
+	<result column="start_date" property="startDate"/>
+	<result column="end_date" property="endDate"/>
+	<result column="org_id" property="orgId"/>
+	<result column="useage" property="useage"/>
+	<result column="contract_amount" property="contractAmount"/>
+	<result column="contract_start_date" property="contractStartDate"/>
+	<result column="contract_end_date" property="contractEndDate"/>
+	<result column="value_date" property="valueDate"/>
+	<result column="state" property="state"/>
+	<result column="times" property="times"/>
+	<result column="lock_flag" property="lockFlag"/>
+	<result column="operator" property="operator"/>
+	<result column="org_id2" property="orgId2"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+</resultMap>
+
+<!-- 杨长收添加 -->
+<resultMap id="Lend2MatchQBeanResultMap" type="com.tera.lend.model.form.Lend2MatchQBean" >
+	<result column="id" property="id"/>
+	<result column="lendAppId" property="appId"/>
+	<result column="customerType" property="customerType"/>
+	<result column="name" property="name"/>
+	<result column="id_no" property="idNo"/>
+	<result column="operator" property="operator"/>
+	<result column="state" property="state"/>
+	<result column="amount" property="amount"/>
+	<result column="lend_amount" property="lendAmount"/>
+	<result column="lendProduct" property="product"/>
+	<result column="serviceEndDate" property="serviceEndDate"/>
+	<result column="create_time" property="createTime"/>
+<!--	<result column="orgId2" property="orgId2"/>-->
+	<result column="org_id" property="orgId"/>
+	<result column="mobile" property="mobile"/>
+</resultMap>
+       
+<!-- T_LEND_2MATCH table all fields -->
+<sql id="Column_List" >
+	 id,lend_app_id,type,match_type,app_time,lend_amount,lend_product,lend_interest_rate,lend_service_rate,lend_period,start_date,end_date,org_id,useage,contract_amount,contract_start_date,contract_end_date,state,times,lock_flag,operator,org_id2,create_time,update_time,value_date
+</sql>
+
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="lendAppId != null and lendAppId != ''" >
+	    and lend_app_id =  #{lendAppId}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="matchType != null and matchType != ''" >
+	    and match_type =  #{matchType}
+	</if>
+<if test="appTime != null and appTime != ''" >
+	    and app_time =  #{appTime}
+	</if>
+<if test="lendAmount != null and lendAmount != ''" >
+	    and lend_amount =  #{lendAmount}
+	</if>
+<if test="lendProduct != null and lendProduct != ''" >
+	    and lend_product =  #{lendProduct}
+	</if>
+<if test="lendInterestRate != null and lendInterestRate != ''" >
+	    and lend_interest_rate =  #{lendInterestRate}
+	</if>
+<if test="lendServiceRate != null and lendServiceRate != ''" >
+	    and lend_service_rate =  #{lendServiceRate}
+	</if>
+<if test="lendPeriod != null and lendPeriod != ''" >
+	    and lend_period =  #{lendPeriod}
+	</if>
+<if test="startDate != null and startDate != ''" >
+	    and start_date =  #{startDate}
+	</if>
+<if test="endDate != null and endDate != ''" >
+	    and end_date =  #{endDate}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="useage != null and useage != ''" >
+	    and useage =  #{useage}
+	</if>
+<if test="contractAmount != null and contractAmount != ''" >
+	    and contract_amount =  #{contractAmount}
+	</if>
+<if test="contractStartDate != null and contractStartDate != ''" >
+	    and contract_start_date =  #{contractStartDate}
+	</if>
+<if test="contractEndDate != null and contractEndDate != ''" >
+	    and contract_end_date =  #{contractEndDate}
+	</if>
+<if test="valueDate != null and valueDate != ''" >
+	    and value_date =  #{valueDate}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="times != null and times != ''" >
+	    and times =  #{times}
+	</if>
+<if test="lockFlag != null and lockFlag != ''" >
+	    and lock_flag =  #{lockFlag}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId2 != null and orgId2 != ''" >
+	    and org_id2 =  #{orgId2}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_LEND_2MATCH_SEQ') From dual
+			<!-- Select T_LEND_2MATCH_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_LEND_2MATCH(id,lend_app_id,type,match_type,app_time,lend_amount,lend_product,lend_interest_rate,lend_service_rate,lend_period,start_date,end_date,org_id,useage,contract_amount,contract_start_date,contract_end_date,value_date,state,times,lock_flag,operator,org_id2,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{lendAppId, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{matchType, jdbcType=VARCHAR},#{appTime, jdbcType=TIMESTAMP},#{lendAmount, jdbcType=DOUBLE},#{lendProduct, jdbcType=VARCHAR},#{lendInterestRate, jdbcType=DOUBLE},#{lendServiceRate, jdbcType=DOUBLE},#{lendPeriod, jdbcType=INTEGER},#{startDate, jdbcType=DATE},#{endDate, jdbcType=DATE},#{orgId, jdbcType=VARCHAR},#{useage, jdbcType=VARCHAR},#{contractAmount, jdbcType=DOUBLE},#{contractStartDate, jdbcType=DATE},#{contractEndDate, jdbcType=DATE},#{valueDate, jdbcType=DATE},#{state, jdbcType=VARCHAR},#{times, jdbcType=INTEGER},#{lockFlag, jdbcType=INTEGER},#{operator, jdbcType=VARCHAR},#{orgId2, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_LEND_2MATCH set 
+	<trim  suffixOverrides="," >
+	lend_app_id =  #{lendAppId, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	match_type =  #{matchType, jdbcType=VARCHAR},
+	app_time =  #{appTime, jdbcType=TIMESTAMP},
+	lend_amount =  #{lendAmount, jdbcType=DOUBLE},
+	lend_product =  #{lendProduct, jdbcType=VARCHAR},
+	lend_interest_rate =  #{lendInterestRate, jdbcType=DOUBLE},
+	lend_service_rate =  #{lendServiceRate, jdbcType=DOUBLE},
+	lend_period =  #{lendPeriod, jdbcType=INTEGER},
+	start_date =  #{startDate, jdbcType=DATE},
+	end_date =  #{endDate, jdbcType=DATE},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	useage =  #{useage, jdbcType=VARCHAR},
+	contract_amount =  #{contractAmount, jdbcType=DOUBLE},
+	contract_start_date =  #{contractStartDate, jdbcType=DATE},
+	contract_end_date =  #{contractEndDate, jdbcType=DATE},
+	value_date =  #{valueDate, jdbcType=DATE},
+	state =  #{state, jdbcType=VARCHAR},
+	times =  #{times, jdbcType=INTEGER},
+	lock_flag =  #{lockFlag, jdbcType=INTEGER},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id2 =  #{orgId2, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_LEND_2MATCH  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_LEND_2MATCH set 
+	<trim  suffixOverrides="," >
+	<if test="lendAppId != null and lendAppId != ''" >
+	    lend_app_id =  #{lendAppId, jdbcType=VARCHAR},
+	</if>
+	<if test="type != null and type != ''" >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+	<if test="matchType != null and matchType != ''" >
+	    match_type =  #{matchType, jdbcType=VARCHAR},
+	</if>
+	<if test="appTime != null and appTime != ''" >
+	    app_time =  #{appTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="lendAmount != null" >
+	    lend_amount =  #{lendAmount, jdbcType=DOUBLE},
+	</if>
+	<if test="lendProduct != null and lendProduct != ''" >
+	    lend_product =  #{lendProduct, jdbcType=VARCHAR},
+	</if>
+	<if test="lendInterestRate != null and lendInterestRate != ''" >
+	    lend_interest_rate =  #{lendInterestRate, jdbcType=DOUBLE},
+	</if>
+	<if test="lendServiceRate != null and lendServiceRate != ''" >
+	    lend_service_rate =  #{lendServiceRate, jdbcType=DOUBLE},
+	</if>
+	<if test="lendPeriod != null and lendPeriod != ''" >
+	    lend_period =  #{lendPeriod, jdbcType=INTEGER},
+	</if>
+	<if test="startDate != null and startDate != ''" >
+	    start_date =  #{startDate, jdbcType=DATE},
+	</if>
+	<if test="endDate != null and endDate != ''" >
+	    end_date =  #{endDate, jdbcType=DATE},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="useage != null and useage != ''" >
+	    useage =  #{useage, jdbcType=VARCHAR},
+	</if>
+	<if test="contractAmount != null and contractAmount != ''" >
+	    contract_amount =  #{contractAmount, jdbcType=DOUBLE},
+	</if>
+	<if test="contractStartDate != null and contractStartDate != ''" >
+	    contract_start_date =  #{contractStartDate, jdbcType=DATE},
+	</if>
+	<if test="contractEndDate != null and contractEndDate != ''" >
+	    contract_end_date =  #{contractEndDate, jdbcType=DATE},
+	</if>
+	<if test="valueDate != null and valueDate != ''" >
+	    value_date =  #{valueDate, jdbcType=DATE},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="times != null and times != ''" >
+	    times =  #{times, jdbcType=INTEGER},
+	</if>
+	<if test="lockFlag != null and lockFlag != ''" >
+	    lock_flag =  #{lockFlag, jdbcType=INTEGER},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId2 != null and orgId2 != ''" >
+	    org_id2 =  #{orgId2, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 出借待撮合 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_LEND_2MATCH  where id = #{id}
+</select>
+
+
+<!-- 杨长收添加出借待撮合 列表总数-->
+<select id="queryLend2MatchCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LEND_2MATCH,T_LEND_APP,T_BPM_TASK
+	where 1=1
+	<if test="id != null and id != ''" >
+	    and t_lend_2match.ID =  #{id}
+	</if>
+	<if test="appId != null and appId != ''" >
+	    and t_lend_2match.LEND_APP_ID =  #{appId}
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    and t_lend_app.ID_NO =  #{idNo}
+	</if>
+	<if test="name != null and name != ''" >
+	    and t_lend_app.NAME =  #{name}
+	</if>
+	<if test="mobile != null and mobile != ''" >
+	    and t_lend_app.MOBILE =  #{mobile}
+	</if>
+	AND T_LEND_2MATCH.LEND_APP_ID = T_LEND_APP.APP_ID
+	AND T_LEND_APP.APP_ID = T_BPM_TASK.BIZ_KEY
+	<if test="states != null and states != '' " >
+		AND T_LEND_2MATCH.STATE in
+		<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="bpmStates != null and bpmStates != '' " >
+		AND T_BPM_TASK.STATE in
+		<foreach item="item" index="index" collection="bpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="userLoginId != null and userLoginId != '' " >
+		AND T_BPM_TASK.PROCESSER =#{userLoginId}
+	</if>
+		
+	<if test="orgId != null and orgId != '' " >
+			AND T_LEND_2MATCH.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	
+</select>
+  	
+<!-- 杨长收添加查询出借待撮合列表 -->
+<select id="queryLend2MatchList" resultMap="Lend2MatchQBeanResultMap"  parameterType="map">
+	select 
+	 t_lend_app.ID as id,
+	 t_lend_2match.LEND_APP_ID as lendAppId,
+	 t_lend_app.CUSTOMER_TYPE as customerType,
+	 t_lend_app.NAME as name,
+	 t_lend_app.ID_NO as idNo,
+	 t_lend_2match.OPERATOR as operator,
+	 t_lend_2match.STATE as state,
+	 t_lend_2match.LEND_AMOUNT as lendAmount,
+	 t_lend_2match.LEND_PRODUCT as lendProduct,
+	 t_lend_app.SERVICE_END_DATE as serviceEndDate,
+	 t_lend_2match.CREATE_TIME as createTime,
+	 t_lend_2match.ORG_ID as orgId,
+	 t_lend_app.MOBILE as mobile 
+	from T_LEND_2MATCH ,T_LEND_APP,T_BPM_TASK
+	where 1=1
+	<if test="id != null and id != ''" >
+	    and t_lend_2match.ID =  #{id}
+	</if>
+	<if test="appId != null and appId != ''" >
+	    and t_lend_2match.LEND_APP_ID =  #{appId}
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    and t_lend_app.ID_NO =  #{idNo}
+	</if>
+	<if test="name != null and name != ''" >
+	    and t_lend_app.NAME =  #{name}
+	</if>
+	<if test="mobile != null and mobile != ''" >
+	    and t_lend_app.MOBILE =  #{mobile}
+	</if>
+	AND T_LEND_2MATCH.LEND_APP_ID = T_LEND_APP.APP_ID
+	AND T_LEND_APP.APP_ID = T_BPM_TASK.BIZ_KEY
+	<if test="states != null and states != '' " >
+		AND T_LEND_2MATCH.STATE in
+		<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="bpmStates != null and bpmStates != '' " >
+		AND T_BPM_TASK.STATE in
+		<foreach item="item" index="index" collection="bpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="userLoginId != null and userLoginId != '' " >
+		AND T_BPM_TASK.PROCESSER =#{userLoginId}
+	</if>
+		
+	<if test="orgId != null and orgId != '' " >
+			AND T_LEND_2MATCH.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 杨长收添加根据loan2matchId查询matchresult表中的lend2matchId列表总数(在做人工撮合审批和人工撮合收费时)-->
+<select id="queryManualMatchVerifyLend2MatchCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LEND_2MATCH ,T_LEND_APP,T_MATCH_RESULT 
+	where 1=1
+	<if test="id != null and id != ''" >
+	    and t_lend_2match.ID =  #{id}
+	</if>
+	<if test="appId != null and appId != ''" >
+	    and t_lend_2match.LEND_APP_ID =  #{appId}
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    and t_lend_app.ID_NO =  #{idNo}
+	</if>
+	<if test="name != null and name != ''" >
+	    and t_lend_app.NAME =  #{name}
+	</if>
+	<if test="mobile != null and mobile != ''" >
+	    and t_lend_app.MOBILE =  #{mobile}
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	<!--	    and t_lend_2match.ORG_ID =  #{orgId2}-->
+	     and t_lend_2match.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	AND T_LEND_2MATCH.LEND_APP_ID = T_LEND_APP.APP_ID
+	AND T_MATCH_RESULT.LEND_APP_ID = T_LEND_2MATCH.LEND_APP_ID
+	AND T_MATCH_RESULT.LOAN_APP_ID = #{loan2matchId}
+	AND T_MATCH_RESULT.STATE = #{matchresultstate}
+	
+</select>
+
+<!-- 杨长收添加根据loan2matchId查询matchresult表中的lend2matchId列表总数(在做人工撮合审批和人工撮合收费时)-->
+<select id="queryManualMatchVerifyLend2MatchList" resultMap="Lend2MatchQBeanResultMap"  parameterType="map">
+	select 
+	 t_lend_app.ID as id,
+	 t_lend_2match.LEND_APP_ID as lendAppId,
+	 t_lend_app.CUSTOMER_TYPE as customerType,
+	 t_lend_app.NAME as name,
+	 t_lend_app.ID_NO as idNo,
+	 t_lend_2match.OPERATOR as operator,
+	 t_lend_2match.STATE as state,
+	 t_lend_2match.LEND_AMOUNT as lendAmount,
+	 t_lend_2match.LEND_PRODUCT as lendProduct,
+	 t_lend_app.SERVICE_END_DATE as serviceEndDate,
+	 t_lend_2match.CREATE_TIME as createTime,
+	 t_lend_2match.ORG_ID as orgId,
+	 t_lend_app.MOBILE as mobile 
+	from T_LEND_2MATCH ,T_LEND_APP,T_MATCH_RESULT 
+	where 1=1
+	<if test="id != null and id != ''" >
+	    and t_lend_2match.ID =  #{id}
+	</if>
+	<if test="appId != null and appId != ''" >
+	    and t_lend_2match.LEND_APP_ID =  #{appId}
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    and t_lend_app.ID_NO =  #{idNo}
+	</if>
+	<if test="name != null and name != ''" >
+	    and t_lend_app.NAME =  #{name}
+	</if>
+	<if test="mobile != null and mobile != ''" >
+	    and t_lend_app.MOBILE =  #{mobile}
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	<!--	    and t_lend_2match.ORG_ID =  #{orgId2}-->
+	     and t_lend_2match.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	AND T_LEND_2MATCH.LEND_APP_ID = T_LEND_APP.APP_ID
+	AND T_MATCH_RESULT.LEND_APP_ID = T_LEND_2MATCH.LEND_APP_ID
+	AND T_MATCH_RESULT.LOAN_APP_ID = #{loan2matchId}
+	AND T_MATCH_RESULT.STATE = #{matchresultstate}
+	
+</select>
+
+
+<!-- 出借待撮合 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LEND_2MATCH 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询出借待撮合列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LEND_2MATCH 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 查询出借待撮合列表 -->
+<select id="queryLockList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LEND_2MATCH 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+    FOR UPDATE
+</select>
+  	
+  	<!-- 查询出借出人待撮合列表,筛选出符合条件的 -->
+<select id="queryBasicLockList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_lend_2match 
+	WHERE match_type='0' AND state='1' AND LOCK_FLAG='0' ORDER BY  TYPE  DESC ,APP_TIME ASC FOR UPDATE
+
+</select>
+
+<!--自动撮合  -标识取出的自动匹配记录为锁定状态-->
+ <update id="updateToLock">
+ 	UPDATE t_lend_2match SET LOCK_FLAG='1' WHERE match_type='0' AND state='1' AND LOCK_FLAG='0'
+ </update>
+ 	
+  <!--自动撮合  -还原锁定的自动匹配记录为非锁定 -->
+ <update id="updateToUnLock">
+ 	UPDATE t_lend_2match SET LOCK_FLAG='0' WHERE match_type='0'  AND LOCK_FLAG='1'
+ </update>	
+ 
+ <!--自动撮合  - 增加一次匹配记录的次数 -->
+ <update id="updateMatchTimes">
+ 	UPDATE t_lend_2match SET Times=Times+1 WHERE match_type='0' AND LOCK_FLAG='1'
+ </update>	
+
+
+
+<!-- 查询 可以被 转人工的 撮合 -->
+<select id="queryMatchManageCount" resultType="java.lang.Integer"  parameterType="map">
+	SELECT count(1) FROM t_lend_2match a , t_bpm_task c
+	WHERE c.biz_key = a.LEND_APP_ID
+	AND c.state IN ('自动撮合','人工撮合')
+	AND NOT EXISTS( SELECT 1 FROM t_match_result b WHERE a.LEND_APP_ID = b.LEND_APP_ID AND b.STATE != '0')
+	AND a.LOCK_FLAG != '1'
+	AND a.MATCH_TYPE = '0'
+</select>
+
+<!-- 查询 可以被 转人工的 撮合 -->
+<select id="queryMatchManageList" resultMap="ResultMap"  parameterType="map">
+	SELECT c.state bpmstate, a.* , d.* FROM t_lend_2match a , t_bpm_task c , t_lend_app d
+	WHERE c.biz_key = a.LEND_APP_ID
+	AND a.LEND_APP_ID = d.APP_ID
+	AND c.state IN ('自动撮合','人工撮合')
+	AND NOT EXISTS( SELECT 1 FROM t_match_result b WHERE a.LEND_APP_ID = b.LEND_APP_ID AND b.STATE != '0')
+	AND a.LOCK_FLAG != '1'
+	AND a.MATCH_TYPE = '0'
+    <if test="name != null and name != ''" >
+	    and d.name =  #{name}
+	</if>
+	<if test="amountMin!=null and amountMin!=''">
+		<![CDATA[AND d.amount >= #{amountMin}]]>
+	</if>
+	<if test="amountMax!=null and amountMax!=''">
+		<![CDATA[AND d.amount < #{amountMax}]]>
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    and d.org_id =  #{orgId}
+	</if>
+	<if test="mobile != null and mobile != ''" >
+	    and d.mobile =  #{mobile}
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    and d.id_no =  #{idNo}
+	</if>
+	<if test="createTimeMin!=null and createTimeMin!=''">
+		<![CDATA[AND d.CREATE_TIME >= #{createTimeMin}]]>
+	</if>
+	<if test="createTimeMax!=null and createTimeMax!=''">
+		<![CDATA[AND d.CREATE_TIME < #{createTimeMax}]]>
+	</if>
+	<if test="state != null and state != ''" >
+	    and d.state =  #{state}
+	</if>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+ <!--查询lend表中的状态为1或者为2的数据  -->
+ <select id="queryUnFinishList" resultMap="ResultMap"  parameterType="map">
+	SELECT * FROM T_lend_2match  WHERE state='1' OR state='2'
+</select>
+
+
+
+  	
+  	
+</mapper>   

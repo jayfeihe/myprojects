@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.report.dao.BranchDealDao">
+	
+	<select id="queryList" parameterType="map" resultType="com.tera.report.model.BranchDealQBean">
+		SELECT
+			aa.ORG AS orgId,                             <!-- 机构id -->
+			o.ORG_NAME orgName,							 <!-- 机构名称 -->
+			aa.PRODUCT AS product,                       <!-- 产品 -->
+			(SELECT d.KEY_VALUE FROM t_data_dictionary d WHERE aa.PRODUCT = d.KEY_PROP AND d.KEY_NAME = 'productType') AS productName,<!-- 产品名称 -->
+			aa.NUMA AS newNum, 							 <!-- 新增笔数 -->
+			aa.AMTA AS newAmt,							 <!-- 新增金额 -->
+			NVL (BB.NUMB, 0) AS renewNum,                <!-- 续贷笔数 -->
+			NVL (BB.AMTB, 0) AS renewAmt,                <!-- 续贷金额 -->
+			aa.NUMA + NVL (BB.NUMB, 0) AS totalNum,      <!-- 合计笔数 -->
+			AA.AMTA + NVL (BB.AMTB, 0) AS totalAmt       <!-- 合计金额 -->
+		FROM
+			(
+				SELECT
+					A .org,
+					A .PRODUCT,
+					COUNT (A .LOAN_ID) AS numa,
+					SUM (A .LOAN_AMT) AS amta
+				FROM
+					T_LOAN_BASE A
+				WHERE
+					A .IS_RENEW IN ('0', '2')
+					AND A.STATE_1ST = 'L'
+					<if test="loanTimeMin != null and loanTimeMin != ''">
+						<![CDATA[AND TO_CHAR(A.LOAN_TIME,'YYYY-MM-DD') >= #{loanTimeMin}]]>
+					</if>
+					<if test="loanTimeMax != null and loanTimeMax != ''">
+						<![CDATA[AND TO_CHAR(A.LOAN_TIME,'YYYY-MM-DD') <= #{loanTimeMax}]]>
+					</if>
+				GROUP BY
+					A .ORG,
+					A .PRODUCT
+			) aa   <!-- 新增 -->
+		LEFT JOIN (
+			SELECT
+				b.org,
+				b.PRODUCT,
+				NVL (COUNT(b.LOAN_ID), 0) AS numb,
+				NVL (SUM(b.LOAN_AMT), 0) AS amtb
+			FROM
+				T_LOAN_BASE b
+			WHERE
+				b.IS_RENEW = '1'
+				AND b.STATE_1ST = 'L'
+				<if test="loanTimeMin != null and loanTimeMin != ''">
+					<![CDATA[AND TO_CHAR(b.LOAN_TIME,'YYYY-MM-DD') >= #{loanTimeMin}]]>
+				</if>
+				<if test="loanTimeMax != null and loanTimeMax != ''">
+					<![CDATA[AND TO_CHAR(b.LOAN_TIME,'YYYY-MM-DD') <= #{loanTimeMax}]]>
+				</if>
+			GROUP BY
+				b.ORG,
+				b.PRODUCT
+		) bb ON aa.ORG = bb.org 
+		AND aa.PRODUCT = bb.PRODUCT <!-- 续贷 -->
+		LEFT JOIN T_ORG o ON AA.ORG = o.ORG_ID
+		<where>
+			1=1
+			<if test="orgId != null and orgId != ''">
+				AND AA.ORG LIKE CONCAT(#{orgId},'%')
+			</if>
+			<!--机构权限限制  -->
+			<if test="orgs != null and orgs.size() >0 " >
+			and aa.org in
+			                <foreach item="item" index="index" collection="orgs" open="(" separator="," close=")">
+									#{item}
+							</foreach>	
+				</if>
+		</where>
+		ORDER BY o.ORG_ID
+	</select>
+
+</mapper>

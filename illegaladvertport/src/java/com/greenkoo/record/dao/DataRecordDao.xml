@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.record.dao.DataRecordDao">
+	
+	<select id="queryById" resultType="com.greenkoo.record.model.DataRecord">
+		select <include refid="columns"/> from t_data_record t where t.id = #{id}
+	</select>
+	
+	<select id="queryCount" resultType="int">
+		select count(1) from t_data_record t 
+		left join
+			(select info_id, max(`status`) as status from t_ad_feedback group by info_id) t2 on t.info_id = t2.info_id
+		<include refid="conditions"/>
+		<if test="status != null and status != ''">
+			and t2.status = #{status}
+		</if>
+	</select>
+	
+	<select id="queryList" resultType="com.greenkoo.record.model.DataRecord">
+		select 
+			IFNULL(t2.status,0) status,
+			<include refid="columns"/> 
+		from 
+			t_data_record t
+		left join
+			(select info_id, max(`status`) as status from t_ad_feedback group by info_id) t2 on t.info_id = t2.info_id
+		<include refid="conditions"/>
+		<if test="status != null and status != ''">
+			and t2.status = #{status}
+		</if>
+		order by t.confirm_time desc, t.level asc
+		<if test="pageOffset != null and pageSize != null " >
+	      limit #{pageOffset} , #{pageSize}
+	    </if>
+	</select>
+	
+	<!-- 查询确认违法广告数量 -->
+	<select id="queryAdvertCount" resultType="int">
+		select count(*) from (<include refid="advertAuerySql"/>) t 
+		<include refid="conditions"/>
+		<if test="status != null and status != ''">
+			and t.status = #{status}
+		</if>
+	</select>
+	
+	<!-- 查询确认违法广告列表 -->
+	<select id="queryAdvertList" resultType="com.greenkoo.record.model.DataRecord">
+		select * from (<include refid="advertAuerySql"/>) t 
+		<include refid="conditions"/>
+		<if test="status != null and status != ''">
+			and t.status = #{status}
+		</if>
+		<if test="pageOffset != null and pageSize != null " >
+	      limit #{pageOffset} , #{pageSize}
+	    </if>
+	</select>
+	
+	<!-- 查询确认违法广告SQL -->
+	<sql id="advertAuerySql">
+		select 
+			IFNULL(t2.status,0) status,
+			t.id              ,
+			t.info_id         ,
+			t.ad_name         ,
+			t.creative_name   ,
+			t.adpic_url       ,
+			t.adpic_width     ,
+			t.adpic_height    ,
+			t.thumb_width     ,
+			t.thumb_height    ,
+			t.landing_url     ,
+			t.advertiser_url  ,
+			t.advertiser_name ,
+			t.media_url       ,
+			t.media_name      ,
+			t.terminal_type   ,
+			t.adx_url         ,
+			t.adx_name        ,
+			t.type            ,
+			t.level           ,
+			t.collect_time    ,
+			t.check_time      ,
+			max(t.confirm_time) as confirm_time,
+			t.create_time        
+		from 
+			t_data_record t 
+		left join
+			(select info_id, max(`status`) as status from t_ad_feedback group by info_id) t2 on t.info_id = t2.info_id
+		<where>
+			<if test="advertiserUrl != null and advertiserUrl != ''">
+				and t.advertiser_url = #{advertiserUrl}
+			</if>
+			<if test="mediaUrl != null and mediaUrl != ''">
+				and t.media_url = #{mediaUrl}
+			</if>
+		</where>
+		group by t.landing_url 
+		order by t.confirm_time desc, t.level asc
+	</sql>
+	
+	<!-- 统计广告数量 -->
+	<select id="countAdvert" resultType="Integer">
+		select count(distinct(t.landing_url)) from t_data_record t <include refid="conditions"/>
+	</select>
+	
+	<!-- 统计广告主数量 -->
+	<select id="countAdvertiser" resultType="Integer">
+		select count(distinct(t.advertiser_url)) from t_data_record t <include refid="conditions"/>
+	</select>
+	
+	<!-- 统计涉及媒体数量 -->
+	<select id="countMedia" resultType="Integer">
+		select count(distinct(t.media_url)) from t_data_record t <include refid="conditions"/>
+	</select>
+	
+	<!-- 统计总体已整改创意数量 -->
+	<select id="countAllCorrect" resultType="Integer">
+		select count(*) from t_data_record t <include refid="conditions"/>
+		and t.info_id in (select info_id from t_ad_feedback where `status` = 1)
+	</select>
+	
+	<!-- 统计我方已整改创意数量 -->
+	<select id="countSelfCorrect" resultType="Integer">
+		select count(*) from t_data_record t <include refid="conditions"/>
+		and t.info_id in (select info_id from t_ad_feedback where `status` = 1 and role_url = #{roleUrl})
+	</select>
+	
+	<!-- 根据违法程度以及时间条件统计广告数，计算占比（首页数据统计占比） -->
+	<select id="countAdvertProportion" resultType="int">
+		select count(tt.landing_url) 
+		from (
+			select 
+				t.landing_url,
+				min(t.level) level
+			from `t_data_record` t 
+			<include refid="conditions"/>
+			group by t.landing_url ) tt
+		
+	</select>
+	
+	<!-- 查询涉及媒体数量 -->
+	<select id="queryRelatedMediaCount" resultType="int">
+		select count(tt.media_url) from (
+		select t.media_url from `t_data_record` t 
+		where  t.advertiser_url=#{advertiserUrl} 
+		<if test="landingUrl != null and landingUrl != ''">
+			and t.landing_url=#{landingUrl} 
+		</if> 
+		<if test="keyWord != null and keyWord != ''">
+			and t.media_name like concat('%',#{keyWord},'%')
+		</if>
+		group by t.media_url) tt
+	</select>
+	<!-- 查询涉及媒体列表 -->
+	<select id="queryRelatedMediaList" resultType="com.greenkoo.record.model.form.RelatedBean">
+		select 
+			t.media_name as relatedName,
+			count(DISTINCT(t.landing_url)) as adCount,
+			count(t.adpic_url) as creativeCount
+		from `t_data_record` t 
+		where 1=1 
+		and t.advertiser_url=#{advertiserUrl} 
+		<if test="landingUrl != null and landingUrl != ''">
+			and t.landing_url=#{landingUrl} 
+		</if>
+		<if test="keyWord != null and keyWord != ''">
+			and t.media_name like concat('%',#{keyWord},'%')
+		</if>
+		group by t.media_url
+		order by count(t.media_url) desc 
+	</select>
+	
+	<!-- 查询涉及广告主数量 -->
+	<select id="queryRelatedAdvertiserCount" resultType="int">
+		select count(tt.advertiser_url) from (
+		select advertiser_url from `t_data_record` t 
+		where  t.media_url=#{mediaUrl} 
+		<if test="keyWord != null and keyWord != ''">
+			and t.advertiser_name like concat('%',#{keyWord},'%')
+		</if>
+		group by t.advertiser_url) tt
+	</select>
+	<!-- 查询涉及广告主列表 -->
+	<select id="queryRelatedAdvertiserList" resultType="com.greenkoo.record.model.form.RelatedBean">
+		select 
+			t.advertiser_name as relatedName,
+			count(DISTINCT(t.landing_url)) as adCount,
+			count(t.adpic_url) as creativeCount
+		from `t_data_record` t 
+		where  t.media_url=#{mediaUrl} 
+		<if test="keyWord != null and keyWord != ''">
+			and t.advertiser_name like concat('%',#{keyWord},'%')
+		</if>
+		group by t.advertiser_url 
+		order by count(t.advertiser_url) desc
+	</select>
+	
+	<sql id="columns">
+		t.id              ,
+		t.info_id         ,
+		t.ad_name         ,
+		t.creative_name   ,
+		t.adpic_url       ,
+		t.adpic_width     ,
+		t.adpic_height    ,
+		t.thumb_width     ,
+		t.thumb_height    ,
+		t.landing_url     ,
+		t.advertiser_url  ,
+		t.advertiser_name ,
+		t.media_url       ,
+		t.media_name      ,
+		t.terminal_type   ,
+		t.adx_url         ,
+		t.adx_name        ,
+		t.type            ,
+		t.level           ,
+		t.collect_time    ,
+		t.check_time      ,
+		t.confirm_time    ,
+		t.create_time        
+	</sql>
+	
+	<sql id="conditions">
+		<where>
+			<if test="adpicUrl != null and adpicUrl != ''">
+				and t.adpic_url = #{adpicUrl}
+			</if>
+			<if test="landingUrl != null and landingUrl != ''">
+				and t.landing_url = #{landingUrl}
+			</if>
+			<if test="advertiserUrl != null and advertiserUrl != ''">
+				and t.advertiser_url = #{advertiserUrl}
+			</if>
+			<if test="mediaUrl != null and mediaUrl != ''">
+				and t.media_url = #{mediaUrl}
+			</if>
+			<if test="adxUrl != null and adxUrl != ''">
+				and t.adx_url = #{adxUrl}
+			</if>
+			<if test="level != null and level > 0">
+				and t.level = #{level}
+			</if>
+			<if test="terminalType != null and terminalType > 0">
+				and t.terminal_type = #{terminalType}
+			</if>
+			<if test="adName != null and adName != ''">
+				and t.ad_name like concat('%',#{adName},'%')
+			</if>
+			<if test="creativeName != null and creativeName != ''">
+				and t.creative_name like concat('%',#{creativeName},'%')
+			</if>
+			<if test="confirmTime != null and confirmTime != ''">
+				and DATE_FORMAT(t.confirm_time,'%Y-%m-%d') <![CDATA[=]]> #{confirmTime}
+			</if>
+			<if test="confirmTimeMin != null and confirmTimeMin != ''">
+				and DATE_FORMAT(t.confirm_time,'%Y-%m-%d') <![CDATA[>=]]> #{confirmTimeMin}
+			</if>
+			<if test="confirmTimeMax != null and confirmTimeMax != ''">
+				and DATE_FORMAT(t.confirm_time,'%Y-%m-%d') <![CDATA[<=]]> #{confirmTimeMax}
+			</if>
+		</where>
+	</sql>
+</mapper>

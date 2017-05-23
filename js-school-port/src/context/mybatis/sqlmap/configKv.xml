@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.ConfigKvDAO">
+	<resultMap type="com.hikootech.mqcash.po.ConfigKv" id="ConfigKvMap">
+		<result property="kvKey" column="kv_key"/>
+		<result property="kvValue" column="kv_value"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="operator" column="operator"/>
+	</resultMap>
+
+	<select id="queryAll"  resultMap="ConfigKvMap">
+		 select * from t_config_kv 
+	</select>
+	
+</mapper>

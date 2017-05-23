@@ -1,0 +1,685 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.loan.dao.LoanAppDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.audit.loan.model.LoanApp" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="loan_id" property="loanId"/><!-- 申请ID -->
+	<result column="main_flag" property="mainFlag"/><!-- 主借款人标识 -->
+	<result column="name" property="name"/><!-- 姓名、机构名称 -->
+	<result column="sex" property="sex"/><!-- 性别 -->
+	<result column="id_type" property="idType"/><!-- 证件类型 -->
+	<result column="valid_date" property="validDate"/><!-- 有效期 -->
+	<result column="id_no" property="idNo"/><!-- 证件号码 -->
+	<result column="tel" property="tel"/><!-- 手机号 -->
+	<result column="tel2" property="tel2"/><!-- 备用手机号 -->
+	<result column="marriage" property="marriage"/><!-- 婚姻状况 -->
+	<result column="has_chil" property="hasChil"/><!-- 子女有无 -->
+	<result column="chil_num" property="chilNum"/><!-- 子女几个 -->
+	<result column="edu" property="edu"/><!-- 学历 -->
+	<result column="live" property="live"/><!-- 居住情况 -->
+	<result column="native_house" property="nativeHouse"/><!-- 本市房产情况 -->
+	<result column="native_time" property="nativeTime"/><!-- 本地居住时间 -->
+	<result column="home_prvn" property="homePrvn"/><!-- 户籍、注册所在省 -->
+	<result column="home_city" property="homeCity"/><!-- 户籍，注册所在市 -->
+	<result column="home_ctry" property="homeCtry"/><!-- 户籍，注册所在县 -->
+	<result column="home_addr" property="homeAddr"/><!-- 户籍，注册地址 -->
+	<result column="now_prvn" property="nowPrvn"/><!-- 现居地，经营所在省 -->
+	<result column="now_city" property="nowCity"/><!-- 现居地，经营所在市 -->
+	<result column="now_ctry" property="nowCtry"/><!-- 现居地，经营所在县 -->
+	<result column="now_addr" property="nowAddr"/><!-- 现居地，经营地址 -->
+	<result column="phone" property="phone"/><!-- 家庭固定电话 -->
+	<result column="school" property="school"/><!-- 毕业院校 -->
+	<result column="edu_time" property="eduTime"/><!-- 毕业时间 -->
+	<result column="wechat" property="wechat"/><!-- 微信 -->
+	<result column="email" property="email"/><!-- 邮箱 -->
+	<result column="qq" property="qq"/><!-- QQ -->
+	<result column="postcode" property="postcode"/><!-- 邮编 -->
+	<result column="company_name" property="companyName"/><!-- 单位名称 -->
+	<result column="company_type" property="companyType"/><!-- 单位类型 -->
+	<result column="dept" property="dept"/><!-- 部门 -->
+	<result column="in_time" property="inTime"/><!-- 入职时间 -->
+	<result column="job" property="job"/><!-- 职位 -->
+	<result column="company_prvn" property="companyPrvn"/><!-- 单位所在省 -->
+	<result column="company_city" property="companyCity"/><!-- 单位所在市 -->
+	<result column="company_ctry" property="companyCtry"/><!-- 单位所在县 -->
+	<result column="company_addr" property="companyAddr"/><!-- 单位地址 -->
+	<result column="company_tel" property="companyTel"/><!-- 单位电话 -->
+	<result column="year_income" property="yearIncome"/><!-- 年收入 -->
+	<result column="month_income" property="monthIncome"/><!-- 月工作收入 -->
+	<result column="month_other" property="monthOther"/><!-- 月其他收入 -->
+	<result column="org_reg_time" property="orgRegTime"/><!-- 机构注册时间 -->
+	<result column="org_reg_amt" property="orgRegAmt"/><!-- 机构注册资本 -->
+	<result column="legal_name" property="legalName"/><!-- 法人姓名 -->
+	<result column="legal_tel" property="legalTel"/><!-- 法人手机号 -->
+	<result column="legal_id_type" property="legalIdType"/><!-- 法人证件类型 -->
+	<result column="legal_id_no" property="legalIdNo"/><!-- 法人证件号码 -->
+	<result column="share_name" property="shareName"/><!-- 股东姓名 -->
+	<result column="share_tel" property="shareTel"/><!-- 股东手机号 -->
+	<result column="share_id_type" property="shareIdType"/><!-- 股东证件类型 -->
+	<result column="share_id_no" property="shareIdNo"/><!-- 股东证件号码 -->
+	<result column="org_bus" property="orgBus"/><!-- 机构经营范围 -->
+	<result column="sale_remark" property="saleRemark"/><!-- 业务员备注 -->
+	<result column="law_state" property="lawState"/><!-- 诉讼情况 -->
+	<result column="law_remark" property="lawRemark"/><!-- 诉讼说明 -->
+	<result column="law_check_state" property="lawCheckState"/><!-- 诉讼复核 -->
+	<result column="law_check_remark" property="lawCheckRemark"/><!-- 诉讼复核说明 -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="update_time" property="updateTime"/><!-- 修改时间 -->
+	<result column="ext1" property="ext1"/><!--  -->
+	<result column="ext2" property="ext2"/><!--  -->
+	<result column="age" property="age"/>
+	<result column="org_period" property="orgPeriod"/>
+	<result column="org_sales_amt" property="orgSalesAmt"/>
+</resultMap>
+       
+<!-- T_LOAN_APP table all fields -->
+<sql id="Column_List" >
+	 id,loan_id,main_flag,name,sex,id_type,valid_date,id_no,tel,tel2,age,org_period,org_sales_amt,marriage,has_chil,chil_num,edu,live,native_house,native_time,home_prvn,home_city,home_ctry,home_addr,now_prvn,now_city,now_ctry,now_addr,phone,school,edu_time,wechat,email,qq,postcode,company_name,company_type,dept,in_time,job,company_prvn,company_city,company_ctry,company_addr,company_tel,year_income,month_income,month_other,org_reg_time,org_reg_amt,legal_name,legal_tel,legal_id_type,legal_id_no,share_name,share_tel,share_id_type,share_id_no,org_bus,sale_remark,law_state,law_remark,law_check_state,law_check_remark,create_time,update_time,ext1,ext2
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="loanId != null" >
+	    and loan_id =  #{loanId}
+	</if>
+<if test="mainFlag != null and mainFlag != ''" >
+	    and main_flag =  #{mainFlag}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="sex != null and sex != ''" >
+	    and sex =  #{sex}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="validDate != null and validDate != ''" >
+	    and valid_date =  #{validDate}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="tel != null and tel != ''" >
+	    and tel =  #{tel}
+	</if>
+<if test="tel2 != null and tel2 != ''" >
+	    and tel2 =  #{tel2}
+	</if>
+<if test="marriage != null and marriage != ''" >
+	    and marriage =  #{marriage}
+	</if>
+<if test="hasChil != null and hasChil != ''" >
+	    and has_chil =  #{hasChil}
+	</if>
+<if test="chilNum != null and chilNum != ''" >
+	    and chil_num =  #{chilNum}
+	</if>
+<if test="edu != null and edu != ''" >
+	    and edu =  #{edu}
+	</if>
+<if test="live != null and live != ''" >
+	    and live =  #{live}
+	</if>
+<if test="nativeHouse != null and nativeHouse != ''" >
+	    and native_house =  #{nativeHouse}
+	</if>
+<if test="nativeTime != null and nativeTime != ''" >
+	    and native_time =  #{nativeTime}
+	</if>
+<if test="homePrvn != null and homePrvn != ''" >
+	    and home_prvn =  #{homePrvn}
+	</if>
+<if test="homeCity != null and homeCity != ''" >
+	    and home_city =  #{homeCity}
+	</if>
+<if test="homeCtry != null and homeCtry != ''" >
+	    and home_ctry =  #{homeCtry}
+	</if>
+<if test="homeAddr != null and homeAddr != ''" >
+	    and home_addr =  #{homeAddr}
+	</if>
+<if test="nowPrvn != null and nowPrvn != ''" >
+	    and now_prvn =  #{nowPrvn}
+	</if>
+<if test="nowCity != null and nowCity != ''" >
+	    and now_city =  #{nowCity}
+	</if>
+<if test="nowCtry != null and nowCtry != ''" >
+	    and now_ctry =  #{nowCtry}
+	</if>
+<if test="nowAddr != null and nowAddr != ''" >
+	    and now_addr =  #{nowAddr}
+	</if>
+<if test="phone != null and phone != ''" >
+	    and phone =  #{phone}
+	</if>
+<if test="school != null and school != ''" >
+	    and school =  #{school}
+	</if>
+<if test="eduTime != null and eduTime != ''" >
+	    and edu_time =  #{eduTime}
+	</if>
+<if test="wechat != null and wechat != ''" >
+	    and wechat =  #{wechat}
+	</if>
+<if test="email != null and email != ''" >
+	    and email =  #{email}
+	</if>
+<if test="qq != null and qq != ''" >
+	    and qq =  #{qq}
+	</if>
+<if test="postcode != null and postcode != ''" >
+	    and postcode =  #{postcode}
+	</if>
+<if test="companyName != null and companyName != ''" >
+	    and company_name =  #{companyName}
+	</if>
+<if test="companyType != null and companyType != ''" >
+	    and company_type =  #{companyType}
+	</if>
+<if test="dept != null and dept != ''" >
+	    and dept =  #{dept}
+	</if>
+<if test="inTime != null and inTime != ''" >
+	    and in_time =  #{inTime}
+	</if>
+<if test="job != null and job != ''" >
+	    and job =  #{job}
+	</if>
+<if test="companyPrvn != null and companyPrvn != ''" >
+	    and company_prvn =  #{companyPrvn}
+	</if>
+<if test="companyCity != null and companyCity != ''" >
+	    and company_city =  #{companyCity}
+	</if>
+<if test="companyCtry != null and companyCtry != ''" >
+	    and company_ctry =  #{companyCtry}
+	</if>
+<if test="companyAddr != null and companyAddr != ''" >
+	    and company_addr =  #{companyAddr}
+	</if>
+<if test="companyTel != null and companyTel != ''" >
+	    and company_tel =  #{companyTel}
+	</if>
+<if test="yearIncome != null and yearIncome != ''" >
+	    and year_income =  #{yearIncome}
+	</if>
+<if test="monthIncome != null and monthIncome != ''" >
+	    and month_income =  #{monthIncome}
+	</if>
+<if test="monthOther != null and monthOther != ''" >
+	    and month_other =  #{monthOther}
+	</if>
+<if test="orgRegTime != null and orgRegTime != ''" >
+	    and org_reg_time =  #{orgRegTime}
+	</if>
+<if test="orgRegAmt != null and orgRegAmt != ''" >
+	    and org_reg_amt =  #{orgRegAmt}
+	</if>
+<if test="legalName != null and legalName != ''" >
+	    and legal_name =  #{legalName}
+	</if>
+<if test="legalTel != null and legalTel != ''" >
+	    and legal_tel =  #{legalTel}
+	</if>
+<if test="legalIdType != null and legalIdType != ''" >
+	    and legal_id_type =  #{legalIdType}
+	</if>
+<if test="legalIdNo != null and legalIdNo != ''" >
+	    and legal_id_no =  #{legalIdNo}
+	</if>
+<if test="shareName != null and shareName != ''" >
+	    and share_name =  #{shareName}
+	</if>
+<if test="shareTel != null and shareTel != ''" >
+	    and share_tel =  #{shareTel}
+	</if>
+<if test="shareIdType != null and shareIdType != ''" >
+	    and share_id_type =  #{shareIdType}
+	</if>
+<if test="shareIdNo != null and shareIdNo != ''" >
+	    and share_id_no =  #{shareIdNo}
+	</if>
+<if test="orgBus != null and orgBus != ''" >
+	    and org_bus =  #{orgBus}
+	</if>
+<if test="saleRemark != null and saleRemark != ''" >
+	    and sale_remark =  #{saleRemark}
+	</if>
+<if test="lawState != null and lawState != ''" >
+	    and law_state =  #{lawState}
+	</if>
+<if test="lawRemark != null and lawRemark != ''" >
+	    and law_remark =  #{lawRemark}
+	</if>
+<if test="lawCheckState != null and lawCheckState != ''" >
+	    and law_check_state =  #{lawCheckState}
+	</if>
+<if test="lawCheckRemark != null and lawCheckRemark != ''" >
+	    and law_check_remark =  #{lawCheckRemark}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+<if test="ext1 != null and ext1 != ''" >
+	    and ext1 =  #{ext1}
+	</if>
+<if test="ext2 != null and ext2 != ''" >
+	    and ext2 =  #{ext2}
+	</if>
+<if test="age != null and age != ''" >
+	    and age =  #{age}
+	</if>
+<if test="orgSalesAmt != null and orgSalesAmt != ''" >
+	    and org_sales_amt =  #{orgSalesAmt}
+	</if>
+<if test="orgPeriod != null and orgPeriod != ''" >
+	    and org_period =  #{orgPeriod}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_LOAN_APP_SEQ') From dual -->
+			Select T_LOAN_APP_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_LOAN_APP(id,loan_id,main_flag,name,sex,id_type,valid_date,id_no,tel,tel2,marriage,has_chil,chil_num,edu,live,native_house,native_time,home_prvn,home_city,home_ctry,home_addr,now_prvn,now_city,now_ctry,now_addr,phone,school,edu_time,wechat,email,qq,postcode,company_name,company_type,dept,in_time,job,company_prvn,company_city,company_ctry,company_addr,company_tel,year_income,month_income,month_other,org_reg_time,org_reg_amt,legal_name,legal_tel,legal_id_type,legal_id_no,share_name,share_tel,share_id_type,share_id_no,org_bus,sale_remark,law_state,law_remark,law_check_state,law_check_remark,create_time,update_time,ext1,ext2,age,org_period,org_sales_amt)
+ values( #{id, jdbcType=INTEGER},#{loanId, jdbcType=VARCHAR},#{mainFlag, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{sex, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{validDate, jdbcType=DATE},#{idNo, jdbcType=VARCHAR},#{tel, jdbcType=VARCHAR},#{tel2, jdbcType=VARCHAR},#{marriage, jdbcType=VARCHAR},#{hasChil, jdbcType=VARCHAR},#{chilNum, jdbcType=VARCHAR},#{edu, jdbcType=VARCHAR},#{live, jdbcType=VARCHAR},#{nativeHouse, jdbcType=VARCHAR},#{nativeTime, jdbcType=VARCHAR},#{homePrvn, jdbcType=VARCHAR},#{homeCity, jdbcType=VARCHAR},#{homeCtry, jdbcType=VARCHAR},#{homeAddr, jdbcType=VARCHAR},#{nowPrvn, jdbcType=VARCHAR},#{nowCity, jdbcType=VARCHAR},#{nowCtry, jdbcType=VARCHAR},#{nowAddr, jdbcType=VARCHAR},#{phone, jdbcType=VARCHAR},#{school, jdbcType=VARCHAR},#{eduTime, jdbcType=DATE},#{wechat, jdbcType=VARCHAR},#{email, jdbcType=VARCHAR},#{qq, jdbcType=VARCHAR},#{postcode, jdbcType=VARCHAR},#{companyName, jdbcType=VARCHAR},#{companyType, jdbcType=VARCHAR},#{dept, jdbcType=VARCHAR},#{inTime, jdbcType=DATE},#{job, jdbcType=VARCHAR},#{companyPrvn, jdbcType=VARCHAR},#{companyCity, jdbcType=VARCHAR},#{companyCtry, jdbcType=VARCHAR},#{companyAddr, jdbcType=VARCHAR},#{companyTel, jdbcType=VARCHAR},#{yearIncome, jdbcType=DOUBLE},#{monthIncome, jdbcType=DOUBLE},#{monthOther, jdbcType=DOUBLE},#{orgRegTime, jdbcType=DATE},#{orgRegAmt, jdbcType=DOUBLE},#{legalName, jdbcType=VARCHAR},#{legalTel, jdbcType=VARCHAR},#{legalIdType, jdbcType=VARCHAR},#{legalIdNo, jdbcType=VARCHAR},#{shareName, jdbcType=VARCHAR},#{shareTel, jdbcType=VARCHAR},#{shareIdType, jdbcType=VARCHAR},#{shareIdNo, jdbcType=VARCHAR},#{orgBus, jdbcType=VARCHAR},#{saleRemark, jdbcType=VARCHAR},#{lawState, jdbcType=VARCHAR},#{lawRemark, jdbcType=VARCHAR},#{lawCheckState, jdbcType=VARCHAR},#{lawCheckRemark, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP},#{ext1, jdbcType=VARCHAR},#{ext2, jdbcType=VARCHAR},#{age, jdbcType=VARCHAR},#{orgPeriod, jdbcType=INTEGER},#{orgSalesAmt, jdbcType=DOUBLE})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_LOAN_APP set 
+	<trim  suffixOverrides="," >
+	name =  #{name, jdbcType=VARCHAR},
+	sex =  #{sex, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	valid_date =  #{validDate, jdbcType=DATE},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	tel =  #{tel, jdbcType=VARCHAR},
+	tel2 =  #{tel2, jdbcType=VARCHAR},
+	marriage =  #{marriage, jdbcType=VARCHAR},
+	has_chil =  #{hasChil, jdbcType=VARCHAR},
+	chil_num =  #{chilNum, jdbcType=VARCHAR},
+	edu =  #{edu, jdbcType=VARCHAR},
+	live =  #{live, jdbcType=VARCHAR},
+	native_house =  #{nativeHouse, jdbcType=VARCHAR},
+	native_time =  #{nativeTime, jdbcType=VARCHAR},
+	home_prvn =  #{homePrvn, jdbcType=VARCHAR},
+	home_city =  #{homeCity, jdbcType=VARCHAR},
+	home_ctry =  #{homeCtry, jdbcType=VARCHAR},
+	home_addr =  #{homeAddr, jdbcType=VARCHAR},
+	now_prvn =  #{nowPrvn, jdbcType=VARCHAR},
+	now_city =  #{nowCity, jdbcType=VARCHAR},
+	now_ctry =  #{nowCtry, jdbcType=VARCHAR},
+	now_addr =  #{nowAddr, jdbcType=VARCHAR},
+	phone =  #{phone, jdbcType=VARCHAR},
+	school =  #{school, jdbcType=VARCHAR},
+	edu_time =  #{eduTime, jdbcType=DATE},
+	wechat =  #{wechat, jdbcType=VARCHAR},
+	email =  #{email, jdbcType=VARCHAR},
+	qq =  #{qq, jdbcType=VARCHAR},
+	postcode =  #{postcode, jdbcType=VARCHAR},
+	company_name =  #{companyName, jdbcType=VARCHAR},
+	company_type =  #{companyType, jdbcType=VARCHAR},
+	dept =  #{dept, jdbcType=VARCHAR},
+	in_time =  #{inTime, jdbcType=DATE},
+	job =  #{job, jdbcType=VARCHAR},
+	company_prvn =  #{companyPrvn, jdbcType=VARCHAR},
+	company_city =  #{companyCity, jdbcType=VARCHAR},
+	company_ctry =  #{companyCtry, jdbcType=VARCHAR},
+	company_addr =  #{companyAddr, jdbcType=VARCHAR},
+	company_tel =  #{companyTel, jdbcType=VARCHAR},
+	year_income =  #{yearIncome, jdbcType=DOUBLE},
+	month_income =  #{monthIncome, jdbcType=DOUBLE},
+	month_other =  #{monthOther, jdbcType=DOUBLE},
+	org_reg_time =  #{orgRegTime, jdbcType=DATE},
+	org_reg_amt =  #{orgRegAmt, jdbcType=DOUBLE},
+	legal_name =  #{legalName, jdbcType=VARCHAR},
+	legal_tel =  #{legalTel, jdbcType=VARCHAR},
+	legal_id_type =  #{legalIdType, jdbcType=VARCHAR},
+	legal_id_no =  #{legalIdNo, jdbcType=VARCHAR},
+	share_name =  #{shareName, jdbcType=VARCHAR},
+	share_tel =  #{shareTel, jdbcType=VARCHAR},
+	share_id_type =  #{shareIdType, jdbcType=VARCHAR},
+	share_id_no =  #{shareIdNo, jdbcType=VARCHAR},
+	org_bus =  #{orgBus, jdbcType=VARCHAR},
+	sale_remark =  #{saleRemark, jdbcType=VARCHAR},
+	law_state =  #{lawState, jdbcType=VARCHAR},
+	law_remark =  #{lawRemark, jdbcType=VARCHAR},
+	law_check_state =  #{lawCheckState, jdbcType=VARCHAR},
+	law_check_remark =  #{lawCheckRemark, jdbcType=VARCHAR},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	ext1 =  #{ext1, jdbcType=VARCHAR},
+	ext2 =  #{ext2, jdbcType=VARCHAR},
+	age = #{age, jdbcType=VARCHAR},
+	org_period = #{orgPeriod, jdbcType=INTEGER},
+	org_sales_amt = #{orgSalesAmt, jdbcType=DOUBLE},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_LOAN_APP  where id = #{id}
+</delete>
+
+<!-- 删除共同借款人记录 -->
+<delete id="deleteCommonLoan" parameterType="Object">
+	delete from T_LOAN_APP  where main_flag = '0' and loan_id = #{loanId}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_LOAN_APP set 
+	<trim  suffixOverrides="," >
+
+	<if test="loanId != null and loanId != '' " >
+	    loan_id =  #{loanId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="mainFlag != null and mainFlag != '' " >
+	    main_flag =  #{mainFlag, jdbcType=VARCHAR},
+	</if>
+
+	<if test="name != null" >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+
+	<if test="sex != null" >
+	    sex =  #{sex, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idType != null" >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="validDate != null" >
+	    valid_date =  #{validDate, jdbcType=DATE},
+	</if>
+
+	<if test="idNo != null" >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="tel != null" >
+	    tel =  #{tel, jdbcType=VARCHAR},
+	</if>
+
+	<if test="tel2 != null" >
+	    tel2 =  #{tel2, jdbcType=VARCHAR},
+	</if>
+
+	<if test="marriage != null" >
+	    marriage =  #{marriage, jdbcType=VARCHAR},
+	</if>
+
+	<if test="hasChil != null" >
+	    has_chil =  #{hasChil, jdbcType=VARCHAR},
+	</if>
+
+	<if test="chilNum != null" >
+	    chil_num =  #{chilNum, jdbcType=VARCHAR},
+	</if>
+
+	<if test="edu != null" >
+	    edu =  #{edu, jdbcType=VARCHAR},
+	</if>
+
+	<if test="live != null" >
+	    live =  #{live, jdbcType=VARCHAR},
+	</if>
+
+	<if test="nativeHouse != null" >
+	    native_house =  #{nativeHouse, jdbcType=VARCHAR},
+	</if>
+
+	<if test="nativeTime != null" >
+	    native_time =  #{nativeTime, jdbcType=VARCHAR},
+	</if>
+
+	<if test="homePrvn != null" >
+	    home_prvn =  #{homePrvn, jdbcType=VARCHAR},
+	</if>
+
+	<if test="homeCity != null" >
+	    home_city =  #{homeCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="homeCtry != null" >
+	    home_ctry =  #{homeCtry, jdbcType=VARCHAR},
+	</if>
+
+	<if test="homeAddr != null" >
+	    home_addr =  #{homeAddr, jdbcType=VARCHAR},
+	</if>
+
+	<if test="nowPrvn != null" >
+	    now_prvn =  #{nowPrvn, jdbcType=VARCHAR},
+	</if>
+
+	<if test="nowCity != null" >
+	    now_city =  #{nowCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="nowCtry != null" >
+	    now_ctry =  #{nowCtry, jdbcType=VARCHAR},
+	</if>
+
+	<if test="nowAddr != null" >
+	    now_addr =  #{nowAddr, jdbcType=VARCHAR},
+	</if>
+
+	<if test="phone != null" >
+	    phone =  #{phone, jdbcType=VARCHAR},
+	</if>
+
+	<if test="school != null" >
+	    school =  #{school, jdbcType=VARCHAR},
+	</if>
+
+	<if test="eduTime != null" >
+	    edu_time =  #{eduTime, jdbcType=DATE},
+	</if>
+
+	<if test="wechat != null" >
+	    wechat =  #{wechat, jdbcType=VARCHAR},
+	</if>
+
+	<if test="email != null" >
+	    email =  #{email, jdbcType=VARCHAR},
+	</if>
+
+	<if test="qq != null" >
+	    qq =  #{qq, jdbcType=VARCHAR},
+	</if>
+
+	<if test="postcode != null" >
+	    postcode =  #{postcode, jdbcType=VARCHAR},
+	</if>
+
+	<if test="companyName != null" >
+	    company_name =  #{companyName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="companyType != null" >
+	    company_type =  #{companyType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="dept != null" >
+	    dept =  #{dept, jdbcType=VARCHAR},
+	</if>
+
+	<if test="inTime != null" >
+	    in_time =  #{inTime, jdbcType=DATE},
+	</if>
+
+	<if test="job != null" >
+	    job =  #{job, jdbcType=VARCHAR},
+	</if>
+
+	<if test="companyPrvn != null" >
+	    company_prvn =  #{companyPrvn, jdbcType=VARCHAR},
+	</if>
+
+	<if test="companyCity != null" >
+	    company_city =  #{companyCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="companyCtry != null" >
+	    company_ctry =  #{companyCtry, jdbcType=VARCHAR},
+	</if>
+
+	<if test="companyAddr != null" >
+	    company_addr =  #{companyAddr, jdbcType=VARCHAR},
+	</if>
+
+	<if test="companyTel != null" >
+	    company_tel =  #{companyTel, jdbcType=VARCHAR},
+	</if>
+
+	<if test="yearIncome != null" >
+	    year_income =  #{yearIncome, jdbcType=DOUBLE},
+	</if>
+
+	<if test="monthIncome != null" >
+	    month_income =  #{monthIncome, jdbcType=DOUBLE},
+	</if>
+
+	<if test="monthOther != null" >
+	    month_other =  #{monthOther, jdbcType=DOUBLE},
+	</if>
+
+	<if test="orgRegTime != null" >
+	    org_reg_time =  #{orgRegTime, jdbcType=DATE},
+	</if>
+
+	<if test="orgRegAmt != null" >
+	    org_reg_amt =  #{orgRegAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="legalName != null" >
+	    legal_name =  #{legalName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="legalTel != null" >
+	    legal_tel =  #{legalTel, jdbcType=VARCHAR},
+	</if>
+
+	<if test="legalIdType != null" >
+	    legal_id_type =  #{legalIdType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="legalIdNo != null" >
+	    legal_id_no =  #{legalIdNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="shareName != null" >
+	    share_name =  #{shareName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="shareTel != null" >
+	    share_tel =  #{shareTel, jdbcType=VARCHAR},
+	</if>
+
+	<if test="shareIdType != null" >
+	    share_id_type =  #{shareIdType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="shareIdNo != null" >
+	    share_id_no =  #{shareIdNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgBus != null" >
+	    org_bus =  #{orgBus, jdbcType=VARCHAR},
+	</if>
+
+	<if test="saleRemark != null" >
+	    sale_remark =  #{saleRemark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lawState != null and lawState != ''" >
+	    law_state =  #{lawState, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lawRemark != null and lawRemark != ''" >
+	    law_remark =  #{lawRemark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lawCheckState != null and lawCheckState != ''" >
+	    law_check_state =  #{lawCheckState, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lawCheckRemark != null and lawCheckRemark !=  ''" >
+	    law_check_remark =  #{lawCheckRemark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="ext1 != null and ext1 != '' " >
+	    ext1 =  #{ext1, jdbcType=VARCHAR},
+	</if>
+
+	<if test="ext2 != null and ext2 != '' " >
+	    ext2 =  #{ext2, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="age != null and age != '' " >
+		age = #{age, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="orgPeriod != null and orgPeriod != '' " >
+		org_period = #{orgPeriod, jdbcType=INTEGER},
+	</if>
+	
+	<if test="orgSalesAmt != null and orgSalesAmt != '' " >
+		org_sales_amt = #{orgSalesAmt, jdbcType=DOUBLE},
+	</if>
+	
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 T_LOAN_APP -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_LOAN_APP  where id = #{id}
+</select>
+
+<!-- T_LOAN_APP 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LOAN_APP 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询T_LOAN_APP列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LOAN_APP 
+	<include refid="Where_Clause"/>
+</select>
+  	
+</mapper>   

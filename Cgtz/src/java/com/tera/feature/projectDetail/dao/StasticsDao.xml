@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.projectDetail.dao.StasticsDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.projectDetail.model.StasticsBean" >
+</resultMap> 
+  	
+<!-- 查询每月成交量列表 -->
+<select id="queryMonDealsList" resultMap="ResultMap"  parameterType="map">
+	SELECT
+	org,
+	(SELECT T_ORG.ORG_NAME from T_ORG where T_ORG.ORG_ID=ORG)orgName,
+    count(CONTRACT_NO)counts,
+	TO_CHAR (start_date, 'yyyy-MM') mon,
+	sum(LOAN_AMT)loanAmt
+FROM
+	T_PROJECT_DETAIL
+<where>
+			1=1
+			<if test="org != null and org != ''">
+				AND ORG LIKE CONCAT(#{org},'%') 
+			</if>
+			<if test="type != null and type != ''">
+				AND type LIKE CONCAT(#{type},'%')
+			</if>
+			<if test="minStartDate != null and minStartDate != ''">
+				<![CDATA[AND START_DATE >= #{minStartDate}]]>
+			</if>
+			<if test="maxStartDate != null and maxStartDate != ''">
+				<![CDATA[AND START_DATE <= #{maxStartDate}]]>
+			</if>
+			<!--机构权限限制  -->
+			<if test="orgs != null and orgs.size() >0 " >
+			and org in
+			                <foreach item="item" index="index" collection="orgs" open="(" separator="," close=")">
+									#{item}
+							</foreach>	
+	       </if>
+		</where> 
+	
+	GROUP BY org,TO_CHAR (start_date, 'yyyy-MM')
+
+	ORDER BY org,TO_CHAR (start_date, 'yyyy-MM')
+</select>
+
+<!-- 查询成交量列表 -->
+<select id="queryDealsList" resultMap="ResultMap"  parameterType="map">
+	SELECT
+	org,
+	type,
+	(SELECT T_ORG.ORG_NAME from T_ORG where T_ORG.ORG_ID=ORG)orgName,
+    count(CONTRACT_NO)counts,
+	sum(LOAN_AMT)loanAmt
+FROM
+	T_PROJECT_DETAIL
+<where>
+			1=1
+			<if test="org != null and org != ''">
+				AND ORG = #{org}
+			</if>
+			<if test="type != null and type != ''">
+				AND type LIKE CONCAT(#{type},'%')
+			</if>
+			<if test="minStartDate != null and minStartDate != ''">
+				<![CDATA[AND START_DATE >= #{minStartDate}]]>
+			</if>
+			<if test="maxStartDate != null and maxStartDate != ''">
+				<![CDATA[AND START_DATE <= #{maxStartDate}]]>
+			</if>
+			<!--机构权限限制  -->
+			<if test="orgs != null and orgs.size() >0 " >
+			and org in
+			                <foreach item="item" index="index" collection="orgs" open="(" separator="," close=")">
+									#{item}
+							</foreach>	
+				</if>
+		</where> 
+	
+	GROUP BY org,type
+
+	ORDER BY org,type
+</select>
+
+<!-- 查询存量列表 -->
+<select id="querySaveDealsList" resultMap="ResultMap"  parameterType="map">
+	SELECT
+	org,
+	type,
+	(SELECT T_ORG.ORG_NAME from T_ORG where T_ORG.ORG_ID=ORG)orgName,
+    count(CONTRACT_NO)counts,
+	sum(LOAN_AMT)loanAmt
+FROM
+	T_PROJECT_DETAIL
+<where>
+			1=1
+			<if test="org != null and org != ''">
+				AND ORG = #{org}
+			</if>
+			<if test="type != null and type != ''">
+				AND type LIKE CONCAT(#{type},'%')
+			</if>
+			<if test="inputDate != null and inputDate != ''">
+				<![CDATA[
+				and ((#{inputDate}>=START_DATE and IS_END='1' and #{inputDate}<=REAL_END_DATE) 
+				      or (#{inputDate}>=START_DATE and #{inputDate}<=END_DATE))			         
+				]]>
+			</if>
+			<!--机构权限限制  -->
+			<if test="orgs != null and orgs.size() >0 " >
+			and org in
+			                <foreach item="item" index="index" collection="orgs" open="(" separator="," close=")">
+									#{item}
+							</foreach>	
+				</if>
+		</where> 
+	
+	GROUP BY org,type
+
+	ORDER BY org,type
+</select> 	
+</mapper>   

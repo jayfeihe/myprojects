@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.company.dao.UserCompanyDao">
+	<select id="queryByCompanyId" resultType="com.greenkoo.company.model.UserCompany">
+		select <include refid="columns"/> from t_user_company where company_id = #{companyId}
+	</select>
+	
+	<sql id="columns">
+		company_id  ,	
+		company_name,	
+		company_url ,
+		industry_id  ,
+		link_name    ,
+		link_phone   ,
+		link_email   ,
+		company_addr ,
+		company_phone,
+		post_code    ,
+		type        ,	
+		status      ,	
+		create_time 
+	</sql>
+</mapper>

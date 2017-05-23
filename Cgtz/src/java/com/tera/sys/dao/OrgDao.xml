@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.sys.dao.OrgDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.sys.model.Org" >
+	<result column="id" property="id"/><!-- id -->
+	<result column="org_id" property="orgId"/><!-- 机构id -->
+	<result column="org_name" property="orgName"/><!-- 机构简称 -->
+	<result column="org_full_name" property="orgFullName"/><!-- 机构全称 -->
+	<result column="code" property="code"/><!--组织机构代码  -->
+	<result column="levels" property="level"/><!-- 级别 -->
+	<result column="aduit_amt" property="aduitAmt"/><!-- 审批额度 -->
+	<result column="loan_amt" property="loanAmt"/><!-- 月债权 -->
+	<result column="int_rate" property="intRate"/><!-- 利息差比 -->
+	<result column="remarks" property="remarks"/><!-- 说明 -->
+	<result column="ext1" property="ext1"/><!-- 扩展1 -->
+	<result column="ext2" property="ext2"/><!-- 扩展2 -->
+</resultMap>
+       
+<!-- T_ORG table all fields -->
+<sql id="Column_List" >
+	 id,org_id,org_name,org_full_name,code,levels,aduit_amt,loan_amt,int_rate,remarks,ext1,ext2
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="orgName != null and orgName != ''" >
+	    and org_name =  #{orgName}
+	</if>
+<if test="orgFullName != null and orgFullName != ''" >
+	    and org_full_name =  #{orgFullName}
+	</if>
+<if test="code != null and code != ''" >
+	    and code =  #{code}
+	</if>
+<if test="level != null and level != ''" >
+	    and levels =  #{level}
+	</if>
+<if test="aduitAmt != null and aduitAmt != ''" >
+	    and aduit_amt =  #{aduitAmt}
+	</if>
+<if test="loanAmt != null and loanAmt != ''" >
+	    and loan_amt =  #{loanAmt}
+	</if>
+<if test="intRate != null and intRate != ''" >
+	    and int_rate =  #{intRate}
+	</if>
+<if test="remarks != null and remarks != ''" >
+	    and remarks =  #{remarks}
+	</if>
+<if test="ext1 != null and ext1 != ''" >
+	    and ext1 =  #{ext1}
+	</if>
+<if test="ext2 != null and ext2 != ''" >
+	    and ext2 =  #{ext2}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+<!-- 			Select nextval('T_ORG_SEQ') From dual -->
+			Select T_ORG_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_ORG(id,org_id,org_name,org_full_name,code,levels,aduit_amt,loan_amt,int_rate,remarks,ext1,ext2)
+ values( #{id, jdbcType=INTEGER},#{orgId, jdbcType=VARCHAR},#{orgName, jdbcType=VARCHAR},#{orgFullName, jdbcType=VARCHAR},
+ 		#{code, jdbcType=VARCHAR},#{level, jdbcType=VARCHAR},#{aduitAmt, jdbcType=DOUBLE},#{loanAmt, jdbcType=DOUBLE},#{intRate, jdbcType=DOUBLE},
+ 		#{remarks, jdbcType=VARCHAR},#{ext1, jdbcType=VARCHAR},#{ext2, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_ORG set 
+	<trim  suffixOverrides="," >
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	org_name =  #{orgName, jdbcType=VARCHAR},
+	org_full_name =  #{orgFullName, jdbcType=VARCHAR},
+	code =  #{code, jdbcType=VARCHAR},
+	levels =  #{level, jdbcType=VARCHAR},
+	aduit_amt =  #{aduitAmt, jdbcType=DOUBLE},
+	loan_amt =  #{loanAmt, jdbcType=DOUBLE},
+	int_rate =  #{intRate, jdbcType=DOUBLE},
+	remarks =  #{remarks, jdbcType=VARCHAR},
+	ext1 =  #{ext1, jdbcType=VARCHAR},
+	ext2 =  #{ext2, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_ORG set 
+	<trim  suffixOverrides="," >
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgName != null and orgName != '' " >
+	    org_name =  #{orgName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgFullName != null and orgFullName != '' " >
+	    org_full_name =  #{orgFullName, jdbcType=VARCHAR},
+	</if>
+	<if test="code != null and code != '' " >
+	    code =  #{code, jdbcType=VARCHAR},
+	</if>
+
+	<if test="level != null and level != '' " >
+	    levels =  #{level, jdbcType=VARCHAR},
+	</if>
+
+	<if test="aduitAmt != null and aduitAmt != ''  or aduitAmt==0" >
+	    aduit_amt =  #{aduitAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanAmt != null and loanAmt != ''  or loanAmt==0" >
+	    loan_amt =  #{loanAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="intRate != null and intRate != ''  or intRate==0" >
+	    int_rate =  #{intRate, jdbcType=DOUBLE},
+	</if>
+
+	<if test="remarks != null and remarks != '' " >
+	    remarks =  #{remarks, jdbcType=VARCHAR},
+	</if>
+
+	<if test="ext1 != null and ext1 != '' " >
+	    ext1 =  #{ext1, jdbcType=VARCHAR},
+	</if>
+
+	<if test="ext2 != null and ext2 != '' " >
+	    ext2 =  #{ext2, jdbcType=VARCHAR},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete 	 from T_ORG where 1=1 and id=#{id}
+</delete>
+
+<!-- 删除自己和他的孩子节点 -->
+<delete id="deleteSelfAndChlidren"  parameterType="Object">
+	DELETE FROM T_ORG WHERE ORG_ID LIKE CONCAT(#{orgId},'%')
+</delete>
+ 
+<!-- 根据id查询 机构信息表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+		 from T_ORG where 1=1 and id=#{id}
+</select>
+
+<!-- 根据id查询 机构信息表 -->
+<select id="queryByOrgId"  resultMap="ResultMap" parameterType="string">
+	select <include refid="Column_List" /> 
+		 from T_ORG where  org_id=#{OrgId}
+</select>
+
+<!-- 机构信息表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_ORG 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询机构信息表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_ORG 
+	<include refid="Where_Clause"/>
+	order by org_name
+	<!-- <if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if> -->
+</select>
+
+	<!-- 查询机构信息表列表 -->
+	<select id="getOrgByLoginId" resultMap="ResultMap"  parameterType="string">
+		select *from T_ORG g where g.org_id in(
+			select  ORG_ID from t_user_ext o where o.LOGIN_ID=#{loginId}
+		)
+		order by g.ORG_ID
+	</select>
+
+	<delete id="removeOrgUserById" parameterType="int">
+		delete from t_user_ext where USER_ID=#{id}
+	</delete>
+
+  	<!-- 根据机构编码 查询 本身与 所有子机构 列表 -->
+	<select id="getSubOrg" resultMap="ResultMap"  parameterType="map">
+   		SELECT *FROM T_ORG g WHERE g.org_id != #{orgId} and g.org_id LIKE CONCAT(#{orgId},'%')
+   		<if test="level != null and level != ''">
+   			and g.levels = #{level}
+   		</if>
+			ORDER BY g.ORG_ID
+	</select>
+	
+	<select id="querySelectList" parameterType="map" resultMap="ResultMap" >
+		SELECT 
+			org_id AS id,
+			org_name AS text,
+			org_id,
+			org_name,
+			org_full_name,
+			code,
+			levels,
+			aduit_amt,
+			loan_amt,
+			int_rate
+		FROM t_org 
+		<include refid="Where_Clause"/>
+		<if test="nodeLevel != null and nodeLevel != ''">
+			<![CDATA[AND levels < #{nodeLevel}]]>
+		</if>
+	</select>
+</mapper>   

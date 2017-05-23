@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+			http://java.sun.com/xml/ns/j2ee
+			http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:/org/springframework/batch/admin/web/resources/webapp-config.xml,/WEB-INF/applicationContext.xml,/WEB-INF/batchDaoContext.xml,/WEB-INF/taskContext.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<servlet>
+		<servlet-name>Batch Servlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath*:/org/springframework/batch/admin/web/resources/servlet-config.xml,/WEB-INF/batch-admin-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Batch Servlet</servlet-name>
+		<url-pattern>/batch/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	    <servlet-name>appServlet</servlet-name>
+	    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	    <init-param>
+	        <param-name>contextConfigLocation</param-name>
+	        <param-value>/WEB-INF/webContext.xml</param-value>
+	    </init-param>
+<!--	    <async-supported>true</async-supported>-->
+	    <load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	
+	<servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.gif</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.jpg</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.js</url-pattern>
+    </servlet-mapping>
+	
+	
+	<servlet-mapping>
+	    <servlet-name>appServlet</servlet-name>
+	    <url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 将Spring Batch Admin的请求也纳入 -->
+	<servlet-mapping>
+	    <servlet-name>appServlet</servlet-name>
+	    <url-pattern>/batch</url-pattern>
+	</servlet-mapping>
+	
+	<filter>
+		<filter-name>AccessFilter</filter-name>
+		<filter-class>com.tera.sys.filter.AccessFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AccessFilter</filter-name>
+		<url-pattern>/batch/*</url-pattern>
+	</filter-mapping>
+	
+	<env-entry>
+	    <env-entry-name>ENVIRONMENT</env-entry-name>
+	    <env-entry-type>java.lang.String</env-entry-type>
+	    <env-entry-value>mysql</env-entry-value>
+	</env-entry>
+	
+	<!--<resource-ref>
+		<res-ref-name>jdbc/hedao</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+    </resource-ref>-->
+	
+	<welcome-file-list>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.do</welcome-file>
+	</welcome-file-list>
+
+</web-app>

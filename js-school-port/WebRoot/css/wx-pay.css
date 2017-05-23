@@ -1,0 +1,137 @@
+@charset "utf-8";
+
+.pay-font{
+	font-size:26px;
+	font-family:'Applied Font Bold', 'Applied Font';
+	font-weight: 700;
+	line-height: 50px;
+}
+.payment{
+	background-color: #fff;
+	padding: 12px 30px 0;
+	-moz-box-shadow: 0 0 6px rgba(0,0,0,.2);
+	-webkit-box-shadow: 0 0 6px rgba(0,0,0,.2);
+	box-shadow: 0 0 6px rgba(0,0,0,.2);
+	-moz-transition: all .2s ease-in-out;
+	-o-transition: all .2s ease-in-out;
+	-webkit-transition: all .2s ease-in-out;
+	transition: all .2s ease-in-out;
+}
+.pay-weixin {
+	zoom: 1;
+}
+.p-w-hd {
+	margin-bottom: 50px;
+	font-size: 18px;
+	font-family: "Microsoft Yahei";
+}
+.p-w-bd {
+	padding-left: 130px;
+}
+.font-red {
+	color: #ff5d5b;
+}
+.p-w-box {
+	float: left;
+	width: 300px;
+}
+.pw-box-hd {
+	margin-bottom: 20px;
+	border: 1px solid #ddd;
+	width: 298px;
+	height: 298px;
+}
+.pw-box-ft {
+	height: 44px;
+	padding: 8px 0 8px 125px;
+	background: url(../images/cashier/icon-red.png) 50px 8px no-repeat #ff7674;
+}
+.pw-box-ft p {
+	margin: 0;
+	font-size: 14px;
+	line-height: 22px;
+	color: #fff;
+	font-weight: 700;
+}
+.font-bold {
+	font-weight: 700;
+}
+.p-w-sidebar {
+	float: left;
+	width: 379px;
+	height: 421px;
+	padding-left: 50px;
+	margin-top: -20px;
+	background: url(../images/cashier/phone-bg.png) 50px 0 no-repeat;
+}
+.p-w-s-sidebar {
+	float: left;
+	width: 379px;
+	height: 421px;
+	padding-left: 50px;
+	margin-top: -20px;
+}
+.payment-change .pc-wrap {
+	display: block;
+	height: 60px;
+	line-height: 56px;
+	padding: 0 20px;
+	-moz-transition: all .1s;
+	-o-transition: all .1s;
+	-webkit-transition: all .1s;
+	transition: all .1s;
+}
+.payment-change .pc-wrap .pc-w-arrow-left {
+	float: left;
+	margin-right: 15px;
+}
+.payment-change .pc-wrap strong {
+	color: #2ea7e7;
+	margin-right: 30px;
+	font-size: 14px;
+	float: left;
+	cursor: pointer;
+}
+.pc-w-arrow-left {
+	float: right;
+	font-family: "\5b8b\4f53";
+	font-style: normal;
+	font-size: 22px;
+	width: 20px;
+	text-align: center;
+	color: #2fa1dd;
+}
+
+.wx-pay-mask {
+	background: rgba(0, 0, 0, 0.4) none repeat scroll 0 0;
+	display: none;
+	left: 130px;
+	overflow: hidden;
+	position: absolute;
+	text-align: center;
+	top: 1px;
+	width: 298px;
+	height: 298px;
+}
+
+.a-btn {
+	height: 35px;
+	line-height: 35px;
+	background: #f1f2f7 none repeat scroll 0 0;
+	border-color: #999;
+	box-shadow: none;
+	color: #666;
+	filter: none;
+	text-shadow: none;
+	margin-top: 130px;
+	border-radius: 2px;
+	cursor: pointer; 
+	display: inline-block;
+	padding: 0 97px;
+	vertical-align: middle;
+}
+
+.a-btn:HOVER {
+	background: #fff none repeat scroll 0 0;
+	text-decoration: none;
+}

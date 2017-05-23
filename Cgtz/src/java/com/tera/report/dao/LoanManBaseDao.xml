@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.report.dao.LoanManBaseDao">
+
+	<select id="queryList" parameterType="map" resultType="com.tera.report.model.LoanManBaseQBean">
+		SELECT 
+
+			LINE.ONLINE_START_DATE AS onlineStartDate,          <!-- 上线时间 -->
+			LINE.ONLINE_CON_ID AS onlineConId,					<!-- 线上编号 -->
+			LINE.PROJECT_NAME AS projectName,                   <!-- 项目名称 -->  
+			LINE.ONLINE_RATE_OUT AS onlineRateOut,				<!-- 线上利率 -->	
+			
+			CONT.CONTRACT_ID AS contractId,                     <!-- 线下编号 -->
+			CONT.START_DATE AS startDate,					    <!-- 开始时间 -->
+			CONT.END_DATE AS endDate,							<!-- 结束时间 -->
+			CONT.LOAN_AMT AS loanAmt,							<!-- 合同金额 -->
+			(SELECT LU.NAME FROM T_LEND_USER LU WHERE LU.ID = CONT.LEND_USER_ID) AS lendUser, <!-- 债权人 -->
+			
+			base.NAME AS name,                                  <!-- 借款人 -->
+			base.RATE AS rate,  								<!-- 线下利率 -->
+			CASE 
+				 WHEN base.IS_RENEW ='0' THEN '新增'
+				 WHEN base.IS_RENEW ='2' THEN '新增'
+				 WHEN base.IS_RENEW ='1' THEN '续贷'
+			END AS isRenew, 									<!-- 项目类型 -->
+			
+			PL.PLAN_CAPITAL AS planCapital, 					<!-- 应收本金 -->
+			PL.REAL_CAPITAL AS realCapital,						<!-- 实收本金 -->
+			PL.PLAN_INTEREST AS planInterest,					<!-- 应收利息 -->
+			PL.REAL_INTEREST AS realInterest,					<!-- 实收利息 -->
+			PL.LAST_DATE AS collectDate,						<!-- 收到时间 -->
+			PL.NUM num,											<!-- 期数 -->
+			
+			BILL.AMT AS payOutInterest,  						<!-- 线上垫付利息 -->
+			BILL.REMARK AS remark								<!-- 备注 -->
+			
+		FROM T_RET_PLAN PL
+		LEFT JOIN (SELECT CONTRACT_ID,NUM,AMT,REMARK FROM T_BILL_BASE WHERE TYPE = '4') bill ON BILL.CONTRACT_ID = PL.CONTRACT_ID AND BILL.NUM = PL.NUM
+		LEFT JOIN T_CONTRACT CONT ON PL.CONTRACT_ID = CONT.CONTRACT_ID
+		LEFT JOIN T_LOAN_BASE base ON base.LOAN_ID = CONT.LOAN_ID
+		LEFT JOIN T_CONTRACT_ONLINE line ON pl.CONTRACT_ID = line.CONTRACT_ID
+		<where>
+			1=1
+			<if test="orgId != null and orgId != ''">
+				AND base.ORG LIKE CONCAT(#{orgId},'%')
+			</if>
+			
+			<!-- 借款人 -->
+			<if test="name != null and name != ''">
+				AND base.NAME = #{name}
+			</if>
+			
+			<!-- 合同编号 -->
+			<if test="contractId != null and contractId != ''">
+				AND CONT.CONTRACT_ID = #{contractId}
+			</if>
+			
+			<!-- 合同开始时间 -->
+			<if test="startDateMin != null and startDateMin != ''">
+				<![CDATA[AND TO_CHAR(CONT.START_DATE,'YYYY-MM-DD') >= #{startDateMin}]]>
+			</if>
+			<if test="startDateMax != null and startDateMax != ''">
+				<![CDATA[AND TO_CHAR(CONT.START_DATE,'YYYY-MM-DD') <= #{startDateMax}]]>
+			</if>
+			
+			<!-- 合同结束时间 -->
+			<if test="endDateMin != null and endDateMin != ''">
+				<![CDATA[AND TO_CHAR(CONT.END_DATE,'YYYY-MM-DD') >= #{endDateMin}]]>
+			</if>
+			<if test="endDateMax != null and endDateMax != ''">
+				<![CDATA[AND TO_CHAR(CONT.END_DATE,'YYYY-MM-DD') <= #{endDateMax}]]>
+			</if>
+			<!--机构权限限制  -->
+			<if test="orgs != null and orgs.size() >0 " >
+			and cont.org in
+			                <foreach item="item" index="index" collection="orgs" open="(" separator="," close=")">
+									#{item}
+							</foreach>	
+				</if>
+			
+		</where>
+		ORDER BY CONT.START_DATE,PL.CONTRACT_ID,pl.NUM
+	</select>
+	
+</mapper>

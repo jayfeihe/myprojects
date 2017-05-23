@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:task="http://www.springframework.org/schema/task"  
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/batch 
+	http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+	http://www.springframework.org/schema/context
+  	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+ 	http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+    
+    
+     <job id="daishouJob"  xmlns="http://www.springframework.org/schema/batch">
+        <step id="daishouStep">
+            <tasklet>
+                <chunk reader="paymentReader" writer="paymentWriter" processor="daishouProcessor" commit-interval="1000" skip-limit="20">
+                	<skippable-exception-classes>
+						<include class="com.tera.batch.exception.BatchProcessException" />
+					</skippable-exception-classes>
+                </chunk>
+                 <batch:no-rollback-exception-classes>  
+			        <batch:include  
+			            class="com.tera.batch.exception.BatchProcessException"/>  
+			    </batch:no-rollback-exception-classes>  
+            </tasklet>
+        </step>
+    </job>
+
+    <bean id="paymentReader"
+        class="org.mybatis.spring.batch.MyBatisPagingItemReader" scope="step">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+		<property name="queryId" value="com.tera.batch.errorLog.dao.BatchErrorLogDao.queryCount"/>
+		<property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="paymentlend2match" class="com.tera.match.model.Lend2match" scope="prototype"></bean>
+    
+    
+    
+    <bean id="daishouProcessor" class="com.tera.batch.payment.processor.DaishouProcessor">
+     	<property name="allinPayTranxService" ref="allinPayTranxService"/>
+     	<property name="daoPay" ref="paymentDao"/>
+     	<property name="batchErrorLogDao" ref="batchErrorLogDao"/>
+     	<property name="payService" ref="defaultPayService"/>
+	</bean>
+	
+     <bean id="paymentWriter"
+        class="com.tera.batch.payment.writer.Writer" scope="step">
+    </bean>
+	
+</beans>

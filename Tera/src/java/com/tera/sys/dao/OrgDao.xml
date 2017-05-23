@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.sys.dao.OrgDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.sys.model.Org" >
+	<result column="id" property="id"/>
+	<result column="org_id" property="orgId"/>
+	<result column="org_name" property="orgName"/>
+	<result column="level" property="level"/>
+</resultMap>
+       
+<!-- T_ORG table all fields -->
+<sql id="Column_List" >
+	 id,org_id,org_name,level
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="orgName != null and orgName != ''" >
+	    and org_name =  #{orgName}
+	</if>
+<if test="level != null and level != ''" >
+	    and level =  #{level}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_ORG_SEQ') From dual
+			<!-- Select T_ORG_SEQ.Nextval From Dual -->
+  </selectKey>
+  insert into T_ORG(id,org_id,org_name,level)
+ values( #{id, jdbcType=INTEGER},#{orgId, jdbcType=VARCHAR},#{orgName, jdbcType=VARCHAR},#{level, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update T_ORG set org_id=#{orgId, jdbcType=VARCHAR},org_name=#{orgName, jdbcType=VARCHAR},level=#{level, jdbcType=VARCHAR} where 1=1 and id=#{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete 	 from T_ORG where 1=1 and id=#{id}
+</delete>
+
+<!-- 删除自己和他的孩子节点 -->
+<delete id="deleteSelfAndChlidren"  parameterType="Object">
+	DELETE FROM T_ORG WHERE ORG_ID LIKE CONCAT(#{orgId},'%')
+</delete>
+ 
+<!-- 根据id查询 机构信息表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+		 from T_ORG where 1=1 and id=#{id}
+</select>
+
+<!-- 根据id查询 机构信息表 -->
+<select id="queryByOrgId"  resultMap="ResultMap" parameterType="string">
+	select <include refid="Column_List" /> 
+		 from T_ORG where  org_id=#{OrgId}
+</select>
+
+<!-- 机构信息表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_ORG 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询机构信息表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_ORG 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 查询机构信息表列表,有且只有营业部 -->
+<select id="queryDepartList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_ORG 
+	<include refid="Where_Clause"/>
+	AND level>'2'
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+	<!-- 查询机构信息表列表 -->
+	<select id="getOrgByUserId" resultMap="ResultMap"  parameterType="int">
+		select *from T_ORG g where g.id in(
+			select  ORG_ID from t_user_ext o where o.USER_ID=#{userId}
+		)
+		order by g.ORG_ID
+	</select>
+
+	<delete id="removeOrgUserById" parameterType="int">
+		delete from t_user_ext where USER_ID=#{id}
+	</delete>
+
+	<insert id="addOrgUser" parameterType="Map">
+		insert into t_user_ext(USER_ID, LOGIN_ID,ORG_ID,ROLE_ID) 
+		value(#{id},#{loginId},#{orgId},#{roleId})
+	</insert>
+  	
+  	
+  		<!-- 根据机构编码 查询 本身与 所有子机构 列表 -->
+	<select id="getSubOrg" resultMap="ResultMap"  parameterType="int">
+   		SELECT *FROM T_ORG g WHERE g.org_id LIKE CONCAT(#{orgId},'%') 
+			ORDER BY g.ORG_ID
+	</select>
+  	
+  	<select id="queryListByOrg" parameterType="map" resultType="com.tera.sys.model.form.DepartTreeBean">
+	SELECT 
+		id AS uId,
+		org_id AS id,
+		org_name AS text,
+		level AS level
+		 
+	FROM t_org 
+	WHERE <![CDATA[level <= #{level}]]>
+	AND   org_id = #{orgId}
+</select>
+
+<select id="queryListByLevel" parameterType="map" resultType="com.tera.sys.model.form.DepartTreeBean">
+	SELECT 
+		id AS uId,
+		org_id AS id,
+		org_name AS text,
+		level AS level
+		 
+	FROM t_org 
+	WHERE <![CDATA[level = #{level}]]>
+	 <if test="parentId != null and parentId != ''">
+		AND org_id like CONCAT(#{parentId},'%')
+	</if>
+</select>
+</mapper>   

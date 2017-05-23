@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.car.dao.CarDecisionDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.car.model.CarDecision" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="type" property="type"/><!-- 类型 -->
+	<result column="amount" property="amount"/><!-- 借款金额 -->
+	<result column="contract_amount" property="contractAmount"/><!-- 合同金额 -->
+	<result column="belong_channel" property="belongChannel"/><!-- 所属渠道 -->
+	<result column="product" property="product"/><!-- 产品 -->
+	<result column="first_test_code" property="firstTestCode"/><!-- 一级测试码 -->
+	<result column="second_test_code" property="secondTestCode"/><!-- 二级测试码 -->
+	<result column="second_test_value" property="secondTestValue"/><!-- 二级测试值 -->
+	<result column="period" property="period"/><!-- 期限 -->
+	<result column="decision" property="decision"/><!-- 决策 -->
+	<result column="remarks" property="remarks"/><!-- 备注 -->
+	<result column="decision_code1" property="decisionCode1"/><!-- 违例码1 -->
+	<result column="decision_code2" property="decisionCode2"/><!-- 违例码2 -->
+	<result column="decision_code3" property="decisionCode3"/><!-- 拒贷码1 -->
+	<result column="decision_code4" property="decisionCode4"/><!-- 拒贷码2 -->
+	<result column="decision_code5" property="decisionCode5"/><!-- 回退码1 -->
+	<result column="decision_code6" property="decisionCode6"/><!-- 回退码2 -->	
+	<result column="image_summarys" property="imageSummarys"/><!-- 补充影像资料分类 -->
+	<result column="return_msg" property="returnMsg"/><!-- 退回原因 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_CAR_DECISION table all fields -->
+<sql id="Column_List" >
+	 id,app_id,type,amount,contract_amount,belong_channel,product,first_test_code,second_test_code,second_test_value,period,decision,remarks,decision_code1,decision_code2,decision_code3,decision_code4,decision_code5,decision_code6,image_summarys,return_msg,state,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="amount != null and amount != ''" >
+	    and amount =  #{amount}
+	</if>
+<if test="contractAmount != null and contractAmount != ''" >
+	    and contract_amount =  #{contractAmount}
+	</if>
+<if test="belongChannel != null and belongChannel != ''" >
+	    and belong_channel =  #{belongChannel}
+	</if>
+<if test="product != null and product != ''" >
+	    and product =  #{product}
+	</if>
+<if test="firstTestCode != null and firstTestCode != ''" >
+	    and first_test_code =  #{firstTestCode}
+	</if>
+<if test="secondTestCode != null and secondTestCode != ''" >
+	    and second_test_code =  #{secondTestCode}
+	</if>
+<if test="period != null and period != ''" >
+	    and period =  #{period}
+	</if>
+<if test="decision != null and decision != ''" >
+	    and decision =  #{decision}
+	</if>
+<if test="remarks != null and remarks != ''" >
+	    and remarks =  #{remarks}
+	</if>
+<if test="decisionCode1 != null and decisionCode1 != ''" >
+	    and decision_code1 =  #{decisionCode1}
+	</if>
+<if test="decisionCode2 != null and decisionCode2 != ''" >
+	    and decision_code2 =  #{decisionCode2}
+	</if>
+<if test="decisionCode3 != null and decisionCode3 != ''" >
+	    and decision_code3 =  #{decisionCode3}
+	</if>
+<if test="decisionCode4 != null and decisionCode4 != ''" >
+	    and decision_code4 =  #{decisionCode4}
+	</if>
+<if test="decisionCode5 != null and decisionCode5 != ''" >
+	    and decision_code5 =  #{decisionCode5}
+	</if>
+<if test="decisionCode6 != null and decisionCode6 != ''" >
+	    and decision_code6 =  #{decisionCode6}
+	</if>
+<if test="imageSummarys != null and imageSummarys != ''" >
+	    and image_summarys =  #{imageSummarys}
+	</if>
+<if test="returnMsg != null and returnMsg != ''" >
+	    and return_msg =  #{returnMsg}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_CAR_DECISION_SEQ') From dual
+			<!-- Select T_CAR_DECISION_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_CAR_DECISION(id,app_id,type,amount,contract_amount,belong_channel,product,first_test_code,second_test_code,second_test_value,period,decision,remarks,decision_code1,decision_code2,decision_code3,decision_code4,decision_code5,decision_code6,image_summarys,return_msg,state,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{amount, jdbcType=DOUBLE},#{contractAmount, jdbcType=DOUBLE},#{belongChannel, jdbcType=VARCHAR},#{product, jdbcType=VARCHAR},#{firstTestCode, jdbcType=VARCHAR},#{secondTestCode, jdbcType=VARCHAR},#{secondTestValue, jdbcType=VARCHAR},#{period, jdbcType=INTEGER},#{decision, jdbcType=VARCHAR},#{remarks, jdbcType=VARCHAR},#{decisionCode1, jdbcType=VARCHAR},#{decisionCode2, jdbcType=VARCHAR},#{decisionCode3, jdbcType=VARCHAR},#{decisionCode4, jdbcType=VARCHAR},#{decisionCode5, jdbcType=VARCHAR},#{decisionCode6, jdbcType=VARCHAR},#{imageSummarys, jdbcType=VARCHAR},#{returnMsg, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_CAR_DECISION set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	amount =  #{amount, jdbcType=DOUBLE},
+	contract_amount =  #{contractAmount, jdbcType=DOUBLE},
+	belong_channel =  #{belongChannel, jdbcType=VARCHAR},
+	product =  #{product, jdbcType=VARCHAR},
+	first_test_code = #{firstTestCode, jdbcType=VARCHAR},
+	second_test_code = #{secondTestCode, jdbcType=VARCHAR},
+	second_test_value = #{secondTestValue, jdbcType=VARCHAR},
+	period =  #{period, jdbcType=INTEGER},
+	decision =  #{decision, jdbcType=VARCHAR},
+	remarks =  #{remarks, jdbcType=VARCHAR},
+	decision_code1 =  #{decisionCode1, jdbcType=VARCHAR},
+	decision_code2 =  #{decisionCode2, jdbcType=VARCHAR},
+	decision_code3 =  #{decisionCode3, jdbcType=VARCHAR},
+	decision_code4 =  #{decisionCode4, jdbcType=VARCHAR},
+	decision_code5 =  #{decisionCode5, jdbcType=VARCHAR},
+	decision_code6 =  #{decisionCode6, jdbcType=VARCHAR},
+	image_summarys =  #{imageSummarys, jdbcType=VARCHAR},
+	return_msg =  #{returnMsg, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_CAR_DECISION  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_CAR_DECISION set 
+	<trim  suffixOverrides="," >
+	<if test="appId != null and appId != ''" >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+	<if test="type != null and type != ''" >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+	<if test="amount != null and amount != ''" >
+	    amount =  #{amount, jdbcType=DOUBLE},
+	</if>
+	<if test="contractAmount != null and contractAmount != ''" >
+	    contract_amount =  #{contractAmount, jdbcType=DOUBLE},
+	</if>
+	<if test="belongChannel != null and belongChannel != ''" >
+	    belong_channel =  #{belongChannel, jdbcType=VARCHAR},
+	</if>
+	<if test="product != null and product != ''" >
+	    product =  #{product, jdbcType=VARCHAR},
+	</if>
+	<if test="firstTestCode != null" >
+		first_test_code = #{firstTestCode, jdbcType=VARCHAR},
+	</if>
+	<if test="secondTestCode != null" >
+		second_test_code = #{secondTestCode, jdbcType=VARCHAR},
+	</if>
+	<if test="secondTestValue != null" >
+		second_test_value = #{secondTestValue, jdbcType=VARCHAR},
+	</if>
+	<if test="period != null and period != ''" >
+	    period =  #{period, jdbcType=INTEGER},
+	</if>
+	<if test="decision != null and decision != ''" >
+	    decision =  #{decision, jdbcType=VARCHAR},
+	</if>
+	<if test="remarks != null and remarks != ''" >
+	    remarks =  #{remarks, jdbcType=VARCHAR},
+	</if>
+	<if test="decisionCode1 != null and decisionCode1 != ''" >
+	    decision_code1 =  #{decisionCode1, jdbcType=VARCHAR},
+	</if>
+	<if test="decisionCode2 != null and decisionCode2 != ''" >
+	    decision_code2 =  #{decisionCode2, jdbcType=VARCHAR},
+	</if>
+	<if test="decisionCode3 != null and decisionCode3 != ''" >
+	    decision_code3 =  #{decisionCode3, jdbcType=VARCHAR},
+	</if>
+	<if test="decisionCode4 != null and decisionCode4 != ''" >
+	    decision_code4 =  #{decisionCode4, jdbcType=VARCHAR},
+	</if>
+	<if test="decisionCode5 != null and decisionCode5 != ''" >
+	    decision_code5 =  #{decisionCode5, jdbcType=VARCHAR},
+	</if>
+	<if test="decisionCode6 != null and decisionCode6 != ''" >
+	    decision_code6 =  #{decisionCode6, jdbcType=VARCHAR},
+	</if>
+	<if test="imageSummarys != null" >
+	    image_summarys =  #{imageSummarys, jdbcType=VARCHAR},
+	</if>
+	<if test="returnMsg != null and returnMsg != ''" >
+	    return_msg =  #{returnMsg, jdbcType=VARCHAR},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 信用贷款决策表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CAR_DECISION  where id = #{id}
+</select>
+
+<!-- 信用贷款决策表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CAR_DECISION 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询信用贷款决策表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_CAR_DECISION 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

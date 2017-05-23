@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.collection.phone.dao.CollectionResultDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.collection.phone.model.CollectionResult" >
+	<result column="id" property="id"/><!-- id -->
+	<result column="distribution_id" property="distributionId"/><!-- 催收分配表ID -->
+	<result column="collection_uid" property="collectionUid"/><!-- 催收人 -->
+	<result column="contract_no" property="contractNo"/><!-- 合同编号 -->
+	<result column="id_type" property="idType"/><!-- 客户证件类型 -->
+	<result column="id_no" property="idNo"/><!-- 证件号码 -->
+	<result column="customer_name" property="customerName"/><!-- 客户姓名 -->
+	<result column="customer_tel" property="customerTel"/><!-- 联系方式 -->
+	<result column="contract_amount" property="contractAmount"/><!-- 合同额 -->
+	<result column="product" property="product"/><!-- 产品 -->
+	<result column="late_age" property="lateAge"/><!-- 账龄 -->
+	<result column="late_days" property="lateDays"/><!-- 逾期天数 -->
+	<result column="repayment_date" property="repaymentDate"/><!-- 还款日 -->
+	<result column="loan_platform" property="loanPlatform"/><!-- 放款平台 -->
+	<result column="org_name" property="orgName"/><!-- 营业部 -->
+	<result column="penalty" property="penalty"/><!-- 罚息总额 -->
+	<result column="default_fee" property="defaultFee"/><!-- 违约金总额 -->
+	<result column="delay" property="delay"/><!-- 滞纳金总额 -->
+	<result column="srevice_fee" property="sreviceFee"/><!-- 服务费 -->
+	<result column="principal" property="principal"/><!-- 本金总额 -->
+	<result column="interest" property="interest"/><!-- 利息总额 -->
+	<result column="reduce" property="reduce"/><!-- 减免总额 -->
+	<result column="amount_all" property="amountAll"/><!-- 应还总额 -->
+	<result column="period_all" property="periodAll"/><!-- 总期数 -->
+	<result column="period_cur" property="periodCur"/><!-- 当前期数 -->
+	<result column="period_late_his" property="periodLateHis"/><!-- 历史逾期期数 -->
+	<result column="actual_repayment_date" property="actualRepaymentDate"/><!-- 还款日期 -->
+	<result column="collection_way" property="collectionWay"/><!-- 催收渠道 -->
+	<result column="remark" property="remark"/><!-- 备注 -->
+	<result column="create_uid" property="createUid"/><!-- 创建人 -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="update_uid" property="updateUid"/><!-- 修改人 -->
+	<result column="update_time" property="updateTime"/><!-- 修改时间 -->
+</resultMap>
+       
+<!-- T_COLLECTION_RESULT table all fields -->
+<sql id="Column_List" >
+	 id,distribution_id,collection_uid,contract_no,id_type,id_no,customer_name,customer_tel,contract_amount,product,late_age,late_days,repayment_date,loan_platform,org_name,penalty,default_fee,delay,srevice_fee,principal,interest,reduce,amount_all,period_all,period_cur,period_late_his,actual_repayment_date,collection_way,remark,create_uid,create_time,update_uid,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="distributionId != null and distributionId != ''" >
+	    and distribution_id =  #{distributionId}
+	</if>
+<if test="collectionUid != null and collectionUid != ''" >
+	    and collection_uid =  #{collectionUid}
+	</if>
+<if test="contractNo != null and contractNo != ''" >
+	    and contract_no =  #{contractNo}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="customerName != null and customerName != ''" >
+	    and customer_name =  #{customerName}
+	</if>
+<if test="customerTel != null and customerTel != ''" >
+	    and customer_tel =  #{customerTel}
+	</if>
+<if test="contractAmount != null and contractAmount != ''" >
+	    and contract_amount =  #{contractAmount}
+	</if>
+<if test="product != null and product != ''" >
+	    and product =  #{product}
+	</if>
+<if test="lateAge != null and lateAge != ''" >
+	    and late_age =  #{lateAge}
+	</if>
+<if test="lateDays != null and lateDays != ''" >
+	    and late_days =  #{lateDays}
+	</if>
+<if test="repaymentDate != null and repaymentDate != ''" >
+	    and repayment_date =  #{repaymentDate}
+	</if>
+<if test="loanPlatform != null and loanPlatform != ''" >
+	    and loan_platform =  #{loanPlatform}
+	</if>
+<if test="orgName != null and orgName != ''" >
+	    and org_name =  #{orgName}
+	</if>
+<if test="penalty != null and penalty != ''" >
+	    and penalty =  #{penalty}
+	</if>
+<if test="defaultFee != null and defaultFee != ''" >
+	    and default_fee =  #{defaultFee}
+	</if>
+<if test="delay != null and delay != ''" >
+	    and delay =  #{delay}
+	</if>
+<if test="sreviceFee != null and sreviceFee != ''" >
+	    and srevice_fee =  #{sreviceFee}
+	</if>
+<if test="principal != null and principal != ''" >
+	    and principal =  #{principal}
+	</if>
+<if test="interest != null and interest != ''" >
+	    and interest =  #{interest}
+	</if>
+<if test="reduce != null and reduce != ''" >
+	    and reduce =  #{reduce}
+	</if>
+<if test="amountAll != null and amountAll != ''" >
+	    and amount_all =  #{amountAll}
+	</if>
+<if test="periodAll != null and periodAll != ''" >
+	    and period_all =  #{periodAll}
+	</if>
+<if test="periodCur != null and periodCur != ''" >
+	    and period_cur =  #{periodCur}
+	</if>
+<if test="periodLateHis != null and periodLateHis != ''" >
+	    and period_late_his =  #{periodLateHis}
+	</if>
+<if test="actualRepaymentDate != null and actualRepaymentDate != ''" >
+	    and actual_repayment_date =  #{actualRepaymentDate}
+	</if>
+<if test="collectionWay != null and collectionWay != ''" >
+	    and collection_way =  #{collectionWay}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="createUid != null and createUid != ''" >
+	    and create_uid =  #{createUid}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateUid != null and updateUid != ''" >
+	    and update_uid =  #{updateUid}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_COLLECTION_RESULT_SEQ') From dual
+			<!-- Select T_COLLECTION_RESULT_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_COLLECTION_RESULT(id,distribution_id,collection_uid,contract_no,id_type,id_no,customer_name,customer_tel,contract_amount,product,late_age,late_days,repayment_date,loan_platform,org_name,penalty,default_fee,delay,srevice_fee,principal,interest,reduce,amount_all,period_all,period_cur,period_late_his,actual_repayment_date,collection_way,remark,create_uid,create_time,update_uid,update_time)
+ values( #{id, jdbcType=INTEGER},#{distributionId, jdbcType=INTEGER},#{collectionUid, jdbcType=VARCHAR},#{contractNo, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{customerName, jdbcType=VARCHAR},#{customerTel, jdbcType=VARCHAR},#{contractAmount, jdbcType=DOUBLE},#{product, jdbcType=VARCHAR},#{lateAge, jdbcType=INTEGER},#{lateDays, jdbcType=INTEGER},#{repaymentDate, jdbcType=DATE},#{loanPlatform, jdbcType=VARCHAR},#{orgName, jdbcType=VARCHAR},#{penalty, jdbcType=DOUBLE},#{defaultFee, jdbcType=DOUBLE},#{delay, jdbcType=DOUBLE},#{sreviceFee, jdbcType=DOUBLE},#{principal, jdbcType=DOUBLE},#{interest, jdbcType=DOUBLE},#{reduce, jdbcType=DOUBLE},#{amountAll, jdbcType=DOUBLE},#{periodAll, jdbcType=INTEGER},#{periodCur, jdbcType=INTEGER},#{periodLateHis, jdbcType=INTEGER},#{actualRepaymentDate, jdbcType=DATE},#{collectionWay, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{createUid, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateUid, jdbcType=VARCHAR},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_COLLECTION_RESULT set 
+	<trim  suffixOverrides="," >
+	distribution_id =  #{distributionId, jdbcType=INTEGER},
+	collection_uid =  #{collectionUid, jdbcType=VARCHAR},
+	contract_no =  #{contractNo, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	customer_name =  #{customerName, jdbcType=VARCHAR},
+	customer_tel =  #{customerTel, jdbcType=VARCHAR},
+	contract_amount =  #{contractAmount, jdbcType=DOUBLE},
+	product =  #{product, jdbcType=VARCHAR},
+	late_age =  #{lateAge, jdbcType=INTEGER},
+	late_days =  #{lateDays, jdbcType=INTEGER},
+	repayment_date =  #{repaymentDate, jdbcType=DATE},
+	loan_platform =  #{loanPlatform, jdbcType=VARCHAR},
+	org_name =  #{orgName, jdbcType=VARCHAR},
+	penalty =  #{penalty, jdbcType=DOUBLE},
+	default_fee =  #{defaultFee, jdbcType=DOUBLE},
+	delay =  #{delay, jdbcType=DOUBLE},
+	srevice_fee =  #{sreviceFee, jdbcType=DOUBLE},
+	principal =  #{principal, jdbcType=DOUBLE},
+	interest =  #{interest, jdbcType=DOUBLE},
+	reduce =  #{reduce, jdbcType=DOUBLE},
+	amount_all =  #{amountAll, jdbcType=DOUBLE},
+	period_all =  #{periodAll, jdbcType=INTEGER},
+	period_cur =  #{periodCur, jdbcType=INTEGER},
+	period_late_his =  #{periodLateHis, jdbcType=INTEGER},
+	actual_repayment_date =  #{actualRepaymentDate, jdbcType=DATE},
+	collection_way =  #{collectionWay, jdbcType=VARCHAR},
+	remark =  #{remark, jdbcType=VARCHAR},
+	create_uid =  #{createUid, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_uid =  #{updateUid, jdbcType=VARCHAR},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_COLLECTION_RESULT  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_COLLECTION_RESULT set 
+	<trim  suffixOverrides="," >
+
+	<if test="distributionId != null and distributionId != '' " >
+	    distribution_id =  #{distributionId, jdbcType=INTEGER},
+	</if>
+
+	<if test="collectionUid != null and collectionUid != '' " >
+	    collection_uid =  #{collectionUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractNo != null and contractNo != '' " >
+	    contract_no =  #{contractNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idType != null and idType != '' " >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idNo != null and idNo != '' " >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="customerName != null and customerName != '' " >
+	    customer_name =  #{customerName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="customerTel != null and customerTel != '' " >
+	    customer_tel =  #{customerTel, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractAmount != null and contractAmount != ''  or contractAmount==0" >
+	    contract_amount =  #{contractAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="product != null and product != '' " >
+	    product =  #{product, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lateAge != null and lateAge != ''  or lateAge==0" >
+	    late_age =  #{lateAge, jdbcType=INTEGER},
+	</if>
+
+	<if test="lateDays != null and lateDays != ''  or lateDays==0" >
+	    late_days =  #{lateDays, jdbcType=INTEGER},
+	</if>
+
+	<if test="repaymentDate != null and repaymentDate != '' " >
+	    repayment_date =  #{repaymentDate, jdbcType=DATE},
+	</if>
+
+	<if test="loanPlatform != null and loanPlatform != '' " >
+	    loan_platform =  #{loanPlatform, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgName != null and orgName != '' " >
+	    org_name =  #{orgName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="penalty != null and penalty != ''  or penalty==0" >
+	    penalty =  #{penalty, jdbcType=DOUBLE},
+	</if>
+
+	<if test="defaultFee != null and defaultFee != ''  or defaultFee==0" >
+	    default_fee =  #{defaultFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="delay != null and delay != ''  or delay==0" >
+	    delay =  #{delay, jdbcType=DOUBLE},
+	</if>
+
+	<if test="sreviceFee != null and sreviceFee != ''  or sreviceFee==0" >
+	    srevice_fee =  #{sreviceFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="principal != null and principal != ''  or principal==0" >
+	    principal =  #{principal, jdbcType=DOUBLE},
+	</if>
+
+	<if test="interest != null and interest != ''  or interest==0" >
+	    interest =  #{interest, jdbcType=DOUBLE},
+	</if>
+
+	<if test="reduce != null and reduce != ''  or reduce==0" >
+	    reduce =  #{reduce, jdbcType=DOUBLE},
+	</if>
+
+	<if test="amountAll != null and amountAll != ''  or amountAll==0" >
+	    amount_all =  #{amountAll, jdbcType=DOUBLE},
+	</if>
+
+	<if test="periodAll != null and periodAll != ''  or periodAll==0" >
+	    period_all =  #{periodAll, jdbcType=INTEGER},
+	</if>
+
+	<if test="periodCur != null and periodCur != ''  or periodCur==0" >
+	    period_cur =  #{periodCur, jdbcType=INTEGER},
+	</if>
+
+	<if test="periodLateHis != null and periodLateHis != ''  or periodLateHis==0" >
+	    period_late_his =  #{periodLateHis, jdbcType=INTEGER},
+	</if>
+
+	<if test="actualRepaymentDate != null and actualRepaymentDate != '' " >
+	    actual_repayment_date =  #{actualRepaymentDate, jdbcType=DATE},
+	</if>
+
+	<if test="collectionWay != null and collectionWay != '' " >
+	    collection_way =  #{collectionWay, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createUid != null and createUid != '' " >
+	    create_uid =  #{createUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateUid != null and updateUid != '' " >
+	    update_uid =  #{updateUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 催收人员绩效表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_COLLECTION_RESULT  where id = #{id}
+</select>
+
+<!-- 催收人员绩效表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_COLLECTION_RESULT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询催收人员绩效表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_COLLECTION_RESULT 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

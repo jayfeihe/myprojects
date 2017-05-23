@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:task="http://www.springframework.org/schema/task"  
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/batch 
+	http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+	http://www.springframework.org/schema/context
+  	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+ 	http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+    
+    
+     <job id="initSeqJob"  xmlns="http://www.springframework.org/schema/batch">
+        <step id="initSeqStep">
+            <tasklet>
+                <chunk reader="initSeqReader" writer="initSeqWriter" processor="initSeqProcessor" commit-interval="1000" skip-limit="20">
+                	<skippable-exception-classes>
+						<include class="com.tera.batch.exception.BatchProcessException" />
+					</skippable-exception-classes>
+                </chunk>
+            </tasklet>
+        </step>
+    </job>
+    
+    <bean id="list" class="java.util.ArrayList">
+	    <constructor-arg index="0">
+	        <list>
+	        	<value>T_LOAN_APP_DALIY_SEQ</value>
+		        <value>T_LEND_APP_DALIY_SEQ</value>
+		        <value>T_CREDIT_APP_DALIY_SEQ</value>
+		        <value>T_CONTRACT_DALIY_SEQ</value>
+	        </list>
+	    </constructor-arg>
+	</bean>
+
+    <bean id="initSeqReader"
+        class="org.mybatis.spring.batch.MyBatisPagingItemReader" scope="step">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+		<property name="queryId" value="com.tera.batch.initseq.dao.SequenceDao.queryList"/>		
+		<!-- 设置查询参数 -->
+		<property name="parameterValues">
+	      <map>
+	      	<entry key="names" value-ref="list" />
+<!--	      	<entry key="names" value="love1"/>   -->
+	      </map>
+	    </property>
+		<property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="sequence" class="com.tera.batch.initseq.model.Sequence" scope="prototype"></bean>
+    
+    <bean id="initSeqProcessor" class="com.tera.batch.initseq.processor.InitSeqProcessor">	
+     	<property name="batchErrorLogDao" ref="batchErrorLogDao"/>     	
+	</bean>
+	
+     <bean id="initSeqWriter"
+        class="	org.mybatis.spring.batch.MyBatisBatchItemWriter" scope="step">
+        <property name="statementId" value="com.tera.batch.initseq.dao.SequenceDao.update"/>
+         <property name="sqlSessionTemplate" ref="sqlSession"/>
+    </bean>
+	
+</beans>

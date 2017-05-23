@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.tera.sys.dao.BulletinDao">
+
+	<resultMap type="com.tera.sys.model.Bulletin" id="resultBulletin">
+	  <id property="id" column="ID"  javaType="int" jdbcType="INTEGER"/>
+	  <result property="title" column="TITLE" javaType="string" jdbcType="VARCHAR"/>
+	  <result property="content" column="CONTENT" javaType="string" jdbcType="CLOB"/>
+	  <result property="writer" column="WRITER"  javaType="string" jdbcType="VARCHAR"/>
+	  <result property="publishTime" column="PUBLISH_TIME"  javaType="java.util.Date" jdbcType="TIMESTAMP" />
+	  <result property="bulState" column="BUL_STATE"  javaType="string" jdbcType="VARCHAR"/>
+	  
+	</resultMap>
+ 
+	<!-- 分页头 -->
+	<sql id="head">
+	<![CDATA[
+	select * from (
+	select a.*,rownum rn
+	from(
+	]]>
+	</sql>
+	
+	<!-- 分页尾 -->
+	<sql id="foot" >
+	<![CDATA[
+	)a
+	where rownum <= #{rowE}
+	)
+	where rn >= #{rowS}
+	 ]]>
+	</sql>
+	
+	<!-- 分页查询 -->
+	<select id="queryBulletin" resultMap="resultBulletin" parameterType="map">
+		select id, title, writer, publish_Time, bul_State from t_bulletin
+		<where>
+		<if test="true">1=1</if>
+		<if test="title!=null and title!=''">
+			and title like CONCAT(CONCAT('%', #{title}),'%')
+		</if>
+		<if test="bulState!=null and bulState!=''">
+			and bul_State =#{bulState}
+		</if>
+		<if test="spublishTime!=null">
+			<![CDATA[
+				and publish_Time > #{spublishTime}
+			]]>
+		</if>
+		<if test="epublishTime!=null">
+			<![CDATA[
+				and publish_Time < #{epublishTime}
+			]]>
+		</if>
+		</where>
+		order by publish_Time desc
+		<if test="rowS != null and rowE != null " >
+      		limit #{rowS} , #{rowE}
+   		</if>
+	</select>
+
+	<!-- 查询记录数 -->
+	<select id="getBulletinCount" resultType="int" parameterType="map">
+		Select Count(1) From t_bulletin
+		<where>
+		<if test="true">1=1</if>
+		<if test="title!=null and title!=''">
+			and title like CONCAT(CONCAT('%', #{title}),'%')
+		</if>
+		<if test="bulState!=null and bulState!=''">
+			and bul_State =#{bulState}
+		</if>
+		<if test="spublishTime!=null">
+			<![CDATA[
+				and publish_Time > #{spublishTime}
+			]]>
+		</if>
+		<if test="epublishTime!=null">
+			<![CDATA[
+				and publish_Time < #{epublishTime}
+			]]>
+		</if>
+		</where>
+	</select>
+	
+	
+		<!-- 序号默认为id -->
+	<insert id="addBulletin" parameterType="Object">
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			Select nextval('T_BULLETIN_SEQ') From dual
+		</selectKey>
+		Insert Into t_Bulletin
+		  (Id, title, content, writer, bul_state, publish_Time)
+		Values
+		  (#{id}, #{title}, #{content,jdbcType=CLOB}, #{writer}, #{bulState}, #{publishTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<update id="updateBulletin" parameterType="Object">
+		Update t_Bulletin Set title=#{title}, content=#{content,jdbcType=CLOB}, writer=#{writer},
+		bul_state=#{bulState}, publish_Time=#{publishTime,jdbcType=TIMESTAMP}
+		Where Id=#{id}
+
+	</update>
+	
+	<delete id="deleteBulletinByIDs" parameterType="Map">
+		Delete from t_Bulletin Where Id In
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+			${item}
+		</foreach>
+	</delete>
+	
+	
+	<select id="getBulletinById" parameterType="int" resultMap="resultBulletin">
+		select * from t_Bulletin where id=#{id}
+	</select>
+	<!-- 获取最新的已发布公告 -->
+	<select id="getBulletinByLast" resultMap="resultBulletin">
+		select * from t_bulletin where bul_state='publishing'  order by publish_Time desc limit 1
+	</select>
+	
+	
+</mapper>

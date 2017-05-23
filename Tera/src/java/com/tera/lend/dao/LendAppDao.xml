@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.lend.dao.LendAppDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.lend.model.LendApp" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="contract_no" property="contractNo"/><!-- 合同编号 -->
+	<result column="customer_no" property="customerNo"/><!-- 客户ID -->
+	<result column="customer_type" property="customerType"/><!-- 类型-个人/机构 -->
+	<result column="customer_lever" property="customerLever"/><!-- 客户等级 -->
+	<result column="name" property="name"/><!-- 姓名 -->
+	<result column="mobile" property="mobile"/><!-- 手机号 -->
+	<result column="phone" property="phone"/><!-- 电话 -->
+	<result column="id_type" property="idType"/><!-- 证件类型 -->
+	<result column="id_no" property="idNo"/><!-- 证件号码 -->
+	<result column="cfo_name" property="cfoName"/><!-- 财务负责人姓名 -->
+	<result column="product" property="product"/><!-- 产品 -->
+	<result column="service_end_date" property="serviceEndDate"/><!-- 服务截至日期 -->
+	<result column="app_type" property="appType"/><!-- 申请类型 -->
+	<result column="amount" property="amount"/><!-- 出借金额 -->
+	<result column="lend_acc_name" property="lendAccName"/><!-- 出借账户名 -->
+	<result column="lend_acc_bank" property="lendAccBank"/><!-- 出借开户银行 -->
+	<result column="lend_account" property="lendAccount"/><!-- 出借银行账号 -->
+	<result column="repay_acc_name" property="repayAccName"/><!-- 回款账户名 -->
+	<result column="bank_province" property="bankProvince"/><!-- 开户行省 -->
+	<result column="bank_city" property="bankCity"/><!-- 开户行市 -->
+	<result column="bank_county" property="bankCounty"/><!-- 开户行区 -->
+	<result column="bank_name" property="bankName"/><!-- 开户行名称 -->
+	<result column="bank_code" property="bankCode"/><!-- 开户行代码 -->
+	<result column="repay_acc_bank" property="repayAccBank"/><!-- 支行名称 -->
+	<result column="repay_account" property="repayAccount"/><!-- 银行卡号 -->
+	<result column="bank_mobile" property="bankMobile"/><!-- 银行卡 绑定手机 -->
+	<result column="match_type" property="matchType"/><!-- 撮合类型 -->
+	<result column="customer_manager" property="customerManager"/><!-- 客户经理 -->
+	<result column="staff_no" property="staffNo"/><!-- 营销人员 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="address" property="address"/>
+	<result column="taskState" property="taskState"/>
+	<result column="period" property="period"/>
+	<result column="interest_rate" property="interestRate"/>
+</resultMap>
+       
+<!-- T_LEND_APP table all fields -->
+<sql id="Column_List" >
+	 id,app_id,contract_no,customer_no,customer_type,customer_lever,name,mobile,phone,id_type,id_no,cfo_name,product,service_end_date,app_type,amount,lend_acc_name,lend_acc_bank,lend_account,repay_acc_name,bank_province,bank_city,bank_county,bank_name,bank_code,repay_acc_bank,repay_account,bank_mobile,match_type,customer_manager,staff_no,operator,org_id,create_time,update_time,state
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="contractNo != null and contractNo != ''" >
+	    and contract_no =  #{contractNo}
+	</if>
+<if test="customerNo != null and customerNo != ''" >
+	    and customer_no =  #{customerNo}
+	</if>
+<if test="customerType != null and customerType != ''" >
+	    and customer_type =  #{customerType}
+	</if>
+<if test="customerLever != null and customerLever != ''" >
+	    and customer_lever =  #{customerLever}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="mobile != null and mobile != ''" >
+	    and mobile =  #{mobile}
+	</if>
+<if test="phone != null and phone != ''" >
+	    and phone =  #{phone}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="cfoName != null and cfoName != ''" >
+	    and cfo_name =  #{cfoName}
+	</if>
+<if test="product != null and product != ''" >
+	    and product =  #{product}
+	</if>
+<if test="serviceEndDate != null and serviceEndDate != ''" >
+	    and service_end_date =  #{serviceEndDate}
+	</if>
+<if test="appType != null and appType != ''" >
+	    and app_type =  #{appType}
+	</if>
+<if test="amount != null and amount != ''" >
+	    and amount =  #{amount}
+	</if>
+<if test="lendAccName != null and lendAccName != ''" >
+	    and lend_acc_name =  #{lendAccName}
+	</if>
+<if test="lendAccBank != null and lendAccBank != ''" >
+	    and lend_acc_bank =  #{lendAccBank}
+	</if>
+<if test="lendAccount != null and lendAccount != ''" >
+	    and lend_account =  #{lendAccount}
+	</if>
+<if test="repayAccName != null and repayAccName != ''" >
+	    and repay_acc_name =  #{repayAccName}
+	</if>
+<if test="bankProvince != null and bankProvince != ''" >
+	    and bank_province =  #{bankProvince}
+	</if>
+<if test="bankCity != null and bankCity != ''" >
+	    and bank_city =  #{bankCity}
+	</if>
+<if test="bankCounty != null and bankCounty != ''" >
+	    and bank_county =  #{bankCounty}
+	</if>
+<if test="bankName != null and bankName != ''" >
+	    and bank_name =  #{bankName}
+	</if>
+<if test="bankCode != null and bankCode != ''" >
+	    and bank_code =  #{bankCode}
+	</if>
+<if test="repayAccBank != null and repayAccBank != ''" >
+	    and repay_acc_bank =  #{repayAccBank}
+	</if>
+<if test="repayAccount != null and repayAccount != ''" >
+	    and repay_account =  #{repayAccount}
+	</if>
+<if test="bankMobile != null and bankMobile != ''" >
+	    and bank_mobile =  #{bankMobile}
+	</if>
+<if test="matchType != null and matchType != ''" >
+	    and match_type =  #{matchType}
+	</if>
+<if test="customerManager != null and customerManager != ''" >
+	    and customer_manager =  #{customerManager}
+	</if>
+<if test="staffNo != null and staffNo != ''" >
+	    and staff_no =  #{staffNo}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_LEND_APP_SEQ') From dual
+			<!-- Select T_LEND_APP_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_LEND_APP(id,app_id,contract_no,customer_no,customer_type,customer_lever,name,mobile,phone,id_type,id_no,cfo_name,product,service_end_date,app_type,amount,lend_acc_name,lend_acc_bank,lend_account,repay_acc_name,bank_province,bank_city,bank_county,bank_name,bank_code,repay_acc_bank,repay_account,bank_mobile,match_type,customer_manager,staff_no,operator,org_id,create_time,update_time,state)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{contractNo, jdbcType=VARCHAR},#{customerNo, jdbcType=VARCHAR},#{customerType, jdbcType=VARCHAR},#{customerLever, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{mobile, jdbcType=VARCHAR},#{phone, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{cfoName, jdbcType=VARCHAR},#{product, jdbcType=VARCHAR},#{serviceEndDate, jdbcType=DATE},#{appType, jdbcType=VARCHAR},#{amount, jdbcType=DOUBLE},#{lendAccName, jdbcType=VARCHAR},#{lendAccBank, jdbcType=VARCHAR},#{lendAccount, jdbcType=VARCHAR},#{repayAccName, jdbcType=VARCHAR},#{bankProvince, jdbcType=VARCHAR},#{bankCity, jdbcType=VARCHAR},#{bankCounty, jdbcType=VARCHAR},#{bankName, jdbcType=VARCHAR},#{bankCode, jdbcType=VARCHAR},#{repayAccBank, jdbcType=VARCHAR},#{repayAccount, jdbcType=VARCHAR},#{bankMobile, jdbcType=VARCHAR},#{matchType, jdbcType=VARCHAR},#{customerManager, jdbcType=VARCHAR},#{staffNo, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP},#{state, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_LEND_APP set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	contract_no =  #{contractNo, jdbcType=VARCHAR},
+	customer_no =  #{customerNo, jdbcType=VARCHAR},
+	customer_type =  #{customerType, jdbcType=VARCHAR},
+	customer_lever =  #{customerLever, jdbcType=VARCHAR},
+	name =  #{name, jdbcType=VARCHAR},
+	mobile =  #{mobile, jdbcType=VARCHAR},
+	phone =  #{phone, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	cfo_name =  #{cfoName, jdbcType=VARCHAR},
+	product =  #{product, jdbcType=VARCHAR},
+	service_end_date =  #{serviceEndDate, jdbcType=DATE},
+	app_type =  #{appType, jdbcType=VARCHAR},
+	amount =  #{amount, jdbcType=DOUBLE},
+	lend_acc_name =  #{lendAccName, jdbcType=VARCHAR},
+	lend_acc_bank =  #{lendAccBank, jdbcType=VARCHAR},
+	lend_account =  #{lendAccount, jdbcType=VARCHAR},
+	repay_acc_name =  #{repayAccName, jdbcType=VARCHAR},
+	bank_province =  #{bankProvince, jdbcType=VARCHAR},
+	bank_city =  #{bankCity, jdbcType=VARCHAR},
+	bank_county =  #{bankCounty, jdbcType=VARCHAR},
+	bank_name =  #{bankName, jdbcType=VARCHAR},
+	bank_code =  #{bankCode, jdbcType=VARCHAR},
+	repay_acc_bank =  #{repayAccBank, jdbcType=VARCHAR},
+	repay_account =  #{repayAccount, jdbcType=VARCHAR},
+	bank_mobile =  #{bankMobile, jdbcType=VARCHAR},
+	match_type =  #{matchType, jdbcType=VARCHAR},
+	customer_manager =  #{customerManager, jdbcType=VARCHAR},
+	staff_no =  #{staffNo, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	state =  #{state, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_LEND_APP  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_LEND_APP set 
+	<trim  suffixOverrides="," >
+
+	<if test="appId != null and appId != '' " >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractNo != null and contractNo != '' " >
+	    contract_no =  #{contractNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="customerNo != null and customerNo != '' " >
+	    customer_no =  #{customerNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="customerType != null and customerType != '' " >
+	    customer_type =  #{customerType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="customerLever != null and customerLever != '' " >
+	    customer_lever =  #{customerLever, jdbcType=VARCHAR},
+	</if>
+
+	<if test="name != null and name != '' " >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+
+	<if test="mobile != null and mobile != '' " >
+	    mobile =  #{mobile, jdbcType=VARCHAR},
+	</if>
+
+	<if test="phone != null and phone != '' " >
+	    phone =  #{phone, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idType != null and idType != '' " >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idNo != null and idNo != '' " >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="cfoName != null and cfoName != '' " >
+	    cfo_name =  #{cfoName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="product != null and product != '' " >
+	    product =  #{product, jdbcType=VARCHAR},
+	</if>
+
+	<if test="serviceEndDate != null and serviceEndDate != '' " >
+	    service_end_date =  #{serviceEndDate, jdbcType=DATE},
+	</if>
+
+	<if test="appType != null and appType != '' " >
+	    app_type =  #{appType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="amount != null and amount != ''" >
+	    amount =  #{amount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="lendAccName != null and lendAccName != '' " >
+	    lend_acc_name =  #{lendAccName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lendAccBank != null and lendAccBank != '' " >
+	    lend_acc_bank =  #{lendAccBank, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lendAccount != null and lendAccount != '' " >
+	    lend_account =  #{lendAccount, jdbcType=VARCHAR},
+	</if>
+
+	<if test="repayAccName != null and repayAccName != '' " >
+	    repay_acc_name =  #{repayAccName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bankProvince != null and bankProvince != '' " >
+	    bank_province =  #{bankProvince, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bankCity != null and bankCity != '' " >
+	    bank_city =  #{bankCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bankCounty != null and bankCounty != '' " >
+	    bank_county =  #{bankCounty, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bankName != null and bankName != '' " >
+	    bank_name =  #{bankName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bankCode != null and bankCode != '' " >
+	    bank_code =  #{bankCode, jdbcType=VARCHAR},
+	</if>
+
+	<if test="repayAccBank != null and repayAccBank != '' " >
+	    repay_acc_bank =  #{repayAccBank, jdbcType=VARCHAR},
+	</if>
+
+	<if test="repayAccount != null and repayAccount != '' " >
+	    repay_account =  #{repayAccount, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bankMobile != null and bankMobile != '' " >
+	    bank_mobile =  #{bankMobile, jdbcType=VARCHAR},
+	</if>
+
+	<if test="matchType != null and matchType != '' " >
+	    match_type =  #{matchType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="customerManager != null and customerManager != '' " >
+	    customer_manager =  #{customerManager, jdbcType=VARCHAR},
+	</if>
+
+	<if test="staffNo != null and staffNo != '' " >
+	    staff_no =  #{staffNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operator != null and operator != '' " >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 财富端申请表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_LEND_APP  where id = #{id}
+</select>
+
+<!-- 根据appId查询 财富端申请表 -->
+<select id="queryByAppId"  resultMap="ResultMap" parameterType="string">
+	select <include refid="Column_List" /> 
+	 from T_LEND_APP  where app_id = #{appId}
+</select>
+
+<!-- 财富端申请表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LEND_APP 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询财富端申请表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LEND_APP 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<select id="getAppIdCode" resultType="string">
+	SELECT LPAD (nextval('T_LEND_APP_DALIY_SEQ'),4,'0') FROM DUAL
+</select>
+
+<!-- 流程 列表查询-->
+<select id="queryBpmLendAppCount" resultType="java.lang.Integer" parameterType="map">
+	SELECT count(1) FROM  T_LEND_APP a, t_bpm_task b 
+	WHERE a.APP_ID = b.BIZ_KEY 
+	<if test="states != null and states != '' " >
+		AND a.STATE in
+		<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="bpmStates != null and bpmStates != '' " >
+		AND b.STATE in
+		<foreach item="item" index="index" collection="bpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="userLoginId != null and userLoginId != '' " >
+		AND b.PROCESSER =#{userLoginId}
+	</if>
+		
+	<if test="orgId != null and orgId != '' " >
+			AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	<!-- 以下是 查询筛选条件  -->	
+	<!-- 营业部以下级别只能查看自己的单子 -->
+	<if test="roleLever != null and roleLever!=''">
+		<!-- 营业部以下级别只能查看自己的单子 -->
+		<if test="roleLever ==0">
+			<if test="customerManager != null and customerManager != ''" >
+				    and a.customer_manager =  #{customerManager}
+			</if>
+		</if>
+	</if>
+	<if test="appId!=null and appId!=''">
+		AND a.APP_ID = #{appId}
+	</if>
+	
+	<if test="name!=null and name!=''">
+		AND a.NAME = #{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	
+	<if test="product!=null and product!=''">
+		AND a.product = #{product}
+	</if>
+	
+	<if test="mobile!=null and mobile!=''">
+		AND a.mobile =#{mobile}
+	</if>
+	
+	<if test="amountMin!=null and amountMin!=''">
+		<![CDATA[
+			AND a.amount >= #{amountMin}
+		]]>
+	</if>
+	
+	<if test="amountMax!=null and amountMax!=''">
+		<![CDATA[
+			AND a.amount < #{amountMax}
+		]]>
+	</if>
+	
+	<if test="createTimeMin!=null and createTimeMin!=''">
+		<![CDATA[
+			AND a.CREATE_TIME >= #{createTimeMin}
+		]]>
+	</if>
+	
+	<if test="createTimeMax!=null and createTimeMax!=''">
+		<![CDATA[
+			AND a.CREATE_TIME < #{createTimeMax}
+		]]>
+	</if>
+	
+</select>
+ 
+ <!-- 流程 列表查询-->
+<select id="queryBpmLendAppList" resultMap="ResultMap"  parameterType="map">
+	SELECT 
+     a.ID, 
+	a.APP_ID, 
+	a.CUSTOMER_NO, 
+	a.CUSTOMER_TYPE, 
+	a.CUSTOMER_LEVER, 
+	a.NAME, 
+	a.MOBILE, 
+	a.PHONE, 
+	a.ID_TYPE, 
+	a.ID_NO, 
+	a.CFO_NAME, 
+	a.PRODUCT, 
+	a.SERVICE_END_DATE, 
+	a.APP_TYPE, 
+	a.AMOUNT, 
+	a.LEND_ACC_NAME, 
+	a.LEND_ACC_BANK, 
+	a.LEND_ACCOUNT, 
+	a.REPAY_ACC_NAME, 
+	a.REPAY_ACC_BANK, 
+	a.REPAY_ACCOUNT, 
+	a.MATCH_TYPE, 	
+	a.CUSTOMER_MANAGER,
+	a.OPERATOR, 
+	a.ORG_ID, 
+	a.CREATE_TIME, 
+	a.UPDATE_TIME, 
+	a.STATE,
+	a.CONTRACT_NO,
+	a.STAFF_NO,
+	a.BANK_PROVINCE,
+	a.BANK_CITY,
+	a.BANK_COUNTY,
+	a.BANK_NAME,
+	a.BANK_CODE,
+	b.STATE taskState
+    FROM  T_LEND_APP a, t_bpm_task b 
+	WHERE a.APP_ID = b.BIZ_KEY 
+	<if test="states != null and states != '' " >
+		AND a.STATE in
+		<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="bpmStates != null and bpmStates != '' " >
+		AND b.STATE in
+		<foreach item="item" index="index" collection="bpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="nonBpmStates != null and nonBpmStates != '' " >
+		AND b.STATE not in
+		<foreach item="item" index="index" collection="nonBpmStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="userLoginId != null and userLoginId != '' " >
+		AND b.PROCESSER =#{userLoginId}
+	</if>
+	
+	<if test="orgId != null and orgId != '' " >
+			AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	<!-- 以下是 查询筛选条件  -->	
+	<!-- 营业部以下级别只能查看自己的单子 -->
+	<if test="roleLever != null and roleLever!=''">
+		<!-- 营业部以下级别只能查看自己的单子 -->
+		<if test="roleLever ==0">
+			<if test="customerManager != null and customerManager != ''" >
+				    and a.customer_manager =  #{customerManager}
+			</if>
+		</if>
+	</if>
+	
+	<if test="appId!=null and appId!=''">
+		AND a.APP_ID = #{appId}
+	</if>
+	
+	<if test="name!=null and name!=''">
+		AND a.NAME = #{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	
+	<if test="product!=null and product!=''">
+		AND a.product = #{product}
+	</if>
+	
+	<if test="mobile!=null and mobile!=''">
+		AND a.mobile =#{mobile}
+	</if>
+	
+	<if test="amountMin!=null and amountMin!=''">
+		<![CDATA[
+			AND a.amount >= #{amountMin}
+		]]>
+	</if>
+	
+	<if test="amountMax!=null and amountMax!=''">
+		<![CDATA[
+			AND a.amount < #{amountMax}
+		]]>
+	</if>
+	
+	<if test="createTimeMin!=null and createTimeMin!=''">
+		<![CDATA[
+			AND a.CREATE_TIME >= #{createTimeMin}
+		]]>
+	</if>
+	
+	<if test="createTimeMax!=null and createTimeMax!=''">
+		<![CDATA[
+			AND a.CREATE_TIME < #{createTimeMax}
+		]]>
+	</if>
+	
+	
+	<if test="rowS != null and rowE != null " >
+      	limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	<!-- 根据合同号查询出借信息 -->
+<select id="getLendListByContractNo"  resultMap="ResultMap" parameterType="Object">
+SELECT  distinct C.NAME,
+C.ID_NO,
+ b.lend_amount as amount,
+concat(d.ADD_PROVINCE,d.ADD_CITY,d.ADD_COUNTY,d.ADDRESS) address FROM
+T_CONTRACT a, T_MATCH_RESULT b, T_LEND_APP c,T_CUSTOMER d
+WHERE a.CONTRACT_NO =  #{contractNo}
+AND a.LOAN_APP_ID = b.LOAN_APP_ID
+AND b.LEND_APP_ID = c.APP_ID
+AND c.ID_TYPE = d.ID_TYPE
+AND c.ID_NO=d.ID_NO
+AND c.NAME=d.NAME
+</select>
+  	<!-- 根据appid查询出借包括产品期限等支付详细信息页面需要！ -->
+<select id="getLendListByAppId"  resultMap="ResultMap" parameterType="Object">
+SELECT  
+a.*,
+b.period as period,
+b.interest_rate as interest_rate
+ FROM
+ T_LEND_APP a,T_product b
+WHERE a.app_id =  #{appId}
+AND a.product= b.name
+</select>
+
+
+<!-- 查询可撤资的列表 	-->
+<select id="queryDivestList" resultMap="ResultMap"  parameterType="map">
+   SELECT    
+	a.APP_ID,
+	a.CUSTOMER_TYPE,
+	a.NAME,
+	a.ID_NO,
+	a.OPERATOR,
+	a.AMOUNT,
+	a.PRODUCT,
+	a.SERVICE_END_DATE,
+	a.ORG_ID,
+	a.CONTRACT_NO,
+	a.STAFF_NO,
+	a.BANK_PROVINCE,
+	a.BANK_CITY,
+	a.BANK_COUNTY,
+	a.BANK_NAME,
+	a.BANK_CODE,
+	b.state as state,
+	a.id 
+   FROM  T_LEND_APP a, t_LEND_2MATCH b 
+	WHERE a.APP_ID = b.LEND_APP_ID
+	and a.state='1'
+	<if test="state != null and state != '' " >
+		AND b.STATE in
+		<foreach item="item" index="index" collection="state" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="orgId != null and orgId != '' " >
+		AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+		
+	<!-- 以下是 查询筛选条件  -->
+	<if test="name != null and name != ''" >
+		    and a.name =  #{name}
+	</if>
+	<if test="idNo != null and idNo != ''" >
+		    and a.ID_NO =  #{idNo}
+	</if>
+	<if test="customerType != null and customerType != ''" >
+		    and a.CUSTOMER_TYPE =  #{customerType}
+	</if>
+	<if test="appId != null and appId != ''" >
+		    and b.lend_app_id =  #{appId}
+	</if>
+	
+	<if test="rowS != null and rowE != null " >
+      	limit #{rowS} , #{rowE}
+    </if>
+</select>
+  <!-- 查询可撤资的列表数目 	-->
+<select id="queryDivestCount" resultType="java.lang.Integer"  parameterType="map">
+   SELECT   count(1) 
+   FROM  T_LEND_APP a, t_LEND_2MATCH b 
+	WHERE a.APP_ID = b.LEND_APP_ID
+	and a.state='1'
+	<if test="state != null and state != '' " >
+		AND b.STATE in
+		<foreach item="item" index="index" collection="state" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="orgId != null and orgId != '' " >
+		AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+		
+	<!-- 以下是 查询筛选条件  -->
+<if test="name != null and name != ''" >
+	    and a.name =  #{name}
+</if>
+<if test="idNo != null and idNo != ''" >
+	    and a.ID_NO =  #{idNo}
+</if>
+<if test="customerType != null and customerType != ''" >
+	    and a.CUSTOMER_TYPE =  #{customerType}
+</if>
+<if test="appId != null and appId != ''" >
+	    and b.lend_app_id =  #{appId}
+</if>
+	<if test="rowS != null and rowE != null " >
+      	limit #{rowS} , #{rowE}
+    </if>
+</select>	
+
+</mapper>   

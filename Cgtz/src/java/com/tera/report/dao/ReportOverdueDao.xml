@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.report.dao.ReportOverdueDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.report.model.ReportOverdue" >
+
+	<result column="id" property="id"/>
+	<result column="org_id" property="orgId"/>
+	<result column="org_name" property="orgName"/>
+	<result column="deal_num" property="dealNum"/>
+	<result column="proj_num" property="projNum"/>
+	<result column="overdue_amt" property="overdueAmt"/>
+	<result column="prin_rate" property="prinRate"/>
+	<result column="amt_14" property="amt_14"/>
+	<result column="rate_14" property="rate_14"/>
+	<result column="amt_30" property="amt_30"/>
+	<result column="rate_30" property="rate_30"/>
+	<result column="amt_90" property="amt_90"/>
+	<result column="rate_90" property="rate_90"/>
+	<result column="amt_180" property="amt_180"/>
+	<result column="rate_180" property="rate_180"/>
+	<result column="amt_more" property="amtMore"/>
+	<result column="rate_more" property="rateMore"/>
+	<result column="loan_amt" property="loanAmt"/>
+	<result column="create_date" property="createDate"/>
+	
+</resultMap>
+       
+<!-- T_COLLATERAL table all fields -->
+<sql id="Column_List" >
+	s.org_id,
+	s. TYPE,
+	s.DEAL_NUM,
+	s.PROJ_NUM,
+	s.OVERDUE_AMT,
+	s.PRIN_RATE,
+	s.AMT_14,
+	s.RATE_14,
+	s.AMT_30,
+	s.RATE_30,
+	s.AMT_90,
+	s.RATE_90,
+	s.AMT_180,
+	s.RATE_180,
+	s.AMT_MORE,
+	s.RATE_MORE,
+	s.LOAN_AMT,
+	s.CREATE_DATE,
+	(
+		SELECT
+			org.ORG_NAME
+		FROM
+			t_org org
+		WHERE
+			ORG.ORG_ID = s.ORG_ID
+	) org_name
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="orgId != null and orgId != ''" >
+	    and s.org_id like CONCAT(#{orgId},'%') 
+	</if>
+<if test="createDate != null and createDate != ''" >
+        and s.create_date=#{createDate}
+    </if>
+<!--机构权限限制  -->
+<if test="orgs != null and orgs.size() >0 " >
+and s.org_id in
+                <foreach item="item" index="index" collection="orgs" open="(" separator="," close=")">
+						#{item}
+				</foreach>	
+	</if>    	
+</trim>
+</sql>
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+   <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_WAREHOUSE_SEQ') From dual -->
+			Select T_REPORT_OVERDUE_SEQ.Nextval From Dual
+  </selectKey>
+ insert into T_REPORT_OVERDUE_STATISTICS(id,org_id,TYPE,DEAL_NUM,PROJ_NUM,OVERDUE_AMT,PRIN_RATE,AMT_14,RATE_14,AMT_30,RATE_30,AMT_90,RATE_90,AMT_180,RATE_180,AMT_MORE,RATE_MORE,LOAN_AMT,CREATE_DATE)
+ values( #{id, jdbcType=INTEGER},#{orgId, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{dealNum, jdbcType=INTEGER},#{projNum, jdbcType=INTEGER},#{overdueAmt, jdbcType=DOUBLE},#{prinRate, jdbcType=DOUBLE},#{amt_14, jdbcType=DOUBLE},#{rate_14, jdbcType=DOUBLE},#{amt_30, jdbcType=DOUBLE},#{rate_30, jdbcType=DOUBLE},#{amt_90, jdbcType=DOUBLE},#{rate_90, jdbcType=DOUBLE},#{amt_180, jdbcType=DOUBLE},#{rate_180, jdbcType=DOUBLE},#{amtMore, jdbcType=DOUBLE},#{rateMore, jdbcType=DOUBLE},#{loanAmt, jdbcType=DOUBLE},#{createDate, jdbcType=DATE})
+</insert>
+
+<!--统计出当天数据里列表，用于插入数据库-->
+<select id="queryOverdueStatics" resultMap="ResultMap"  parameterType="map">
+	SELECT
+	CON.ORG orgId,
+	con.OVERDUE_TYPE type,
+	SUM (con.num) dealNum,
+	COUNT (CON.CONTRACT_ID) projNum,
+	SUM (CON.LOAN_AMT) loanAmt,
+	case when CON.OVERDUE_TYPE='1' then
+	SUM (
+		NEWPLAN.PLAN_INTEREST - NEWPLAN.REAL_INTEREST
+	)
+    when CON.OVERDUE_TYPE='2' then
+	SUM (
+		NEWPLAN.PLAN_CAPITAL - NEWPLAN.REAL_CAPITAL
+	) else 0 end overdueAmt,
+	SUM (
+		CASE 
+		WHEN TRUNC (SYSDATE - NEWPLAN.RET_DATE) &gt; 0
+		AND TRUNC (SYSDATE - NEWPLAN.RET_DATE) &lt;= 14 THEN newplan.plan_interest-newplan.real_interest+NEWPLAN.PLAN_CAPITAL-NEWPLAN.REAL_CAPITAL
+		ELSE
+			0
+		END
+	)amt_14,
+SUM (
+		CASE 
+		WHEN TRUNC (SYSDATE - NEWPLAN.RET_DATE) &gt; 14
+		AND TRUNC (SYSDATE - NEWPLAN.RET_DATE) &lt;=30 THEN newplan.plan_interest-newplan.real_interest+NEWPLAN.PLAN_CAPITAL-NEWPLAN.REAL_CAPITAL
+		ELSE
+			0
+		END
+	)amt_30,
+SUM (
+		CASE 
+		WHEN TRUNC (SYSDATE - NEWPLAN.RET_DATE) &gt; 30
+		AND TRUNC (SYSDATE - NEWPLAN.RET_DATE) &lt;= 90 THEN newplan.plan_interest-newplan.real_interest+NEWPLAN.PLAN_CAPITAL-NEWPLAN.REAL_CAPITAL
+		ELSE
+			0
+		END
+	)amt_90,
+SUM (
+		CASE 
+		WHEN TRUNC (SYSDATE - NEWPLAN.RET_DATE) &gt; 90
+		AND TRUNC (SYSDATE - NEWPLAN.RET_DATE) &lt;= 180 THEN newplan.plan_interest-newplan.real_interest+NEWPLAN.PLAN_CAPITAL-NEWPLAN.REAL_CAPITAL
+		ELSE
+			0
+		END
+	)amt_180,
+SUM (
+		CASE 
+		WHEN TRUNC (SYSDATE - NEWPLAN.RET_DATE) &gt; 180
+		THEN newplan.plan_interest-newplan.real_interest+NEWPLAN.PLAN_CAPITAL-NEWPLAN.REAL_CAPITAL
+		ELSE
+			0
+		END
+	)amtMore
+FROM
+	T_CONTRACT con,
+	T_RET_PLAN newplan
+WHERE
+	CON.CONTRACT_ID = NEWPLAN.CONTRACT_ID
+AND CON.LATE_NUM = NEWPLAN.num
+AND con.state IN ('2', '4')
+AND con.is_late='1'
+AND NEWPLAN.state = '1'
+GROUP BY
+	con.org,
+	con.overdue_type
+</select>
+
+
+<!-- 逾期统计 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from (select 
+	<include refid="Column_List"/>
+	from T_REPORT_OVERDUE_STATISTICS s
+	<include refid="Where_Clause"/> ) 
+</select>
+  	
+<!-- 逾期信息列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_REPORT_OVERDUE_STATISTICS s
+	<include refid="Where_Clause"/>
+</select>
+
+</mapper>   

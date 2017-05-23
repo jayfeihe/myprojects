@@ -1,0 +1,663 @@
+@charset "utf-8";
+/**
+ * @author 廖艳丽（QQ:1079160717）
+ * @description 支付样式
+ */
+body{
+	background: #f1f2f3;
+	color: #303030;
+}
+.header{
+	width: 100%;
+	height: 80px;
+	margin-bottom: 20px;
+	box-shadow: 0 1px 3px #b3b3b3;
+	background: #fff;
+}
+.header-wrap,.content-top,.content{
+	width: 1200px;
+	margin: 0 auto;
+}
+.logo{
+	float: left;
+	padding-left: 40px;
+	padding-top: 20px;
+}
+.logo-text{
+	float: left;
+	padding-top: 30px;
+	padding-left: 20px;
+	font-size: 18px;
+}
+.content-top{
+	text-align: center;
+	font-size: 0;
+}
+.content{
+	background: #fff;
+	padding-bottom: 40px;
+}
+.pay-info{
+	padding-bottom: 5px;
+	background: url(../images/pay-info-bg.png) repeat-x center bottom ;
+}
+.pay-info-wrap{
+	padding: 40px;
+	background: #f9fafb;
+}
+.pay-info-l{
+	float: left;
+	width: 800px;
+}
+.pay-info-r{
+	float: right;
+	text-align: right;
+}
+.pay-info-p{
+	padding: 10px 0;
+}
+.pay-money{
+	color: #ff6600;
+}
+.pay-step-container{
+	padding: 0 20px;
+}
+.pay-step{
+	margin-left: 10px;
+	padding-left: 10px;
+	border-left: 2px dotted #d8d8d8;
+}
+.pay-step-top{
+	width: 100%;
+	height: 30px;
+}
+.pay-step-wrap{
+	border-bottom: 1px dotted #d8d8d8;
+	margin-bottom: 30px;
+	padding-bottom: 40px;
+}
+.pay-step-first .pay-step-wrap{
+	padding-top: 0;
+}
+.pay-step-last .pay-step-wrap{
+	border-bottom: 0;
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+.pay-step-title{
+	height: 28px;
+	line-height: 28px;
+	margin-bottom: 40px;
+}
+.pay-step-icon{
+	display: inline-block;
+	height: 28px;
+	margin-left: -21px;
+	background: url(../images/pay-icon-grey.png) no-repeat left center;
+	padding-left: 48px;
+	color: #fff;
+}
+.pay-step-iconr{
+	display: inline-block;
+	height: 28px;
+	background: url(../images/pay-icon-greyr.png) no-repeat right center;
+	padding-right:15px;
+}
+
+.current-step .pay-step-icon{
+	background: url(../images/pay-icon-green.png) no-repeat left center;
+}
+.current-step .pay-step-iconr{
+	background: url(../images/pay-icon-greenr.png) no-repeat right center;
+}
+.ended-step{
+	border-left: 2px dotted #ff8200;
+}
+.ended-step .pay-step-icon{
+	background: url(../images/pay-icon-orange.png) no-repeat left center;
+}
+.ended-step .pay-step-iconr{
+	background: url(../images/pay-icon-oranger.png) no-repeat right center;
+}
+.pay-step-infol{ 
+	padding: 25px 20px 25px 20px;
+	border-radius: 10px;
+	width:510px;
+	margin-left:18px;
+	float: left;
+	border:1px solid #ccc;
+}
+.pay-step-infol .pay-input-item{
+	padding-bottom: 0;
+}
+.pay-step-infol .input-item-left{
+	padding-left: 26px; 
+}
+.pay-step-infol .input-item-right{
+	width: auto;
+	float: left;
+}
+.pay-input-item{
+	padding-bottom: 20px;
+}
+.input-item-left{
+	float: left;
+	width: 110px;
+	padding-left: 40px;
+	line-height: 38px;
+}
+.input-item-left.lh46{
+	line-height:46px;
+}
+.input-item-left.lh56{
+	line-height:56px;
+}
+.input-item-left em{
+	color: #f63069;
+}
+.input-item-right{
+	width:988px;
+	float: right;
+}
+.input-item-text{
+	line-height: 38px;
+}
+.pay-stages{
+}
+.pay-stages-list{
+	max-width: 830px;
+	float: left;
+}
+.pay-stages ul li{
+	min-width: 180px; 
+	height: 60px;
+	float: left;
+	position: relative;
+	color: #666;
+}
+.pay-stages ul li .pay-stages-li{
+	position: absolute;
+	border: 1px solid #d8d8d8;
+	min-width: 130px; 
+	padding: 15px;
+	text-align: center;
+	cursor: pointer;
+}
+.pay-stages ul li .pay-stages-hover{
+	position:absolute;
+	border:2px solid #d8d8d8;
+	min-width: 158px; 
+	height: 43px;
+	visibility:hidden;
+	cursor:pointer;
+}
+
+.pay-stages-big ul li{
+	min-width: 250px;
+	height:70px;
+}
+.pay-stages-big ul li .pay-stages-li{
+	min-width: 176px;
+	padding: 10px 20px;
+}
+.pay-stages-big ul li .pay-stages-hover{
+	min-width: 214px;
+	height: 53px;
+}
+.pay-stages-hover.add-bank-btn{
+	width: 234px;
+}
+.add-bank-text{
+	display: inline-block;
+	padding: 10px 0;
+}
+.pay-select-mask{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	z-index: 800;
+	background:#000;
+	left:0;
+	top:0;
+	opacity: .3;
+	filter: alpha(opacity=30);
+}
+.pay-select-bank{
+	width: 946px;
+	height: 480px;
+	border: 1px solid #f1f2f3;
+	background: #fff;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin-left: -474px;
+	margin-top: -240px;
+	box-shadow: 0 0 3px #e8e8e8;
+	z-index: 801;
+}
+.dialog-title{
+	background:#ebeef0;
+	padding: 20px;
+	position: relative;
+	margin-bottom: 20px;
+}
+.dialog-btn-area{
+	text-align: center;
+	padding-top: 20px;
+}
+.dialog-close{
+	position: absolute;
+	right: 0;
+	top :0;
+	width: 14px;
+	height: 14px;
+	cursor: pointer;
+	border: 0;
+	background:url(../images/dialog-close.png) no-repeat 0 0;
+}
+.dialog-close:hover{
+	background-position: 0 -14px;
+}
+.pay-bank-title{
+	text-align:center;
+	padding-bottom: 30px;
+	position: relative;
+}
+.pay-agreement-con{
+	width:800px;
+	height: 288px;
+	margin: 0 auto;
+	padding: 10px;
+	overflow-y:scroll;
+	border: 1px solid #e5e5e5;
+	line-height: 25px;
+	background:#f8f9fb;
+}
+.pay-stages ul li:hover .pay-stages-hover,.pay-stages ul li.selected .pay-stages-hover{
+	visibility: visible;
+	-webkit-transition: border 0.3s ease-in-out;
+  -moz-transition: border 0.3s ease-in-out;
+  -ms-transition: border 0.3s ease-in-out;
+  -o-transition: border 0.3s ease-in-out;
+  transition: border 0.3s ease-in-out;
+	border:2px solid #ff8200;
+}
+.pay-stages ul li .icon-stages-selected{
+	visibility: hidden;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 24px;
+	height: 24px;
+	background-position: 0 0;
+}
+.pay-stages ul li.selected .icon-stages-selected{
+	visibility: visible;
+}
+.pay-select-stages{
+	margin-top: 10px;
+}
+.pay-stages-r{
+	float:right;
+	text-align: right;
+	margin-right:20px;
+}
+.pay-stages-p{
+	margin-bottom:5px;
+}
+.pay-btn-area{
+	padding-top: 40px;
+	float: left;
+	width: 100%;
+}
+.pay-payable{
+	line-height: 46px;
+}
+.select-default{
+	min-height: 38px;
+	height: 38px;
+	line-height: 38px;
+	border: 1px solid #ccc;
+	color: #5e5e5e;
+	min-width: 140px;
+	margin-top:0;
+	margin-bottom:0;
+}
+
+.input-default{
+	padding: 9px 10px;
+	height: 18px;
+	line-height: 18px;
+	border: 1px solid #ccc;	
+	width: 268px;
+}
+.input-long{
+	width: 440px;
+}
+.input-short{
+	width: 143px;
+	float: left;
+}
+#get_code{
+	float: left;
+}
+.pay-update{
+	cursor: pointer;
+	float: right;
+	margin-right: 20px;
+}
+.pay-update:hover{
+	color: #ff6600;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+.icon-update{
+	width: 23px;
+	height: 23px;
+	background-position: -27px 0;
+}
+.pay-bank{
+	width: 852px;	
+	margin: 0 auto;
+}
+.pay-bank-prev,.pay-bank-next{
+	width: 55px;
+	float: left;
+	padding-top: 130px;
+}
+.prev-btn{
+	width: 25px;
+	height: 50px;
+	background-position: 0 -30px;
+	float: left;
+	cursor: pointer;
+}
+.next-btn{
+	width: 25px;
+	height: 50px;
+	background-position: -25px -30px;
+	float: right;
+	cursor: pointer;
+}
+.pay-bank-list{
+	float:left;
+	width: 740px;
+	padding-top: 20px;
+	border: 1px solid #ccc;
+	height: 288px;
+}
+.pay-bank-list .pay-stages-big {
+	margin-left: 20px;
+	height: 280px;
+	overflow: hidden;
+	width: 725px;
+}
+.pay-bank-list .pay-stages-big ul li{
+	margin-right:0;
+	min-width: 240px;
+	height: 70px;
+}
+.pay-bank-num{
+	text-align: center;
+	padding: 15px 0;
+}
+.pay-select-btn{
+	line-height: 56px;
+}
+.pay-select-btn a{
+	cursor:pointer;
+}
+.bank-logo{
+	width:126px;
+	display: inline-block; 
+	height: 33px;
+}
+.ABC {background-position: 0 0;}/*中国农业银行*/
+.BCCB{background-position:0px -252px; }/*北京银行*/
+.BOS{background-position: 0px -4392px;}/*上海银行*/
+.BJRCB {background-position:0px -288px;}/*北京农商*/
+.BOC {background-position: 0px -324px;}/*中国银行*/
+.CCB{background-position:0px -864px;}/*中国建设银行*/
+.CEB {background-position:0px -1044px;}/*光大*/
+.CGB{background-position: 0px -1980px;}/*广发*/
+.CIB {background-position: 0px -1116px;}/*兴业银行*/
+.CITIC {background-position: 0px -1152px;}/*中信银行*/
+.CMB {background-position: 0px -1188px;}/*招商银行*/
+.CMBC {background-position: 0px -1224px;}/*民生银行*/
+.COMM {background-position:0px -1260px;}/*交通银行*/
+.HXB{background-position: 0px -2844px;}/*华夏银行*/
+.ICBC {background-position:0px -2952px;}/*工商*/
+.PSBC {background-position:0px -4140px;}/*邮储银行*/
+.SHRCB {background-position: 0px -4428px;}/*上海农商*/
+.SPDB {background-position:0px -4536px;}/*浦发银行*/
+.SZPAB{background-position: 0px -4500px;}/*平安银行*/
+.UPOP{background-position: 0px -5832px;}/*UPOP银联在线*/
+.NBYH{background-position:0px -3818px; }/*宁波银行*/
+.HSYH{background-position:0px -2740px; }/*徽商银行*/
+.LZYH{background-position:0px -3748px; }/*兰州银行*/
+.QDYH{background-position:0px -4178px; }/*青岛银行*/
+.HBYH{background-position:0px -216px; }/*河北银行*/
+.TJYH{background-position:0px -4789px; }/*天津银行*/
+.hide{
+	display:none;
+}
+.selected-bank-card{
+	padding: 20px;
+	border:1px solid #ccc;
+	border-radius: 10px;
+	float: left;
+	min-width: 300px;
+}
+.selected-bank{
+	padding-bottom:15px;
+}
+.selected-bank .bank-logo{
+	float: left;
+}
+.slected-bank-info{
+	padding: 10px 0;
+}
+.repayment-step{
+	width:954px;
+	margin: 0 auto;
+	background: url(../images/repayment-step-bg.png) no-repeat center top;
+	padding-top: 30px;
+	position: relative;
+	height: 50px;
+}
+.repayment-step-item{
+	width: 25%;
+	float: left;
+	text-align: center;
+}
+.repayment-step-info{
+	position:absolute;
+	width: 1230px;
+	left:50%;
+	margin-left: -615px;
+	
+}
+.repayment-step-label{
+	color: #ff8200;
+	font-size: 16px;
+}
+.repayment-step-text{
+	padding: 10px 0;
+}
+.pay-result{
+	padding: 40px 58px;
+	text-align: center;
+}
+.pay-remind{
+	padding: 10px 0;
+	font-size:18px;
+}
+.pay-success-icon{
+	width: 32px;
+	height: 32px;
+	background-position: -1px -81px;
+	margin-right:10px;
+}
+.pay-success-remind{
+	font-size: 24px;
+	color: #f57638;
+}
+.pay-fail-icon{
+	width: 380px;
+	height: 144px;
+	background-position: -54px 0;
+}
+.pay-result-btn{
+	padding: 60px 0;
+}
+.pay-result-notice{
+	padding:0 58px;
+	font-size:12px;
+	color: #666;
+}
+.pay-p-icon{
+	width: 4px;
+	height: 4px;
+	float: left;
+	background-position: 0 -118px;
+	margin: 5px 10px 0 10px;
+}
+.pay-result-p{
+	padding-bottom: 15px;
+}
+.footer-info{
+	width: 1200px;
+	margin: 0 auto;
+	padding-top:20px;
+}
+.footer-customer{
+	padding: 5px 0;
+	padding-left: 68px;
+	background: url(../images/logo-second.png) no-repeat left center;
+	float: right;
+}
+.footer-workttime{
+	padding: 5px 0;
+	padding-left: 33px;
+	background: url(../images/footer-workttime.png) no-repeat left center;
+	float: right;
+	margin-left: 40px;
+}
+.footer-info-red{
+	font-size: 18px;
+	font-weight: bold;
+	color: #f4064a;
+}
+.footer-info-blue{
+	font-size: 18px;
+	font-weight: bold;
+	color: #0594c1;
+}
+.footer{
+	width: 1200px;
+	margin: 40px auto 0 auto;
+	padding-top:30px;
+	height:80px;
+	border-top: 1px solid #ddd;
+	font-size:12px;
+}
+.footer-text{
+	text-align: center;
+}
+
+/*! nice Validator 0.7.3
+ * (c) 2012-2014 Jony Zhang <zj86@live.cn>, MIT Licensed
+ * http://niceue.com/validator/
+ */
+.n-inline-block,.nice-validator input,.nice-validator select,.nice-validator textarea,.msg-wrap,.n-icon,.n-msg{display:inline-block;*display:inline;*zoom:1}
+.msg-box{position:relative;*zoom:1}
+.msg-wrap{position:relative;white-space:nowrap}
+.msg-wrap,.n-icon,.n-msg{vertical-align:top}
+.n-arrow{position:absolute;overflow:hidden;}
+.n-arrow b,.n-arrow i{position:absolute;left:0;top:0;border:0;margin:0;padding:0;overflow:hidden;font-weight:400;font-style:normal;font-size:12px;font-family:serif;line-height:14px;_line-height:15px}
+.n-arrow i{text-shadow:none}
+.n-icon{width:16px;height:16px;overflow:hidden;background-repeat:no-repeat}
+.n-msg{display:inline-block;line-height:15px;margin-left:2px;*margin-top:-1px;_margin-top:0;font-size:12px;font-family:simsun}
+.n-error{color:#c33}
+.n-ok{color:#390}
+.n-tip,.n-loading{color:#808080}
+.n-error .n-icon{background-position:0 0}
+.n-ok .n-icon{background-position:-16px 0}
+.n-tip .n-icon{background-position:-32px 0}
+.n-loading .n-icon{background:url("images/loading.gif") 0 center no-repeat !important}
+.n-top,.n-right,.n-bottom,.n-left{display:inline-block;line-height:0;vertical-align:top;outline:0}
+.n-top .n-arrow,.n-bottom .n-arrow{height:6px;width:12px;left:8px}
+.n-left .n-arrow,.n-right .n-arrow{width:6px;height:12px;top:6px}
+.n-top{vertical-align:top;}
+.n-top .msg-wrap{margin-bottom:6px}
+.n-top .n-arrow{bottom:-6px;}
+.n-top .n-arrow b{top:-6px}
+.n-top .n-arrow i{top:-7px}
+.n-bottom{vertical-align:bottom;}
+.n-bottom .msg-wrap{margin-top:6px}
+.n-bottom .n-arrow{top:-6px;}
+.n-bottom .n-arrow b{top:-1px}
+.n-bottom .n-arrow i{top:0}
+.n-left .msg-wrap{right:100%;margin-right:6px}
+.n-left .n-arrow{right:-6px;}
+.n-left .n-arrow b{left:-6px}
+.n-left .n-arrow i{left:-7px}
+.n-right .msg-wrap{margin-left:6px}
+.n-right .n-arrow{left:-6px;}
+.n-right .n-arrow b{left:1px}
+.n-right .n-arrow i{left:2px}
+.n-default .n-left,.n-default .n-right{margin-top:5px}
+.n-default .n-top .msg-wrap{bottom:100%}
+.n-default .n-bottom .msg-wrap{top:100%}
+.n-default .msg-wrap{position:absolute;z-index:1;margin-top:7px;}
+.n-default .msg-wrap .n-icon{background-image:url("../images/validator_default.png")}
+.n-default .n-tip .n-icon{display:none}
+.n-simple .msg-wrap{position:absolute;z-index:1;}
+.n-simple .msg-wrap .n-icon{background-image:url("../images/validator_simple.png")}
+.n-simple .n-top .msg-wrap{bottom:100%}
+.n-simple .n-bottom .msg-wrap{top:100%}
+.n-simple .n-left,.n-simple .n-right{margin-top:5px}
+.n-simple .n-bottom .msg-wrap{margin-top:3px}
+.n-simple .n-tip .n-icon{display:none}
+.n-yellow .msg-wrap{position:absolute;z-index:1;padding:4px 6px;font-size:12px;border:1px solid transparent;background-color:#fffcef;border-color:#ffbb76;color:#db7c22;box-shadow:0 1px 3px #ccc;border-radius:2px;}
+.n-yellow .msg-wrap .n-arrow b{color:#ffbb76;text-shadow:0 0 2px #ccc}
+.n-yellow .msg-wrap .n-arrow i{color:#fffcef}
+.n-yellow .msg-wrap .n-icon{background-image:url("../images/validator_simple.png")}
+.n-yellow .n-top .msg-wrap{bottom:100%}
+.n-yellow .n-bottom .msg-wrap{top:100%}
+.n-yellow .n-tip,.n-yellow .n-ok,.n-yellow .n-loading{background-color:#f8fdff;border-color:#ddd;color:#333;box-shadow:0 1px 3px #ccc;}
+.n-yellow .n-tip .n-arrow b,.n-yellow .n-ok .n-arrow b,.n-yellow .n-loading .n-arrow b{color:#ddd;text-shadow:0 0 2px #ccc}
+.n-yellow .n-tip .n-arrow i,.n-yellow .n-ok .n-arrow i,.n-yellow .n-loading .n-arrow i{color:#f8fdff}
+.n-yellow .n-tip .n-icon{display:none}
+
+.contain-error-info .msg-wrap{ margin-top:14px;}
+.error-info{color:#c33;margin-left:10px;}
+.pay-info-item1{float: left;width:280px;}
+.pay-info-item2{float: left;width:500px;height: 14px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;}
+
+.dialog-title{
+	background:#ebeef0;
+	padding: 20px;
+	position: relative;
+	margin-bottom: 20px;
+}
+.dialog-close{
+	position: absolute;
+	right: 20px;
+	top :20px;
+	width: 14px;
+	height: 14px;
+	cursor: pointer;
+	border: 0;
+	background:url(../images/dialog-close.png) no-repeat 0 0;
+}
+.dialog-close:hover{
+	background-position: 0 -14px;
+}
+.btn{
+	border: 1px solid #ff8200;
+	color:#ff8200;
+}

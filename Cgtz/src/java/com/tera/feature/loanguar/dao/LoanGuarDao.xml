@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.loanguar.dao.LoanGuarDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.loanguar.model.LoanGuar" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="loan_id" property="loanId"/><!-- 申请ID -->
+	<result column="type" property="type"/><!-- 类型(个人，机构) -->
+	<result column="name" property="name"/><!-- 姓名、机构名称 -->
+	<result column="sex" property="sex"/><!-- 性别 -->
+	<result column="id_type" property="idType"/><!-- 证件类型 -->
+	<result column="valid_type" property="validType"/><!-- 有效期 -->
+	<result column="id_no" property="idNo"/><!-- 证件号码 -->
+	<result column="tel" property="tel"/><!-- 手机号 -->
+	<result column="tel2" property="tel2"/><!-- 备用手机号 -->
+	<result column="marriage" property="marriage"/><!-- 婚姻状况 -->
+	<result column="edu" property="edu"/><!-- 学历 -->
+	<result column="home_prvn" property="homePrvn"/><!-- 户籍、注册所在省 -->
+	<result column="home_city" property="homeCity"/><!-- 户籍，注册所在市 -->
+	<result column="home_ctry" property="homeCtry"/><!-- 户籍，注册所在县 -->
+	<result column="home_addr" property="homeAddr"/><!-- 户籍，注册地址 -->
+	<result column="now_prvn" property="nowPrvn"/><!-- 现居地，经营所在省 -->
+	<result column="now_city" property="nowCity"/><!-- 现居地，经营所在市 -->
+	<result column="now_ctry" property="nowCtry"/><!-- 现居地，经营所在县 -->
+	<result column="now_addr" property="nowAddr"/><!-- 现居地，经营地址 -->
+	<result column="org_reg_time" property="orgRegTime"/><!-- 机构注册时间 -->
+	<result column="org_reg_amt" property="orgRegAmt"/><!-- 机构注册资本 -->
+	<result column="legal_name" property="legalName"/><!-- 法人姓名 -->
+	<result column="legal_tel" property="legalTel"/><!-- 法人手机号 -->
+	<result column="legal_id_type" property="legalIdType"/><!-- 法人证件类型 -->
+	<result column="legal_id_no" property="legalIdNo"/><!-- 法人证件号码 -->
+	<result column="share_name" property="shareName"/><!-- 股东姓名 -->
+	<result column="share_tel" property="shareTel"/><!-- 股东手机号 -->
+	<result column="share_id_type" property="shareIdType"/><!-- 股东证件类型 -->
+	<result column="share_id_no" property="shareIdNo"/><!-- 股东证件号码 -->
+	<result column="org_bus" property="orgBus"/><!-- 机构经营范围 -->
+	<result column="sale_remark" property="saleRemark"/><!-- 业务员备注 -->
+	<result column="law_state" property="lawState"/><!-- 诉讼情况 -->
+	<result column="law_remark" property="lawRemark"/><!-- 诉讼说明 -->
+	<result column="law_check_state" property="lawCheckState"/><!-- 诉讼复核 -->
+	<result column="law_check_remark" property="lawCheckRemark"/><!-- 诉讼复核说明 -->
+	<result column="create_uid" property="createUid"/><!--  -->
+	<result column="create_time" property="createTime"/><!--  -->
+	<result column="update_uid" property="updateUid"/><!--  -->
+	<result column="update_time" property="updateTime"/><!--  -->
+	<result column="create_name" property="createName"/><!--创建人  -->
+	<result column="update_name" property="updateName"/><!--修改人  -->
+	
+	<result column="isOrig" property="isOrig"/><!-- 是否是原先申请  -->
+</resultMap>
+       
+<!-- T_LOAN_GUAR table all fields -->
+<sql id="Column_List" >
+	 id,loan_id,type,name,sex,id_type,valid_type,id_no,tel,tel2,marriage,edu,home_prvn,home_city,home_ctry,home_addr,now_prvn,now_city,now_ctry,now_addr,org_reg_time,org_reg_amt,legal_name,legal_tel,legal_id_type,legal_id_no,share_name,share_tel,share_id_type,share_id_no,org_bus,sale_remark,law_state,law_remark,law_check_state,law_check_remark,create_uid,create_time,update_uid,update_time,
+	 (select t_user.name from t_user where t_user.login_id=t_loan_guar.create_uid)create_name,
+	 (select t_user.name from t_user where t_user.login_id=t_loan_guar.update_uid)update_name
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="loanId != null" >
+	    and loan_id =  #{loanId}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="sex != null and sex != ''" >
+	    and sex =  #{sex}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="validType != null and validType != ''" >
+	    and valid_type =  #{validType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="tel != null and tel != ''" >
+	    and tel =  #{tel}
+	</if>
+<if test="tel2 != null and tel2 != ''" >
+	    and tel2 =  #{tel2}
+	</if>
+<if test="marriage != null and marriage != ''" >
+	    and marriage =  #{marriage}
+	</if>
+<if test="edu != null and edu != ''" >
+	    and edu =  #{edu}
+	</if>
+<if test="homePrvn != null and homePrvn != ''" >
+	    and home_prvn =  #{homePrvn}
+	</if>
+<if test="homeCity != null and homeCity != ''" >
+	    and home_city =  #{homeCity}
+	</if>
+<if test="homeCtry != null and homeCtry != ''" >
+	    and home_ctry =  #{homeCtry}
+	</if>
+<if test="homeAddr != null and homeAddr != ''" >
+	    and home_addr =  #{homeAddr}
+	</if>
+<if test="nowPrvn != null and nowPrvn != ''" >
+	    and now_prvn =  #{nowPrvn}
+	</if>
+<if test="nowCity != null and nowCity != ''" >
+	    and now_city =  #{nowCity}
+	</if>
+<if test="nowCtry != null and nowCtry != ''" >
+	    and now_ctry =  #{nowCtry}
+	</if>
+<if test="nowAddr != null and nowAddr != ''" >
+	    and now_addr =  #{nowAddr}
+	</if>
+<if test="orgRegTime != null and orgRegTime != ''" >
+	    and org_reg_time =  #{orgRegTime}
+	</if>
+<if test="orgRegAmt != null and orgRegAmt != ''" >
+	    and org_reg_amt =  #{orgRegAmt}
+	</if>
+<if test="legalName != null and legalName != ''" >
+	    and legal_name =  #{legalName}
+	</if>
+<if test="legalTel != null and legalTel != ''" >
+	    and legal_tel =  #{legalTel}
+	</if>
+<if test="legalIdType != null and legalIdType != ''" >
+	    and legal_id_type =  #{legalIdType}
+	</if>
+<if test="legalIdNo != null and legalIdNo != ''" >
+	    and legal_id_no =  #{legalIdNo}
+	</if>
+<if test="shareName != null and shareName != ''" >
+	    and share_name =  #{shareName}
+	</if>
+<if test="shareTel != null and shareTel != ''" >
+	    and share_tel =  #{shareTel}
+	</if>
+<if test="shareIdType != null and shareIdType != ''" >
+	    and share_id_type =  #{shareIdType}
+	</if>
+<if test="shareIdNo != null and shareIdNo != ''" >
+	    and share_id_no =  #{shareIdNo}
+	</if>
+<if test="orgBus != null and orgBus != ''" >
+	    and org_bus =  #{orgBus}
+	</if>
+<if test="saleRemark != null and saleRemark != ''" >
+	    and sale_remark =  #{saleRemark}
+	</if>
+<if test="lawState != null and lawState != ''" >
+	    and law_state =  #{lawState}
+	</if>
+<if test="lawRemark != null and lawRemark != ''" >
+	    and law_remark =  #{lawRemark}
+	</if>
+<if test="lawCheckState != null and lawCheckState != ''" >
+	    and law_check_state =  #{lawCheckState}
+	</if>
+<if test="lawCheckRemark != null and lawCheckRemark != ''" >
+	    and law_check_remark =  #{lawCheckRemark}
+	</if>
+<if test="createUid != null and createUid != ''" >
+	    and create_uid =  #{createUid}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateUid != null and updateUid != ''" >
+	    and update_uid =  #{updateUid}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_LOAN_GUAR_SEQ') From dual -->
+			Select T_LEND_USER_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_LOAN_GUAR(id,loan_id,type,name,sex,id_type,valid_type,id_no,tel,tel2,marriage,edu,home_prvn,home_city,home_ctry,home_addr,now_prvn,now_city,now_ctry,now_addr,org_reg_time,org_reg_amt,legal_name,legal_tel,legal_id_type,legal_id_no,share_name,share_tel,share_id_type,share_id_no,org_bus,sale_remark,law_state,law_remark,law_check_state,law_check_remark,create_uid,create_time,update_uid,update_time)
+ values( #{id, jdbcType=INTEGER},#{loanId, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},#{sex, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{validType, jdbcType=DATE},#{idNo, jdbcType=VARCHAR},#{tel, jdbcType=VARCHAR},#{tel2, jdbcType=VARCHAR},#{marriage, jdbcType=VARCHAR},#{edu, jdbcType=VARCHAR},#{homePrvn, jdbcType=VARCHAR},#{homeCity, jdbcType=VARCHAR},#{homeCtry, jdbcType=VARCHAR},#{homeAddr, jdbcType=VARCHAR},#{nowPrvn, jdbcType=VARCHAR},#{nowCity, jdbcType=VARCHAR},#{nowCtry, jdbcType=VARCHAR},#{nowAddr, jdbcType=VARCHAR},#{orgRegTime, jdbcType=DATE},#{orgRegAmt, jdbcType=DOUBLE},#{legalName, jdbcType=VARCHAR},#{legalTel, jdbcType=VARCHAR},#{legalIdType, jdbcType=VARCHAR},#{legalIdNo, jdbcType=VARCHAR},#{shareName, jdbcType=VARCHAR},#{shareTel, jdbcType=VARCHAR},#{shareIdType, jdbcType=VARCHAR},#{shareIdNo, jdbcType=VARCHAR},#{orgBus, jdbcType=VARCHAR},#{saleRemark, jdbcType=VARCHAR},#{lawState, jdbcType=VARCHAR},#{lawRemark, jdbcType=VARCHAR},#{lawCheckState, jdbcType=VARCHAR},#{lawCheckRemark, jdbcType=VARCHAR},#{createUid, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateUid, jdbcType=VARCHAR},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_LOAN_GUAR set 
+	<trim  suffixOverrides="," >
+	id =  #{id, jdbcType=INTEGER},
+	loan_id =  #{loanId, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	name =  #{name, jdbcType=VARCHAR},
+	sex =  #{sex, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	valid_type =  #{validType, jdbcType=DATE},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	tel =  #{tel, jdbcType=VARCHAR},
+	tel2 =  #{tel2, jdbcType=VARCHAR},
+	marriage =  #{marriage, jdbcType=VARCHAR},
+	edu =  #{edu, jdbcType=VARCHAR},
+	home_prvn =  #{homePrvn, jdbcType=VARCHAR},
+	home_city =  #{homeCity, jdbcType=VARCHAR},
+	home_ctry =  #{homeCtry, jdbcType=VARCHAR},
+	home_addr =  #{homeAddr, jdbcType=VARCHAR},
+	now_prvn =  #{nowPrvn, jdbcType=VARCHAR},
+	now_city =  #{nowCity, jdbcType=VARCHAR},
+	now_ctry =  #{nowCtry, jdbcType=VARCHAR},
+	now_addr =  #{nowAddr, jdbcType=VARCHAR},
+	org_reg_time =  #{orgRegTime, jdbcType=DATE},
+	org_reg_amt =  #{orgRegAmt, jdbcType=DOUBLE},
+	legal_name =  #{legalName, jdbcType=VARCHAR},
+	legal_tel =  #{legalTel, jdbcType=VARCHAR},
+	legal_id_type =  #{legalIdType, jdbcType=VARCHAR},
+	legal_id_no =  #{legalIdNo, jdbcType=VARCHAR},
+	share_name =  #{shareName, jdbcType=VARCHAR},
+	share_tel =  #{shareTel, jdbcType=VARCHAR},
+	share_id_type =  #{shareIdType, jdbcType=VARCHAR},
+	share_id_no =  #{shareIdNo, jdbcType=VARCHAR},
+	org_bus =  #{orgBus, jdbcType=VARCHAR},
+	sale_remark =  #{saleRemark, jdbcType=VARCHAR},
+	law_state =  #{lawState, jdbcType=VARCHAR},
+	law_remark =  #{lawRemark, jdbcType=VARCHAR},
+	law_check_state =  #{lawCheckState, jdbcType=VARCHAR},
+	law_check_remark =  #{lawCheckRemark, jdbcType=VARCHAR},
+	create_uid =  #{createUid, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_uid =  #{updateUid, jdbcType=VARCHAR},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where  id= #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_LOAN_GUAR  where  id= #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_LOAN_GUAR set 
+	<trim  suffixOverrides="," >
+	<if test="id != null and id != ''  or id==0" >
+	    id =  #{id, jdbcType=INTEGER},
+	</if>
+
+	<if test="loanId != null and loanId != '' " >
+	    loan_id =  #{loanId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="type != null and type != '' " >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+
+	<if test="name != null and name != '' " >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+
+	<if test="sex != null and sex != '' " >
+	    sex =  #{sex, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idType != null and idType != '' " >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="validType != null and validType != '' " >
+	    valid_type =  #{validType, jdbcType=DATE},
+	</if>
+
+	<if test="idNo != null and idNo != '' " >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="tel != null and tel != '' " >
+	    tel =  #{tel, jdbcType=VARCHAR},
+	</if>
+
+	<if test="tel2 != null and tel2 != '' " >
+	    tel2 =  #{tel2, jdbcType=VARCHAR},
+	</if>
+
+	<if test="marriage != null and marriage != '' " >
+	    marriage =  #{marriage, jdbcType=VARCHAR},
+	</if>
+
+	<if test="edu != null and edu != '' " >
+	    edu =  #{edu, jdbcType=VARCHAR},
+	</if>
+
+	<if test="homePrvn != null and homePrvn != '' " >
+	    home_prvn =  #{homePrvn, jdbcType=VARCHAR},
+	</if>
+
+	<if test="homeCity != null and homeCity != '' " >
+	    home_city =  #{homeCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="homeCtry != null and homeCtry != '' " >
+	    home_ctry =  #{homeCtry, jdbcType=VARCHAR},
+	</if>
+
+	<if test="homeAddr != null and homeAddr != '' " >
+	    home_addr =  #{homeAddr, jdbcType=VARCHAR},
+	</if>
+
+	<if test="nowPrvn != null and nowPrvn != '' " >
+	    now_prvn =  #{nowPrvn, jdbcType=VARCHAR},
+	</if>
+
+	<if test="nowCity != null and nowCity != '' " >
+	    now_city =  #{nowCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="nowCtry != null and nowCtry != '' " >
+	    now_ctry =  #{nowCtry, jdbcType=VARCHAR},
+	</if>
+
+	<if test="nowAddr != null and nowAddr != '' " >
+	    now_addr =  #{nowAddr, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgRegTime != null and orgRegTime != '' " >
+	    org_reg_time =  #{orgRegTime, jdbcType=DATE},
+	</if>
+
+	<if test="orgRegAmt != null and orgRegAmt != ''  or orgRegAmt==0" >
+	    org_reg_amt =  #{orgRegAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="legalName != null and legalName != '' " >
+	    legal_name =  #{legalName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="legalTel != null and legalTel != '' " >
+	    legal_tel =  #{legalTel, jdbcType=VARCHAR},
+	</if>
+
+	<if test="legalIdType != null and legalIdType != '' " >
+	    legal_id_type =  #{legalIdType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="legalIdNo != null and legalIdNo != '' " >
+	    legal_id_no =  #{legalIdNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="shareName != null and shareName != '' " >
+	    share_name =  #{shareName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="shareTel != null and shareTel != '' " >
+	    share_tel =  #{shareTel, jdbcType=VARCHAR},
+	</if>
+
+	<if test="shareIdType != null and shareIdType != '' " >
+	    share_id_type =  #{shareIdType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="shareIdNo != null and shareIdNo != '' " >
+	    share_id_no =  #{shareIdNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgBus != null and orgBus != '' " >
+	    org_bus =  #{orgBus, jdbcType=VARCHAR},
+	</if>
+
+	<if test="saleRemark != null and saleRemark != '' " >
+	    sale_remark =  #{saleRemark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lawState != null and lawState != '' " >
+	    law_state =  #{lawState, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lawRemark != null and lawRemark != '' " >
+	    law_remark =  #{lawRemark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lawCheckState != null and lawCheckState != '' " >
+	    law_check_state =  #{lawCheckState, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lawCheckRemark != null and lawCheckRemark != '' " >
+	    law_check_remark =  #{lawCheckRemark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createUid != null and createUid != '' " >
+	    create_uid =  #{createUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateUid != null and updateUid != '' " >
+	    update_uid =  #{updateUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id  = #{id}
+</update>
+
+<!-- 根据id查询 T_LOAN_GUAR -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_LOAN_GUAR  where  id= #{id}
+</select>
+
+<!-- T_LOAN_GUAR 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LOAN_GUAR 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询T_LOAN_GUAR列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LOAN_GUAR 
+	<include refid="Where_Clause"/>
+</select>
+
+<!-- 查询T_LOAN_GUAR列表 -->
+<select id="queryListByLoanId" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	,'0' AS isOrig
+	from T_LOAN_GUAR 
+	WHERE 1=1
+	AND loan_id =  #{loanId}
+	
+	<!-- 续贷查询原来申请的担保信息 -->
+	<if test="origLoanId != null">
+		UNION
+		select 
+		<include refid="Column_List"/>
+		,'1' AS isOrig
+		from T_LOAN_GUAR 
+		WHERE 1=1 
+		AND loan_id IN
+		(
+			SELECT LOAN_ID FROM T_LOAN_BASE WHERE LOAN_ID = #{origLoanId}
+			UNION
+			SELECT LOAN_ID FROM T_LOAN_BASE WHERE ORIG_LOAN_ID = #{origLoanId} AND LOAN_ID != #{loanId}
+		)
+	</if>
+		ORDER BY ID
+</select>
+  	
+</mapper>   

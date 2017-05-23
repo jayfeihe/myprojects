@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.RecordPartnerOrderStatiticDAO">
+	<resultMap type="com.hikootech.mqcash.dto.RecordPartnerOrderStatisticDTO" id="recordPartnerOrderStatisticMap">
+		<result column="record_id" property="recordId" />
+		<result column="config_partner_id" property="configPartnerId" />
+		<result column="success_order_number" property="successOrderNumber" />
+		<result column="statistic_time" property="statisticTime" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="operator" property="operator" />
+	</resultMap>
+	
+		<select id="queryRecordPartnerOrderStatistic" resultMap="recordPartnerOrderStatisticMap" >
+			SELECT
+			t.record_id,
+			t.config_partner_id,
+			t.success_order_number,
+			t.statistic_time,
+			t.create_time,
+			t.update_time,
+			t.operator
+		FROM
+			t_record_partner_order_statistic t 
+		where	t.config_partner_id = #{configPartnerId} and t.statistic_time=#{statisticTime}
+	</select>
+	
+		<select id="queryPartner2Id" resultType="java.lang.String" >
+			SELECT
+			s.config_partner_id configPartnerId
+		FROM
+			 t_config_cooperative_partner s  where status = 1 and s.partner_id = #{partnerId}  
+	</select>
+	
+	<insert id="insertRecordPartnerOrderStatistic" parameterType="com.hikootech.mqcash.dto.RecordPartnerOrderStatisticDTO" >
+			INSERT INTO t_record_partner_order_statistic (
+			record_id,
+			config_partner_id,
+			success_order_number,
+			statistic_time,
+			create_time,
+			update_time,
+			operator
+			)
+			VALUES
+			(
+			#{recordId},
+			#{configPartnerId},
+			#{successOrderNumber},
+			#{statisticTime},
+			#{createTime},
+			#{updateTime},
+			#{operator}
+			)
+			
+	</insert>
+</mapper>

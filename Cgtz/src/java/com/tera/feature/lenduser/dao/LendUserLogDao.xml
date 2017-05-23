@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.lenduser.dao.LendUserLogDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.lenduser.model.LendUserLog" >
+	<result column="id" property="id"/><!--  -->
+	<result column="lend_user_id" property="lendUserId"/><!--  -->
+	<result column="type" property="type"/><!--  -->
+	<result column="amt" property="amt"/><!--  -->
+	<result column="remark" property="remark"/><!--  -->
+	<result column="biz_key" property="bizKey"/><!--  -->
+	<result column="create_uid" property="createUid"/><!--  -->
+	<result column="create_time" property="createTime"/><!--  -->
+	<result column="proof" property="proof"/><!--凭证号/凭证说明  -->
+	
+</resultMap>
+       
+<!-- T_LEND_USER_LOG table all fields -->
+<sql id="Column_List" >
+	 id,lend_user_id,type,amt,remark,biz_key,create_uid,create_time,proof
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="lendUserId != null and lendUserId != ''" >
+	    and lend_user_id =  #{lendUserId}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="amt != null and amt != ''" >
+	    and amt =  #{amt}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="bizKey != null and bizKey != ''" >
+	    and biz_key =  #{bizKey}
+	</if>
+<if test="createUid != null and createUid != ''" >
+	    and create_uid =  #{createUid}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="proof != null and proof != ''" >
+    and proof =  #{proof}
+</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_LEND_USER_LOG_SEQ') From dual -->
+			Select T_LEND_USER_LOG_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_LEND_USER_LOG(id,lend_user_id,type,amt,remark,biz_key,create_uid,create_time,proof)
+ values( #{id, jdbcType=INTEGER},#{lendUserId, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{amt, jdbcType=DOUBLE},#{remark, jdbcType=VARCHAR},#{bizKey, jdbcType=VARCHAR},#{createUid, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{proof, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_LEND_USER_LOG set 
+	<trim  suffixOverrides="," >
+	id =  #{id, jdbcType=INTEGER},
+	lend_user_id =  #{lendUserId, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	amt =  #{amt, jdbcType=DOUBLE},
+	remark =  #{remark, jdbcType=VARCHAR},
+	biz_key =  #{bizKey, jdbcType=VARCHAR},
+	create_uid =  #{createUid, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	proof=#{proof,jdbcType=VARCHAR}
+	</trim>
+ 	where  id= #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_LEND_USER_LOG  where  id= #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_LEND_USER_LOG set 
+	<trim  suffixOverrides="," >
+	<if test="id != null and id != ''  or id==0" >
+	    id =  #{id, jdbcType=INTEGER},
+	</if>
+
+	<if test="lendUserId != null and lendUserId != '' " >
+	    lend_user_id =  #{lendUserId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="type != null and type != '' " >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+
+	<if test="amt != null and amt != ''  or amt==0" >
+	    amt =  #{amt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bizKey != null and bizKey != '' " >
+	    biz_key =  #{bizKey, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createUid != null and createUid != '' " >
+	    create_uid =  #{createUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="proof != null and proof != '' " >
+	    proof =  #{proof, jdbcType=VARCHAR},
+	</if>
+
+	</trim>
+	where  id= #{id}
+</update>
+
+<!-- 根据id查询 出借人资金变动记录 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_LEND_USER_LOG  where  id= #{id}
+</select>
+
+<!-- 出借人资金变动记录 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LEND_USER_LOG 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询出借人资金变动记录列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LEND_USER_LOG 
+	<include refid="Where_Clause"/>
+	order by create_time desc
+</select>
+  	
+</mapper>   

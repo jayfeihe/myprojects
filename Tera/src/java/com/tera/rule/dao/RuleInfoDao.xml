@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.rule.dao.RuleInfoDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.rule.model.RuleInfo" >
+	<result column="logid" property="logid"/><!-- 日志ID -->
+	<result column="rulecode" property="rulecode"/><!-- 规则编码 -->
+	<result column="rulename" property="rulename"/><!-- 规则名称 -->
+	<result column="ruleresult" property="ruleresult"/><!-- 规则结果 -->
+	<result column="describeinfo" property="describeinfo"/><!-- 提示信息 -->
+	<result column="rulesetname" property="rulesetname"/><!-- 规则集名称 -->
+	<result column="ruletype" property="ruletype"/><!-- 规则分类 -->
+	<result column="arg1" property="arg1"/><!-- 参数1 -->
+	<result column="arg2" property="arg2"/><!-- 参数2 -->
+	<result column="arg3" property="arg3"/><!-- 参数3 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_RULE_INFO table all fields -->
+<sql id="Column_List" >
+	 logid,rulecode,rulename,ruleresult,describeinfo,rulesetname,ruletype,arg1,arg2,arg3,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="logid != null and logid != ''" >
+	    and logid =  #{logid}
+	</if>
+<if test="rulecode != null and rulecode != ''" >
+	    and rulecode =  #{rulecode}
+	</if>
+<if test="rulename != null and rulename != ''" >
+	    and rulename =  #{rulename}
+	</if>
+<if test="ruleresult != null and ruleresult != ''" >
+	    and ruleresult =  #{ruleresult}
+	</if>
+<if test="describeinfo != null and describeinfo != ''" >
+	    and describeinfo =  #{describeinfo}
+	</if>
+<if test="rulesetname != null and rulesetname != ''" >
+	    and rulesetname =  #{rulesetname}
+	</if>
+<if test="ruletype != null and ruletype != ''" >
+	    and ruletype =  #{ruletype}
+	</if>
+<if test="arg1 != null and arg1 != ''" >
+	    and arg1 =  #{arg1}
+	</if>
+<if test="arg2 != null and arg2 != ''" >
+	    and arg2 =  #{arg2}
+	</if>
+<if test="arg3 != null and arg3 != ''" >
+	    and arg3 =  #{arg3}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+	insert into T_RULE_INFO(logid,rulecode,rulename,ruleresult,describeinfo,rulesetname,ruletype,arg1,arg2,arg3,operator,org_id,create_time,update_time)
+ values( #{logid, jdbcType=INTEGER},#{rulecode, jdbcType=VARCHAR},#{rulename, jdbcType=VARCHAR},#{ruleresult, jdbcType=VARCHAR},#{describeinfo, jdbcType=VARCHAR},#{rulesetname, jdbcType=VARCHAR},#{ruletype, jdbcType=VARCHAR},#{arg1, jdbcType=VARCHAR},#{arg2, jdbcType=VARCHAR},#{arg3, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_RULE_INFO set 
+	<trim  suffixOverrides="," >
+	logid =  #{logid, jdbcType=INTEGER},
+	rulecode =  #{rulecode, jdbcType=VARCHAR},
+	rulename =  #{rulename, jdbcType=VARCHAR},
+	ruleresult =  #{ruleresult, jdbcType=VARCHAR},
+	describeinfo =  #{describeinfo, jdbcType=VARCHAR},
+	rulesetname =  #{rulesetname, jdbcType=VARCHAR},
+	ruletype =  #{ruletype, jdbcType=VARCHAR},
+	arg1 =  #{arg1, jdbcType=VARCHAR},
+	arg2 =  #{arg2, jdbcType=VARCHAR},
+	arg3 =  #{arg3, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where  = #{}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_RULE_INFO  where  = #{}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_RULE_INFO set 
+	<trim  suffixOverrides="," >
+	<if test="logid != null and logid != ''  or logid==0" >
+	    logid =  #{logid, jdbcType=INTEGER},
+	</if>
+
+	<if test="rulecode != null and rulecode != '' " >
+	    rulecode =  #{rulecode, jdbcType=VARCHAR},
+	</if>
+
+	<if test="rulename != null and rulename != '' " >
+	    rulename =  #{rulename, jdbcType=VARCHAR},
+	</if>
+
+	<if test="ruleresult != null and ruleresult != '' " >
+	    ruleresult =  #{ruleresult, jdbcType=VARCHAR},
+	</if>
+
+	<if test="describeinfo != null and describeinfo != '' " >
+	    describeinfo =  #{describeinfo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="rulesetname != null and rulesetname != '' " >
+	    rulesetname =  #{rulesetname, jdbcType=VARCHAR},
+	</if>
+
+	<if test="ruletype != null and ruletype != '' " >
+	    ruletype =  #{ruletype, jdbcType=VARCHAR},
+	</if>
+
+	<if test="arg1 != null and arg1 != '' " >
+	    arg1 =  #{arg1, jdbcType=VARCHAR},
+	</if>
+
+	<if test="arg2 != null and arg2 != '' " >
+	    arg2 =  #{arg2, jdbcType=VARCHAR},
+	</if>
+
+	<if test="arg3 != null and arg3 != '' " >
+	    arg3 =  #{arg3, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operator != null and operator != '' " >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where  = #{}
+</update>
+
+<!-- 根据id查询 规则执行日志 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_RULE_INFO  where  = #{}
+</select>
+
+<!-- 规则执行日志 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_RULE_INFO 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询规则执行日志列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_RULE_INFO 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

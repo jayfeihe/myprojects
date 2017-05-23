@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.record.dao.AdFeedBackDao">
+	
+	<select id="queryFeedbackDataByTime" resultType="com.greenkoo.record.model.AdFeedBack">
+		select
+			<include refid="columns"/> 
+		from t_ad_feedback t1
+		where DATE_FORMAT(t1.create_time,'%Y-%m-%d') = #{createTime}
+		and t1.`status` = (select max(t2.`status`) from t_ad_feedback t2 where t1.info_id = t2.info_id)
+		group by info_id 
+	</select>
+	
+	<sql id="columns">
+		t1.correction_id,
+		t1.info_id,
+		t1.role_type,
+		t1.role_url,
+		t1.status,
+		t1.remark,
+		t1.correction_time,
+		t1.create_time,
+		t1.update_time
+	</sql>
+</mapper>

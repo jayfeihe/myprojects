@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.BrCreditDAO">
+	<resultMap type="com.hikootech.mqcash.po.UserBrRequest" id="UserBrRequestResultMap">
+		<result property="id" column="id"/>
+		<result property="totalInfoId" column="total_info_id"/>
+		<result property="productName" column="product_name"/>
+		<result property="idCard" column="id_card"/>
+		<result property="name" column="name"/>
+		<result property="mobile" column="mobile"/>
+		<result property="homeAddress" column="home_address"/>
+		<result property="companyAddress" column="company_address"/>
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.po.UserInfo" id="userInfoMap">
+		<result property="userId" column="id"/>
+		<result property="idCard" column="id_card"/>
+		<result property="name" column="name"/>
+		<result property="bindMobile" column="mobile"/>
+		 
+	</resultMap>
+	
+ 	<resultMap type="com.hikootech.mqcash.po.BrApplyLoan" id="BrApplyLoan">
+		<result property="id" column="id"/>
+		<result property="brReqId" column="br_req_id"/>
+		<result property="code" column="code"/>
+		<result property="swiftNumber" column="swift_number"/>
+		<result property="m12IdBankAllnum" column="m12_id_bank_allnum"/>
+		<result property="m12IdBankSelfnum" column="m12_id_bank_selfnum"/>
+		<result property="m12IdBankOrgnum" column="m12_id_bank_orgnum"/>
+		<result property="m12IdNotbankAllnum" column="m12_id_notbank_allnum"/>
+		<result property="m12IdNotbankSelfnum" column="m12_id_notbank_selfnum"/>
+		<result property="m12IdNotbankOrgnum" column="m12_id_notbank_orgnum"/>
+		
+		<result property="m6IdBankAllnum" column="m6_id_bank_allnum"/>
+		<result property="m6IdBankSelfnum" column="m6_id_bank_selfnum"/>
+		<result property="m6IdBankOrgnum" column="m6_id_bank_orgnum"/>
+		<result property="m6IdNotbankAllnum" column="m6_id_notbank_allnum"/>
+		<result property="m6IdNotbankSelfnum" column="m6_id_notbank_selfnum"/>
+		<result property="m6IdNotbankOrgnum" column="m6_id_notbank_orgnum"/>
+		
+		<result property="m3IdBankAllnum" column="m3_id_bank_allnum"/>
+		<result property="m3IdBankSelfnum" column="m3_id_bank_selfnum"/>
+		<result property="m3IdBankOrgnum" column="m3_id_bank_orgnum"/>
+		<result property="m3IdNotbankAllnum" column="m3_id_notbank_allnum"/>
+		<result property="m3IdNotbankSelfnum" column="m3_id_notbank_selfnum"/>
+		<result property="m3IdNotbankOrgnum" column="m3_id_notbank_orgnum"/>
+		
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+	
+	<insert id="saveBrApplyLoan">
+		INSERT INTO t_user_br_apply_loan (
+			id,
+			br_req_id,
+			code,
+			swift_number,
+			m12_id_bank_allnum,
+			m12_id_bank_selfnum,
+			m12_id_bank_orgnum,
+			m12_id_notbank_allnum,
+			m12_id_notbank_selfnum,
+			m12_id_notbank_orgnum,
+			m6_id_bank_allnum,
+			m6_id_bank_selfnum,
+			m6_id_bank_orgnum,
+			m6_id_notbank_allnum,
+			m6_id_notbank_selfnum,
+			m6_id_notbank_orgnum,
+			m3_id_bank_allnum,
+			m3_id_bank_selfnum,
+			m3_id_bank_orgnum,
+			m3_id_notbank_allnum,
+			m3_id_notbank_selfnum,
+			m3_id_notbank_orgnum,
+			create_time
+		)
+		VALUES
+			(
+			#{id},
+			#{brReqId},
+			#{code},
+			#{swiftNumber},
+			#{m12IdBankAllnum},
+			#{m12IdBankSelfnum},
+			#{m12IdBankOrgnum},
+			#{m12IdNotbankAllnum},
+			#{m12IdNotbankSelfnum},
+			#{m12IdNotbankOrgnum},
+			#{m6IdBankAllnum},
+			#{m6IdBankSelfnum},
+			#{m6IdBankOrgnum},
+			#{m6IdNotbankAllnum},
+			#{m6IdNotbankSelfnum},
+			#{m6IdNotbankOrgnum},
+			#{m3IdBankAllnum},
+			#{m3IdBankSelfnum},
+			#{m3IdBankOrgnum},
+			#{m3IdNotbankAllnum},
+			#{m3IdNotbankSelfnum},
+			#{m3IdNotbankOrgnum},
+			#{createTime}
+			)
+	</insert>
+	
+	<select id="queryUserInfoList" resultMap="userInfoMap">
+	select
+	t.id,
+	t.`name`,
+	t.id_card,
+	t.mobile
+	from t_user_br_credit t
+	 
+	</select>
+	
+	<update id="updateBrMsg"  parameterType="com.hikootech.mqcash.po.UserInfo">
+		update t_user_br_credit t set t.msg=#{pwd}   where t.id = #{userId} 
+	</update>
+	
+	<insert id="saveBrRequestParams" >
+		INSERT INTO t_user_br_request (
+			id,
+			total_info_id,
+			product_name,
+			id_card,
+			NAME,
+			mobile,
+			home_address,
+			company_address,
+			create_time
+		)
+		VALUES
+			(
+			#{id},
+			#{totalInfoId},
+			#{productName},
+			#{idCard},
+			#{name},
+			#{mobile},
+			#{homeAddress},
+			#{companyAddress},
+			#{createTime}
+			)
+	</insert>
+	
+	<insert id="saveBrRequestSpecialListC" >
+		INSERT INTO t_user_br_speciallist_c (
+			specialList_id,
+			br_req_id,
+			code,
+			flag,
+			swift_number,
+			`type`,
+			bank_bad,
+			bank_overdue,
+			bank_fraud,
+			bank_lost,
+			bank_refuse,
+			credit_bad,
+			p2p_bad,
+			p2p_overdue,
+			p2p_fraud,
+			p2p_lost,
+			p2p_refuse,
+			phone_overdue,
+			insurance_fraud,
+			court_bad,
+			court_executed,
+			create_time
+		)
+		VALUES
+			(
+				#{speciallistId},
+				#{brReqId},
+				#{code},
+				#{flag},
+				#{swift_number},
+				#{type},
+				#{bank_bad},
+				#{bank_overdue},
+				#{bank_fraud},
+				#{bank_lost},
+				#{bank_refuse},
+				#{credit_bad},
+				#{p2p_bad},
+				#{p2p_overdue},
+				#{p2p_fraud},
+				#{p2p_lost},
+				#{p2p_refuse},
+				#{phone_overdue},
+				#{insurance_fraud},
+				#{court_bad},
+				#{court_executed},
+				#{createTime}
+			)
+	</insert>
+</mapper>

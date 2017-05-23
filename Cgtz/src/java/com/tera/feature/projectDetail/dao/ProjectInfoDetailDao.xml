@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.projectDetail.dao.ProjectInfoDetailDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.projectDetail.model.ProjectDetail" >
+</resultMap> 
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+   <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_PROJECT_DETAIL_SEQ') From dual -->
+			Select T_PROJECT_DETAIL_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_PROJECT_DETAIL(ID,PROJECT_ID,CONTRACT_NO,PROJECT_NAME,START_DATE,END_DATE,ONLINE_DATE,REAL_END_DATE,IS_END,DAYS,LOAN_AMT,LEND_NAME,LEND_ID,LEND_NO,LOAN_NAME,LOAN_NO,LOAN_RATE,ONLINE_RATE,RET_WAY,TYPE,ORG,BRANCH_REMARK,ACCT_REMARK)
+ values( #{id, jdbcType=INTEGER},#{projectId, jdbcType=VARCHAR},#{contractNo, jdbcType=VARCHAR},#{projectName, jdbcType=VARCHAR},#{startDate, jdbcType=DATE},#{endDate, jdbcType=DATE},#{onlineDate, jdbcType=DATE},#{realEndDate, jdbcType=DATE},
+ #{isEnd, jdbcType=VARCHAR},#{days, jdbcType=INTEGER},#{loanAmt, jdbcType=DOUBLE},#{lendName, jdbcType=VARCHAR},#{lendId, jdbcType=VARCHAR},#{lendNo, jdbcType=VARCHAR},#{loanName, jdbcType=VARCHAR},
+ #{loanNo, jdbcType=VARCHAR},#{loanRate, jdbcType=DOUBLE},#{onlineRate, jdbcType=VARCHAR},#{retWay, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{org, jdbcType=VARCHAR},#{branchRemark,jdbcType=VARCHAR},#{acctRemark,jdbcType=VARCHAR})
+</insert>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_PROJECT_DETAIL  where  id= #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="update" parameterType="Object" >
+	update T_PROJECT_DETAIL set 
+	<trim  suffixOverrides="," >
+	<if test="projectId != null and projectId != '' " >
+	    project_id =  #{projectId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractNo != null and contractNo != '' " >
+	    contract_no =  #{contractNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="projectName != null and projectName != '' " >
+	    project_name =  #{projectName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="startDate != null and startDate != '' " >
+	    start_date =  #{startDate, jdbcType=DATE},
+	</if>
+
+	<if test="endDate != null and endDate != '' " >
+	    end_date =  #{endDate, jdbcType=DATE},
+	</if>
+
+	<if test="onlineDate != null and onlineDate != '' " >
+	    online_date =  #{onlineDate, jdbcType=DATE},
+	</if>
+	
+	<if test="realEndDate != null and realEndDate != '' " >
+	    real_end_date =  #{realEndDate, jdbcType=DATE},
+	</if>
+
+	<if test="isEnd != null and isEnd != '' " >
+	    is_end =  #{isEnd, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanAmt != null and loanAmt != '' " >
+	    loan_amt =  #{loanAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="lendName != null and lendName != '' " >
+	    lend_name =  #{lendName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lendId != null and lendId != '' " >
+	    lend_id =  #{lendId, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="lendNo != null and lendNo != '' " >
+	    lend_no =  #{lendNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanName != null and loanName != '' " >
+	    loan_name =  #{loanName, jdbcType=VARCHAR},
+	</if>
+    <if test="loanNo != null and loanNo != '' " >
+	    loan_no =  #{loanNo, jdbcType=VARCHAR},
+	</if>
+	<if test="loanRate != null and loanRate != '' " >
+	    loan_rate =  #{loanRate, jdbcType=DOUBLE},
+	</if>
+	
+	<if test="onlineRate != null and onlineRate != '' " >
+	    online_rate =  #{onlineRate, jdbcType=DOUBLE},
+	</if>
+	<if test="retWay != null and retWay != '' " >
+	    ret_way =  #{retWay, jdbcType=VARCHAR},
+	</if>
+
+	<if test="type != null and type != '' " >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+	<if test="org != null and org != '' " >
+	    org =  #{org, jdbcType=VARCHAR},
+	</if>
+	<if test="branchRemark != null and branchRemark != '' " >
+	    BRANCH_REMARK =  #{branchRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="acctRemark != null and acctRemark != '' " >
+	    ACCT_REMARK =  #{acctRemark, jdbcType=VARCHAR},
+	</if>
+	</trim>
+	where  id= #{id}
+</update>
+
+<!-- 根据id查询 T_PROJECT_DETAIL -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	SELECT
+	ID,
+	PROJECT_ID projectId,
+	CONTRACT_NO contractNo,
+	PROJECT_NAME projectName,
+	START_DATE startDate,
+	END_DATE endDate,
+	ONLINE_DATE onlineDate,
+	REAL_END_DATE realEndDate,
+	IS_END isEnd,
+	DAYS,
+	LOAN_AMT loanAmt,
+	LEND_NAME lendName,
+	LEND_ID lendId,
+	LEND_NO lendNo,
+	LOAN_NAME loanName,
+	LOAN_NO loanNo,
+	LOAN_RATE loanRate,
+	ONLINE_RATE onlineRate,
+	RET_WAY retWay,
+	TYPE,
+	ORG,
+	(SELECT org.ORG_NAME from T_ORG org where ORG.ORG_ID=T_PROJECT_DETAIL.ORG)orgName,
+	BRANCH_REMARK branchRemark,
+	ACCT_REMARK acctRemark
+FROM
+	T_PROJECT_DETAIL  
+    where  id= #{id}
+</select>
+
+<!-- T_PROJECT_DETAIL 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_PROJECT_DETAIL 
+	<!-- <include refid="Where_Clause"/> -->
+</select>
+  	
+<!-- 查询T_PROJECT_DETAIL列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	SELECT
+	ID,
+	PROJECT_ID projectId,
+	CONTRACT_NO contractNo,
+	PROJECT_NAME projectName,
+	START_DATE startDate,
+	END_DATE endDate,
+	ONLINE_DATE onlineDate,
+	REAL_END_DATE realEndDate,
+	IS_END isEnd,
+	DAYS,
+	LOAN_AMT loanAmt,
+	LEND_NAME lendName,
+	LEND_ID lendId,
+	LEND_NO lendNo,
+	LOAN_NAME loanName,
+	LOAN_NO loanNo,
+	LOAN_RATE loanRate,
+	ONLINE_RATE onlineRate,
+	RET_WAY retWay,
+	TYPE,
+	ORG,
+	(SELECT org.ORG_NAME from T_ORG org where ORG.ORG_ID=T_PROJECT_DETAIL.ORG)orgName,
+	BRANCH_REMARK branchRemark,
+	ACCT_REMARK acctRemark
+FROM
+	T_PROJECT_DETAIL
+<where>
+			1=1
+			<if test="org != null and org != ''">
+				AND ORG = #{org}
+			</if>
+			<if test="type != null and type != ''">
+				AND type LIKE CONCAT(#{type},'%')
+			</if>
+			<if test="isEnd != null and isEnd != ''">
+				AND is_end = #{isEnd}
+			</if>
+			<if test="minStartDate != null and minStartDate != ''">
+				<![CDATA[AND START_DATE >= #{minStartDate}]]>
+			</if>
+			<if test="maxStartDate != null and maxStartDate != ''">
+				<![CDATA[AND START_DATE <= #{maxStartDate}]]>
+			</if>
+			<!--机构权限限制  -->
+			<if test="orgs != null and orgs.size() >0 " >
+			and org in
+			                <foreach item="item" index="index" collection="orgs" open="(" separator="," close=")">
+									#{item}
+							</foreach>	
+	</if>
+		</where>
+		ORDER BY start_date desc,ORG	
+</select>
+  	
+</mapper>   

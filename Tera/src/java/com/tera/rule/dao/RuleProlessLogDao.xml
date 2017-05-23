@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.rule.dao.RuleProlessLogDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.rule.model.RuleProlessLog" >
+	<result column="id" property="id"/><!-- 主键 -->
+	<result column="appno" property="appno"/><!-- 申请单号 -->
+	<result column="callpoint" property="callpoint"/><!-- 调用节点 -->
+	<result column="finalruleresult" property="finalruleresult"/><!-- 最终规则结果 -->
+	<result column="exception" property="exception"/><!-- 是否异常 -->
+	<result column="exceptiontype" property="exceptiontype"/><!-- 异常类型 -->
+	<result column="begintime" property="begintime"/><!-- 开始时间 -->
+	<result column="endtime" property="endtime"/><!-- 结束时间 -->
+	<result column="timelong" property="timelong"/><!-- 执行时长 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_RULE_PROLESS_LOG table all fields -->
+<sql id="Column_List" >
+	 id,appno,callpoint,finalruleresult,exception,exceptiontype,begintime,endtime,timelong,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appno != null and appno != ''" >
+	    and appno =  #{appno}
+	</if>
+<if test="callpoint != null and callpoint != ''" >
+	    and callpoint =  #{callpoint}
+	</if>
+<if test="finalruleresult != null and finalruleresult != ''" >
+	    and finalruleresult =  #{finalruleresult}
+	</if>
+<if test="exception != null and exception != ''" >
+	    and exception =  #{exception}
+	</if>
+<if test="exceptiontype != null and exceptiontype != ''" >
+	    and exceptiontype =  #{exceptiontype}
+	</if>
+<if test="begintime != null and begintime != ''" >
+	    and begintime =  #{begintime}
+	</if>
+<if test="endtime != null and endtime != ''" >
+	    and endtime =  #{endtime}
+	</if>
+<if test="timelong != null and timelong != ''" >
+	    and timelong =  #{timelong}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_RULE_PROLESS_LOG_SEQ') From dual
+		  </selectKey>
+	insert into T_RULE_PROLESS_LOG(id,appno,callpoint,finalruleresult,exception,exceptiontype,begintime,endtime,timelong,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appno, jdbcType=VARCHAR},#{callpoint, jdbcType=VARCHAR},#{finalruleresult, jdbcType=VARCHAR},#{exception, jdbcType=VARCHAR},#{exceptiontype, jdbcType=VARCHAR},#{begintime, jdbcType=VARCHAR},#{endtime, jdbcType=VARCHAR},#{timelong, jdbcType=INTEGER},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_RULE_PROLESS_LOG set 
+	<trim  suffixOverrides="," >
+	appno =  #{appno, jdbcType=VARCHAR},
+	callpoint =  #{callpoint, jdbcType=VARCHAR},
+	finalruleresult =  #{finalruleresult, jdbcType=VARCHAR},
+	exception =  #{exception, jdbcType=VARCHAR},
+	exceptiontype =  #{exceptiontype, jdbcType=VARCHAR},
+	begintime =  #{begintime, jdbcType=VARCHAR},
+	endtime =  #{endtime, jdbcType=VARCHAR},
+	timelong =  #{timelong, jdbcType=INTEGER},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_RULE_PROLESS_LOG  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_RULE_PROLESS_LOG set 
+	<trim  suffixOverrides="," >
+
+	<if test="appno != null and appno != '' " >
+	    appno =  #{appno, jdbcType=VARCHAR},
+	</if>
+
+	<if test="callpoint != null and callpoint != '' " >
+	    callpoint =  #{callpoint, jdbcType=VARCHAR},
+	</if>
+
+	<if test="finalruleresult != null and finalruleresult != '' " >
+	    finalruleresult =  #{finalruleresult, jdbcType=VARCHAR},
+	</if>
+
+	<if test="exception != null and exception != '' " >
+	    exception =  #{exception, jdbcType=VARCHAR},
+	</if>
+
+	<if test="exceptiontype != null and exceptiontype != '' " >
+	    exceptiontype =  #{exceptiontype, jdbcType=VARCHAR},
+	</if>
+
+	<if test="begintime != null and begintime != '' " >
+	    begintime =  #{begintime, jdbcType=VARCHAR},
+	</if>
+
+	<if test="endtime != null and endtime != '' " >
+	    endtime =  #{endtime, jdbcType=VARCHAR},
+	</if>
+
+	<if test="timelong != null and timelong != ''  or timelong==0" >
+	    timelong =  #{timelong, jdbcType=INTEGER},
+	</if>
+
+	<if test="operator != null and operator != '' " >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 规则日志 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_RULE_PROLESS_LOG  where id = #{id}
+</select>
+
+<!-- 规则日志 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_RULE_PROLESS_LOG 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询规则日志列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_RULE_PROLESS_LOG 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

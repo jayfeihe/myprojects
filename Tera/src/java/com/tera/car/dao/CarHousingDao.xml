@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.car.dao.CarHousingDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.car.model.CarHousing" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="address" property="address"/><!-- 房产地址 -->
+	<result column="area" property="area"/><!-- 面积 -->
+	<result column="is_mortgage" property="isMortgage"/><!-- 是否抵押 -->
+	<result column="acquisition_date" property="acquisitionDate"/><!-- 产权获取时间 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_CAR_HOUSING table all fields -->
+<sql id="Column_List" >
+	 id,app_id,address,area,is_mortgage,acquisition_date,state,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="address != null and address != ''" >
+	    and address =  #{address}
+	</if>
+<if test="area != null and area != ''" >
+	    and area =  #{area}
+	</if>
+<if test="isMortgage != null and isMortgage != ''" >
+	    and is_mortgage =  #{isMortgage}
+	</if>
+<if test="acquisitionDate != null and acquisitionDate != ''" >
+	    and acquisition_date =  #{acquisitionDate}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_CAR_HOUSING_SEQ') From dual
+			<!-- Select T_CAR_HOUSING_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_CAR_HOUSING(id,app_id,address,area,is_mortgage,acquisition_date,state,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{address, jdbcType=VARCHAR},#{area, jdbcType=INTEGER},#{isMortgage, jdbcType=INTEGER},#{acquisitionDate, jdbcType=DATE},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_CAR_HOUSING set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	address =  #{address, jdbcType=VARCHAR},
+	area =  #{area, jdbcType=INTEGER},
+	is_mortgage =  #{isMortgage, jdbcType=INTEGER},
+	acquisition_date =  #{acquisitionDate, jdbcType=DATE},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_CAR_HOUSING  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_CAR_HOUSING set 
+	<trim  suffixOverrides="," >
+	<if test="appId != null and appId != ''" >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+	<if test="address != null and address != ''" >
+	    address =  #{address, jdbcType=VARCHAR},
+	</if>
+	<if test="area != null and area != ''" >
+	    area =  #{area, jdbcType=INTEGER},
+	</if>
+	<if test="isMortgage != null and isMortgage != ''" >
+	    is_mortgage =  #{isMortgage, jdbcType=INTEGER},
+	</if>
+	<if test="acquisitionDate != null and acquisitionDate != ''" >
+	    acquisition_date =  #{acquisitionDate, jdbcType=DATE},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 信用贷款申请房产信息 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CAR_HOUSING  where id = #{id}
+</select>
+
+<!-- 信用贷款申请房产信息 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CAR_HOUSING 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询信用贷款申请房产信息列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_CAR_HOUSING 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

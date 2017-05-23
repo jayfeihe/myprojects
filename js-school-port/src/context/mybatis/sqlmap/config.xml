@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.ConfigBankDAO">
+	
+	<resultMap type="com.hikootech.mqcash.po.ConfigInstalment" id="configInstalmentMap">
+		<result column="config_instalment_id" property="configInstalmentId" />
+		<result column="instalment_name" property="instalmentName" />
+		<result column="instalment_count" property="instalmentCount" />
+		<result column="per_service_rate" property="perServiceRate" />
+		<result column="status" property="status" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="operator" property="operator" />
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.po.ConfigInstalment" id="configInstalmentMap1">
+		<result column="config_instalment_id" property="configInstalmentId" />
+		<result column="plan_id" property="planId" />
+		<result column="instalment_name" property="instalmentName" />
+		<result column="instalment_count" property="instalmentCount" />
+		<result column="per_service_rate" property="perServiceRate" />
+		<result column="status" property="status" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="operator" property="operator" />
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.dto.BankDTO" id="bankDTOMap">
+		<result column="relation_bank_id" property="relationBankId" />
+		<result column="bank_id" property="bankId" />
+		<result column="third_party_bank_id" property="thirdPartyBankId" />
+		<result column="bank_code" property="bankCode" />
+		<result column="bank_name" property="bankName" />
+		<result column="bank_type" property="bankType" />
+		<result column="bank_img_url" property="bankImgUrl" />
+		<result column="payment_status" property="paymentStatus" />
+		<result column="charge_status" property="chargeStatus" />
+	</resultMap>
+	
+	
+	 
+	<!-- 用于网银支付的 -->
+	<select id="getBankList"  resultMap="bankDTOMap">
+		select rcb.relation_bank_id,rcb.bank_id,rcb.payment_status,rcb.charge_status,rcb.third_party_bank_id,cb.bank_code,cb.bank_name,cb.bank_type,cb.bank_img_url from t_relation_config_bank rcb 
+			join t_config_bank cb on rcb.bank_id = cb.bank_id
+		<where>
+			rcb.status = 1 and cb.status = 1
+			<if test="relationBankId!=null and relationBankId!=''"> and rcb.relation_bank_id = #{relationBankId}</if>
+			<if test="thirdPartyId!=null and thirdPartyId!=''"> and rcb.third_party_id = #{thirdPartyId}</if>
+			<if test="bankType!=null"> and cb.bank_type = #{bankType}</if>
+			<if test="paymentStatus!=null"> and rcb.payment_status  = #{paymentStatus}</if>
+			<if test="chargeStatus!=null"> and rcb.charge_status = #{chargeStatus}</if>
+		</where>
+		order by rcb.third_party_bank_id
+	</select>
+	
+	<select id="getBankById"   resultMap="bankDTOMap">
+		select rcb.relation_bank_id, rcb.payment_status,rcb.charge_status ,rcb.bank_id,rcb.third_party_bank_id,cb.bank_code,cb.bank_name,cb.bank_type,cb.bank_img_url from t_relation_config_bank rcb 
+			join t_config_bank cb on rcb.bank_id = cb.bank_id
+		where rcb.status = 1 and cb.status = 1 
+	
+		      and rcb.relation_bank_id = #{value}
+		 
+			
+			 
+	</select>
+	
+</mapper>

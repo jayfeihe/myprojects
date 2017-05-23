@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.report.credit.dao.ApprovalStatisticsDao" > 
+	<select id="queryStatisticsList" resultType="com.tera.report.credit.model.ApprovalStatisticsBean" parameterType="map">
+		SELECT 
+			main.`NAME`AS name,
+			main.passAmount AS passAmount,
+			main.denyAmount AS denyAmount,
+			main.opreateAmount AS opreateAmount,
+			main.backAmount1 AS backAmount1,
+			main.backAmount2 AS backAmount2,
+			IF(main.passAmount+main.denyAmount=0,'0',
+					ROUND((main.passAmount)/(main.passAmount+main.denyAmount),2)*100) AS passPercent,
+			IF(main.passAmount+main.denyAmount+main.backAmount2=0,'0',
+					ROUND((main.backAmount1)/(main.passAmount+main.denyAmount+main.backAmount1),2)*100) AS backPercent
+		FROM (SELECT tmp.`NAME`,
+		(SELECT COUNT(DISTINCT(t.ID)) FROM t_credit_decision t 
+			WHERE t.TYPE='2' 
+			AND t.DECISION='01' 
+			AND t.OPERATOR=tmp.LOGIN_ID 
+			AND t.ORG_ID LIKE CONCAT(tmp.org_Id,'%')
+			AND DATE(t.UPDATE_TIME) = CURDATE()
+		) AS passAmount,<!-- 通过量 -->
+		
+		(SELECT COUNT(DISTINCT(t.ID)) FROM t_credit_decision t 
+			WHERE t.DECISION='05'
+			AND t.TYPE='2' 
+			AND t.OPERATOR=tmp.LOGIN_ID  
+			AND t.ORG_ID = tmp.org_Id
+			AND DATE(t.UPDATE_TIME) = CURDATE()
+		) AS denyAmount,<!-- 拒贷量 -->
+		
+		(SELECT COUNT(DISTINCT(a.ID)) FROM t_credit_app a,t_bpm_task b 
+			WHERE a.APP_ID = b.BIZ_KEY 
+			AND a.STATE NOT IN ('0') 
+			AND b.STATE = '审批' 
+			AND b.PROCESSER = tmp.LOGIN_ID 
+			AND a.ORG_ID LIKE CONCAT(tmp.org_Id,'%')
+		) AS opreateAmount,<!-- 待处理量 -->
+		
+		(SELECT COUNT(DISTINCT(t.ID)) FROM t_credit_decision t,t_bpm_log l 
+			WHERE t.APP_ID = l.BIZ_KEY
+			AND l.STATE = '审批'
+			AND l.LOG_CONTENT1='退回'
+			AND t.TYPE='2' 
+			AND t.OPERATOR=tmp.LOGIN_ID  
+			AND t.ORG_ID LIKE CONCAT(tmp.org_Id,'%')
+			AND DATE(t.UPDATE_TIME) = CURDATE()
+		) AS backAmount1, <!-- 回退量1 -->
+		
+		(SELECT COUNT(t.ID) FROM t_credit_decision t,t_bpm_log l 
+			WHERE t.APP_ID = l.BIZ_KEY
+			AND l.STATE = '审批'
+			AND l.LOG_CONTENT1='退回'
+			AND t.TYPE='2' 
+			AND t.OPERATOR=tmp.LOGIN_ID  
+			AND t.ORG_ID LIKE CONCAT(tmp.org_Id,'%')
+			AND DATE(t.UPDATE_TIME) = CURDATE()
+		) AS backAmount2 <!-- 回退量2 -->
+		
+		FROM (SELECT u.`NAME`,u.LOGIN_ID,o.ORG_ID FROM t_user u, t_user_ext e,t_org o,t_role r
+		WHERE u.ID = e.USER_ID 
+		AND e.ORG_ID = o.ID
+		AND e.ROLE_ID = r.ID
+		<if test="loginId != null and loginId != ''">
+			AND u.LOGIN_ID = #{loginId}
+		</if>
+		AND r.`NAME`='信用审批专员'
+		AND u.state != '0' 
+		GROUP BY u.ID ) tmp) main
+	</select>
+</mapper>   

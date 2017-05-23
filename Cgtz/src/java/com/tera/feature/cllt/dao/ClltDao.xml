@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.cllt.dao.ClltDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.cllt.model.Cllt" >
+   <!--contract表  -->
+  <result column="contract_id" property="contractId"/>
+  <result column="loan_id" property="loanId"/>
+  <result column="late_num" property="lateNum"/>
+  <result column="org" property="org"/>
+  <result column="loan_amt" property="loanAmt"/>
+  <result column="start_date" property="startDate"/>
+  <result column="end_date" property="endDate"/>
+  <result column="get_loan_Way" property="getLoanWay"/>
+  <!--loan_base表  -->
+	<result column="product" property="product"/><!--申请表的主键-->
+	<result column="is_renew" property="isRenew"/>
+	<result column="loan_name" property="loanName"/>
+	<result column="id_no" property="idNo"/>
+	
+    <!--cllt_distr表  -->
+    <result column="cllt_uid" property="clltUid"/>
+	<!--user表  -->
+	<result column="cllt_name" property="clltName"/>
+	<!--org表  -->
+	<result column="org_name" property="orgName"/>
+	<!--new_plan表 
+	SELECT plan.loan_id,MIN(plan.RET_DATE) as RET_DATE ,
+	TO_DAYS(now())-TO_DAYS(MIN(plan.RET_DATE)) as late_days 
+	from t_ret_plan plan 
+	WHERE plan.RET_DATE <NOW() and plan.STATE='1' GROUP BY plan.LOAN_ID) as newplan
+	 -->
+	<result column="ret_date" property="retDate"/><!-- 应还款日期 -->
+	<result column="late_days" property="lateDays"/><!-- 逾期天数-->
+	
+</resultMap>
+       
+<!-- T_OVERDUE_REPORT table all fields -->
+<sql id="Column_List" >
+	base.PRODUCT,
+	base.IS_RENEW,
+	base. NAME AS loan_name,
+	base.ID_NO,
+	con.CONTRACT_ID,
+	con.LOAN_ID,
+	dis.CLLT_UID,
+  (SELECT NAME from T_USER where T_USER.LOGIN_ID=DIS.cllt_uid)cllt_name,
+	con.LATE_NUM,
+	base.ORG,
+  (select ORG_NAME from T_ORG where T_ORG.ORG_ID=BASE.ORG)org_name,
+	base.loan_amt,
+	newplan.RET_DATE ret_date,
+	newplan.late_days,
+	con.START_DATE start_date,
+	con.END_DATE end_date,
+	con.GET_LOAN_WAY
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="product != null and product != ''" >
+	    and base.product =  #{product}
+	</if>
+<if test="isRenew != null and isRenew != ''" >
+	    and base.is_renew =  #{isRenew}
+	</if>
+<if test="loanName != null and loanName != ''" >
+	    and base.name =  #{loanName}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and base.id_no =  #{idNo}
+	</if>	
+<if test="contractId != null and contractId != ''" >
+	    and con.contract_id =  #{contractId}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and con.loan_id =  #{loanId}
+	</if>
+<if test="clltUid != null and clltUid != ''" >
+	    and dis.cllt_uid =  #{clltUid}
+	</if>
+<if test="lateNum != null and lateNum != ''" >
+	    and con.late_num =  #{lateNum}
+	</if>
+<if test="org != null and org != ''" >
+	    and con.org like CONCAT(#{org},'%')
+	</if>
+<if test="loanAmt != null and loanAmt != ''" >
+	    and base.loan_amt =  #{loanAmt}
+	</if>
+<!-- <if test="retDate != null and retDate != ''" >
+    and newplan.ret_date =  #{retDate}
+</if>	 -->
+<if test="lateDays != null and lateDays != ''" >
+    and newplan.late_days =  #{lateDays}
+</if>	
+<if test="startDate != null and startDate != ''" >
+    and con.start_date =  #{startDate}
+</if>	
+<if test="endDate != null and endDate != ''" >
+    and con.end_date =  #{endDate}
+</if>
+<if test="getLoanWay != null and getLoanWay != ''" >
+    and con.get_loan_way =  #{getLoanWay}
+</if>
+<if test="minRetDate != null and minRetDate != ''" >
+<![CDATA[and newplan.ret_date >=  #{minRetDate}]]>   
+</if>
+<if test="maxRetDate != null and maxRetDate != ''" >
+ <![CDATA[and newplan.ret_date <=  #{maxRetDate}]]>
+</if>				
+</trim>
+</sql>
+
+<!-- 贷后催收 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from(select 
+	<include refid="Column_List"/>
+	from t_contract con
+	LEFT JOIN t_loan_base base ON base.LOAN_ID = con.LOAN_ID
+	LEFT JOIN t_cllt_distr dis ON con.contract_ID = dis.contract_id
+	LEFT JOIN (
+	SELECT
+		PLAN .contract_id,
+		MAX (PLAN .RET_DATE) AS RET_DATE,
+		TRUNC (SYSDATE - MAX(PLAN .RET_DATE)) AS late_days
+	FROM
+		t_ret_plan PLAN
+	WHERE
+		PLAN .RET_DATE &lt; SYSDATE
+	AND PLAN .STATE = '1'
+	GROUP BY
+		PLAN .contract_id
+    ) newplan ON newplan.contract_id = con.CONTRACT_ID
+	<include refid="Where_Clause"/> and con.IS_LATE='1' and con.state in('2','4') 
+	)
+	
+</select>
+  	
+<!-- 贷后催收列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from t_contract con
+	LEFT JOIN t_loan_base base ON base.LOAN_ID = con.LOAN_ID
+	LEFT JOIN t_cllt_distr dis ON con.contract_ID = dis.contract_id
+	LEFT JOIN (
+	SELECT
+		PLAN .contract_id,
+		MAX (PLAN .RET_DATE) AS RET_DATE,
+		TRUNC (SYSDATE - MAX(PLAN .RET_DATE)) AS late_days
+	FROM
+		t_ret_plan PLAN
+	WHERE
+		PLAN .RET_DATE &lt; SYSDATE
+	AND PLAN .STATE = '1'
+	GROUP BY
+		PLAN .contract_id
+    ) newplan ON newplan.contract_id = con.CONTRACT_ID
+	<include refid="Where_Clause"/> and con.IS_LATE='1' and con.state in('2','4')
+	order by con.contract_id
+</select>
+  	
+</mapper>   

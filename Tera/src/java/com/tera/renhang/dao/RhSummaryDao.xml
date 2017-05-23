@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.renhang.dao.RhSummaryDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.renhang.model.RhSummary" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="person_house_loan_num" property="personHouseLoanNum"/><!-- 个人住房贷款笔数 -->
+	<result column="person_biz_house_loan_num" property="personBizHouseLoanNum"/><!-- 个人商用房(包括商住两用)贷款笔数 -->
+	<result column="other_loan_num" property="otherLoanNum"/><!-- 其他贷款笔数 -->
+	<result column="first_loan_date" property="firstLoanDate"/><!-- 首笔贷款发放月份 -->
+	<result column="credit_num" property="creditNum"/><!-- 贷记卡账户数 -->
+	<result column="first_credit_date" property="firstCreditDate"/><!-- 首张贷记卡发卡月份 -->
+	<result column="semi_credit_num" property="semiCreditNum"/><!-- 准贷记卡账户数 -->
+	<result column="semi_credit_date" property="semiCreditDate"/><!-- 首张准贷记卡发卡月份 -->
+	<result column="declare_num" property="declareNum"/><!-- 本人声明数目 -->
+	<result column="objection_num" property="objectionNum"/><!-- 异议标注数目 -->
+	<result column="loan_default_num" property="loanDefaultNum"/><!-- 贷款逾期笔数 -->
+	<result column="loan_default_month_num" property="loanDefaultMonthNum"/><!-- 贷款逾期月份数 -->
+	<result column="loan_max_default_amount" property="loanMaxDefaultAmount"/><!-- 贷款单月最高逾期总额 -->
+	<result column="loan_max_default_month" property="loanMaxDefaultMonth"/><!-- 贷款最长逾期月数 -->
+	<result column="credit_default_num" property="creditDefaultNum"/><!-- 贷记卡逾期账户数 -->
+	<result column="credit_default_month_num" property="creditDefaultMonthNum"/><!-- 贷记卡逾期月份数 -->
+	<result column="credit_max_default_amount" property="creditMaxDefaultAmount"/><!-- 贷记卡单月最高逾期总额 -->
+	<result column="credit_max_default_month" property="creditMaxDefaultMonth"/><!-- 贷记卡最长逾期月数 -->
+	<result column="semi_credit_default_num" property="semiCreditDefaultNum"/><!-- 准贷记卡逾期账户数 -->
+	<result column="semi_credit_default_month_num" property="semiCreditDefaultMonthNum"/><!-- 准贷记卡逾期月份数 -->
+	<result column="semi_credit_max_default_amount" property="semiCreditMaxDefaultAmount"/><!-- 准贷记卡单月最高透支总额 -->
+	<result column="semi_credit_max_default_month" property="semiCreditMaxDefaultMonth"/><!-- 准贷记卡最长透支月数 -->
+	<result column="loan_legal_num" property="loanLegalNum"/><!-- 未结清贷款法人机构数 -->
+	<result column="loan_com_num" property="loanComNum"/><!-- 未结清贷款机构数 -->
+	<result column="loan_num" property="loanNum"/><!-- 未结清贷款笔数 -->
+	<result column="loan_amount" property="loanAmount"/><!-- 未结清贷款合同总额 -->
+	<result column="loan_rest_amount" property="loanRestAmount"/><!-- 未结清贷款余额 -->
+	<result column="loan_avg6m_amount" property="loanAvg6mAmount"/><!-- 未结清贷款6月均还款 -->
+	<result column="credit_legal_num" property="creditLegalNum"/><!-- 未销户贷记卡法人机构数 -->
+	<result column="credit_com_num" property="creditComNum"/><!-- 未销户贷记卡机构数 -->
+	<result column="credit_account_num" property="creditAccountNum"/><!-- 未销户贷记卡账户数 -->
+	<result column="credit_total_amount" property="creditTotalAmount"/><!-- 未销户贷记卡授信总额 -->
+	<result column="credit_max_amount" property="creditMaxAmount"/><!-- 未销户贷记卡单家最高额度 -->
+	<result column="credit_min_amount" property="creditMinAmount"/><!-- 未销户贷记卡单家最低额度 -->
+	<result column="credit_use_amount" property="creditUseAmount"/><!-- 未销户贷记卡已用额度 -->
+	<result column="credit_avg6m_amount" property="creditAvg6mAmount"/><!-- 未销户贷记卡6月均用额度 -->
+	<result column="semi_credit_legal_num" property="semiCreditLegalNum"/><!-- 未销户准贷记卡法人机构数 -->
+	<result column="semi_credit_com_num" property="semiCreditComNum"/><!-- 未销户准贷记卡机构数 -->
+	<result column="semi_credit_account_num" property="semiCreditAccountNum"/><!-- 未销户准贷记卡账户数 -->
+	<result column="semi_credit_total_amount" property="semiCreditTotalAmount"/><!-- 未销户准贷记卡授信总额 -->
+	<result column="semi_credit_max_amount" property="semiCreditMaxAmount"/><!-- 未销户准贷记卡单家最高额度 -->
+	<result column="semi_credit_min_amount" property="semiCreditMinAmount"/><!-- 未销户准贷记卡单家最低额度 -->
+	<result column="semi_credit_use_amount" property="semiCreditUseAmount"/><!-- 未销户准贷记卡透支额度 -->
+	<result column="semi_credit_avg6m_amount" property="semiCreditAvg6mAmount"/><!-- 未销户准贷记卡6月均透支额度 -->
+	<result column="secure_num" property="secureNum"/><!-- 担保笔数 -->
+	<result column="secure_amount" property="secureAmount"/><!-- 担保金额 -->
+	<result column="secure_rest_amount" property="secureRestAmount"/><!-- 担保本金余额 -->
+	<result column="remarks" property="remarks"/><!-- 备注 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_RH_SUMMARY table all fields -->
+<sql id="Column_List" >
+	 id,app_id,person_house_loan_num,person_biz_house_loan_num,other_loan_num,first_loan_date,credit_num,first_credit_date,semi_credit_num,semi_credit_date,declare_num,objection_num,loan_default_num,loan_default_month_num,loan_max_default_amount,loan_max_default_month,credit_default_num,credit_default_month_num,credit_max_default_amount,credit_max_default_month,semi_credit_default_num,semi_credit_default_month_num,semi_credit_max_default_amount,semi_credit_max_default_month,loan_legal_num,loan_com_num,loan_num,loan_amount,loan_rest_amount,loan_avg6m_amount,credit_legal_num,credit_com_num,credit_account_num,credit_total_amount,credit_max_amount,credit_min_amount,credit_use_amount,credit_avg6m_amount,semi_credit_legal_num,semi_credit_com_num,semi_credit_account_num,semi_credit_total_amount,semi_credit_max_amount,semi_credit_min_amount,semi_credit_use_amount,semi_credit_avg6m_amount,secure_num,secure_amount,secure_rest_amount,remarks,state,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="personHouseLoanNum != null and personHouseLoanNum != ''" >
+	    and person_house_loan_num =  #{personHouseLoanNum}
+	</if>
+<if test="personBizHouseLoanNum != null and personBizHouseLoanNum != ''" >
+	    and person_biz_house_loan_num =  #{personBizHouseLoanNum}
+	</if>
+<if test="otherLoanNum != null and otherLoanNum != ''" >
+	    and other_loan_num =  #{otherLoanNum}
+	</if>
+<if test="firstLoanDate != null and firstLoanDate != ''" >
+	    and first_loan_date =  #{firstLoanDate}
+	</if>
+<if test="creditNum != null and creditNum != ''" >
+	    and credit_num =  #{creditNum}
+	</if>
+<if test="firstCreditDate != null and firstCreditDate != ''" >
+	    and first_credit_date =  #{firstCreditDate}
+	</if>
+<if test="semiCreditNum != null and semiCreditNum != ''" >
+	    and semi_credit_num =  #{semiCreditNum}
+	</if>
+<if test="semiCreditDate != null and semiCreditDate != ''" >
+	    and semi_credit_date =  #{semiCreditDate}
+	</if>
+<if test="declareNum != null and declareNum != ''" >
+	    and declare_num =  #{declareNum}
+	</if>
+<if test="objectionNum != null and objectionNum != ''" >
+	    and objection_num =  #{objectionNum}
+	</if>
+<if test="loanDefaultNum != null and loanDefaultNum != ''" >
+	    and loan_default_num =  #{loanDefaultNum}
+	</if>
+<if test="loanDefaultMonthNum != null and loanDefaultMonthNum != ''" >
+	    and loan_default_month_num =  #{loanDefaultMonthNum}
+	</if>
+<if test="loanMaxDefaultAmount != null and loanMaxDefaultAmount != ''" >
+	    and loan_max_default_amount =  #{loanMaxDefaultAmount}
+	</if>
+<if test="loanMaxDefaultMonth != null and loanMaxDefaultMonth != ''" >
+	    and loan_max_default_month =  #{loanMaxDefaultMonth}
+	</if>
+<if test="creditDefaultNum != null and creditDefaultNum != ''" >
+	    and credit_default_num =  #{creditDefaultNum}
+	</if>
+<if test="creditDefaultMonthNum != null and creditDefaultMonthNum != ''" >
+	    and credit_default_month_num =  #{creditDefaultMonthNum}
+	</if>
+<if test="creditMaxDefaultAmount != null and creditMaxDefaultAmount != ''" >
+	    and credit_max_default_amount =  #{creditMaxDefaultAmount}
+	</if>
+<if test="creditMaxDefaultMonth != null and creditMaxDefaultMonth != ''" >
+	    and credit_max_default_month =  #{creditMaxDefaultMonth}
+	</if>
+<if test="semiCreditDefaultNum != null and semiCreditDefaultNum != ''" >
+	    and semi_credit_default_num =  #{semiCreditDefaultNum}
+	</if>
+<if test="semiCreditDefaultMonthNum != null and semiCreditDefaultMonthNum != ''" >
+	    and semi_credit_default_month_num =  #{semiCreditDefaultMonthNum}
+	</if>
+<if test="semiCreditMaxDefaultAmount != null and semiCreditMaxDefaultAmount != ''" >
+	    and semi_credit_max_default_amount =  #{semiCreditMaxDefaultAmount}
+	</if>
+<if test="semiCreditMaxDefaultMonth != null and semiCreditMaxDefaultMonth != ''" >
+	    and semi_credit_max_default_month =  #{semiCreditMaxDefaultMonth}
+	</if>
+<if test="loanLegalNum != null and loanLegalNum != ''" >
+	    and loan_legal_num =  #{loanLegalNum}
+	</if>
+<if test="loanComNum != null and loanComNum != ''" >
+	    and loan_com_num =  #{loanComNum}
+	</if>
+<if test="loanNum != null and loanNum != ''" >
+	    and loan_num =  #{loanNum}
+	</if>
+<if test="loanAmount != null and loanAmount != ''" >
+	    and loan_amount =  #{loanAmount}
+	</if>
+<if test="loanRestAmount != null and loanRestAmount != ''" >
+	    and loan_rest_amount =  #{loanRestAmount}
+	</if>
+<if test="loanAvg6mAmount != null and loanAvg6mAmount != ''" >
+	    and loan_avg6m_amount =  #{loanAvg6mAmount}
+	</if>
+<if test="creditLegalNum != null and creditLegalNum != ''" >
+	    and credit_legal_num =  #{creditLegalNum}
+	</if>
+<if test="creditComNum != null and creditComNum != ''" >
+	    and credit_com_num =  #{creditComNum}
+	</if>
+<if test="creditAccountNum != null and creditAccountNum != ''" >
+	    and credit_account_num =  #{creditAccountNum}
+	</if>
+<if test="creditTotalAmount != null and creditTotalAmount != ''" >
+	    and credit_total_amount =  #{creditTotalAmount}
+	</if>
+<if test="creditMaxAmount != null and creditMaxAmount != ''" >
+	    and credit_max_amount =  #{creditMaxAmount}
+	</if>
+<if test="creditMinAmount != null and creditMinAmount != ''" >
+	    and credit_min_amount =  #{creditMinAmount}
+	</if>
+<if test="creditUseAmount != null and creditUseAmount != ''" >
+	    and credit_use_amount =  #{creditUseAmount}
+	</if>
+<if test="creditAvg6mAmount != null and creditAvg6mAmount != ''" >
+	    and credit_avg6m_amount =  #{creditAvg6mAmount}
+	</if>
+<if test="semiCreditLegalNum != null and semiCreditLegalNum != ''" >
+	    and semi_credit_legal_num =  #{semiCreditLegalNum}
+	</if>
+<if test="semiCreditComNum != null and semiCreditComNum != ''" >
+	    and semi_credit_com_num =  #{semiCreditComNum}
+	</if>
+<if test="semiCreditAccountNum != null and semiCreditAccountNum != ''" >
+	    and semi_credit_account_num =  #{semiCreditAccountNum}
+	</if>
+<if test="semiCreditTotalAmount != null and semiCreditTotalAmount != ''" >
+	    and semi_credit_total_amount =  #{semiCreditTotalAmount}
+	</if>
+<if test="semiCreditMaxAmount != null and semiCreditMaxAmount != ''" >
+	    and semi_credit_max_amount =  #{semiCreditMaxAmount}
+	</if>
+<if test="semiCreditMinAmount != null and semiCreditMinAmount != ''" >
+	    and semi_credit_min_amount =  #{semiCreditMinAmount}
+	</if>
+<if test="semiCreditUseAmount != null and semiCreditUseAmount != ''" >
+	    and semi_credit_use_amount =  #{semiCreditUseAmount}
+	</if>
+<if test="semiCreditAvg6mAmount != null and semiCreditAvg6mAmount != ''" >
+	    and semi_credit_avg6m_amount =  #{semiCreditAvg6mAmount}
+	</if>
+<if test="secureNum != null and secureNum != ''" >
+	    and secure_num =  #{secureNum}
+	</if>
+<if test="secureAmount != null and secureAmount != ''" >
+	    and secure_amount =  #{secureAmount}
+	</if>
+<if test="secureRestAmount != null and secureRestAmount != ''" >
+	    and secure_rest_amount =  #{secureRestAmount}
+	</if>
+<if test="remarks != null and remarks != ''" >
+	    and remarks =  #{remarks}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_RH_SUMMARY_SEQ') From dual
+			<!-- Select T_RH_SUMMARY_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_RH_SUMMARY(id,app_id,person_house_loan_num,person_biz_house_loan_num,other_loan_num,first_loan_date,credit_num,first_credit_date,semi_credit_num,semi_credit_date,declare_num,objection_num,loan_default_num,loan_default_month_num,loan_max_default_amount,loan_max_default_month,credit_default_num,credit_default_month_num,credit_max_default_amount,credit_max_default_month,semi_credit_default_num,semi_credit_default_month_num,semi_credit_max_default_amount,semi_credit_max_default_month,loan_legal_num,loan_com_num,loan_num,loan_amount,loan_rest_amount,loan_avg6m_amount,credit_legal_num,credit_com_num,credit_account_num,credit_total_amount,credit_max_amount,credit_min_amount,credit_use_amount,credit_avg6m_amount,semi_credit_legal_num,semi_credit_com_num,semi_credit_account_num,semi_credit_total_amount,semi_credit_max_amount,semi_credit_min_amount,semi_credit_use_amount,semi_credit_avg6m_amount,secure_num,secure_amount,secure_rest_amount,remarks,state,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{personHouseLoanNum, jdbcType=INTEGER},#{personBizHouseLoanNum, jdbcType=INTEGER},#{otherLoanNum, jdbcType=INTEGER},#{firstLoanDate, jdbcType=DATE},#{creditNum, jdbcType=INTEGER},#{firstCreditDate, jdbcType=DATE},#{semiCreditNum, jdbcType=INTEGER},#{semiCreditDate, jdbcType=DATE},#{declareNum, jdbcType=INTEGER},#{objectionNum, jdbcType=INTEGER},#{loanDefaultNum, jdbcType=INTEGER},#{loanDefaultMonthNum, jdbcType=INTEGER},#{loanMaxDefaultAmount, jdbcType=DOUBLE},#{loanMaxDefaultMonth, jdbcType=INTEGER},#{creditDefaultNum, jdbcType=INTEGER},#{creditDefaultMonthNum, jdbcType=INTEGER},#{creditMaxDefaultAmount, jdbcType=DOUBLE},#{creditMaxDefaultMonth, jdbcType=INTEGER},#{semiCreditDefaultNum, jdbcType=INTEGER},#{semiCreditDefaultMonthNum, jdbcType=INTEGER},#{semiCreditMaxDefaultAmount, jdbcType=DOUBLE},#{semiCreditMaxDefaultMonth, jdbcType=INTEGER},#{loanLegalNum, jdbcType=INTEGER},#{loanComNum, jdbcType=INTEGER},#{loanNum, jdbcType=INTEGER},#{loanAmount, jdbcType=DOUBLE},#{loanRestAmount, jdbcType=DOUBLE},#{loanAvg6mAmount, jdbcType=DOUBLE},#{creditLegalNum, jdbcType=INTEGER},#{creditComNum, jdbcType=INTEGER},#{creditAccountNum, jdbcType=INTEGER},#{creditTotalAmount, jdbcType=DOUBLE},#{creditMaxAmount, jdbcType=DOUBLE},#{creditMinAmount, jdbcType=DOUBLE},#{creditUseAmount, jdbcType=DOUBLE},#{creditAvg6mAmount, jdbcType=DOUBLE},#{semiCreditLegalNum, jdbcType=INTEGER},#{semiCreditComNum, jdbcType=INTEGER},#{semiCreditAccountNum, jdbcType=INTEGER},#{semiCreditTotalAmount, jdbcType=DOUBLE},#{semiCreditMaxAmount, jdbcType=DOUBLE},#{semiCreditMinAmount, jdbcType=DOUBLE},#{semiCreditUseAmount, jdbcType=DOUBLE},#{semiCreditAvg6mAmount, jdbcType=DOUBLE},#{secureNum, jdbcType=INTEGER},#{secureAmount, jdbcType=DOUBLE},#{secureRestAmount, jdbcType=DOUBLE},#{remarks, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_RH_SUMMARY set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	person_house_loan_num =  #{personHouseLoanNum, jdbcType=INTEGER},
+	person_biz_house_loan_num =  #{personBizHouseLoanNum, jdbcType=INTEGER},
+	other_loan_num =  #{otherLoanNum, jdbcType=INTEGER},
+	first_loan_date =  #{firstLoanDate, jdbcType=DATE},
+	credit_num =  #{creditNum, jdbcType=INTEGER},
+	first_credit_date =  #{firstCreditDate, jdbcType=DATE},
+	semi_credit_num =  #{semiCreditNum, jdbcType=INTEGER},
+	semi_credit_date =  #{semiCreditDate, jdbcType=DATE},
+	declare_num =  #{declareNum, jdbcType=INTEGER},
+	objection_num =  #{objectionNum, jdbcType=INTEGER},
+	loan_default_num =  #{loanDefaultNum, jdbcType=INTEGER},
+	loan_default_month_num =  #{loanDefaultMonthNum, jdbcType=INTEGER},
+	loan_max_default_amount =  #{loanMaxDefaultAmount, jdbcType=DOUBLE},
+	loan_max_default_month =  #{loanMaxDefaultMonth, jdbcType=INTEGER},
+	credit_default_num =  #{creditDefaultNum, jdbcType=INTEGER},
+	credit_default_month_num =  #{creditDefaultMonthNum, jdbcType=INTEGER},
+	credit_max_default_amount =  #{creditMaxDefaultAmount, jdbcType=DOUBLE},
+	credit_max_default_month =  #{creditMaxDefaultMonth, jdbcType=INTEGER},
+	semi_credit_default_num =  #{semiCreditDefaultNum, jdbcType=INTEGER},
+	semi_credit_default_month_num =  #{semiCreditDefaultMonthNum, jdbcType=INTEGER},
+	semi_credit_max_default_amount =  #{semiCreditMaxDefaultAmount, jdbcType=DOUBLE},
+	semi_credit_max_default_month =  #{semiCreditMaxDefaultMonth, jdbcType=INTEGER},
+	loan_legal_num =  #{loanLegalNum, jdbcType=INTEGER},
+	loan_com_num =  #{loanComNum, jdbcType=INTEGER},
+	loan_num =  #{loanNum, jdbcType=INTEGER},
+	loan_amount =  #{loanAmount, jdbcType=DOUBLE},
+	loan_rest_amount =  #{loanRestAmount, jdbcType=DOUBLE},
+	loan_avg6m_amount =  #{loanAvg6mAmount, jdbcType=DOUBLE},
+	credit_legal_num =  #{creditLegalNum, jdbcType=INTEGER},
+	credit_com_num =  #{creditComNum, jdbcType=INTEGER},
+	credit_account_num =  #{creditAccountNum, jdbcType=INTEGER},
+	credit_total_amount =  #{creditTotalAmount, jdbcType=DOUBLE},
+	credit_max_amount =  #{creditMaxAmount, jdbcType=DOUBLE},
+	credit_min_amount =  #{creditMinAmount, jdbcType=DOUBLE},
+	credit_use_amount =  #{creditUseAmount, jdbcType=DOUBLE},
+	credit_avg6m_amount =  #{creditAvg6mAmount, jdbcType=DOUBLE},
+	semi_credit_legal_num =  #{semiCreditLegalNum, jdbcType=INTEGER},
+	semi_credit_com_num =  #{semiCreditComNum, jdbcType=INTEGER},
+	semi_credit_account_num =  #{semiCreditAccountNum, jdbcType=INTEGER},
+	semi_credit_total_amount =  #{semiCreditTotalAmount, jdbcType=DOUBLE},
+	semi_credit_max_amount =  #{semiCreditMaxAmount, jdbcType=DOUBLE},
+	semi_credit_min_amount =  #{semiCreditMinAmount, jdbcType=DOUBLE},
+	semi_credit_use_amount =  #{semiCreditUseAmount, jdbcType=DOUBLE},
+	semi_credit_avg6m_amount =  #{semiCreditAvg6mAmount, jdbcType=DOUBLE},
+	secure_num =  #{secureNum, jdbcType=INTEGER},
+	secure_amount =  #{secureAmount, jdbcType=DOUBLE},
+	secure_rest_amount =  #{secureRestAmount, jdbcType=DOUBLE},
+	remarks =  #{remarks, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_RH_SUMMARY  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_RH_SUMMARY set 
+	<trim  suffixOverrides="," >
+
+	<if test="appId != null and appId != '' " >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="personHouseLoanNum != null and personHouseLoanNum != ''  or personHouseLoanNum==0" >
+	    person_house_loan_num =  #{personHouseLoanNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="personBizHouseLoanNum != null and personBizHouseLoanNum != ''  or personBizHouseLoanNum==0" >
+	    person_biz_house_loan_num =  #{personBizHouseLoanNum, jdbcType=INTEGER},
+	</if>
+	
+	<if test="otherLoanNum != null and otherLoanNum != ''  or otherLoanNum==0" >
+	    other_loan_num =  #{otherLoanNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="firstLoanDate != null and firstLoanDate != '' " >
+	    first_loan_date =  #{firstLoanDate, jdbcType=DATE},
+	</if>
+
+	<if test="creditNum != null and creditNum != ''  or creditNum==0" >
+	    credit_num =  #{creditNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="firstCreditDate != null and firstCreditDate != '' " >
+	    first_credit_date =  #{firstCreditDate, jdbcType=DATE},
+	</if>
+
+	<if test="semiCreditNum != null and semiCreditNum != ''  or semiCreditNum==0" >
+	    semi_credit_num =  #{semiCreditNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="semiCreditDate != null and semiCreditDate != '' " >
+	    semi_credit_date =  #{semiCreditDate, jdbcType=DATE},
+	</if>
+
+	<if test="declareNum != null and declareNum != ''  or declareNum==0" >
+	    declare_num =  #{declareNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="objectionNum != null and objectionNum != ''  or objectionNum==0" >
+	    objection_num =  #{objectionNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="loanDefaultNum != null and loanDefaultNum != ''  or loanDefaultNum==0" >
+	    loan_default_num =  #{loanDefaultNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="loanDefaultMonthNum != null and loanDefaultMonthNum != ''  or loanDefaultMonthNum==0" >
+	    loan_default_month_num =  #{loanDefaultMonthNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="loanMaxDefaultAmount != null and loanMaxDefaultAmount != ''  or loanMaxDefaultAmount==0" >
+	    loan_max_default_amount =  #{loanMaxDefaultAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanMaxDefaultMonth != null and loanMaxDefaultMonth != ''  or loanMaxDefaultMonth==0" >
+	    loan_max_default_month =  #{loanMaxDefaultMonth, jdbcType=INTEGER},
+	</if>
+
+	<if test="creditDefaultNum != null and creditDefaultNum != ''  or creditDefaultNum==0" >
+	    credit_default_num =  #{creditDefaultNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="creditDefaultMonthNum != null and creditDefaultMonthNum != ''  or creditDefaultMonthNum==0" >
+	    credit_default_month_num =  #{creditDefaultMonthNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="creditMaxDefaultAmount != null and creditMaxDefaultAmount != ''  or creditMaxDefaultAmount==0" >
+	    credit_max_default_amount =  #{creditMaxDefaultAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="creditMaxDefaultMonth != null and creditMaxDefaultMonth != ''  or creditMaxDefaultMonth==0" >
+	    credit_max_default_month =  #{creditMaxDefaultMonth, jdbcType=INTEGER},
+	</if>
+
+	<if test="semiCreditDefaultNum != null and semiCreditDefaultNum != ''  or semiCreditDefaultNum==0" >
+	    semi_credit_default_num =  #{semiCreditDefaultNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="semiCreditDefaultMonthNum != null and semiCreditDefaultMonthNum != ''  or semiCreditDefaultMonthNum==0" >
+	    semi_credit_default_month_num =  #{semiCreditDefaultMonthNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="semiCreditMaxDefaultAmount != null and semiCreditMaxDefaultAmount != ''  or semiCreditMaxDefaultAmount==0" >
+	    semi_credit_max_default_amount =  #{semiCreditMaxDefaultAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="semiCreditMaxDefaultMonth != null and semiCreditMaxDefaultMonth != ''  or semiCreditMaxDefaultMonth==0" >
+	    semi_credit_max_default_month =  #{semiCreditMaxDefaultMonth, jdbcType=INTEGER},
+	</if>
+
+	<if test="loanLegalNum != null and loanLegalNum != ''  or loanLegalNum==0" >
+	    loan_legal_num =  #{loanLegalNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="loanComNum != null and loanComNum != ''  or loanComNum==0" >
+	    loan_com_num =  #{loanComNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="loanNum != null and loanNum != ''  or loanNum==0" >
+	    loan_num =  #{loanNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="loanAmount != null and loanAmount != ''  or loanAmount==0" >
+	    loan_amount =  #{loanAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanRestAmount != null and loanRestAmount != ''  or loanRestAmount==0" >
+	    loan_rest_amount =  #{loanRestAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanAvg6mAmount != null and loanAvg6mAmount != ''  or loanAvg6mAmount==0" >
+	    loan_avg6m_amount =  #{loanAvg6mAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="creditLegalNum != null and creditLegalNum != ''  or creditLegalNum==0" >
+	    credit_legal_num =  #{creditLegalNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="creditComNum != null and creditComNum != ''  or creditComNum==0" >
+	    credit_com_num =  #{creditComNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="creditAccountNum != null and creditAccountNum != ''  or creditAccountNum==0" >
+	    credit_account_num =  #{creditAccountNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="creditTotalAmount != null and creditTotalAmount != ''  or creditTotalAmount==0" >
+	    credit_total_amount =  #{creditTotalAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="creditMaxAmount != null and creditMaxAmount != ''  or creditMaxAmount==0" >
+	    credit_max_amount =  #{creditMaxAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="creditMinAmount != null and creditMinAmount != ''  or creditMinAmount==0" >
+	    credit_min_amount =  #{creditMinAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="creditUseAmount != null and creditUseAmount != ''  or creditUseAmount==0" >
+	    credit_use_amount =  #{creditUseAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="creditAvg6mAmount != null and creditAvg6mAmount != ''  or creditAvg6mAmount==0" >
+	    credit_avg6m_amount =  #{creditAvg6mAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="semiCreditLegalNum != null and semiCreditLegalNum != ''  or semiCreditLegalNum==0" >
+	    semi_credit_legal_num =  #{semiCreditLegalNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="semiCreditComNum != null and semiCreditComNum != ''  or semiCreditComNum==0" >
+	    semi_credit_com_num =  #{semiCreditComNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="semiCreditAccountNum != null and semiCreditAccountNum != ''  or semiCreditAccountNum==0" >
+	    semi_credit_account_num =  #{semiCreditAccountNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="semiCreditTotalAmount != null and semiCreditTotalAmount != ''  or semiCreditTotalAmount==0" >
+	    semi_credit_total_amount =  #{semiCreditTotalAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="semiCreditMaxAmount != null and semiCreditMaxAmount != ''  or semiCreditMaxAmount==0" >
+	    semi_credit_max_amount =  #{semiCreditMaxAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="semiCreditMinAmount != null and semiCreditMinAmount != ''  or semiCreditMinAmount==0" >
+	    semi_credit_min_amount =  #{semiCreditMinAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="semiCreditUseAmount != null and semiCreditUseAmount != ''  or semiCreditUseAmount==0" >
+	    semi_credit_use_amount =  #{semiCreditUseAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="semiCreditAvg6mAmount != null and semiCreditAvg6mAmount != ''  or semiCreditAvg6mAmount==0" >
+	    semi_credit_avg6m_amount =  #{semiCreditAvg6mAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="secureNum != null and secureNum != ''  or secureNum==0" >
+	    secure_num =  #{secureNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="secureAmount != null and secureAmount != ''  or secureAmount==0" >
+	    secure_amount =  #{secureAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="secureRestAmount != null and secureRestAmount != ''  or secureRestAmount==0" >
+	    secure_rest_amount =  #{secureRestAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="remarks != null and remarks != '' " >
+	    remarks =  #{remarks, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operator != null and operator != '' " >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 信用贷款人行报告信息概要 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_RH_SUMMARY  where id = #{id}
+</select>
+
+<!-- 信用贷款人行报告信息概要 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_RH_SUMMARY 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询信用贷款人行报告信息概要列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_RH_SUMMARY 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

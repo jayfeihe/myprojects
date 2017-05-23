@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.UserRepayPlanDAO">
+	<resultMap type="com.hikootech.mqcash.po.UserRepaymentPlans" id="userRepaymentPlansMap">
+		<result column="repayment_plans_id" property="repaymentPlansId" />
+		<result column="instalment_id" property="instalmentId" />
+		<result column="user_id" property="userId" />
+		<result column="instalment_number" property="instalmentNumber" />
+		<result column="instalment_count" property="instalmentCount" />
+		<result column="receivable_amount" property="receivableAmount" />
+		<result column="received_amount" property="receivedAmount" />
+		<result column="receivable_principal" property="receivablePrincipal" />
+		<result column="receivable_service" property="receivableService" />
+		<result column="receivable_overdue" property="receivableOverdue" />
+		<result column="received_principal" property="receivedPrincipal" />
+		<result column="received_service" property="receivedService" />
+		<result column="received_overdue" property="receivedOverdue" />
+		<result column="reduce_overdue" property="reduceOverdue" />
+		<result column="plans_status" property="plansStatus" />
+		<result column="create_time" property="createTime" />
+		<result column="plan_repayment_time" property="planRepaymentTime" />
+		<result column="real_repayment_time" property="realRepaymentTime" />
+		<result column="operator" property="operator" />
+	</resultMap>
+	<!-- 该sql可由instalmentinfo.xml 中sql关联  不能加除了 instalment_id 以外的条件-->
+	<select id="queryRepayPlansOnlyByInstalmentId" resultMap="userRepaymentPlansMap">
+			select *
+	 from t_user_repayment_plans  where instalment_id = #{instalmentId}  order by instalment_number
+	</select>
+	<!--根据账单id和用户id查询还款计划信息  -->
+	<select id="queryRepayPlansByInstalmentId" parameterType="java.util.Map" resultMap="userRepaymentPlansMap">
+			select *
+	 from t_user_repayment_plans  where instalment_id = #{instalmentId} and user_id=#{userId} order by instalment_number
+	</select>
+	
+	<!-- 根据主键进行查询还款计划 -->
+	<select id="queryRepayPlanByKey" resultMap="userRepaymentPlansMap">
+		select * from  t_user_repayment_plans  where repayment_plans_id=#{planId} and user_id=#{userId}
+	</select>
+	
+	 
+	<!-- 根据还款订单id查询相应的还款计划  -->
+	<select id="queryRepayPlanByPaymentOrderId" resultMap="userRepaymentPlansMap">
+	 select * from  t_user_repayment_plans  
+			WHERE 
+			  repayment_plans_id in
+		<!-- update t_user_repayment_plans set plans_status=1 where repayment_plans_id in  -->
+		   (select b.repayment_plans_id from t_user_payment_order a 
+		     join t_user_payment_record_item b on a.user_payment_order_id=b.user_payment_order_id 
+		      where a.user_payment_order_id=#{paymentOrderId} )
+		       and user_id=#{userId}
+	</select>
+	 <!--根据分期单id，去掉代收锁 -->
+   <update id="currInstalmentUnLock">
+   		update t_user_repayment_plans t 
+   		 set t.repay_lock=0
+   		where t.instalment_id=#{value}  
+   </update>
+   
+     <!--查询当前中度逾期数量 -->
+   	<select id="queryMiddleOverDueNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+   		select count(*) from t_user_repayment_plans t 
+   		where t.overdue_flag= 1 and t.plans_status=0
+   		  and t.plan_repayment_time &gt;=#{startDate}
+   		  and t.plan_repayment_time &lt;  #{endDate}
+   		  and t.instalment_id=#{instalmentId}
+   		  and user_id=#{userId}
+   	</select>
+   	
+ 				<!-- 	更新还款计划表（根据主键） -->
+		<update id="updateRepaymentPlansRealPay" parameterType="com.hikootech.mqcash.po.UserRepaymentPlans" >
+    
+		    UPDATE t_user_repayment_plans
+			SET
+				plans_status=#{plansStatus},
+				update_time=#{updateTime},
+				operator=#{operator}
+			<if test="realRepaymentTime!=null"> ,real_repayment_time=#{realRepaymentTime}</if>
+			<if test="receivedAmount!=null"> ,received_amount=#{receivedAmount}</if>
+			<if test="receivedPrincipal!=null"> ,received_principal=#{receivedPrincipal}</if>
+			<if test="receivedService!=null"> ,received_service=#{receivedService}</if>
+			<if test="receivedOverdue!=null"> ,received_overdue=#{receivedOverdue}</if>	
+			WHERE 
+			   repayment_plans_id = #{repaymentPlansId}
+		</update>
+ 
+   	
+</mapper>

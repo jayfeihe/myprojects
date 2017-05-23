@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.overdue.dao.OverdueReportDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.overdue.model.OverdueReport" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="loan_id" property="loanId"/><!--  -->
+	<result column="contract_id" property="contractId"/><!-- 合同ID -->
+	<result column="num" property="num"/><!-- 期数 -->
+	<result column="submit_uid" property="submitUid"/><!-- 提交人 -->
+	<result column="submit_tme" property="submitTme"/><!-- 提交时间 -->
+	<result column="submit_remark" property="submitRemark"/><!-- 提交说明 -->
+	<result column="audit_uid" property="auditUid"/><!-- 审批人 -->
+	<result column="audit_time" property="auditTime"/><!-- 审批时间 -->
+	<result column="audit_remark" property="auditRemark"/><!-- 审批结果审批说明 -->
+	<result column="audit_result" property="auditResult"/><!-- 审批结果 -->
+	<result column="submit_name" property="submitName"/><!-- 提交人-->
+	<result column="audit_name" property="auditName"/><!-- 审批人 -->
+	
+	<result column="org_audit_uid" property="orgAuditUid"/><!-- 审批人 -->
+	<result column="org_audit_name" property="orgAuditName"/><!-- 审批人 -->
+	<result column="org_audit_time" property="orgAuditTime"/><!-- 审批时间 -->
+	<result column="org_audit_remark" property="orgAuditRemark"/><!-- 审批结果审批说明 -->
+	<result column="org_audit_result" property="orgAuditResult"/><!-- 审批结果 -->
+</resultMap>
+       
+<!-- T_OVERDUE_REPORT table all fields -->
+<sql id="Column_List" >
+	 id,loan_id,contract_id,num,submit_uid,submit_tme,submit_remark,audit_uid,audit_time,audit_remark,audit_result,org_audit_uid,org_audit_time,org_audit_remark,org_audit_result,
+	 (select t_user.name from t_user where t_overdue_report.submit_uid=t_user.login_id)submit_name,
+	 (select t_user.name from t_user where t_overdue_report.audit_uid=t_user.login_id)audit_name,
+	  (select t_user.name from t_user where t_overdue_report.org_audit_uid=t_user.login_id)org_audit_name
+	 
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and loan_id =  #{loanId}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and contract_id =  #{contractId}
+	</if>
+<if test="num != null and num != ''" >
+	    and num =  #{num}
+	</if>
+<if test="submitUid != null and submitUid != ''" >
+	    and submit_uid =  #{submitUid}
+	</if>
+<if test="submitTme != null and submitTme != ''" >
+	    and submit_tme =  #{submitTme}
+	</if>
+<if test="submitRemark != null and submitRemark != ''" >
+	    and submit_remark =  #{submitRemark}
+	</if>
+<if test="auditUid != null and auditUid != ''" >
+	    and audit_uid =  #{auditUid}
+	</if>
+<if test="auditTime != null and auditTime != ''" >
+	    and audit_time =  #{auditTime}
+	</if>
+<if test="auditRemark != null and auditRemark != ''" >
+	    and audit_remark =  #{auditRemark}
+	</if>
+<if test="auditResult != null and auditResult != ''" >
+	    and audit_result =  #{auditResult}
+	</if>	
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_OVERDUE_REPORT_SEQ') From dual -->
+			Select T_OVERDUE_REPORT_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_OVERDUE_REPORT(id,loan_id,contract_id,num,submit_uid,submit_tme,submit_remark,audit_uid,audit_time,audit_remark,audit_result,org_audit_uid,org_audit_time,org_audit_remark,org_audit_result)
+ values( #{id, jdbcType=INTEGER},#{loanId, jdbcType=VARCHAR},#{contractId, jdbcType=VARCHAR},#{num, jdbcType=INTEGER},#{submitUid, jdbcType=VARCHAR},#{submitTme, jdbcType=TIMESTAMP},#{submitRemark, jdbcType=VARCHAR},#{auditUid, jdbcType=VARCHAR},#{auditTime, jdbcType=TIMESTAMP},#{auditRemark, jdbcType=VARCHAR},#{auditResult, jdbcType=VARCHAR},#{orgAuditUid, jdbcType=VARCHAR},#{orgAuditTime, jdbcType=TIMESTAMP},#{orgAuditRemark, jdbcType=VARCHAR},#{orgAuditResult, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_OVERDUE_REPORT set 
+	<trim  suffixOverrides="," >
+	loan_id =  #{loanId, jdbcType=VARCHAR},
+	contract_id =  #{contractId, jdbcType=VARCHAR},
+	num =  #{num, jdbcType=INTEGER},
+	submit_uid =  #{submitUid, jdbcType=VARCHAR},
+	submit_tme =  #{submitTme, jdbcType=TIMESTAMP},
+	submit_remark =  #{submitRemark, jdbcType=VARCHAR},
+	audit_uid =  #{auditUid, jdbcType=VARCHAR},
+	audit_time =  #{auditTime, jdbcType=TIMESTAMP},
+	audit_remark =  #{auditRemark, jdbcType=VARCHAR},
+	audit_result =  #{auditResult, jdbcType=VARCHAR},
+	
+	org_audit_uid =  #{orgAuditUid, jdbcType=VARCHAR},
+	org_audit_time =  #{orgAuditTime, jdbcType=TIMESTAMP},
+	org_audit_remark =  #{orgAuditRemark, jdbcType=VARCHAR},
+	org_audit_result =  #{orgAuditResult, jdbcType=VARCHAR}
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_OVERDUE_REPORT  where id = #{id}
+</delete>
+
+<!-- 根据id查询 逾期报告 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_OVERDUE_REPORT  where id = #{id}
+</select>
+
+<!-- 逾期报告 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_OVERDUE_REPORT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询逾期报告列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_OVERDUE_REPORT 
+	<include refid="Where_Clause"/>
+</select>
+</mapper>   

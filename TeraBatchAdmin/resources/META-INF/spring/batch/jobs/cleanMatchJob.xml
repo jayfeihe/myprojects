@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:task="http://www.springframework.org/schema/task"  
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/batch 
+	http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+	http://www.springframework.org/schema/context
+  	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+ 	http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+    
+    
+     <job id="cleanMatchJob"  xmlns="http://www.springframework.org/schema/batch">
+        <step id="cleanMatchStep">
+            <tasklet>
+                <chunk reader="cleanMatchReader" writer="cleanMatchWriter" processor="cleanMatchProcessor" commit-interval="1000">
+                </chunk>
+            </tasklet>
+        </step>
+    </job>
+
+    <bean id="cleanMatchReader"
+        class="org.mybatis.spring.batch.MyBatisPagingItemReader" scope="step">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+		<property name="queryId" value="com.tera.batch.errorLog.dao.BatchErrorLogDao.queryCount"/>
+		<property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="cleanMatchlend2match" class="com.tera.match.model.Lend2match" scope="prototype"></bean>
+    
+    <bean id="cleanMatchProcessor" class="com.tera.batch.cleanmatch.processor.CleanMatchProcessor">
+     	<property name="daoMatch" ref="matchResultDao"/>
+     	<property name="matchResultService" ref="matchResultService"/>
+     	<property name="loanRepayPlanService" ref="loanRepayPlanService"/>
+     	<property name="batchErrorLogDao" ref="batchErrorLogDao"/>
+	</bean>
+	
+     <bean id="cleanMatchWriter"
+        class="com.tera.batch.cleanmatch.writer.Writer" scope="step">
+    </bean>
+	
+</beans>

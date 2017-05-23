@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.lenduser.dao.LendUserDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.lenduser.model.LendUser" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="name" property="name"/><!-- 姓名 -->
+	<result column="gender" property="gender"/><!-- 性别 -->
+	<result column="id_no" property="idNo"/><!-- 身份证号 -->
+	<result column="email" property="email"/><!-- EMAIL -->
+	<result column="phone" property="phone"/><!-- 固定电话 -->
+	<result column="mobile" property="mobile"/><!-- 手机 -->
+	<result column="home_prvn" property="homePrvn"/><!-- 户籍所在省 -->
+	<result column="home_city" property="homeCity"/><!-- 户籍所在市 -->
+	<result column="home_ctry" property="homeCtry"/><!-- 户籍所在县 -->
+	<result column="home_addr" property="homeAddr"/><!-- 户籍地址 -->
+	<result column="now_prvn" property="nowPrvn"/><!-- 现居地所在省 -->
+	<result column="now_city" property="nowCity"/><!-- 现居地所在市 -->
+	<result column="now_ctry" property="nowCtry"/><!-- 现居地所在县 -->
+	<result column="now_addr" property="nowAddr"/><!-- 现居地地址 -->
+	<result column="acct_prvn" property="acctPrvn"/><!-- 开户行所在省 -->
+	<result column="acct_city" property="acctCity"/><!-- 开户行所在市-->
+	<result column="acct_ctry" property="acctCtry"/><!-- 开户行所在区县-->
+	<result column="acct_branch" property="acctBranch"/><!-- 开户行所在区县-->
+	<result column="acct_name" property="acctName"/><!-- 开户名 -->
+	<result column="acct_bank" property="acctBank"/><!-- 开户行 -->
+	<result column="acct_code" property="acctCode"/><!-- 收款账号 -->
+	<result column="remark" property="remark"/><!-- 说明 -->
+	<result column="amt" property="amt"/><!-- 余额 -->
+	<result column="state" property="state"/><!--  -->
+	<result column="ext1" property="ext1"/><!-- 扩展1 -->
+	<result column="ext2" property="ext2"/><!-- 扩展2 -->
+	<result column="real_name" property="realName"/><!--真实姓名  -->
+</resultMap>
+       
+<!-- T_LEND_USER table all fields -->
+<sql id="Column_List" >
+	 id,name,gender,id_no,email,phone,mobile,home_prvn,home_city,home_ctry,home_addr,now_prvn,now_city,now_ctry,now_addr,
+	 acct_prvn,acct_city,acct_ctry,acct_branch,acct_name,acct_bank,acct_code,remark,amt,state,ext1,ext2,real_name
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="gender != null and gender != ''" >
+	    and gender =  #{gender}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="email != null and email != ''" >
+	    and email =  #{email}
+	</if>
+<if test="phone != null and phone != ''" >
+	    and phone =  #{phone}
+	</if>
+<if test="mobile != null and mobile != ''" >
+	    and mobile =  #{mobile}
+	</if>
+<if test="homePrvn != null and homePrvn != ''" >
+	    and home_prvn =  #{homePrvn}
+	</if>
+<if test="homeCity != null and homeCity != ''" >
+	    and home_city =  #{homeCity}
+	</if>
+<if test="homeCtry != null and homeCtry != ''" >
+	    and home_ctry =  #{homeCtry}
+	</if>
+<if test="homeAddr != null and homeAddr != ''" >
+	    and home_addr =  #{homeAddr}
+	</if>
+<if test="nowPrvn != null and nowPrvn != ''" >
+	    and now_prvn =  #{nowPrvn}
+	</if>
+<if test="nowCity != null and nowCity != ''" >
+	    and now_city =  #{nowCity}
+	</if>
+<if test="nowCtry != null and nowCtry != ''" >
+	    and now_ctry =  #{nowCtry}
+	</if>
+<if test="nowAddr != null and nowAddr != ''" >
+	    and now_addr =  #{nowAddr}
+	</if>
+<if test="acctName != null and acctName != ''" >
+	    and acct_name =  #{acctName}
+	</if>
+<if test="acctBank != null and acctBank != ''" >
+	    and acct_bank =  #{acctBank}
+	</if>
+<if test="acctCode != null and acctCode != ''" >
+	    and acct_code =  #{acctCode}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="amt != null and amt != ''" >
+	    and amt =  #{amt}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="ext1 != null and ext1 != ''" >
+	    and ext1 =  #{ext1}
+	</if>
+<if test="ext2 != null and ext2 != ''" >
+	    and ext2 =  #{ext2}
+	</if>
+<if test="realName != null and realName != ''" >
+	    and real_name =  #{realName}
+	</if>	
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_LEND_USER_SEQ') From dual -->
+			Select T_LEND_USER_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_LEND_USER(id,name,gender,id_no,email,phone,mobile,home_prvn,home_city,home_ctry,home_addr,now_prvn,now_city,now_ctry,now_addr,acct_name,acct_prvn,acct_city,acct_ctry,acct_branch,acct_bank,acct_code,remark,amt,state,ext1,ext2,real_name)
+ values( #{id, jdbcType=INTEGER},#{name, jdbcType=VARCHAR},#{gender, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{email, jdbcType=VARCHAR},#{phone, jdbcType=VARCHAR},#{mobile, jdbcType=VARCHAR},#{homePrvn, jdbcType=VARCHAR},#{homeCity, jdbcType=VARCHAR},#{homeCtry, jdbcType=VARCHAR},#{homeAddr, jdbcType=VARCHAR},#{nowPrvn, jdbcType=VARCHAR},#{nowCity, jdbcType=VARCHAR},#{nowCtry, jdbcType=VARCHAR},#{nowAddr, jdbcType=VARCHAR},#{acctName, jdbcType=VARCHAR},#{acctPrvn, jdbcType=VARCHAR},#{acctCity, jdbcType=VARCHAR},#{acctCtry, jdbcType=VARCHAR},#{acctBranch, jdbcType=VARCHAR},#{acctBank, jdbcType=VARCHAR},#{acctCode, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{amt, jdbcType=DOUBLE},1,#{ext1, jdbcType=VARCHAR},#{ext2, jdbcType=VARCHAR},#{realName, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_LEND_USER set 
+	<trim  suffixOverrides="," >
+	name =  #{name, jdbcType=VARCHAR},
+	gender =  #{gender, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	email =  #{email, jdbcType=VARCHAR},
+	phone =  #{phone, jdbcType=VARCHAR},
+	mobile =  #{mobile, jdbcType=VARCHAR},
+	home_prvn =  #{homePrvn, jdbcType=VARCHAR},
+	home_city =  #{homeCity, jdbcType=VARCHAR},
+	home_ctry =  #{homeCtry, jdbcType=VARCHAR},
+	home_addr =  #{homeAddr, jdbcType=VARCHAR},
+	now_prvn =  #{nowPrvn, jdbcType=VARCHAR},
+	now_city =  #{nowCity, jdbcType=VARCHAR},
+	now_ctry =  #{nowCtry, jdbcType=VARCHAR},
+	now_addr =  #{nowAddr, jdbcType=VARCHAR},
+	acct_name =  #{acctName, jdbcType=VARCHAR},
+	acct_prvn = #{acctPrvn, jdbcType=VARCHAR},
+	acct_city = #{acctCity, jdbcType=VARCHAR},
+	acct_ctry = #{acctCtry, jdbcType=VARCHAR},
+	acct_branch =  #{acctBranch, jdbcType=VARCHAR},
+	acct_bank =  #{acctBank, jdbcType=VARCHAR},
+	acct_code =  #{acctCode, jdbcType=VARCHAR},
+	remark =  #{remark, jdbcType=VARCHAR},
+	amt =  #{amt, jdbcType=DOUBLE},
+	state =  #{state, jdbcType=VARCHAR},
+	ext1 =  #{ext1, jdbcType=VARCHAR},
+	ext2 =  #{ext2, jdbcType=VARCHAR},
+	real_name =  #{realName, jdbcType=VARCHAR}
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_LEND_USER  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_LEND_USER set 
+	<trim  suffixOverrides="," >
+
+	<if test="name != null and name != '' " >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+
+	<if test="gender != null and gender != '' " >
+	    gender =  #{gender, jdbcType=VARCHAR},
+	</if>
+
+	<if test="idNo != null and idNo != '' " >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="email != null and email != '' " >
+	    email =  #{email, jdbcType=VARCHAR},
+	</if>
+
+	<if test="phone != null and phone != '' " >
+	    phone =  #{phone, jdbcType=VARCHAR},
+	</if>
+
+	<if test="mobile != null and mobile != '' " >
+	    mobile =  #{mobile, jdbcType=VARCHAR},
+	</if>
+
+	<if test="homePrvn != null and homePrvn != '' " >
+	    home_prvn =  #{homePrvn, jdbcType=VARCHAR},
+	</if>
+
+	<if test="homeCity != null and homeCity != '' " >
+	    home_city =  #{homeCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="homeCtry != null and homeCtry != '' " >
+	    home_ctry =  #{homeCtry, jdbcType=VARCHAR},
+	</if>
+
+	<if test="homeAddr != null and homeAddr != '' " >
+	    home_addr =  #{homeAddr, jdbcType=VARCHAR},
+	</if>
+
+	<if test="nowPrvn != null and nowPrvn != '' " >
+	    now_prvn =  #{nowPrvn, jdbcType=VARCHAR},
+	</if>
+
+	<if test="nowCity != null and nowCity != '' " >
+	    now_city =  #{nowCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="nowCtry != null and nowCtry != '' " >
+	    now_ctry =  #{nowCtry, jdbcType=VARCHAR},
+	</if>
+
+	<if test="nowAddr != null and nowAddr != '' " >
+	    now_addr =  #{nowAddr, jdbcType=VARCHAR},
+	</if>
+
+	<if test="acctName != null and acctName != '' " >
+	    acct_name =  #{acctName, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="acctPrvn != null and acctPrvn != '' " >
+		acct_prvn = #{acctPrvn, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="acctCity != null and acctCity != '' " >
+		acct_city = #{acctCity, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="acctCtry != null and acctCtry != '' " >
+		acct_ctry = #{acctCtry, jdbcType=VARCHAR},
+	</if>
+
+	<if test="acctBranch != null and acctBranch != '' " >
+	    acct_branch =  #{acctBranch, jdbcType=VARCHAR},
+	</if>
+	<if test="acctBank != null and acctBank != '' " >
+	    acct_bank =  #{acctBank, jdbcType=VARCHAR},
+	</if>
+
+	<if test="acctCode != null and acctCode != '' " >
+	    acct_code =  #{acctCode, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remark != null and remark != '' " >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+
+	<if test="amt != null and amt != ''  or amt==0" >
+	    amt =  #{amt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="ext1 != null and ext1 != '' " >
+	    ext1 =  #{ext1, jdbcType=VARCHAR},
+	</if>
+
+	<if test="ext2 != null and ext2 != '' " >
+	    ext2 =  #{ext2, jdbcType=VARCHAR},
+	</if>
+	<if test="realName != null and realName != '' " >
+	    real_name =  #{realName, jdbcType=VARCHAR},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 出借人信息表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_LEND_USER  where id = #{id}
+</select>
+
+<!-- 出借人信息表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LEND_USER 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询出借人信息表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LEND_USER 
+	<include refid="Where_Clause"/>
+	order by name
+</select>
+  	
+</mapper>   

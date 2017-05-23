@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.loan.dao.BankBranchInfoDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.audit.loan.model.BankBranchInfo" >
+	<result column="id" property="id"/><!--  -->
+	<result column="bank_name" property="bankName"/><!--  -->
+	<result column="city" property="city"/><!--  -->
+	<result column="bank_branch" property="bankBranch"/><!--  -->
+</resultMap>
+       
+<!-- T_BANK_BRANCH_INFO table all fields -->
+<sql id="Column_List" >
+	 id,bank_name,city,bank_branch
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="bankName != null and bankName != ''" >
+	    and bank_name =  #{bankName}
+	</if>
+<if test="city != null and city != ''" >
+	    and city =  #{city}
+	</if>
+<if test="bankBranch != null and bankBranch != ''" >
+	    and bank_branch =  #{bankBranch}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+		
+			Select T_BANK_BRANCH_INFO_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_BANK_BRANCH_INFO(id,bank_name,city,bank_branch)
+ values( #{id, jdbcType=INTEGER},#{bankName, jdbcType=VARCHAR},#{city, jdbcType=VARCHAR},#{bankBranch, jdbcType=VARCHAR})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_BANK_BRANCH_INFO set 
+	<trim  suffixOverrides="," >
+	id =  #{id, jdbcType=INTEGER},
+	bank_name =  #{bankName, jdbcType=VARCHAR},
+	city =  #{city, jdbcType=VARCHAR},
+	bank_branch =  #{bankBranch, jdbcType=VARCHAR},
+	</trim>
+ 	where  = #{}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_BANK_BRANCH_INFO  where  = #{}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_BANK_BRANCH_INFO set 
+	<trim  suffixOverrides="," >
+	<if test="id != null and id != ''  or id==0" >
+	    id =  #{id, jdbcType=INTEGER},
+	</if>
+
+	<if test="bankName != null and bankName != '' " >
+	    bank_name =  #{bankName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="city != null and city != '' " >
+	    city =  #{city, jdbcType=VARCHAR},
+	</if>
+
+	<if test="branch != null and branch != '' " >
+	    bank_branch =  #{bankBranch, jdbcType=VARCHAR},
+	</if>
+
+	</trim>
+	where  = #{}
+</update>
+
+<!-- 根据id查询  -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_BANK_BRANCH_INFO  where  = #{}
+</select>
+
+<!--  列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_BANK_BRANCH_INFO 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_BANK_BRANCH_INFO 
+	<include refid="Where_Clause"/>
+	 ORDER BY nlssort(bank_branch, 'NLS_SORT=SCHINESE_PINYIN_M')
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

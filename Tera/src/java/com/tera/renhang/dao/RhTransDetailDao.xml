@@ -1,0 +1,920 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.renhang.dao.RhTransDetailDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.renhang.model.RhTransDetail" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="type" property="type"/><!-- 类型 -->
+	<result column="start_date" property="startDate"/><!-- 发放时间 -->
+	<result column="company" property="company"/><!-- 发放机构 -->
+	<result column="amount" property="amount"/><!-- 发放金额 -->
+	<result column="loan_type" property="loanType"/><!-- 发放类型 -->
+	<result column="biz_no" property="bizNo"/><!-- 业务号码 -->
+	<result column="biz_type" property="bizType"/><!-- 业务类型 -->
+	<result column="period" property="period"/><!-- 期数 -->
+	<result column="pay_method" property="payMethod"/><!-- 还款方式 -->
+	<result column="end_date" property="endDate"/><!-- 到期日 -->
+	<result column="to_date" property="toDate"/><!-- 截至日期 -->
+	<result column="clear_date" property="clearDate"/><!-- 结清日期 -->
+	<result column="trans_state" property="transState"/><!-- 交易状态 -->
+	<result column="two_years_overdue" property="twoYearsOverdue"/><!-- 近两年逾期次数 -->
+	<result column="two_years_degree" property="twoYearsDegree"/><!-- 近两年逾期最高程度 -->
+	<result column="two_years_limit" property="twoYearsLimit"/><!-- 近两年逾期最高金额 -->
+	<result column="loan_class" property="loanClass"/><!-- 贷款五级分类 -->
+	<result column="loan_rest_amount" property="loanRestAmount"/><!-- 贷款本金余额 -->
+	<result column="loan_rest_period" property="loanRestPeriod"/><!-- 贷款剩余还款期数 -->
+	<result column="loan_pay_amount" property="loanPayAmount"/><!-- 贷款本月应还款 -->
+	<result column="loan_pay_date" property="loanPayDate"/><!-- 贷款应还款日期 -->
+	<result column="loan_pay_received" property="loanPayReceived"/><!-- 贷款本月实还款 -->
+	<result column="loan_last_pay_date" property="loanLastPayDate"/><!-- 贷款最近一次还款日期 -->
+	<result column="loan_default_num" property="loanDefaultNum"/><!-- 贷款当前逾期期数 -->
+	<result column="loan_default_aount" property="loanDefaultAount"/><!-- 贷款当前逾期金额 -->
+	<result column="loan_default12m_aount" property="loanDefault12mAount"/><!-- 贷款逾期31-60未还本金 -->
+	<result column="loan_default23m_aount" property="loanDefault23mAount"/><!-- 贷款逾期61-90未还本金 -->
+	<result column="loan_default36m_aount" property="loanDefault36mAount"/><!-- 贷款逾期91-180未还本金 -->
+	<result column="loan_default6m_aount" property="loanDefault6mAount"/><!-- 贷款逾期181以上未还本金 -->
+	<result column="credit_total_amount" property="creditTotalAmount"/><!-- 贷记卡共享额度 -->
+	<result column="credit_use_amount" property="creditUseAmount"/><!-- 贷记卡已用额度 -->
+	<result column="credit_avg6m_amount" property="creditAvg6mAmount"/><!-- 贷记卡6月均用额度 -->
+	<result column="credit_max_amount" property="creditMaxAmount"/><!-- 贷记卡最大使用额度 -->
+	<result column="credit_pay_amount" property="creditPayAmount"/><!-- 贷记卡本月还款 -->
+	<result column="credit_bill_date" property="creditBillDate"/><!-- 贷记卡账单日 -->
+	<result column="credit_pay_received" property="creditPayReceived"/><!-- 贷记卡本月实还 -->
+	<result column="credit_last_pay_date" property="creditLastPayDate"/><!-- 贷记卡最近还款日 -->
+	<result column="credit_default_num" property="creditDefaultNum"/><!-- 贷记卡当前逾期期数 -->
+	<result column="credit_default_aount" property="creditDefaultAount"/><!-- 贷记卡当前逾期金额 -->
+	<result column="semi_credit_total_amount" property="semiCreditTotalAmount"/><!-- 准贷记卡共享额度 -->
+	<result column="semi_credit_use_amount" property="semiCreditUseAmount"/><!-- 准贷记卡透支余额 -->
+	<result column="semi_credit_avg6m_amount" property="semiCreditAvg6mAmount"/><!-- 准贷记卡6月均透支额度 -->
+	<result column="semi_credit_max_amount" property="semiCreditMaxAmount"/><!-- 准贷记卡最大透支额度 -->
+	<result column="semi_credit_bill_date" property="semiCreditBillDate"/><!-- 准贷记卡账单日 -->
+	<result column="semi_credit_pay_received" property="semiCreditPayReceived"/><!-- 准贷记卡本月实还款额 -->
+	<result column="semi_credit_last_pay_date" property="semiCreditLastPayDate"/><!-- 准贷记卡最近一次还款日 -->
+	<result column="semi_credit_default6m_aount" property="semiCreditDefault6mAount"/><!-- 准贷记卡透支180天未付余额 -->
+	<result column="secure_company" property="secureCompany"/><!-- 担保贷款发放机构 -->
+	<result column="secure_contract_amount" property="secureContractAmount"/><!-- 担保贷款合同金额 -->
+	<result column="secure_start_date" property="secureStartDate"/><!-- 担保贷款发放日期 -->
+	<result column="secure_end_date" property="secureEndDate"/><!-- 担保贷款到期日期 -->
+	<result column="secure_amount" property="secureAmount"/><!-- 担保金额 -->
+	<result column="secure_rest_amount" property="secureRestAmount"/><!-- 担保贷款本金余额 -->
+	<result column="secure_class" property="secureClass"/><!-- 担保贷款五级分类 -->
+	<result column="secure_balance_date" property="secureBalanceDate"/><!-- 担保贷款结算日期 -->
+	<result column="pay_start_date" property="payStartDate"/><!-- 还款记录开始日期 -->
+	<result column="pay_end_date" property="payEndDate"/><!-- 还款记录结束日期 -->
+	<result column="n1" property="n1"/><!-- N1 -->
+	<result column="n2" property="n2"/><!-- N2 -->
+	<result column="n3" property="n3"/><!-- N3 -->
+	<result column="n4" property="n4"/><!-- N4 -->
+	<result column="n5" property="n5"/><!-- N5 -->
+	<result column="n6" property="n6"/><!-- N6 -->
+	<result column="n7" property="n7"/><!-- N7 -->
+	<result column="n8" property="n8"/><!-- N8 -->
+	<result column="n9" property="n9"/><!-- N9 -->
+	<result column="n10" property="n10"/><!-- N10 -->
+	<result column="n11" property="n11"/><!-- N11 -->
+	<result column="n12" property="n12"/><!-- N12 -->
+	<result column="n13" property="n13"/><!-- N13 -->
+	<result column="n14" property="n14"/><!-- N14 -->
+	<result column="n15" property="n15"/><!-- N15 -->
+	<result column="n16" property="n16"/><!-- N16 -->
+	<result column="n17" property="n17"/><!-- N17 -->
+	<result column="n18" property="n18"/><!-- N18 -->
+	<result column="n19" property="n19"/><!-- N19 -->
+	<result column="n20" property="n20"/><!-- N20 -->
+	<result column="n21" property="n21"/><!-- N21 -->
+	<result column="n22" property="n22"/><!-- N22 -->
+	<result column="n23" property="n23"/><!-- N23 -->
+	<result column="n24" property="n24"/><!-- N24 -->
+	<result column="special_trans_class" property="specialTransClass"/><!-- 特殊交易类型 -->
+	<result column="trans_date" property="transDate"/><!-- 交易发生日期 -->
+	<result column="change_month" property="changeMonth"/><!-- 变更月数 -->
+	<result column="trans_amount" property="transAmount"/><!-- 发生金额 -->
+	<result column="trans_detail" property="transDetail"/><!-- 明细记录 -->
+	<result column="remarks" property="remarks"/><!-- 备注 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_RH_TRANS_DETAIL table all fields -->
+<sql id="Column_List" >
+	 id,app_id,type,start_date,company,amount,loan_type,biz_no,biz_type,period,pay_method,end_date,to_date,clear_date,trans_state,two_years_overdue,two_years_degree,two_years_limit,loan_class,loan_rest_amount,loan_rest_period,loan_pay_amount,loan_pay_date,loan_pay_received,loan_last_pay_date,loan_default_num,loan_default_aount,loan_default12m_aount,loan_default23m_aount,loan_default36m_aount,loan_default6m_aount,credit_total_amount,credit_use_amount,credit_avg6m_amount,credit_max_amount,credit_pay_amount,credit_bill_date,credit_pay_received,credit_last_pay_date,credit_default_num,credit_default_aount,semi_credit_total_amount,semi_credit_use_amount,semi_credit_avg6m_amount,semi_credit_max_amount,semi_credit_bill_date,semi_credit_pay_received,semi_credit_last_pay_date,semi_credit_default6m_aount,secure_company,secure_contract_amount,secure_start_date,secure_end_date,secure_amount,secure_rest_amount,secure_class,secure_balance_date,pay_start_date,pay_end_date,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20,n21,n22,n23,n24,special_trans_class,trans_date,change_month,trans_amount,trans_detail,remarks,state,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="startDate != null and startDate != ''" >
+	    and start_date =  #{startDate}
+	</if>
+<if test="company != null and company != ''" >
+	    and company =  #{company}
+	</if>
+<if test="amount != null and amount != ''" >
+	    and amount =  #{amount}
+	</if>
+<if test="loanType != null and loanType != ''" >
+	    and loan_type =  #{loanType}
+	</if>
+<if test="bizNo != null and bizNo != ''" >
+	    and biz_no =  #{bizNo}
+	</if>
+<if test="bizType != null and bizType != ''" >
+	    and biz_type =  #{bizType}
+	</if>
+<if test="period != null and period != ''" >
+	    and period =  #{period}
+	</if>
+<if test="payMethod != null and payMethod != ''" >
+	    and pay_method =  #{payMethod}
+	</if>
+<if test="endDate != null and endDate != ''" >
+	    and end_date =  #{endDate}
+	</if>
+<if test="toDate != null and toDate != ''" >
+	    and to_date =  #{toDate}
+	</if>
+<if test="clearDate != null and clearDate != ''" >
+	    and clear_date =  #{clearDate}
+	</if>
+<if test="transState != null and transState != ''" >
+	    and trans_state =  #{transState}
+	</if>
+<if test="twoYearsOverdue != null and twoYearsOverdue != ''" >
+	    and two_years_overdue =  #{twoYearsOverdue}
+	</if>
+<if test="twoYearsDegree != null and twoYearsDegree != ''" >
+	    and two_years_degree =  #{twoYearsDegree}
+	</if>
+<if test="twoYearsLimit != null and twoYearsLimit != ''" >
+	    and two_years_limit =  #{twoYearsLimit}
+	</if>
+<if test="loanClass != null and loanClass != ''" >
+	    and loan_class =  #{loanClass}
+	</if>
+<if test="loanRestAmount != null and loanRestAmount != ''" >
+	    and loan_rest_amount =  #{loanRestAmount}
+	</if>
+<if test="loanRestPeriod != null and loanRestPeriod != ''" >
+	    and loan_rest_period =  #{loanRestPeriod}
+	</if>
+<if test="loanPayAmount != null and loanPayAmount != ''" >
+	    and loan_pay_amount =  #{loanPayAmount}
+	</if>
+<if test="loanPayDate != null and loanPayDate != ''" >
+	    and loan_pay_date =  #{loanPayDate}
+	</if>
+<if test="loanPayReceived != null and loanPayReceived != ''" >
+	    and loan_pay_received =  #{loanPayReceived}
+	</if>
+<if test="loanLastPayDate != null and loanLastPayDate != ''" >
+	    and loan_last_pay_date =  #{loanLastPayDate}
+	</if>
+<if test="loanDefaultNum != null and loanDefaultNum != ''" >
+	    and loan_default_num =  #{loanDefaultNum}
+	</if>
+<if test="loanDefaultAount != null and loanDefaultAount != ''" >
+	    and loan_default_aount =  #{loanDefaultAount}
+	</if>
+<if test="loanDefault12mAount != null and loanDefault12mAount != ''" >
+	    and loan_default12m_aount =  #{loanDefault12mAount}
+	</if>
+<if test="loanDefault23mAount != null and loanDefault23mAount != ''" >
+	    and loan_default23m_aount =  #{loanDefault23mAount}
+	</if>
+<if test="loanDefault36mAount != null and loanDefault36mAount != ''" >
+	    and loan_default36m_aount =  #{loanDefault36mAount}
+	</if>
+<if test="loanDefault6mAount != null and loanDefault6mAount != ''" >
+	    and loan_default6m_aount =  #{loanDefault6mAount}
+	</if>
+<if test="creditTotalAmount != null and creditTotalAmount != ''" >
+	    and credit_total_amount =  #{creditTotalAmount}
+	</if>
+<if test="creditUseAmount != null and creditUseAmount != ''" >
+	    and credit_use_amount =  #{creditUseAmount}
+	</if>
+<if test="creditAvg6mAmount != null and creditAvg6mAmount != ''" >
+	    and credit_avg6m_amount =  #{creditAvg6mAmount}
+	</if>
+<if test="creditMaxAmount != null and creditMaxAmount != ''" >
+	    and credit_max_amount =  #{creditMaxAmount}
+	</if>
+<if test="creditPayAmount != null and creditPayAmount != ''" >
+	    and credit_pay_amount =  #{creditPayAmount}
+	</if>
+<if test="creditBillDate != null and creditBillDate != ''" >
+	    and credit_bill_date =  #{creditBillDate}
+	</if>
+<if test="creditPayReceived != null and creditPayReceived != ''" >
+	    and credit_pay_received =  #{creditPayReceived}
+	</if>
+<if test="creditLastPayDate != null and creditLastPayDate != ''" >
+	    and credit_last_pay_date =  #{creditLastPayDate}
+	</if>
+<if test="creditDefaultNum != null and creditDefaultNum != ''" >
+	    and credit_default_num =  #{creditDefaultNum}
+	</if>
+<if test="creditDefaultAount != null and creditDefaultAount != ''" >
+	    and credit_default_aount =  #{creditDefaultAount}
+	</if>
+<if test="semiCreditTotalAmount != null and semiCreditTotalAmount != ''" >
+	    and semi_credit_total_amount =  #{semiCreditTotalAmount}
+	</if>
+<if test="semiCreditUseAmount != null and semiCreditUseAmount != ''" >
+	    and semi_credit_use_amount =  #{semiCreditUseAmount}
+	</if>
+<if test="semiCreditAvg6mAmount != null and semiCreditAvg6mAmount != ''" >
+	    and semi_credit_avg6m_amount =  #{semiCreditAvg6mAmount}
+	</if>
+<if test="semiCreditMaxAmount != null and semiCreditMaxAmount != ''" >
+	    and semi_credit_max_amount =  #{semiCreditMaxAmount}
+	</if>
+<if test="semiCreditBillDate != null and semiCreditBillDate != ''" >
+	    and semi_credit_bill_date =  #{semiCreditBillDate}
+	</if>
+<if test="semiCreditPayReceived != null and semiCreditPayReceived != ''" >
+	    and semi_credit_pay_received =  #{semiCreditPayReceived}
+	</if>
+<if test="semiCreditLastPayDate != null and semiCreditLastPayDate != ''" >
+	    and semi_credit_last_pay_date =  #{semiCreditLastPayDate}
+	</if>
+<if test="semiCreditDefault6mAount != null and semiCreditDefault6mAount != ''" >
+	    and semi_credit_default6m_aount =  #{semiCreditDefault6mAount}
+	</if>
+<if test="secureCompany != null and secureCompany != ''" >
+	    and secure_company =  #{secureCompany}
+	</if>
+<if test="secureContractAmount != null and secureContractAmount != ''" >
+	    and secure_contract_amount =  #{secureContractAmount}
+	</if>
+<if test="secureStartDate != null and secureStartDate != ''" >
+	    and secure_start_date =  #{secureStartDate}
+	</if>
+<if test="secureEndDate != null and secureEndDate != ''" >
+	    and secure_end_date =  #{secureEndDate}
+	</if>
+<if test="secureAmount != null and secureAmount != ''" >
+	    and secure_amount =  #{secureAmount}
+	</if>
+<if test="secureRestAmount != null and secureRestAmount != ''" >
+	    and secure_rest_amount =  #{secureRestAmount}
+	</if>
+<if test="secureClass != null and secureClass != ''" >
+	    and secure_class =  #{secureClass}
+	</if>
+<if test="secureBalanceDate != null and secureBalanceDate != ''" >
+	    and secure_balance_date =  #{secureBalanceDate}
+	</if>
+<if test="payStartDate != null and payStartDate != ''" >
+	    and pay_start_date =  #{payStartDate}
+	</if>
+<if test="payEndDate != null and payEndDate != ''" >
+	    and pay_end_date =  #{payEndDate}
+	</if>
+<if test="n1 != null and n1 != ''" >
+	    and n1 =  #{n1}
+	</if>
+<if test="n2 != null and n2 != ''" >
+	    and n2 =  #{n2}
+	</if>
+<if test="n3 != null and n3 != ''" >
+	    and n3 =  #{n3}
+	</if>
+<if test="n4 != null and n4 != ''" >
+	    and n4 =  #{n4}
+	</if>
+<if test="n5 != null and n5 != ''" >
+	    and n5 =  #{n5}
+	</if>
+<if test="n6 != null and n6 != ''" >
+	    and n6 =  #{n6}
+	</if>
+<if test="n7 != null and n7 != ''" >
+	    and n7 =  #{n7}
+	</if>
+<if test="n8 != null and n8 != ''" >
+	    and n8 =  #{n8}
+	</if>
+<if test="n9 != null and n9 != ''" >
+	    and n9 =  #{n9}
+	</if>
+<if test="n10 != null and n10 != ''" >
+	    and n10 =  #{n10}
+	</if>
+<if test="n11 != null and n11 != ''" >
+	    and n11 =  #{n11}
+	</if>
+<if test="n12 != null and n12 != ''" >
+	    and n12 =  #{n12}
+	</if>
+<if test="n13 != null and n13 != ''" >
+	    and n13 =  #{n13}
+	</if>
+<if test="n14 != null and n14 != ''" >
+	    and n14 =  #{n14}
+	</if>
+<if test="n15 != null and n15 != ''" >
+	    and n15 =  #{n15}
+	</if>
+<if test="n16 != null and n16 != ''" >
+	    and n16 =  #{n16}
+	</if>
+<if test="n17 != null and n17 != ''" >
+	    and n17 =  #{n17}
+	</if>
+<if test="n18 != null and n18 != ''" >
+	    and n18 =  #{n18}
+	</if>
+<if test="n19 != null and n19 != ''" >
+	    and n19 =  #{n19}
+	</if>
+<if test="n20 != null and n20 != ''" >
+	    and n20 =  #{n20}
+	</if>
+<if test="n21 != null and n21 != ''" >
+	    and n21 =  #{n21}
+	</if>
+<if test="n22 != null and n22 != ''" >
+	    and n22 =  #{n22}
+	</if>
+<if test="n23 != null and n23 != ''" >
+	    and n23 =  #{n23}
+	</if>
+<if test="n24 != null and n24 != ''" >
+	    and n24 =  #{n24}
+	</if>
+<if test="specialTransClass != null and specialTransClass != ''" >
+	    and special_trans_class =  #{specialTransClass}
+	</if>
+<if test="transDate != null and transDate != ''" >
+	    and trans_date =  #{transDate}
+	</if>
+<if test="changeMonth != null and changeMonth != ''" >
+	    and change_month =  #{changeMonth}
+	</if>
+<if test="transAmount != null and transAmount != ''" >
+	    and trans_amount =  #{transAmount}
+	</if>
+<if test="transDetail != null and transDetail != ''" >
+	    and trans_detail =  #{transDetail}
+	</if>
+<if test="remarks != null and remarks != ''" >
+	    and remarks =  #{remarks}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_RH_TRANS_DETAIL_SEQ') From dual
+			<!-- Select T_RH_TRANS_DETAIL_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_RH_TRANS_DETAIL(id,app_id,type,start_date,company,amount,loan_type,biz_no,biz_type,period,pay_method,end_date,to_date,clear_date,trans_state,two_years_overdue,two_years_degree,two_years_limit,loan_class,loan_rest_amount,loan_rest_period,loan_pay_amount,loan_pay_date,loan_pay_received,loan_last_pay_date,loan_default_num,loan_default_aount,loan_default12m_aount,loan_default23m_aount,loan_default36m_aount,loan_default6m_aount,credit_total_amount,credit_use_amount,credit_avg6m_amount,credit_max_amount,credit_pay_amount,credit_bill_date,credit_pay_received,credit_last_pay_date,credit_default_num,credit_default_aount,semi_credit_total_amount,semi_credit_use_amount,semi_credit_avg6m_amount,semi_credit_max_amount,semi_credit_bill_date,semi_credit_pay_received,semi_credit_last_pay_date,semi_credit_default6m_aount,secure_company,secure_contract_amount,secure_start_date,secure_end_date,secure_amount,secure_rest_amount,secure_class,secure_balance_date,pay_start_date,pay_end_date,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20,n21,n22,n23,n24,special_trans_class,trans_date,change_month,trans_amount,trans_detail,remarks,state,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{startDate, jdbcType=DATE},#{company, jdbcType=VARCHAR},#{amount, jdbcType=DOUBLE},#{loanType, jdbcType=VARCHAR},#{bizNo, jdbcType=VARCHAR},#{bizType, jdbcType=VARCHAR},#{period, jdbcType=INTEGER},#{payMethod, jdbcType=VARCHAR},#{endDate, jdbcType=DATE},#{toDate, jdbcType=DATE},#{clearDate, jdbcType=DATE},#{transState, jdbcType=VARCHAR},#{twoYearsOverdue, jdbcType=INTEGER},#{twoYearsDegree, jdbcType=INTEGER},#{twoYearsLimit, jdbcType=DOUBLE},#{loanClass, jdbcType=VARCHAR},#{loanRestAmount, jdbcType=DOUBLE},#{loanRestPeriod, jdbcType=INTEGER},#{loanPayAmount, jdbcType=DOUBLE},#{loanPayDate, jdbcType=DATE},#{loanPayReceived, jdbcType=DOUBLE},#{loanLastPayDate, jdbcType=DATE},#{loanDefaultNum, jdbcType=INTEGER},#{loanDefaultAount, jdbcType=DOUBLE},#{loanDefault12mAount, jdbcType=DOUBLE},#{loanDefault23mAount, jdbcType=DOUBLE},#{loanDefault36mAount, jdbcType=DOUBLE},#{loanDefault6mAount, jdbcType=DOUBLE},#{creditTotalAmount, jdbcType=DOUBLE},#{creditUseAmount, jdbcType=DOUBLE},#{creditAvg6mAmount, jdbcType=DOUBLE},#{creditMaxAmount, jdbcType=DOUBLE},#{creditPayAmount, jdbcType=DOUBLE},#{creditBillDate, jdbcType=DATE},#{creditPayReceived, jdbcType=DOUBLE},#{creditLastPayDate, jdbcType=DATE},#{creditDefaultNum, jdbcType=INTEGER},#{creditDefaultAount, jdbcType=DOUBLE},#{semiCreditTotalAmount, jdbcType=DOUBLE},#{semiCreditUseAmount, jdbcType=DOUBLE},#{semiCreditAvg6mAmount, jdbcType=DOUBLE},#{semiCreditMaxAmount, jdbcType=DOUBLE},#{semiCreditBillDate, jdbcType=DATE},#{semiCreditPayReceived, jdbcType=DOUBLE},#{semiCreditLastPayDate, jdbcType=DATE},#{semiCreditDefault6mAount, jdbcType=DOUBLE},#{secureCompany, jdbcType=VARCHAR},#{secureContractAmount, jdbcType=DOUBLE},#{secureStartDate, jdbcType=DATE},#{secureEndDate, jdbcType=DATE},#{secureAmount, jdbcType=DOUBLE},#{secureRestAmount, jdbcType=DOUBLE},#{secureClass, jdbcType=VARCHAR},#{secureBalanceDate, jdbcType=DATE},#{payStartDate, jdbcType=DATE},#{payEndDate, jdbcType=DATE},#{n1, jdbcType=VARCHAR},#{n2, jdbcType=VARCHAR},#{n3, jdbcType=VARCHAR},#{n4, jdbcType=VARCHAR},#{n5, jdbcType=VARCHAR},#{n6, jdbcType=VARCHAR},#{n7, jdbcType=VARCHAR},#{n8, jdbcType=VARCHAR},#{n9, jdbcType=VARCHAR},#{n10, jdbcType=VARCHAR},#{n11, jdbcType=VARCHAR},#{n12, jdbcType=VARCHAR},#{n13, jdbcType=VARCHAR},#{n14, jdbcType=VARCHAR},#{n15, jdbcType=VARCHAR},#{n16, jdbcType=VARCHAR},#{n17, jdbcType=VARCHAR},#{n18, jdbcType=VARCHAR},#{n19, jdbcType=VARCHAR},#{n20, jdbcType=VARCHAR},#{n21, jdbcType=VARCHAR},#{n22, jdbcType=VARCHAR},#{n23, jdbcType=VARCHAR},#{n24, jdbcType=VARCHAR},#{specialTransClass, jdbcType=VARCHAR},#{transDate, jdbcType=DATE},#{changeMonth, jdbcType=INTEGER},#{transAmount, jdbcType=DOUBLE},#{transDetail, jdbcType=VARCHAR},#{remarks, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_RH_TRANS_DETAIL set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	start_date =  #{startDate, jdbcType=DATE},
+	company =  #{company, jdbcType=VARCHAR},
+	amount =  #{amount, jdbcType=DOUBLE},
+	loan_type =  #{loanType, jdbcType=VARCHAR},
+	biz_no =  #{bizNo, jdbcType=VARCHAR},
+	biz_type =  #{bizType, jdbcType=VARCHAR},
+	period =  #{period, jdbcType=INTEGER},
+	pay_method =  #{payMethod, jdbcType=VARCHAR},
+	end_date =  #{endDate, jdbcType=DATE},
+	to_date =  #{toDate, jdbcType=DATE},
+	clear_date =  #{clearDate, jdbcType=DATE},
+	trans_state =  #{transState, jdbcType=VARCHAR},
+	two_years_overdue =  #{twoYearsOverdue, jdbcType=INTEGER},
+	two_years_degree =  #{twoYearsDegree, jdbcType=INTEGER},
+	two_years_limit =  #{twoYearsLimit, jdbcType=DOUBLE},
+	loan_class =  #{loanClass, jdbcType=VARCHAR},
+	loan_rest_amount =  #{loanRestAmount, jdbcType=DOUBLE},
+	loan_rest_period =  #{loanRestPeriod, jdbcType=INTEGER},
+	loan_pay_amount =  #{loanPayAmount, jdbcType=DOUBLE},
+	loan_pay_date =  #{loanPayDate, jdbcType=DATE},
+	loan_pay_received =  #{loanPayReceived, jdbcType=DOUBLE},
+	loan_last_pay_date =  #{loanLastPayDate, jdbcType=DATE},
+	loan_default_num =  #{loanDefaultNum, jdbcType=INTEGER},
+	loan_default_aount =  #{loanDefaultAount, jdbcType=DOUBLE},
+	loan_default12m_aount =  #{loanDefault12mAount, jdbcType=DOUBLE},
+	loan_default23m_aount =  #{loanDefault23mAount, jdbcType=DOUBLE},
+	loan_default36m_aount =  #{loanDefault36mAount, jdbcType=DOUBLE},
+	loan_default6m_aount =  #{loanDefault6mAount, jdbcType=DOUBLE},
+	credit_total_amount =  #{creditTotalAmount, jdbcType=DOUBLE},
+	credit_use_amount =  #{creditUseAmount, jdbcType=DOUBLE},
+	credit_avg6m_amount =  #{creditAvg6mAmount, jdbcType=DOUBLE},
+	credit_max_amount =  #{creditMaxAmount, jdbcType=DOUBLE},
+	credit_pay_amount =  #{creditPayAmount, jdbcType=DOUBLE},
+	credit_bill_date =  #{creditBillDate, jdbcType=DATE},
+	credit_pay_received =  #{creditPayReceived, jdbcType=DOUBLE},
+	credit_last_pay_date =  #{creditLastPayDate, jdbcType=DATE},
+	credit_default_num =  #{creditDefaultNum, jdbcType=INTEGER},
+	credit_default_aount =  #{creditDefaultAount, jdbcType=DOUBLE},
+	semi_credit_total_amount =  #{semiCreditTotalAmount, jdbcType=DOUBLE},
+	semi_credit_use_amount =  #{semiCreditUseAmount, jdbcType=DOUBLE},
+	semi_credit_avg6m_amount =  #{semiCreditAvg6mAmount, jdbcType=DOUBLE},
+	semi_credit_max_amount =  #{semiCreditMaxAmount, jdbcType=DOUBLE},
+	semi_credit_bill_date =  #{semiCreditBillDate, jdbcType=DATE},
+	semi_credit_pay_received =  #{semiCreditPayReceived, jdbcType=DOUBLE},
+	semi_credit_last_pay_date =  #{semiCreditLastPayDate, jdbcType=DATE},
+	semi_credit_default6m_aount =  #{semiCreditDefault6mAount, jdbcType=DOUBLE},
+	secure_company =  #{secureCompany, jdbcType=VARCHAR},
+	secure_contract_amount =  #{secureContractAmount, jdbcType=DOUBLE},
+	secure_start_date =  #{secureStartDate, jdbcType=DATE},
+	secure_end_date =  #{secureEndDate, jdbcType=DATE},
+	secure_amount =  #{secureAmount, jdbcType=DOUBLE},
+	secure_rest_amount =  #{secureRestAmount, jdbcType=DOUBLE},
+	secure_class =  #{secureClass, jdbcType=VARCHAR},
+	secure_balance_date =  #{secureBalanceDate, jdbcType=DATE},
+	pay_start_date =  #{payStartDate, jdbcType=DATE},
+	pay_end_date =  #{payEndDate, jdbcType=DATE},
+	n1 =  #{n1, jdbcType=VARCHAR},
+	n2 =  #{n2, jdbcType=VARCHAR},
+	n3 =  #{n3, jdbcType=VARCHAR},
+	n4 =  #{n4, jdbcType=VARCHAR},
+	n5 =  #{n5, jdbcType=VARCHAR},
+	n6 =  #{n6, jdbcType=VARCHAR},
+	n7 =  #{n7, jdbcType=VARCHAR},
+	n8 =  #{n8, jdbcType=VARCHAR},
+	n9 =  #{n9, jdbcType=VARCHAR},
+	n10 =  #{n10, jdbcType=VARCHAR},
+	n11 =  #{n11, jdbcType=VARCHAR},
+	n12 =  #{n12, jdbcType=VARCHAR},
+	n13 =  #{n13, jdbcType=VARCHAR},
+	n14 =  #{n14, jdbcType=VARCHAR},
+	n15 =  #{n15, jdbcType=VARCHAR},
+	n16 =  #{n16, jdbcType=VARCHAR},
+	n17 =  #{n17, jdbcType=VARCHAR},
+	n18 =  #{n18, jdbcType=VARCHAR},
+	n19 =  #{n19, jdbcType=VARCHAR},
+	n20 =  #{n20, jdbcType=VARCHAR},
+	n21 =  #{n21, jdbcType=VARCHAR},
+	n22 =  #{n22, jdbcType=VARCHAR},
+	n23 =  #{n23, jdbcType=VARCHAR},
+	n24 =  #{n24, jdbcType=VARCHAR},
+	special_trans_class =  #{specialTransClass, jdbcType=VARCHAR},
+	trans_date =  #{transDate, jdbcType=DATE},
+	change_month =  #{changeMonth, jdbcType=INTEGER},
+	trans_amount =  #{transAmount, jdbcType=DOUBLE},
+	trans_detail =  #{transDetail, jdbcType=VARCHAR},
+	remarks =  #{remarks, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_RH_TRANS_DETAIL  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_RH_TRANS_DETAIL set 
+	<trim  suffixOverrides="," >
+
+	<if test="appId != null and appId != '' " >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="type != null and type != '' " >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+
+	<if test="startDate != null and startDate != '' " >
+	    start_date =  #{startDate, jdbcType=DATE},
+	</if>
+
+	<if test="company != null and company != '' " >
+	    company =  #{company, jdbcType=VARCHAR},
+	</if>
+
+	<if test="amount != null and amount != ''  or amount==0" >
+	    amount =  #{amount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanType != null and loanType != '' " >
+	    loan_type =  #{loanType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bizNo != null and bizNo != '' " >
+	    biz_no =  #{bizNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bizType != null and bizType != '' " >
+	    biz_type =  #{bizType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="period != null and period != ''  or period==0" >
+	    period =  #{period, jdbcType=INTEGER},
+	</if>
+
+	<if test="payMethod != null and payMethod != '' " >
+	    pay_method =  #{payMethod, jdbcType=VARCHAR},
+	</if>
+
+	<if test="endDate != null and endDate != '' " >
+	    end_date =  #{endDate, jdbcType=DATE},
+	</if>
+
+	<if test="toDate != null and toDate != '' " >
+	    to_date =  #{toDate, jdbcType=DATE},
+	</if>
+
+	<if test="clearDate != null and clearDate != '' " >
+	    clear_date =  #{clearDate, jdbcType=DATE},
+	</if>
+
+	<if test="transState != null and transState != '' " >
+	    trans_state =  #{transState, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="twoYearsOverdue != null and twoYearsOverdue != ''  or twoYearsOverdue==0" >
+	    two_years_overdue =  #{twoYearsOverdue, jdbcType=INTEGER},
+	</if>
+	
+	<if test="twoYearsDegree != null and twoYearsDegree != ''  or twoYearsDegree==0" >
+	    two_years_degree =  #{twoYearsDegree, jdbcType=INTEGER},
+	</if>
+	
+	<if test="twoYearsLimit != null and twoYearsLimit != ''  or twoYearsLimit==0" >
+	    two_years_limit =  #{twoYearsLimit, jdbcType=DOUBLE},
+	</if>
+	
+	<if test="loanClass != null and loanClass != '' " >
+	    loan_class =  #{loanClass, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanRestAmount != null and loanRestAmount != ''  or loanRestAmount==0" >
+	    loan_rest_amount =  #{loanRestAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanRestPeriod != null and loanRestPeriod != ''  or loanRestPeriod==0" >
+	    loan_rest_period =  #{loanRestPeriod, jdbcType=INTEGER},
+	</if>
+
+	<if test="loanPayAmount != null and loanPayAmount != ''  or loanPayAmount==0" >
+	    loan_pay_amount =  #{loanPayAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanPayDate != null and loanPayDate != '' " >
+	    loan_pay_date =  #{loanPayDate, jdbcType=DATE},
+	</if>
+
+	<if test="loanPayReceived != null and loanPayReceived != ''  or loanPayReceived==0" >
+	    loan_pay_received =  #{loanPayReceived, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanLastPayDate != null and loanLastPayDate != '' " >
+	    loan_last_pay_date =  #{loanLastPayDate, jdbcType=DATE},
+	</if>
+
+	<if test="loanDefaultNum != null and loanDefaultNum != ''  or loanDefaultNum==0" >
+	    loan_default_num =  #{loanDefaultNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="loanDefaultAount != null and loanDefaultAount != ''  or loanDefaultAount==0" >
+	    loan_default_aount =  #{loanDefaultAount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanDefault12mAount != null and loanDefault12mAount != ''  or loanDefault12mAount==0" >
+	    loan_default12m_aount =  #{loanDefault12mAount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanDefault23mAount != null and loanDefault23mAount != ''  or loanDefault23mAount==0" >
+	    loan_default23m_aount =  #{loanDefault23mAount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanDefault36mAount != null and loanDefault36mAount != ''  or loanDefault36mAount==0" >
+	    loan_default36m_aount =  #{loanDefault36mAount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanDefault6mAount != null and loanDefault6mAount != ''  or loanDefault6mAount==0" >
+	    loan_default6m_aount =  #{loanDefault6mAount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="creditTotalAmount != null and creditTotalAmount != ''  or creditTotalAmount==0" >
+	    credit_total_amount =  #{creditTotalAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="creditUseAmount != null and creditUseAmount != ''  or creditUseAmount==0" >
+	    credit_use_amount =  #{creditUseAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="creditAvg6mAmount != null and creditAvg6mAmount != ''  or creditAvg6mAmount==0" >
+	    credit_avg6m_amount =  #{creditAvg6mAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="creditMaxAmount != null and creditMaxAmount != ''  or creditMaxAmount==0" >
+	    credit_max_amount =  #{creditMaxAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="creditPayAmount != null and creditPayAmount != ''  or creditPayAmount==0" >
+	    credit_pay_amount =  #{creditPayAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="creditBillDate != null and creditBillDate != '' " >
+	    credit_bill_date =  #{creditBillDate, jdbcType=DATE},
+	</if>
+
+	<if test="creditPayReceived != null and creditPayReceived != ''  or creditPayReceived==0" >
+	    credit_pay_received =  #{creditPayReceived, jdbcType=DOUBLE},
+	</if>
+
+	<if test="creditLastPayDate != null and creditLastPayDate != '' " >
+	    credit_last_pay_date =  #{creditLastPayDate, jdbcType=DATE},
+	</if>
+
+	<if test="creditDefaultNum != null and creditDefaultNum != ''  or creditDefaultNum==0" >
+	    credit_default_num =  #{creditDefaultNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="creditDefaultAount != null and creditDefaultAount != ''  or creditDefaultAount==0" >
+	    credit_default_aount =  #{creditDefaultAount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="semiCreditTotalAmount != null and semiCreditTotalAmount != ''  or semiCreditTotalAmount==0" >
+	    semi_credit_total_amount =  #{semiCreditTotalAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="semiCreditUseAmount != null and semiCreditUseAmount != ''  or semiCreditUseAmount==0" >
+	    semi_credit_use_amount =  #{semiCreditUseAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="semiCreditAvg6mAmount != null and semiCreditAvg6mAmount != ''  or semiCreditAvg6mAmount==0" >
+	    semi_credit_avg6m_amount =  #{semiCreditAvg6mAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="semiCreditMaxAmount != null and semiCreditMaxAmount != ''  or semiCreditMaxAmount==0" >
+	    semi_credit_max_amount =  #{semiCreditMaxAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="semiCreditBillDate != null and semiCreditBillDate != '' " >
+	    semi_credit_bill_date =  #{semiCreditBillDate, jdbcType=DATE},
+	</if>
+
+	<if test="semiCreditPayReceived != null and semiCreditPayReceived != ''  or semiCreditPayReceived==0" >
+	    semi_credit_pay_received =  #{semiCreditPayReceived, jdbcType=DOUBLE},
+	</if>
+
+	<if test="semiCreditLastPayDate != null and semiCreditLastPayDate != '' " >
+	    semi_credit_last_pay_date =  #{semiCreditLastPayDate, jdbcType=DATE},
+	</if>
+
+	<if test="semiCreditDefault6mAount != null and semiCreditDefault6mAount != ''  or semiCreditDefault6mAount==0" >
+	    semi_credit_default6m_aount =  #{semiCreditDefault6mAount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="secureCompany != null and secureCompany != '' " >
+	    secure_company =  #{secureCompany, jdbcType=VARCHAR},
+	</if>
+
+	<if test="secureContractAmount != null and secureContractAmount != ''  or secureContractAmount==0" >
+	    secure_contract_amount =  #{secureContractAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="secureStartDate != null and secureStartDate != '' " >
+	    secure_start_date =  #{secureStartDate, jdbcType=DATE},
+	</if>
+
+	<if test="secureEndDate != null and secureEndDate != '' " >
+	    secure_end_date =  #{secureEndDate, jdbcType=DATE},
+	</if>
+
+	<if test="secureAmount != null and secureAmount != ''  or secureAmount==0" >
+	    secure_amount =  #{secureAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="secureRestAmount != null and secureRestAmount != ''  or secureRestAmount==0" >
+	    secure_rest_amount =  #{secureRestAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="secureClass != null and secureClass != '' " >
+	    secure_class =  #{secureClass, jdbcType=VARCHAR},
+	</if>
+
+	<if test="secureBalanceDate != null and secureBalanceDate != '' " >
+	    secure_balance_date =  #{secureBalanceDate, jdbcType=DATE},
+	</if>
+
+	<if test="payStartDate != null and payStartDate != '' " >
+	    pay_start_date =  #{payStartDate, jdbcType=DATE},
+	</if>
+
+	<if test="payEndDate != null and payEndDate != '' " >
+	    pay_end_date =  #{payEndDate, jdbcType=DATE},
+	</if>
+
+	<if test="n1 != null and n1 != '' " >
+	    n1 =  #{n1, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n2 != null and n2 != '' " >
+	    n2 =  #{n2, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n3 != null and n3 != '' " >
+	    n3 =  #{n3, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n4 != null and n4 != '' " >
+	    n4 =  #{n4, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n5 != null and n5 != '' " >
+	    n5 =  #{n5, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n6 != null and n6 != '' " >
+	    n6 =  #{n6, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n7 != null and n7 != '' " >
+	    n7 =  #{n7, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n8 != null and n8 != '' " >
+	    n8 =  #{n8, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n9 != null and n9 != '' " >
+	    n9 =  #{n9, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n10 != null and n10 != '' " >
+	    n10 =  #{n10, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n11 != null and n11 != '' " >
+	    n11 =  #{n11, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n12 != null and n12 != '' " >
+	    n12 =  #{n12, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n13 != null and n13 != '' " >
+	    n13 =  #{n13, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n14 != null and n14 != '' " >
+	    n14 =  #{n14, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n15 != null and n15 != '' " >
+	    n15 =  #{n15, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n16 != null and n16 != '' " >
+	    n16 =  #{n16, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n17 != null and n17 != '' " >
+	    n17 =  #{n17, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n18 != null and n18 != '' " >
+	    n18 =  #{n18, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n19 != null and n19 != '' " >
+	    n19 =  #{n19, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n20 != null and n20 != '' " >
+	    n20 =  #{n20, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n21 != null and n21 != '' " >
+	    n21 =  #{n21, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n22 != null and n22 != '' " >
+	    n22 =  #{n22, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n23 != null and n23 != '' " >
+	    n23 =  #{n23, jdbcType=VARCHAR},
+	</if>
+
+	<if test="n24 != null and n24 != '' " >
+	    n24 =  #{n24, jdbcType=VARCHAR},
+	</if>
+
+	<if test="specialTransClass != null and specialTransClass != '' " >
+	    special_trans_class =  #{specialTransClass, jdbcType=VARCHAR},
+	</if>
+
+	<if test="transDate != null and transDate != '' " >
+	    trans_date =  #{transDate, jdbcType=DATE},
+	</if>
+
+	<if test="changeMonth != null and changeMonth != ''  or changeMonth==0" >
+	    change_month =  #{changeMonth, jdbcType=INTEGER},
+	</if>
+
+	<if test="transAmount != null and transAmount != ''  or transAmount==0" >
+	    trans_amount =  #{transAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="transDetail != null and transDetail != '' " >
+	    trans_detail =  #{transDetail, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remarks != null and remarks != '' " >
+	    remarks =  #{remarks, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operator != null and operator != '' " >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 信用贷款人行报告交易明细 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_RH_TRANS_DETAIL  where id = #{id}
+</select>
+
+<!-- 信用贷款人行报告交易明细 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_RH_TRANS_DETAIL 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询信用贷款人行报告交易明细列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_RH_TRANS_DETAIL 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

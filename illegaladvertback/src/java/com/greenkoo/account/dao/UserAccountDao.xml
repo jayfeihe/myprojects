@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.account.dao.UserAccountDao">
+	
+	<insert id="add" parameterType="Object">
+		insert into t_user_account (<include refid="columns"/>)
+		values (#{id},
+				#{account},
+				#{pwd},
+				#{compayId},
+				#{userName},
+				#{email},
+				#{fax},
+				#{mobile},
+				#{telephone},
+				#{qq},
+				#{status},
+				#{createTime})
+	</insert>
+	
+	<update id="update">
+		update 
+			t_user_account
+		set
+			pwd = #{pwd},
+			compay_id = #{compayId},
+			user_name = #{userName},
+			email = #{email},
+		    fax = #{fax},
+		    mobile = #{mobile},
+		    telephone = #{telephone},
+		    qq = #{qq},
+		    status = #{status}
+		where
+			id = #{id}
+	</update>
+	
+	<select id="queryById" resultType="com.greenkoo.account.model.UserAccount">
+		select <include refid="columns"/> from t_user_account where id = #{id}
+	</select>
+	
+	<select id="queryByAccount" resultType="com.greenkoo.account.model.UserAccount">
+		select <include refid="columns"/> from t_user_account where account = #{account}
+	</select>
+	
+	<select id="queryCount" resultType="int">
+		select count(*) from t_user_account a 
+		left join t_user_company c on a.compay_id = c.company_id
+		<include refid="conditions"/>
+	</select>
+	
+	<select id="queryList" parameterType="map" resultType="com.greenkoo.account.model.form.UserAccountVo">
+		select 
+			a.id 			as "userAccount.id",
+			a.account 		as "userAccount.account",   
+			a.pwd           as "userAccount.pwd",
+			a.compay_id     as "userAccount.compayId",
+			a.user_name     as "userAccount.userName",
+			a.email         as "userAccount.email",
+			a.fax           as "userAccount.fax",
+			a.mobile        as "userAccount.mobile",
+			a.telephone     as "userAccount.telephone",
+			a.qq            as "userAccount.qq",
+			a.status        as "userAccount.status",
+			a.create_time   as "userAccount.create_time",
+			
+			c.company_id    as "userCompany.companyId",
+			c.company_name  as "userCompany.companyName",
+			c.company_url   as "userCompany.companyUrl",
+			c.type          as "userCompany.type",
+			c.status        as "userCompany.status",
+			c.create_time   as "userCompany.createTime"
+		from t_user_account a 
+		left join t_user_company c on a.compay_id = c.company_id
+		<include refid="conditions"/>
+		<if test="pageOffset != null and pageSize != null " >
+	      limit #{pageOffset} , #{pageSize}
+	    </if>
+	</select>
+	
+	<sql id="columns">
+		id         ,
+		account    ,
+		pwd        ,
+		compay_id  ,
+		user_name  ,
+		email      ,
+		fax        ,
+		mobile     ,
+		telephone  ,
+		qq         ,
+		status     ,
+		create_time
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="conditions">
+		<where>
+			<if test="companyName != null and companyName != ''">
+				and company_name like concat('%',#{companyName},'%')
+			</if>
+			<if test="companyUrl != null and companyUrl != ''">
+				and company_url = #{companyUrl}
+			</if>
+			<if test="type != null and type != ''">
+				and type = #{type}
+			</if>
+			<if test="status != null and status != ''">
+				and a.status = #{status}
+			</if>
+		</where>
+	</sql>
+</mapper>

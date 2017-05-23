@@ -1,0 +1,9 @@
+app 申请
+verify 审核
+approval 审批
+special 特殊审批
+sign 签约
+review 复核
+lending 放款
+query 查询
+assign 分单

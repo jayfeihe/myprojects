@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="并行分支流程">
+	<start name="开始">
+		<transition to="录入申请" comment="录入申请" />
+	</start>
+	<state name="录入申请" comment="录入申请" role="信用风险专员">		
+		<transition to="审核" comment="审核"/>
+	</state>
+	<state name="审核" comment="审核" role="信用审核专员,信用审核组长">
+		<transition to="并行审批开始" comment="并行审批开始"/>
+	</state>
+	
+<gateway name="并行审批开始" type="start" mode="AND" comment="审核">
+	<transition to="审批1" comment="审批1"/>
+	<transition to="审批2" comment="审批2"/>
+	<transition to="审批3" comment="审批3"/>
+</gateway>
+
+	<state name="审批1" comment="审批1" role="审批1专员">
+		<transition to="审批1复核" comment="审批1复核"/>
+	</state>
+	<state name="审批1复核" comment="审批1复核" role="审批1复核专员">
+		<transition to="并行审批结束" comment="并行审批开始"/>
+	</state>
+	<state name="审批2" comment="审批2" role="审批2专员">
+		<transition to="并行审批结束" comment="并行审批开始"/>
+	</state>
+	<state name="审批3" comment="审批3" role="审批3专员">
+		<transition to="并行审批结束" comment="并行审批开始"/>
+	</state>
+	
+<gateway name="并行审批结束" type="end" mode="AND" comment="并行审批结束">
+	<transition to="签约" comment="签约"/>
+</gateway>
+
+	<state name="签约" comment="签约" role="信用风险专员">
+		<transition to="结束" comment="结束"/>
+		<transition to="放弃" comment="放弃"/>
+	</state>
+	
+	<state name="放弃" comment="放弃" role="系统">
+		<transition to="结束" comment="结束"/>
+	</state>
+	
+	<end name="结束" comment="结束"/>
+
+</process>

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.batch.dao.ReportOverdueStatisticsDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.batch.model.ReportOverdueStatistics" >
+	<result column="id" property="id"/><!--  -->
+	<result column="org_id" property="orgId"/><!-- 分公司 -->
+	<result column="type" property="type"/><!-- 逾期类型（本金，利息） -->
+	<result column="deal_num" property="dealNum"/><!-- 交易笔数 -->
+	<result column="proj_num" property="projNum"/><!-- 项目数 -->
+	<result column="overdue_amt" property="overdueAmt"/><!-- 逾期金额 -->
+	<result column="prin_rate" property="prinRate"/><!-- 本金逾期率（逾期金额/当天存量
+            ） -->
+	<result column="amt_14" property="amt14"/><!-- 0<X<=14天 金额 -->
+	<result column="rate_14" property="rate14"/><!-- 0<X<=14天比例 该区间金额/逾期金额 -->
+	<result column="amt_30" property="amt30"/><!-- 14<X<=30天 金额 -->
+	<result column="rate_30" property="rate30"/><!-- 14<X<=30天 比例(真实值*100) -->
+	<result column="amt_90" property="amt90"/><!-- 30<X<=90天 金额 -->
+	<result column="rate_90" property="rate90"/><!-- 30<X<=90天 比例真实值*100 -->
+	<result column="amt_180" property="amt180"/><!-- 90<X<=180天 金额 -->
+	<result column="rate_180" property="rate180"/><!-- 90<X<=180天 比例真实值*100 -->
+	<result column="amt_more" property="amtMore"/><!-- 180<X天 金额 -->
+	<result column="rate_more" property="rateMore"/><!-- 180<X天 比例 -->
+	<result column="loan_amt" property="loanAmt"/><!-- 当天存量 -->
+	<result column="create_date" property="createDate"/><!-- 创建日期 -->
+</resultMap>
+       
+<!-- T_REPORT_OVERDUE_STATISTICS table all fields -->
+<sql id="Column_List" >
+	 id,org_id,type,deal_num,proj_num,overdue_amt,prin_rate,amt_14,rate_14,amt_30,rate_30,amt_90,rate_90,amt_180,rate_180,amt_more,rate_more,loan_amt,create_date
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="dealNum != null and dealNum != ''" >
+	    and deal_num =  #{dealNum}
+	</if>
+<if test="projNum != null and projNum != ''" >
+	    and proj_num =  #{projNum}
+	</if>
+<if test="overdueAmt != null and overdueAmt != ''" >
+	    and overdue_amt =  #{overdueAmt}
+	</if>
+<if test="prinRate != null and prinRate != ''" >
+	    and prin_rate =  #{prinRate}
+	</if>
+<if test="amt14 != null and amt14 != ''" >
+	    and amt_14 =  #{amt14}
+	</if>
+<if test="rate14 != null and rate14 != ''" >
+	    and rate_14 =  #{rate14}
+	</if>
+<if test="amt30 != null and amt30 != ''" >
+	    and amt_30 =  #{amt30}
+	</if>
+<if test="rate30 != null and rate30 != ''" >
+	    and rate_30 =  #{rate30}
+	</if>
+<if test="amt90 != null and amt90 != ''" >
+	    and amt_90 =  #{amt90}
+	</if>
+<if test="rate90 != null and rate90 != ''" >
+	    and rate_90 =  #{rate90}
+	</if>
+<if test="amt180 != null and amt180 != ''" >
+	    and amt_180 =  #{amt180}
+	</if>
+<if test="rate180 != null and rate180 != ''" >
+	    and rate_180 =  #{rate180}
+	</if>
+<if test="amtMore != null and amtMore != ''" >
+	    and amt_more =  #{amtMore}
+	</if>
+<if test="rateMore != null and rateMore != ''" >
+	    and rate_more =  #{rateMore}
+	</if>
+<if test="loanAmt != null and loanAmt != ''" >
+	    and loan_amt =  #{loanAmt}
+	</if>
+<if test="createDate != null and createDate != ''" >
+	    and create_date =  #{createDate}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_REPORT_OVERDUE_STATISTICS_SEQ') From dual -->
+			 Select T_REPORT_OVERDUE_SEQ.Nextval From Dual 
+  </selectKey>
+	insert into T_REPORT_OVERDUE_STATISTICS(id,org_id,type,deal_num,proj_num,overdue_amt,prin_rate,amt_14,rate_14,amt_30,rate_30,amt_90,rate_90,amt_180,rate_180,amt_more,rate_more,loan_amt,create_date)
+ values( #{id, jdbcType=INTEGER},#{orgId, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{dealNum, jdbcType=INTEGER},#{projNum, jdbcType=INTEGER},#{overdueAmt, jdbcType=DOUBLE},#{prinRate, jdbcType=DOUBLE},#{amt14, jdbcType=DOUBLE},#{rate14, jdbcType=DOUBLE},#{amt30, jdbcType=DOUBLE},#{rate30, jdbcType=DOUBLE},#{amt90, jdbcType=DOUBLE},#{rate90, jdbcType=DOUBLE},#{amt180, jdbcType=DOUBLE},#{rate180, jdbcType=DOUBLE},#{amtMore, jdbcType=DOUBLE},#{rateMore, jdbcType=DOUBLE},#{loanAmt, jdbcType=DOUBLE},#{createDate, jdbcType=DATE})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_REPORT_OVERDUE_STATISTICS set 
+	<trim  suffixOverrides="," >
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	deal_num =  #{dealNum, jdbcType=INTEGER},
+	proj_num =  #{projNum, jdbcType=INTEGER},
+	overdue_amt =  #{overdueAmt, jdbcType=DOUBLE},
+	prin_rate =  #{prinRate, jdbcType=DOUBLE},
+	amt_14 =  #{amt14, jdbcType=DOUBLE},
+	rate_14 =  #{rate14, jdbcType=DOUBLE},
+	amt_30 =  #{amt30, jdbcType=DOUBLE},
+	rate_30 =  #{rate30, jdbcType=DOUBLE},
+	amt_90 =  #{amt90, jdbcType=DOUBLE},
+	rate_90 =  #{rate90, jdbcType=DOUBLE},
+	amt_180 =  #{amt180, jdbcType=DOUBLE},
+	rate_180 =  #{rate180, jdbcType=DOUBLE},
+	amt_more =  #{amtMore, jdbcType=DOUBLE},
+	rate_more =  #{rateMore, jdbcType=DOUBLE},
+	loan_amt =  #{loanAmt, jdbcType=DOUBLE},
+	create_date =  #{createDate, jdbcType=DATE},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_REPORT_OVERDUE_STATISTICS  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_REPORT_OVERDUE_STATISTICS set 
+	<trim  suffixOverrides="," >
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="type != null and type != '' " >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+
+	<if test="dealNum != null and dealNum != ''  or dealNum==0" >
+	    deal_num =  #{dealNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="projNum != null and projNum != ''  or projNum==0" >
+	    proj_num =  #{projNum, jdbcType=INTEGER},
+	</if>
+
+	<if test="overdueAmt != null and overdueAmt != ''  or overdueAmt==0" >
+	    overdue_amt =  #{overdueAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="prinRate != null and prinRate != ''  or prinRate==0" >
+	    prin_rate =  #{prinRate, jdbcType=DOUBLE},
+	</if>
+
+	<if test="amt14 != null and amt14 != ''  or amt14==0" >
+	    amt_14 =  #{amt14, jdbcType=DOUBLE},
+	</if>
+
+	<if test="rate14 != null and rate14 != ''  or rate14==0" >
+	    rate_14 =  #{rate14, jdbcType=DOUBLE},
+	</if>
+
+	<if test="amt30 != null and amt30 != ''  or amt30==0" >
+	    amt_30 =  #{amt30, jdbcType=DOUBLE},
+	</if>
+
+	<if test="rate30 != null and rate30 != ''  or rate30==0" >
+	    rate_30 =  #{rate30, jdbcType=DOUBLE},
+	</if>
+
+	<if test="amt90 != null and amt90 != ''  or amt90==0" >
+	    amt_90 =  #{amt90, jdbcType=DOUBLE},
+	</if>
+
+	<if test="rate90 != null and rate90 != ''  or rate90==0" >
+	    rate_90 =  #{rate90, jdbcType=DOUBLE},
+	</if>
+
+	<if test="amt180 != null and amt180 != ''  or amt180==0" >
+	    amt_180 =  #{amt180, jdbcType=DOUBLE},
+	</if>
+
+	<if test="rate180 != null and rate180 != ''  or rate180==0" >
+	    rate_180 =  #{rate180, jdbcType=DOUBLE},
+	</if>
+
+	<if test="amtMore != null and amtMore != ''  or amtMore==0" >
+	    amt_more =  #{amtMore, jdbcType=DOUBLE},
+	</if>
+
+	<if test="rateMore != null and rateMore != ''  or rateMore==0" >
+	    rate_more =  #{rateMore, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanAmt != null and loanAmt != ''  or loanAmt==0" >
+	    loan_amt =  #{loanAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="createDate != null and createDate != '' " >
+	    create_date =  #{createDate, jdbcType=DATE},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 分公司逾期统计表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_REPORT_OVERDUE_STATISTICS  where id = #{id}
+</select>
+
+<!-- 分公司逾期统计表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_REPORT_OVERDUE_STATISTICS 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询分公司逾期统计表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_REPORT_OVERDUE_STATISTICS 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

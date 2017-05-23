@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.UserPaymentOrderDAO">
+	
+	<resultMap type="com.hikootech.mqcash.po.UserPaymentOrder" id="paymentOrderMap">
+		<result column="user_payment_order_id" property="userPaymentOrderId" />
+		<result column="payment_type" property="paymentType" />
+		<result column="payment_channel_id" property="paymentChannelId" />
+		<result column="user_id" property="userId" />
+		<result column="bank_card_id" property="bankCardId" />
+		<result column="request_status" property="requestStatus" />
+		<result column="payment_order_no" property="paymentOrderNo" />
+		<result column="account_name" property="accountName" />
+		<result column="account_number" property="accountNumber" />
+		<result column="identification_number" property="identificationNumber" />
+		<result column="phone_number" property="phoneNumber" />
+		<result column="payment_amount" property="paymentAmount" />
+		<result column="payment_fee" property="paymentFee" />
+		<result column="payment_status" property="paymentStatus" />
+		<result column="payment_time" property="paymentTime" />
+		<result column="payment_count" property="paymentCount" />
+		<result column="bank_id" property="bankId" />
+		<result column="bank_name" property="bankName" />
+		<result column="bank_tx_time" property="bankTxTime" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="descp" property="descp" />
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.po.UserPaymentRecordItem" id="UserPaymentRecordItemMap">
+		<result column="up_record_item_id" property="upRecordItemId" />
+		<result column="instalment_id" property="instalmentId" />
+		<result column="repayment_plans_id" property="repaymentPlansId" />
+		<result column="user_payment_order_id" property="userPaymentOrderId" />
+		<result column="need_payment_amount" property="needPaymentAmount" />
+		<result column="real_payment_amount" property="realPaymentAmount" />
+		<result column="repayment_type" property="repaymentType" />
+		<result column="payment_status" property="paymentStatus" />
+		<result column="payment_time" property="paymentTime" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="operator" property="operator" />
+	</resultMap>
+	
+	
+	<insert id="insertUserPaymentOrder" parameterType="com.hikootech.mqcash.po.UserPaymentOrder">
+		insert into t_user_payment_order
+		(
+				user_payment_order_id,
+				batch_no,
+				payment_type,
+				payment_channel_id,
+				user_id,
+				bank_card_id,
+				request_status,
+				payment_order_no,
+				account_name,
+				account_number,
+				identification_number,
+				phone_number,
+				payment_amount,
+				payment_fee,
+				payment_status,
+				payment_time,
+				payment_count,
+				bank_id,
+				bank_name,
+				bank_tx_time,
+				create_time,
+				update_time,
+				descp
+		)
+		
+		values
+		(
+				#{userPaymentOrderId},
+				#{batchNo},
+				#{paymentType},
+				#{paymentChannelId},
+				#{userId},
+				#{bankCardId},
+				#{requestStatus},
+				#{paymentOrderNo},
+				#{accountName},
+				#{accountNumber},
+				#{identificationNumber},
+				#{phoneNumber},
+				#{paymentAmount},
+				#{paymentFee},
+				#{paymentStatus},
+				#{paymentTime},
+				#{paymentCount},
+				#{bankId},
+				#{bankName},
+				#{bankTxTime},
+				#{createTime},
+				#{updateTime},
+				#{descp}		
+		)
+	</insert> 
+	
+	<select id="queryUserPaymentOrderTotalRow" resultType="java.lang.Long">
+		select count(*) from t_user_payment_order t
+		<where>
+			<if test="startTime!=null"> t.create_time &gt;= #{startTime}</if>
+			<if test="endTime!=null"> and t.create_time &lt;  #{endTime}</if>
+			<if test="paymentType!=null"> and t.payment_type = #{paymentType}</if>
+			<if test="requestStatus!=null"> and t.request_status = #{requestStatus}</if>
+			<if test="paymentStatus!=null"> and t.payment_status = #{paymentStatus}</if>
+		</where>
+	</select>
+	
+	<select id="queryUserPaymentOrderList" resultMap="paymentOrderMap" parameterType="java.util.Map">
+		select t.* from t_user_payment_order t
+		<where>
+			<if test="startTime!=null"> t.create_time &gt;= #{startTime}</if>
+			<if test="endTime!=null"> and t.create_time &lt;  #{endTime}</if>
+			<if test="paymentType!=null"> and t.payment_type = #{paymentType}</if>
+			<if test="requestStatus!=null"> and t.request_status = #{requestStatus}</if>
+			<if test="paymentStatus!=null"> and t.payment_status = #{paymentStatus}</if>
+		</where>
+		<if test="start!=null and pageSize!=null">
+			limit #{start},#{pageSize}
+		</if>
+	</select>
+	
+	<update id="updatePaymentOrderByIdAndPaymentStatus" parameterType="java.util.Map">
+		update t_user_payment_order
+			set
+   				request_status = #{requestStatus},
+				payment_status = #{paymentStatus},
+				payment_time = #{paymentTime},
+				bank_tx_time = #{bankTxTime},
+				update_time = #{updateTime},
+				<if test="bankId != null and bankId != ''">
+					bank_id = #{bankId},
+				</if>
+				<if test="bankName != null and bankName != ''">
+					bank_name = #{bankName},
+				</if>
+				descp = #{descp}
+		where user_payment_order_id = #{userPaymentOrderId} and payment_status = #{beforeStatus}
+	</update>
+	
+	<update id="updatePaymentOrderById" parameterType="java.util.Map">
+		update t_user_payment_order
+			set
+   				request_status = #{requestStatus},
+				payment_status = #{paymentStatus},
+				payment_time = #{paymentTime},
+				bank_tx_time = #{bankTxTime},
+				update_time = #{updateTime},
+				descp = #{descp}
+		where user_payment_order_id = #{userPaymentOrderId}
+	</update>
+	
+	<select id="queryPaymentOrderById" resultMap="paymentOrderMap">
+		select * from t_user_payment_order t where t.user_payment_order_id=#{value}
+	</select>
+	
+	<!-- 	增加还款订单项 -->
+	<insert id="insertUserPaymentRecordItem" parameterType="com.hikootech.mqcash.po.UserPaymentRecordItem">
+		INSERT INTO t_user_payment_record_item (
+			up_record_item_id,
+			instalment_id,
+			repayment_plans_id,
+			user_payment_order_id,
+			need_payment_amount,
+			real_payment_amount,
+			repayment_type,
+			payment_status,
+			payment_time,
+			create_time,
+			update_time,
+			operator
+		)
+		VALUES
+		(
+			#{upRecordItemId},
+			#{instalmentId},
+			#{repaymentPlansId},
+			#{userPaymentOrderId},
+			#{needPaymentAmount},
+			#{realPaymentAmount},
+			#{repaymentType},
+			#{paymentStatus},
+			#{paymentTime},
+			#{createTime},
+			#{updateTime},
+			#{operator}
+		)
+	</insert>
+	<update id="updatePaymentOrderItemById" parameterType="com.hikootech.mqcash.po.UserPaymentRecordItem">
+		update t_user_payment_record_item
+			set payment_time = #{paymentTime},
+				update_time = #{updateTime},
+				payment_status = #{paymentStatus}
+			where up_record_item_id = #{upRecordItemId} 
+	</update>
+	
+	<select id="queryUserPaymentRecordItemListByPaymentOrderId" resultMap="UserPaymentRecordItemMap">
+		select t.* from t_user_payment_record_item t where t.user_payment_order_id = #{value}
+	</select>
+</mapper>

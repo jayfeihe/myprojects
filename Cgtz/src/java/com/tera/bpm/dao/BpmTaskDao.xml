@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.tera.bpm.dao.BpmTaskDao">
+	<!-- 分页头 -->
+	<sql id="pagehead">
+	<![CDATA[
+		select * from (
+		select a_.*, rownum rn
+		from(
+	]]>
+	</sql>
+	
+	<!-- 分页尾 -->
+	<sql id="pagefoot" >
+	<![CDATA[
+		) a_
+		where rownum <= #{rowE}
+		)
+		where rn >= #{rowS}
+	 ]]>
+	</sql>
+	
+	<!-- count头-->
+	<sql id="counthead" >
+		select count(1) from (
+	</sql>
+	
+	<!-- count尾-->
+	<sql id="countfoot" >
+		)
+	</sql>
+	
+	<resultMap id="ResultMap" type="com.tera.bpm.model.BpmTask" >
+		<result column="id" property="id"/>
+		<result column="def_id" property="defId"/>
+		<result column="process_name" property="processName"/>
+		<result column="biz_key" property="bizKey"/>
+		<result column="processer" property="processer"/>
+		<result column="state" property="state"/>
+		<result column="update_time" property="updateTime"/>
+		<result column="end_flag" property="endFlag"/>
+		<result column="task_num" property="taskNum"/>
+	</resultMap>
+	
+	<insert id="addBpmTask" parameterType="Object">
+		<selectKey keyProperty="id" resultType="long" order="BEFORE">
+<!-- 			Select Nextval('T_BPM_TASK_SEQ') From Dual -->
+			Select T_BPM_TASK_SEQ.Nextval From Dual
+		</selectKey>
+		Insert Into T_Bpm_Task (Id, def_Id, BIZ_KEY, PROCESSER, STATE, update_time, END_FLAG)
+		Values 
+		(#{id}, #{defId}, #{bizKey}, #{processer}, #{state}, #{updateTime}, #{endFlag})
+	</insert>
+	
+	<select id="getBpmTaskById" resultMap="ResultMap"  parameterType="long">
+		Select id, def_Id, BIZ_KEY, PROCESSER, state,update_time, END_FLAG,
+		(Select process_Name From T_Bpm_Def Where Id = A.Def_id) process_Name
+		From T_Bpm_Task A Where id = #{id}
+	</select>
+	
+	<select id="getBpmTaskByBizKey" resultMap="ResultMap"  parameterType="String">
+		Select id, def_Id, BIZ_KEY, processer, state, update_time, END_FLAG,
+		(Select process_Name From T_Bpm_Def Where Id = A.Def_id) process_Name
+		From T_Bpm_Task A
+		Where biz_Key = #{bizKey}
+	</select>
+	
+	<update id="updateBpmTask"  parameterType="Object">
+		Update T_Bpm_Task Set def_Id = #{defId}, BIZ_KEY = #{bizKey}, processer = #{processer},
+		state = #{state}, update_Time = #{updateTime},
+		end_Flag = #{endFlag} Where Id = #{id}
+	</update>
+
+	<select id="getBpmTaskByUser" resultMap="ResultMap"  parameterType="String">
+		Select id, def_Id, BIZ_KEY, processer, state, END_FLAG,
+		(Select process_Name From T_Bpm_Def Where Id = A.Def_id) process_Name
+		From T_Bpm_Task A Where processer = #{user}
+	</select>
+	
+	<select id="getBpmTask" resultMap="ResultMap"  parameterType="map">		
+		Select B.Id, B.Def_id, B.BIZ_KEY, B.Processer, B.state, B.update_time, B.End_flag, A.Process_name
+		From T_Bpm_Def A, T_Bpm_Task B
+		<where>
+			<if test="true">
+				A.Id = B.Def_id
+			</if>
+			<if test="id!=null and id!=0">
+				And B.Id = #{id} 
+			</if>
+			<if test="state!=null and state!=''">
+				And B.state = #{state} 
+			</if>
+			<if test="user!=null and user!=''">
+				And B.Processer = #{user} 
+			</if>
+			<if test="bizKey!=null and bizKey!=''">
+				And B.biz_Key = #{bizKey}
+			</if>
+			<if test="processName!=null and processName!=''">
+				And A.Process_name = #{processName}
+			</if>
+		</where>
+	</select>
+	
+	
+	
+	<select id="getBpmTaskPool" resultMap="ResultMap"  parameterType="map">		
+		Select B.Id, B.Def_id, B.BIZ_KEY, B.Processer, B.state, B.update_time, B.End_flag, A.Process_name
+		From T_Bpm_Def A, T_Bpm_Task B
+		 where 
+			A.Id = B.Def_id
+			AND (B.PROCESSER IS NULL OR B.PROCESSER='')
+			<if test="states !=null and states.length!=0">
+				AND B.STATE in
+				<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="bizKey !=null and bizKey!=''">
+				And B.biz_Key = #{bizKey}
+			</if>
+			<if test="processName !=null and processName!=''">
+				And A.Process_name = #{processName}
+			</if>
+			<if test="_skiprows != null and _pagesize != null " >
+		      LIMIT #{_skiprows}, #{_pagesize}
+		    </if>
+	</select>
+	
+	
+	<delete id="deleteBpmTaskById" parameterType="long">
+		 Delete T_Bpm_Task Where id = #{id}
+	</delete>
+	
+	<delete id="deleteBpmTaskByDefId" parameterType="long">
+		 Delete T_Bpm_Task Where def_Id = #{defId}
+	</delete>
+	
+	<select id="queryTaskNum" resultMap="ResultMap"  parameterType="map">		
+		Select count(1) as task_num, B.Processer
+		From T_Bpm_Def A, T_Bpm_Task B 
+			where A.Id = B.Def_id
+		
+			<if test="id!=null and id!=0">
+				And B.Id = #{id} 
+			</if>
+			<if test="state!=null and state!=''">
+				And B.state = #{state} 
+			</if>
+			<if test="states !=null and states.length!=0">
+				AND B.STATE in
+				<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="user!=null and user!=''">
+				And B.Processer = #{user} 
+			</if>
+			<if test="processName!=null and processName!=''">
+				And A.Process_name = #{processName}
+			</if>
+		GROUP BY B.PROCESSER
+	</select>
+	
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.report.credit.dao.LendReportDao" > 
+	<!-- 放款统计列表查询 -->
+	<select id="queryList" parameterType="map" resultType="com.tera.report.credit.model.LendReportBean">
+		SELECT 
+			t.LOAN_APP_ID AS appId,
+			SUBSTRING(t.LOAN_PRODUCT FROM 1 FOR 3) AS product,
+			p.ACTUAL_AMOUNT AS lendAmount,
+			(SELECT o.ORG_NAME FROM t_org o WHERE LOCATE(o.ORG_ID,t.ORG_ID) > 0 AND o.`LEVEL` = '2') AS city,
+			p.CREATE_TIME AS lendDate
+		FROM t_contract t, t_payment p
+		WHERE t.CONTRACT_NO = p.CONTRACT_NO
+		AND p.STATE = '5'
+		AND p.IN_OUT = '2'
+		AND p.`SUBJECT` = '放款'
+		<if test="lendDateStart != null and lendDateStart != ''">
+			<![CDATA[AND DATE_FORMAT(p.CREATE_TIME, '%y%m%d') >= DATE_FORMAT(#{lendDateStart},'%y%m%d')]]>
+		</if>
+		<if test="lendDateEnd != null and lendDateEnd != ''">
+			<![CDATA[AND DATE_FORMAT(DATE_SUB(p.CREATE_TIME,INTERVAL 1 DAY), '%y%m%d') <= DATE_FORMAT(#{lendDateEnd},'%y%m%d')]]>
+		</if>
+	</select>
+	
+	<!-- 	放款统计查询金额 -->
+	<select id="queryLendAmountByOrgAndProduct" 
+		resultType="string" parameterType="map">
+		SELECT 
+			SUM(p.ACTUAL_AMOUNT)
+		FROM t_contract t, t_payment p
+		WHERE t.CONTRACT_NO = p.CONTRACT_NO
+		AND p.STATE = '5'
+		AND p.IN_OUT = '2'
+		AND p.`SUBJECT` = '放款'
+		<if test="product != null and product != ''">
+			AND t.LOAN_PRODUCT LIKE CONCAT(#{product},'%')
+		</if>
+		<if test="orgId != null and orgId != ''">
+			AND t.ORG_ID LIKE CONCAT(#{orgId},'%')
+		</if>
+		<if test="lendDateStart != null and lendDateStart != ''">
+			<![CDATA[AND DATE_FORMAT(p.CREATE_TIME, '%y%m%d') >= DATE_FORMAT(#{lendDateStart},'%y%m%d')]]>
+		</if>
+		<if test="lendDateEnd != null and lendDateEnd != ''">
+			<![CDATA[AND DATE_FORMAT(DATE_SUB(p.CREATE_TIME,INTERVAL 1 DAY), '%y%m%d') <= DATE_FORMAT(#{lendDateEnd},'%y%m%d')]]>
+		</if>
+	</select>
+</mapper>

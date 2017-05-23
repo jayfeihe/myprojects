@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.sys.dao.SysLogDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.sys.model.SysLog" >
+	<result column="id" property="id"/>
+	<result column="login_id" property="loginId"/>
+	<result column="name" property="name"/>
+	<result column="ORG_ID" property="orgId"/>
+	<result column="happend_date" property="happendDate"/>
+	<result column="ip_address" property="ipAddress"/>
+	<result column="event" property="event"/>
+	<result column="biz_key" property="bizKey"/>
+	<result column="remark" property="remark"/>
+</resultMap>
+<!-- t_syslog table all fields -->
+<sql id="Column_List" >
+	 id,login_id,name,ORG_ID,happend_date,ip_address,event,biz_key,remark
+</sql>
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="id != null" >
+	    and id =  #{id}
+	</if>
+	 	<if test="loginId != null and loginId != ''" >
+	    and login_id =  #{loginId}
+	</if>
+	 	<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    and ORG_ID =  #{orgId}
+	</if>
+	<if test="happendDate != null" >
+	    and happend_date =  #{happendDate}
+	</if>
+	<if test="ipAddress != null and ipAddress != ''" >
+	    and ip_address =  #{ipAddress}
+	</if>
+	<if test="event != null and event != ''" >
+	    and event =  #{event}
+	</if>
+	<if test="bizKey != null and bizKey != ''" >
+	    and biz_key =  #{bizKey}
+	</if>
+	<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+	<insert id="addSysLog" parameterType="Object" >
+		<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+<!-- 					Select nextval('T_SYSLOG_SEQ') From dual -->
+					Select T_SYSLOG_SEQ.NEXTVAL From dual
+		</selectKey>
+		 insert into t_syslog(<include refid="Column_List"/>)
+		 values( #{id, jdbcType=INTEGER},#{loginId, jdbcType=VARCHAR},
+		 #{name, jdbcType=VARCHAR},
+		 #{orgId, jdbcType=VARCHAR},
+		 #{happendDate, jdbcType=TIMESTAMP},#{ipAddress, jdbcType=VARCHAR},#{event, jdbcType=VARCHAR},#{bizKey, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR})
+	</insert>
+	<!-- 查询记录数 -->
+	<select id="getSysLogCount" resultType="int" parameterType="map">
+		Select Count(1) From t_sysLog
+			<include refid="Where_Clause"/>
+			<if test="startTime!=null">
+				<![CDATA[
+					and happend_date > #{startTime}
+				]]>
+			</if>
+			<if test="endTime!=null">
+				<![CDATA[
+					and happend_date < #{endTime}
+				]]>
+			</if>
+	</select>
+
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update t_syslog set login_id=#{loginId, jdbcType=VARCHAR}, 
+  name=#{name, jdbcType=VARCHAR}, 
+  ORG_ID=#{orgId, jdbcType=VARCHAR}, 
+  happend_date=#{happendDate, jdbcType=TIMESTAMP}, ip_address=#{ipAddress, jdbcType=VARCHAR}, event=#{event, jdbcType=VARCHAR}, biz_key=#{bizKey, jdbcType=VARCHAR}, remark=#{remark, jdbcType=VARCHAR} where 1=1 and id=#{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete 	 from t_syslog where 1=1 and id=#{id}
+</delete>
+ 
+<!-- 根据id查询 log表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+		 from t_syslog where 1=1 and id=#{id}
+</select>
+
+  	
+<!-- 查询log表列表 -->
+<select id="querySysLogList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from t_syslog 
+	<include refid="Where_Clause"/>
+	
+	<if test="startTime!=null">
+		<![CDATA[
+			and happend_date > #{startTime}
+		]]>
+	</if>
+	<if test="endTime!=null">
+		<![CDATA[
+			and happend_date < #{endTime}
+		]]>
+	</if>
+	 ORDER BY id DESC
+</select>
+  	
+</mapper>   

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.batch.initseq.dao.SequenceDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.batch.initseq.model.Sequence" >
+	<result column="name" property="name"/><!-- 序列名称 -->
+	<result column="current_value" property="currentValue"/><!-- 当前值 -->
+	<result column="increment" property="increment"/><!-- 每次增加数 -->
+</resultMap>
+       
+<!-- SEQUENCE table all fields -->
+<sql id="Column_List" >
+	 name,current_value,increment
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="currentValue != null and currentValue != ''" >
+	    and current_value =  #{currentValue}
+	</if>
+<if test="increment != null and increment != ''" >
+	    and increment =  #{increment}
+	</if>
+</trim>
+</sql>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update SEQUENCE set 
+	<trim  suffixOverrides="," >
+	name =  #{name, jdbcType=VARCHAR},
+	current_value =  #{currentValue, jdbcType=INTEGER},
+	increment =  #{increment, jdbcType=INTEGER},
+	</trim>
+ 	where  name =  #{name}
+ </update>
+
+<!--  列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from SEQUENCE 
+	where 1=1
+	<if test="names != null and names != '' " >
+		AND name in
+		<foreach item="item" index="index" collection="names" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+</select>
+
+<!-- 查询列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from SEQUENCE 
+	where 1=1
+	<if test="names != null and names != '' " >
+		AND name in
+		<foreach item="item" index="index" collection="names" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="_skiprows != null and _pagesize != null " >
+      LIMIT #{_skiprows}, #{_pagesize}
+    </if>	
+</select>
+  	
+</mapper>   

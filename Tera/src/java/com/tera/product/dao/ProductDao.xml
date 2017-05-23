@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.product.dao.ProductDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.product.model.Product" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="name" property="name"/><!-- 产品名称 -->
+	
+	<result column="type_name" property="typeName"/>
+	
+	<result column="type" property="type"/><!-- 产品类型 -->
+	<result column="period" property="period"/><!-- 期限 -->
+	<result column="srevice_fee_rate" property="sreviceFeeRate"/><!-- 服务费率 -->
+	<result column="srevice_fee_rate2" property="sreviceFeeRate2"/><!-- 服务费率2 -->
+	<result column="srevice_fee_rate3" property="sreviceFeeRate3"/><!-- 服务费率3 -->
+	<result column="interest_rate" property="interestRate"/><!-- 利率 -->
+	<result column="repay_method" property="repayMethod"/><!-- 还款方式 -->
+	
+	<result column="repay_method_name" property="repayMethodName"/>
+	
+	<result column="penalty_rate" property="penaltyRate"/><!-- 罚息费率 -->
+	<result column="delay_rate" property="delayRate"/><!-- 滞纳金费率 -->
+	<result column="default_rate1" property="defaultRate1"/><!-- 违约金比例1 -->
+	<result column="default_rate2" property="defaultRate2"/><!-- 违约金比例2 -->
+	<result column="default_rate3" property="defaultRate3"/><!-- 违约金比例3 -->
+	<result column="default_rate4" property="defaultRate4"/><!-- 违约金比例4 -->
+	<result column="remark" property="remark"/><!-- 备注 -->
+	<result column="belong_channel" property="belongChannel"/><!--  所属渠道 -->
+	<result column="state" property="state"/><!--  状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_PRODUCT table all fields -->
+<sql id="Column_List" >
+	 id,name,type,period,srevice_fee_rate,srevice_fee_rate2,srevice_fee_rate3,interest_rate,repay_method,penalty_rate,delay_rate,default_rate1,default_rate2,default_rate3,default_rate4,remark,belong_channel,state,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="name != null and name != ''" >
+	    and name =  #{name}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="period != null and period != ''" >
+	    and period =  #{period}
+	</if>
+<if test="sreviceFeeRate != null and sreviceFeeRate != ''" >
+	    and srevice_fee_rate =  #{sreviceFeeRate}
+	</if>
+<if test="sreviceFeeRate2 != null and sreviceFeeRate2 != ''" >
+	    and srevice_fee_rate2 =  #{sreviceFeeRate2}
+	</if>
+<if test="sreviceFeeRate3 != null and sreviceFeeRate3 != ''" >
+	    and srevice_fee_rate3 =  #{sreviceFeeRate3}
+	</if>
+<if test="interestRate != null and interestRate != ''" >
+	    and interest_rate =  #{interestRate}
+	</if>
+<if test="repayMethod != null and repayMethod != ''" >
+	    and repay_method =  #{repayMethod}
+	</if>
+<if test="penaltyRate != null and penaltyRate != ''" >
+	    and penalty_rate =  #{penaltyRate}
+	</if>
+<if test="delayRate != null and delayRate != ''" >
+	    and delay_rate =  #{delayRate}
+	</if>
+<if test="defaultRate1 != null and defaultRate1 != ''" >
+	    and default_rate1 =  #{defaultRate1}
+	</if>
+<if test="defaultRate2 != null and defaultRate2 != ''" >
+	    and default_rate2 =  #{defaultRate2}
+	</if>
+<if test="defaultRate3 != null and defaultRate3 != ''" >
+	    and default_rate3 =  #{defaultRate3}
+	</if>
+<if test="defaultRate4 != null and defaultRate4 != ''" >
+	    and default_rate4 =  #{defaultRate4}
+	</if>
+<if test="remark != null and remark != ''" >
+	    and remark =  #{remark}
+	</if>
+<if test="belongChannel != null and belongChannel != ''" >
+	    and belong_channel =  #{belongChannel}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_PRODUCT_SEQ') From dual
+			<!-- Select T_PRODUCT_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_PRODUCT(id,name,type,period,srevice_fee_rate,srevice_fee_rate2,srevice_fee_rate3,interest_rate,repay_method,penalty_rate,delay_rate,default_rate1,default_rate2,default_rate3,default_rate4,remark,belong_channel,state,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{name, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{period, jdbcType=INTEGER},#{sreviceFeeRate, jdbcType=DOUBLE},#{sreviceFeeRate2, jdbcType=DOUBLE},#{sreviceFeeRate3, jdbcType=DOUBLE},#{interestRate, jdbcType=DOUBLE},#{repayMethod, jdbcType=VARCHAR},#{penaltyRate, jdbcType=DOUBLE},#{delayRate, jdbcType=DOUBLE},#{defaultRate1, jdbcType=DOUBLE},#{defaultRate2, jdbcType=DOUBLE},#{defaultRate3, jdbcType=DOUBLE},#{defaultRate4, jdbcType=DOUBLE},#{remark, jdbcType=VARCHAR},#{belongChannel, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_PRODUCT set 
+	<trim  suffixOverrides="," >
+	name =  #{name, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	period =  #{period, jdbcType=INTEGER},
+	srevice_fee_rate =  #{sreviceFeeRate, jdbcType=DOUBLE},
+	srevice_fee_rate2 =  #{sreviceFeeRate2, jdbcType=DOUBLE},
+	srevice_fee_rate3 =  #{sreviceFeeRate3, jdbcType=DOUBLE},
+	interest_rate =  #{interestRate, jdbcType=DOUBLE},
+	repay_method =  #{repayMethod, jdbcType=VARCHAR},
+	penalty_rate =  #{penaltyRate, jdbcType=DOUBLE},
+	delay_rate =  #{delayRate, jdbcType=DOUBLE},
+	default_rate1 =  #{defaultRate1, jdbcType=DOUBLE},
+	default_rate2 =  #{defaultRate2, jdbcType=DOUBLE},
+	default_rate3 =  #{defaultRate3, jdbcType=DOUBLE},
+	default_rate4 =  #{defaultRate4, jdbcType=DOUBLE},
+	remark =  #{remark, jdbcType=VARCHAR},
+	belong_channel =  #{belongChannel, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_PRODUCT  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_PRODUCT set 
+	<trim  suffixOverrides="," >
+	<if test="name != null and name != ''" >
+	    name =  #{name, jdbcType=VARCHAR},
+	</if>
+	<if test="type != null and type != ''" >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+	<if test="period != null and period != ''" >
+	    period =  #{period, jdbcType=INTEGER},
+	</if>
+	<if test="sreviceFeeRate != null and sreviceFeeRate != ''" >
+	    srevice_fee_rate =  #{sreviceFeeRate, jdbcType=DOUBLE},
+	</if>
+	<if test="sreviceFeeRate2 != null and sreviceFeeRate2 != ''" >
+	    srevice_fee_rate2 =  #{sreviceFeeRate2, jdbcType=DOUBLE},
+	</if>
+	<if test="sreviceFeeRate3 != null and sreviceFeeRate3 != ''" >
+	    srevice_fee_rate3 =  #{sreviceFeeRate3, jdbcType=DOUBLE},
+	</if>
+	<if test="interestRate != null and interestRate != ''" >
+	    interest_rate =  #{interestRate, jdbcType=DOUBLE},
+	</if>
+	<if test="repayMethod != null and repayMethod != ''" >
+	    repay_method =  #{repayMethod, jdbcType=VARCHAR},
+	</if>
+	<if test="penaltyRate != null and penaltyRate != ''" >
+	    penalty_rate =  #{penaltyRate, jdbcType=DOUBLE},
+	</if>
+	<if test="delayRate != null and delayRate != ''" >
+	    delay_rate =  #{delayRate, jdbcType=DOUBLE},
+	</if>
+	<if test="defaultRate1 != null and defaultRate1 != ''" >
+	    default_rate1 =  #{defaultRate1, jdbcType=DOUBLE},
+	</if>
+	<if test="defaultRate2 != null and defaultRate2 != ''" >
+	    default_rate2 =  #{defaultRate2, jdbcType=DOUBLE},
+	</if>
+	<if test="defaultRate3 != null and defaultRate3 != ''" >
+	    default_rate3 =  #{defaultRate3, jdbcType=DOUBLE},
+	</if>
+	<if test="defaultRate4 != null and defaultRate4 != ''" >
+	    default_rate4 =  #{defaultRate4, jdbcType=DOUBLE},
+	</if>
+	<if test="remark != null and remark != ''" >
+	    remark =  #{remark, jdbcType=VARCHAR},
+	</if>
+	<if test="belongChannel != null and belongChannel != ''" >
+	    belong_channel =  #{belongChannel, jdbcType=VARCHAR},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 产品表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_PRODUCT  where id = #{id}
+</select>
+<!-- 根据name查询 产品表 -->
+<select id="queryByName"  resultMap="ResultMap" parameterType="string">
+	select <include refid="Column_List" /> 
+	 from T_PRODUCT  where name = #{name}
+</select>
+
+<!-- 产品表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_PRODUCT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询产品表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	SELECT  id,
+	NAME, 	
+	TYPE,
+	(SELECT key_value FROM T_DATA_DICTIONARY WHERE key_name = 'producttype' AND key_prop = t.TYPE) type_name,
+	period,
+	srevice_fee_rate,
+	interest_rate,
+	repay_method,
+	(SELECT key_value FROM T_DATA_DICTIONARY WHERE key_name = 'repaymethod' AND key_prop = t.repay_method) repay_method_name,
+	penalty_rate,
+	delay_rate,
+	default_rate1,
+	default_rate2,
+	default_rate3,
+	default_rate4,
+	remark,
+	belong_channel,
+	(SELECT ct.`CHANNEL_NAME` FROM t_channel_total ct WHERE ct.`CHANNEL_CODE` = belong_channel) belongChannelName,
+	state,
+	operator,
+	org_id,
+	create_time,
+	update_time
+	FROM T_PRODUCT t
+	<include refid="Where_Clause"/>
+<!-- 	审核、审批产品排序 -->
+	<if test="flag != null and flag == '1'.toString()">
+<!-- 	积木在前面	
+	ORDER BY SUBSTR(t.name FROM 8 FOR 2) DESC ,LENGTH(t.`NAME`) DESC ,CONVERT(t.`NAME`USING gbk) -->
+<!-- 	鼎轩在前面	 -->
+	ORDER BY IF(SUBSTR(t.name FROM 8 FOR 2)='','Z',SUBSTR(t.name FROM 8 FOR 2)) asc,LENGTH(t.`NAME`) DESC ,CONVERT(t.`NAME`USING gbk);
+	</if>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<select id="queryListByCooperation" resultMap="ResultMap"  parameterType="map">
+	SELECT  
+	t.ID,
+	t.`NAME`, 	
+	t.TYPE
+	FROM T_PRODUCT t
+	<include refid="Where_Clause"/>
+	<if test="productName != null and productName != ''">
+		AND t.`NAME` LIKE ${productName}
+	</if>
+	ORDER BY CONVERT(t.`NAME`USING gbk)
+</select>
+
+<!-- 根据LendAppId查询 产品 -->
+<select id="queryProductByLendAppId"  resultMap="ResultMap" parameterType="String">
+	SELECT a.* FROM t_product AS a ,T_LEND_APP AS b WHERE a.NAME=b.PRODUCT AND b.APP_ID= #{lendAppId}
+</select>
+  	
+</mapper>   

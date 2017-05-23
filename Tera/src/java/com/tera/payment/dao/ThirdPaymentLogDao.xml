@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.payment.dao.ThirdPaymentLogDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.payment.model.ThirdPaymentLog" >
+	<result column="id" property="id"/>
+	<result column="order_no" property="orderNo"/>
+	<result column="sn" property="sn"/>
+	<result column="payment_id" property="paymentId"/>
+	<result column="contract_no" property="contractNo"/>
+	<result column="period_num" property="periodNum"/>
+	<result column="send_time" property="sendTime"/>
+	<result column="source_account" property="sourceAccount"/>
+	<result column="target_account" property="targetAccount"/>
+	<result column="amount" property="amount"/>
+	<result column="subject" property="subject"/>
+	<result column="state" property="state"/>
+	<result column="reason" property="reason"/>
+	<result column="receive_time" property="receiveTime"/>
+	<result column="operator" property="operator"/>
+	<result column="org_id" property="orgId"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+</resultMap>
+       
+<!-- t_third_payment_log table all fields -->
+<sql id="Column_List" >
+	 id,order_no,sn,payment_id,contract_no,period_num,send_time,source_account,target_account,amount,subject,state,reason,receive_time,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="orderNo != null and orderNo != ''" >
+	    and order_no =  #{orderNo}
+	</if>
+<if test="sn != null and sn != ''" >
+	    and sn =  #{sn}
+	</if>
+<if test="paymentId != null and paymentId != ''" >
+	    and payment_id =  #{paymentId}
+	</if>
+<if test="contractNo != null and contractNo != ''" >
+	    and contract_no =  #{contractNo}
+	</if>
+<if test="periodNum != null and periodNum != ''" >
+	    and period_num =  #{periodNum}
+	</if>
+<if test="sendTime != null and sendTime != ''" >
+	    and send_time =  #{sendTime}
+	</if>
+<if test="sourceAccount != null and sourceAccount != ''" >
+	    and source_account =  #{sourceAccount}
+	</if>
+<if test="targetAccount != null and targetAccount != ''" >
+	    and target_account =  #{targetAccount}
+	</if>
+<if test="amount != null and amount != ''" >
+	    and amount =  #{amount}
+	</if>
+<if test="subject != null and subject != ''" >
+	    and subject =  #{subject}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="reason != null and reason != ''" >
+	    and reason =  #{reason}
+	</if>
+<if test="receiveTime != null and receiveTime != ''" >
+	    and receive_time =  #{receiveTime}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('t_third_payment_log_SEQ') From dual
+			<!-- Select t_third_payment_log_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_THIRD_PAYMENT_LOG(id,order_no,sn,payment_id,contract_no,period_num,send_time,source_account,target_account,amount,subject,state,reason,receive_time,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{orderNo, jdbcType=VARCHAR},#{sn, jdbcType=VARCHAR},#{paymentId, jdbcType=INTEGER},#{contractNo, jdbcType=VARCHAR},#{periodNum, jdbcType=INTEGER},#{sendTime, jdbcType=TIMESTAMP},#{sourceAccount, jdbcType=VARCHAR},#{targetAccount, jdbcType=VARCHAR},#{amount, jdbcType=DOUBLE},#{subject, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{reason, jdbcType=VARCHAR},#{receiveTime, jdbcType=TIMESTAMP},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update t_third_payment_log set 
+	<trim  suffixOverrides="," >
+	order_no =  #{orderNo, jdbcType=VARCHAR},
+	sn =  #{sn, jdbcType=VARCHAR},
+	payment_id =  #{paymentId, jdbcType=INTEGER},
+	contract_no =  #{contractNo, jdbcType=VARCHAR},
+	period_num =  #{periodNum, jdbcType=INTEGER},
+	send_time =  #{sendTime, jdbcType=TIMESTAMP},
+	source_account =  #{sourceAccount, jdbcType=VARCHAR},
+	target_account =  #{targetAccount, jdbcType=VARCHAR},
+	amount =  #{amount, jdbcType=DOUBLE},
+	subject =  #{subject, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	reason =  #{reason, jdbcType=VARCHAR},
+	receive_time =  #{receiveTime, jdbcType=TIMESTAMP},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from t_third_payment_log  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update t_third_payment_log set 
+	<trim  suffixOverrides="," >
+	<if test="orderNo != null and orderNo != ''" >
+	    order_no =  #{orderNo, jdbcType=VARCHAR},
+	</if>
+	<if test="sn != null and sn != ''" >
+	    sn =  #{sn, jdbcType=VARCHAR},
+	</if>
+	<if test="paymentId != null and paymentId != ''" >
+	    payment_id =  #{paymentId, jdbcType=INTEGER},
+	</if>
+	<if test="contractNo != null and contractNo != ''" >
+	    contract_no =  #{contractNo, jdbcType=VARCHAR},
+	</if>
+	<if test="periodNum != null and periodNum != ''" >
+	    period_num =  #{periodNum, jdbcType=INTEGER},
+	</if>
+	<if test="sendTime != null and sendTime != ''" >
+	    send_time =  #{sendTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="sourceAccount != null and sourceAccount != ''" >
+	    source_account =  #{sourceAccount, jdbcType=VARCHAR},
+	</if>
+	<if test="targetAccount != null and targetAccount != ''" >
+	    target_account =  #{targetAccount, jdbcType=VARCHAR},
+	</if>
+	<if test="amount != null and amount != ''" >
+	    amount =  #{amount, jdbcType=DOUBLE},
+	</if>
+	<if test="subject != null and subject != ''" >
+	    subject =  #{subject, jdbcType=VARCHAR},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="reason != null and reason != ''" >
+	    reason =  #{reason, jdbcType=VARCHAR},
+	</if>
+	<if test="receiveTime != null and receiveTime != ''" >
+	    receive_time =  #{receiveTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 第三方支付日志 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from t_third_payment_log  where id = #{id}
+</select>
+
+<select id="queryByOrderNo"  resultMap="ResultMap" parameterType="string">
+	select <include refid="Column_List" /> 
+	 from T_THIRD_PAYMENT_LOG  where order_no = #{orderNo}
+</select>
+
+<!-- 第三方支付日志 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from t_third_payment_log 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询第三方支付日志列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from t_third_payment_log 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 毕桃杨添加-查询交易请求记录 -->
+<select id="queryUnfinishedList" resultMap="ResultMap"  parameterType="map">
+	SELECT * FROM t_third_payment_log WHERE (state='2' OR state='4')
+<!-- 	 AND SUBJECT in('放款', '付利息', '付本息' ,'赎回资金','出借资金', '收利息', '收本息') -->
+</select>
+  	
+</mapper>   

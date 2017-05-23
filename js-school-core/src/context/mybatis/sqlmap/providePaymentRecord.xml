@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.ProvidePaymentRecDAO">
+	<resultMap type="com.hikootech.mqcash.po.ProvidePaymentRecord" id="providePaymentRecordMap">
+		<result column="record_id" property="recordId" />
+		<result column="instalment_id" property="instalmentId" />
+		<result column="payment_seq" property="paymentSeq" />
+		<result column="payment_amount" property="paymentAmount" />
+		<result column="provider_account_id" property="providerAccountId" />
+		<result column="provider_id" property="providerId" />
+		<result column="provider_account_number" property="providerAccountNumber" />
+		<result column="provider_account_name" property="providerAccountName" />
+		<result column="provider_institution_name" property="providerInstitutionName" />
+		<result column="provider_institution_full_name" property="providerInstitutionFullName" />
+		<result column="provider_tax_payer_code" property="providerTaxPayerCode" />
+		<result column="payment_time" property="paymentTime" />
+		<result column="partner_order_id" property="partnerOrderId" />
+		<result column="partner_order_price" property="partnerOrderPrice" />
+		<result column="partner_account_id" property="partnerAccountId" />
+		<result column="config_partner_id" property="configPartnerId" />
+		<result column="partner_account_number" property="partnerAccountNumber" />
+		<result column="partner_account_name" property="partnerAccountName" />
+		<result column="partner_institution_name" property="partnerInstitutionName" />
+		<result column="partner_institution_full_name" property="partnerInstitutionFullName" />
+		<result column="partner_tax_payer_code" property="partnerTaxPayerCode" />
+		<result column="payment_status" property="paymentStatus" />
+		<result column="send_times" property="sendTimes" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="operator" property="operator" />
+		<result column="info_id" property="infoId" />
+	</resultMap>
+	
+		<select id="queryProvidePaymentRec" resultMap="providePaymentRecordMap" parameterType="com.hikootech.mqcash.po.ProvidePaymentRecord">
+		SELECT
+		t.record_id,
+		t.instalment_id,
+		t.payment_seq,
+		t.payment_amount,
+		t.provider_account_id,
+		t.provider_id,
+		t.provider_account_number,
+		t.provider_account_name,
+		t.provider_institution_name,
+		t.provider_institution_full_name,
+		t.provider_tax_payer_code,
+		t.payment_time,
+		t.partner_order_id,
+		t.partner_order_price,
+		t.partner_account_id,
+		t.config_partner_id,
+		t.partner_account_number,
+		t.partner_account_name,
+		t.partner_institution_name,
+		t.partner_institution_full_name,
+		t.partner_tax_payer_code,
+		t.payment_status,
+		t.send_times,
+		t.create_time,
+		t.update_time,
+		t.operator,
+		s.info_id
+		FROM
+		t_provide_payment_record t,
+		t_user_total_info s 
+		where t.instalment_id = s.instalment_id
+		and t.payment_status = #{paymentStatus}  <![CDATA[ and t.send_times <  #{sendTimes} ]]>
+	
+	</select>
+	
+	<select id="queryProviderNameById" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT provider_name providerName
+		FROM t_config_provider 
+		where provider_id = #{providerId} 
+	
+	</select>
+	
+	<update id="updateProvidePaymentRecord" parameterType="com.hikootech.mqcash.po.ProvidePaymentRecord" >
+		update t_provide_payment_record t 
+		set t.payment_status = #{paymentStatus} ,
+		 t.payment_time =#{paymentTime} ,
+		 t.send_times = #{sendTimes}	,
+		 t.operator =#{operator},
+		 t.update_time = #{updateTime}
+		where t.instalment_id=#{instalmentId} 
+		and t.payment_seq = #{paymentSeq} 
+		and t.partner_order_id =#{partnerOrderId}
+		and t.payment_status = 10
+	</update>
+	
+	<update id="updateProvideStatus" parameterType="java.util.HashMap" >
+		update t_user_instalment t 
+		set t.provider_status = #{providerStatus} ,
+		 t.update_time = #{updateTime}
+		where t.instalment_id=#{instalmentId} 
+	</update>
+</mapper>

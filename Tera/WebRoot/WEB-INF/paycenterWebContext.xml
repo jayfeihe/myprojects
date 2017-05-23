@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:tx="http://www.springframework.org/schema/tx" 
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+    xsi:schemaLocation="
+    	http://www.springframework.org/schema/beans  
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+		http://www.springframework.org/schema/tx  
+		http://www.springframework.org/schema/tx/spring-tx-3.0.xsd  
+		http://www.springframework.org/schema/aop  
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
+		http://www.springframework.org/schema/context  
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jee 
+		http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+	<!-- - The controllers are autodetected POJOs labeled with the @Controller 
+		annotation. 指定Bean扫描的包，多个包逗号隔开，任何标注了@Component，@Controller，@Service，@Repository的类，都会被自动识别为bean。 
+		例如： <context:component-scan base-package="com.firsttech.insure"> <context:exclude-filter 
+		type="regex" expression="com\.firsttech\.insure\.dao\..*" /> </context:component-scan> -->
+
+	<!-- 指定Bean扫描的包 -->
+	<!-- 扫描业务组件,让spring不扫描带有@Service注解的类,防止事务失效 -->
+	<context:component-scan base-package="com.tera.paycenter">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/> 
+	</context:component-scan>
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="order" value="1" />
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		p:prefix="/WEB-INF/jsp/paycenter/" p:suffix=".jsp" />
+
+	<!-- 把ajax产生的异常在后台打印 -->
+	<bean id="exceptionResolver" class="com.tera.sys.exception.SpringException">
+		<property name="defaultErrorView">
+			<value>error</value>
+		</property>
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.sql.SQLException">error</prop>
+				<prop key="java.lang.RuntimeException">error</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.sys.dao.SysIndustryDao">
+	
+	<select id="queryByIndustryId" resultType="com.greenkoo.sys.model.SysIndustry">
+		select <include refid="columns"/> from t_industry where industry_id = #{industryId}
+	</select>
+	
+	<select id="queryList" resultType="com.greenkoo.sys.model.SysIndustry">
+		select <include refid="columns"/> from t_industry
+	</select>
+	
+	<sql id="columns">
+		industry_id, 
+		industry_name
+	</sql>
+</mapper>

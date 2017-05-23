@@ -1,0 +1,52 @@
+package com.tera.credit.scorecard
+ 
+import com.tera.rule.model.credit.scorecard.CreditScoreCard;
+
+rule "ScoreCard"
+	no-loop true
+	ruleflow-group "ruleFlow_scoreCard"
+    when
+        i : CreditScoreCard(CreditScoreCard.TYPE==1, t : workYear ,
+        	c : corporate ,m:isMarried,s:sex,h:hasChild,hs:houseStatus)
+    then
+    	int result=718;
+    	
+   	 	if (t>=9){                  //工作时间
+   	 		result+=29;
+   	 	}
+   	 	if(m!=1 && m!=2){ //不是已婚未婚 那么久减少45分
+   	 		result-=45;
+   	 	}
+   	 	if(s==0){//0为女 女性加分41
+   	 		result += 41;
+   	 	}
+   	 	if(h==0){//0为无子女 如果没有子女减分41
+   	 		result-=41;
+   	 	}
+   	 	if(c==1){ // 1为国有企业
+   	 		result+=114;
+   	 	}
+   	 	if(c==4||c==99){//4为外企 和其他加分63
+   	 		result+=63;
+   	 	}
+   	 	if(hs==4){//房屋状况如果集体宿舍（4）那么减少53
+   	 		result-=53;
+   	 	}
+   	 	i.setResult(result);
+   	 	if(result>=763){
+   	 		i.addResult("A");
+   	   }
+   	 	else if(result<763&&result>=722){
+   	 		i.addResult("B");
+   	 	}
+   	 	else if(result<722&&result>=718){
+   	 		i.addResult("C");
+   	 	}
+   	 	else if(result<718&&result>=683){
+   	 		i.addResult("D");
+   	 	}
+   	 	else if(result<683){
+   	 		i.addResult("E");
+   	 	}
+   	 	
+end

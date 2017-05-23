@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.audit.retplan.dao.RetPlanDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.audit.retplan.model.RetPlan" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="loan_id" property="loanId"/><!-- 申请Id -->
+	<result column="contract_id" property="contractId"/><!-- 合同id -->
+	<result column="ret_date" property="retDate"/><!-- 还款日 -->
+	<result column="num" property="num"/><!-- 期数 -->
+	<result column="type" property="type"/><!-- 类别(1利息2本金) -->
+	<result column="plan_capital" property="planCapital"/><!-- 当月应收本金 -->
+	<result column="plan_interest" property="planInterest"/><!-- 当月应收利息 -->
+	<result column="plan_mem_fee" property="planMemFee"/><!-- 当月应收会员服务费 -->
+	<result column="plan_law_fee" property="planLawFee"/><!-- 当月应收法律服务费 -->
+	<result column="plan_tran_fee" property="planTranFee"/><!-- 当月应收转贷费 -->
+	<result column="plan_margin" property="planMargin"/><!-- 当月应收保证金 -->
+	<result column="plan_other_fee" property="planOtherFee"/><!-- 当月应收其他费用 -->
+	<result column="real_capital" property="realCapital"/><!-- 当月实收本金 -->
+	<result column="real_interest" property="realInterest"/><!-- 当月实收利息 -->
+	<result column="real_mem_fee" property="realMemFee"/><!-- 当月实收会员服务费 -->
+	<result column="real_law_fee" property="realLawFee"/><!-- 当月实收法律服务费 -->
+	<result column="real_tran_fee" property="realTranFee"/><!-- 当月实收转贷费 -->
+	<result column="real_margin" property="realMargin"/><!-- 当月实收保证金 -->
+	<result column="real_other_fee" property="realOtherFee"/><!-- 当月实收其他费用 -->
+	<result column="default_fee" property="defaultFee"/><!-- 收罚息费用（只做记录） -->
+	<result column="penalty_fee" property="penaltyFee"/><!-- 收滞纳金费用（只做记录） -->
+	<result column="reduce_fee" property="reduceFee"/><!-- 减免费用 -->
+	<result column="remain_amt" property="remainAmt"/><!-- 当期剩余合同金额 -->
+	<result column="last_date" property="lastDate"/><!-- 最后还款日期 -->
+	<result column="state" property="state"/><!-- 状态（1未还2结清3提前还款） -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="update_time" property="updateTime"/><!-- 修改时间 -->
+	<result column="PLAN_MGR_FEE" property="planMgrFee"/>
+	<result column="PLAN_CERT_FEE" property="planCertFee"/>
+	<result column="PLAN_EVAL_FEE" property="planEvalFee"/>
+	<result column="PLAN_AGENT_FEE" property="planAgentFee"/>
+	<result column="REAL_MGR_FEE" property="realMgrFee"/>
+	<result column="REAL_CERT_FEE" property="realCertFee"/>
+	<result column="REAL_EVAL_FEE" property="realEvalFee"/>
+	<result column="REAL_AGENT_FEE" property="realAgentFee"/>
+	<result column="STOR_FEE" property="storFee"/>
+	<result column="LOAN_OTHER_FEE" property="loanOtherFee"/>
+</resultMap>
+       
+<!-- T_RET_PLAN table all fields -->
+<sql id="Column_List" >
+	 id,loan_id,contract_id,ret_date,num,type,plan_capital,plan_interest,plan_mem_fee,plan_law_fee,plan_tran_fee,plan_margin,plan_other_fee,real_capital,real_interest,real_mem_fee,real_law_fee,real_tran_fee,real_margin,real_other_fee,default_fee,penalty_fee,reduce_fee,remain_amt,last_date,state,create_time,update_time,PLAN_MGR_FEE,PLAN_CERT_FEE,PLAN_EVAL_FEE ,PLAN_AGENT_FEE,REAL_MGR_FEE,REAL_CERT_FEE,REAL_EVAL_FEE,REAL_AGENT_FEE,STOR_FEE,LOAN_OTHER_FEE
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and loan_id =  #{loanId}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and contract_id =  #{contractId}
+	</if>
+<if test="retDate != null and retDate != ''" >
+	    and ret_date =  #{retDate}
+	</if>
+<if test="num != null and num != ''" >
+	    and num =  #{num}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="planCapital != null and planCapital != ''" >
+	    and plan_capital =  #{planCapital}
+	</if>
+<if test="planInterest != null and planInterest != ''" >
+	    and plan_interest =  #{planInterest}
+	</if>
+<if test="planMemFee != null and planMemFee != ''" >
+	    and plan_mem_fee =  #{planMemFee}
+	</if>
+<if test="planLawFee != null and planLawFee != ''" >
+	    and plan_law_fee =  #{planLawFee}
+	</if>
+<if test="planTranFee != null and planTranFee != ''" >
+	    and plan_tran_fee =  #{planTranFee}
+	</if>
+<if test="planMargin != null and planMargin != ''" >
+	    and plan_margin =  #{planMargin}
+	</if>
+<if test="planOtherFee != null and planOtherFee != ''" >
+	    and plan_other_fee =  #{planOtherFee}
+	</if>
+<if test="realCapital != null and realCapital != ''" >
+	    and real_capital =  #{realCapital}
+	</if>
+<if test="realInterest != null and realInterest != ''" >
+	    and real_interest =  #{realInterest}
+	</if>
+<if test="realMemFee != null and realMemFee != ''" >
+	    and real_mem_fee =  #{realMemFee}
+	</if>
+<if test="realLawFee != null and realLawFee != ''" >
+	    and real_law_fee =  #{realLawFee}
+	</if>
+<if test="realTranFee != null and realTranFee != ''" >
+	    and real_tran_fee =  #{realTranFee}
+	</if>
+<if test="realMargin != null and realMargin != ''" >
+	    and real_margin =  #{realMargin}
+	</if>
+<if test="realOtherFee != null and realOtherFee != ''" >
+	    and real_other_fee =  #{realOtherFee}
+	</if>
+<if test="defaultFee != null and defaultFee != ''" >
+	    and default_fee =  #{defaultFee}
+	</if>
+<if test="penaltyFee != null and penaltyFee != ''" >
+	    and penalty_fee =  #{penaltyFee}
+	</if>
+<if test="reduceFee != null and reduceFee != ''" >
+	    and reduce_fee =  #{reduceFee}
+	</if>
+<if test="remainAmt != null and remainAmt != ''" >
+	    and remain_amt =  #{remainAmt}
+	</if>
+<if test="lastDate != null and lastDate != ''" >
+	    and last_date =  #{lastDate}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+<!-- 			Select nextval('T_RET_PLAN_SEQ') From dual -->
+			Select T_RET_PLAN_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_RET_PLAN(id,loan_id,contract_id,ret_date,num,type,plan_capital,plan_interest,plan_mem_fee,plan_law_fee,plan_tran_fee,plan_margin,plan_other_fee,real_capital,real_interest,real_mem_fee,real_law_fee,real_tran_fee,real_margin,real_other_fee,default_fee,penalty_fee,reduce_fee,remain_amt,last_date,state,create_time,update_time,PLAN_MGR_FEE,PLAN_CERT_FEE,PLAN_EVAL_FEE ,PLAN_AGENT_FEE,REAL_MGR_FEE,REAL_CERT_FEE,REAL_EVAL_FEE,REAL_AGENT_FEE,STOR_FEE,LOAN_OTHER_FEE)
+ values( #{id, jdbcType=INTEGER},#{loanId, jdbcType=VARCHAR},#{contractId, jdbcType=VARCHAR},#{retDate, jdbcType=DATE},#{num, jdbcType=INTEGER},#{type, jdbcType=VARCHAR},#{planCapital, jdbcType=DOUBLE},#{planInterest, jdbcType=DOUBLE},#{planMemFee, jdbcType=DOUBLE},#{planLawFee, jdbcType=DOUBLE},#{planTranFee, jdbcType=DOUBLE},#{planMargin, jdbcType=DOUBLE},#{planOtherFee, jdbcType=DOUBLE},#{realCapital, jdbcType=DOUBLE},#{realInterest, jdbcType=DOUBLE},#{realMemFee, jdbcType=DOUBLE},#{realLawFee, jdbcType=DOUBLE},#{realTranFee, jdbcType=DOUBLE},#{realMargin, jdbcType=DOUBLE},#{realOtherFee, jdbcType=DOUBLE},#{defaultFee, jdbcType=DOUBLE},#{penaltyFee, jdbcType=DOUBLE},#{reduceFee, jdbcType=DOUBLE},#{remainAmt, jdbcType=DOUBLE},#{lastDate, jdbcType=DATE},#{state, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP},#{planMgrFee, jdbcType=DOUBLE},#{planCertFee, jdbcType=DOUBLE},#{planEvalFee, jdbcType=DOUBLE},#{planAgentFee, jdbcType=DOUBLE},#{realMgrFee, jdbcType=DOUBLE},
+#{realCertFee, jdbcType=DOUBLE},#{realEvalFee, jdbcType=DOUBLE},#{realAgentFee, jdbcType=DOUBLE},#{storFee, jdbcType=DOUBLE},#{loanOtherFee, jdbcType=DOUBLE})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_RET_PLAN set 
+	<trim  suffixOverrides="," >
+	loan_id =  #{loanId, jdbcType=VARCHAR},
+	contract_id =  #{contractId, jdbcType=VARCHAR},
+	ret_date =  #{retDate, jdbcType=DATE},
+	num =  #{num, jdbcType=INTEGER},
+	type =  #{type, jdbcType=VARCHAR},
+	plan_capital =  #{planCapital, jdbcType=DOUBLE},
+	plan_interest =  #{planInterest, jdbcType=DOUBLE},
+	plan_mem_fee =  #{planMemFee, jdbcType=DOUBLE},
+	plan_law_fee =  #{planLawFee, jdbcType=DOUBLE},
+	plan_tran_fee =  #{planTranFee, jdbcType=DOUBLE},
+	plan_margin =  #{planMargin, jdbcType=DOUBLE},
+	plan_other_fee =  #{planOtherFee, jdbcType=DOUBLE},
+	real_capital =  #{realCapital, jdbcType=DOUBLE},
+	real_interest =  #{realInterest, jdbcType=DOUBLE},
+	real_mem_fee =  #{realMemFee, jdbcType=DOUBLE},
+	real_law_fee =  #{realLawFee, jdbcType=DOUBLE},
+	real_tran_fee =  #{realTranFee, jdbcType=DOUBLE},
+	real_margin =  #{realMargin, jdbcType=DOUBLE},
+	real_other_fee =  #{realOtherFee, jdbcType=DOUBLE},
+	default_fee =  #{defaultFee, jdbcType=DOUBLE},
+	penalty_fee =  #{penaltyFee, jdbcType=DOUBLE},
+	reduce_fee =  #{reduceFee, jdbcType=DOUBLE},
+	remain_amt =  #{remainAmt, jdbcType=DOUBLE},
+	last_date =  #{lastDate, jdbcType=DATE},
+	state =  #{state, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	PLAN_MGR_FEE = #{planMgrFee, jdbcType=DOUBLE},
+	PLAN_CERT_FEE = #{planCertFee, jdbcType=DOUBLE},
+	PLAN_EVAL_FEE = #{planEvalFee, jdbcType=DOUBLE},
+	PLAN_AGENT_FEE = #{planAgentFee, jdbcType=DOUBLE},
+	REAL_MGR_FEE = #{realMgrFee, jdbcType=DOUBLE},
+	REAL_CERT_FEE = #{realCertFee, jdbcType=DOUBLE},
+	REAL_EVAL_FEE = #{realEvalFee, jdbcType=DOUBLE},
+	REAL_AGENT_FEE = #{realAgentFee, jdbcType=DOUBLE},
+	STOR_FEE = #{storFee, jdbcType=DOUBLE},
+	LOAN_OTHER_FEE=#{loanOtherFee, jdbcType=DOUBLE}
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_RET_PLAN  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_RET_PLAN set 
+	<trim  suffixOverrides="," >
+
+	<if test="loanId != null and loanId != '' " >
+	    loan_id =  #{loanId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractId != null and contractId != '' " >
+	    contract_id =  #{contractId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="retDate != null and retDate != '' " >
+	    ret_date =  #{retDate, jdbcType=DATE},
+	</if>
+
+	<if test="num != null and num != ''  or num==0" >
+	    num =  #{num, jdbcType=INTEGER},
+	</if>
+
+	<if test="type != null and type != '' " >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+
+	<if test="planCapital != null and planCapital != ''  or planCapital==0" >
+	    plan_capital =  #{planCapital, jdbcType=DOUBLE},
+	</if>
+
+	<if test="planInterest != null and planInterest != ''  or planInterest==0" >
+	    plan_interest =  #{planInterest, jdbcType=DOUBLE},
+	</if>
+
+	<if test="planMemFee != null and planMemFee != ''  or planMemFee==0" >
+	    plan_mem_fee =  #{planMemFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="planLawFee != null and planLawFee != ''  or planLawFee==0" >
+	    plan_law_fee =  #{planLawFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="planTranFee != null and planTranFee != ''  or planTranFee==0" >
+	    plan_tran_fee =  #{planTranFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="planMargin != null and planMargin != ''  or planMargin==0" >
+	    plan_margin =  #{planMargin, jdbcType=DOUBLE},
+	</if>
+
+	<if test="planOtherFee != null and planOtherFee != ''  or planOtherFee==0" >
+	    plan_other_fee =  #{planOtherFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="realCapital != null and realCapital != ''  or realCapital==0" >
+	    real_capital =  #{realCapital, jdbcType=DOUBLE},
+	</if>
+
+	<if test="realInterest != null and realInterest != ''  or realInterest==0" >
+	    real_interest =  #{realInterest, jdbcType=DOUBLE},
+	</if>
+
+	<if test="realMemFee != null and realMemFee != ''  or realMemFee==0" >
+	    real_mem_fee =  #{realMemFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="realLawFee != null and realLawFee != ''  or realLawFee==0" >
+	    real_law_fee =  #{realLawFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="realTranFee != null and realTranFee != ''  or realTranFee==0" >
+	    real_tran_fee =  #{realTranFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="realMargin != null and realMargin != ''  or realMargin==0" >
+	    real_margin =  #{realMargin, jdbcType=DOUBLE},
+	</if>
+
+	<if test="realOtherFee != null and realOtherFee != ''  or realOtherFee==0" >
+	    real_other_fee =  #{realOtherFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="defaultFee != null and defaultFee != ''  or defaultFee==0" >
+	    default_fee =  #{defaultFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="penaltyFee != null and penaltyFee != ''  or penaltyFee==0" >
+	    penalty_fee =  #{penaltyFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="reduceFee != null and reduceFee != ''  or reduceFee==0" >
+	    reduce_fee =  #{reduceFee, jdbcType=DOUBLE},
+	</if>
+
+	<if test="remainAmt != null and remainAmt != ''  or remainAmt==0" >
+	    remain_amt =  #{remainAmt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="lastDate != null and lastDate != '' " >
+	    last_date =  #{lastDate, jdbcType=DATE},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+   <if test="planMgrFee != null and planMgrFee != ''  or planMgrFee==0" >
+	    PLAN_MGR_FEE =  #{planMgrFee, jdbcType=DOUBLE},
+	</if>
+	<if test="planCertFee != null and planCertFee != ''  or planCertFee==0" >
+	    PLAN_CERT_FEE =  #{planCertFee, jdbcType=DOUBLE},
+	</if>
+	<if test="planEvalFee != null and planEvalFee != ''  or planEvalFee==0" >
+	    PLAN_EVAL_FEE =  #{planEvalFee, jdbcType=DOUBLE},
+	</if>
+	<if test="planAgentFee != null and planAgentFee != ''  or planAgentFee==0" >
+	    PLAN_AGENT_FEE =  #{planAgentFee, jdbcType=DOUBLE},
+	</if>
+	<if test="realMgrFee != null and realMgrFee != ''  or realMgrFee==0" >
+	    REAL_MGR_FEE =  #{realMgrFee, jdbcType=DOUBLE},
+	</if>
+	<if test="realCertFee != null and realCertFee != ''  or realCertFee==0" >
+	    REAL_CERT_FEE =  #{realCertFee, jdbcType=DOUBLE},
+	</if>
+	<if test="realEvalFee != null and realEvalFee != ''  or realEvalFee==0" >
+	    REAL_EVAL_FEE =  #{realEvalFee, jdbcType=DOUBLE},
+	</if>
+	<if test="realAgentFee != null and realAgentFee != ''  or realAgentFee==0" >
+	    REAL_AGENT_FEE =  #{realAgentFee, jdbcType=DOUBLE},
+	</if>
+	<if test="storFee != null and storFee != ''  or storFee==0" >
+	    STOR_FEE =  #{storFee, jdbcType=DOUBLE},
+	</if>
+	<if test="loanOtherFee != null and loanOtherFee != ''  or loanOtherFee==0" >
+	    LOAN_OTHER_FEE =  #{loanOtherFee, jdbcType=DOUBLE},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 还款计划表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_RET_PLAN  where id = #{id}
+</select>
+
+<!-- 还款计划表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_RET_PLAN 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询还款计划表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_RET_PLAN 
+	<include refid="Where_Clause"/>
+	<if test="orderNum != null and orderNum != '' " >
+	   ORDER BY NUM
+	</if>
+	<!-- <if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if> -->
+</select>
+
+<!-- 查询还款计划表列表 -->
+<select id="queryLateByCon" resultMap="ResultMap"  parameterType="map">
+	SELECT 
+	<include refid="Column_List"/>
+	from t_ret_plan WHERE RET_DATE &lt; #{date1} AND STATE='1' AND CONTRACT_ID= #{contractId}
+
+</select>
+  	
+</mapper>   

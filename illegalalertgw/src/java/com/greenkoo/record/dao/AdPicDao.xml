@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.record.dao.AdPicDao">
+	<insert id="add" parameterType="Object">
+		insert into t_ad_pic (<include refid="columns"/>)
+		values (#{dataId   },
+				#{picUrl   },
+				#{status      },
+				#{downloadTimes},
+				#{createTime})
+	</insert>
+	
+	<sql id="columns">
+		data_id,
+		pic_url,
+		status,
+		download_times,
+		create_time
+	</sql>
+</mapper>

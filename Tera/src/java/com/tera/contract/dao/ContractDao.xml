@@ -1,0 +1,887 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.contract.dao.ContractDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.contract.model.Contract" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="contract_no" property="contractNo"/><!-- 合同号 -->
+	<result column="contract_class" property="contractClass"/><!-- 合同种类 -->
+	<result column="loan_app_id" property="loanAppId"/><!-- 贷款申请号 -->
+	<result column="loan_name" property="loanName"/><!-- 借款人姓名 -->
+	<result column="loan_id_type" property="loanIdType"/><!-- 借款人证件类型 -->
+	<result column="loan_id_no" property="loanIdNo"/><!-- 借款人证件号码 -->
+	<result column="loan_product" property="loanProduct"/><!-- 借款产品 -->
+	<result column="loan_amount" property="loanAmount"/><!-- 借款金额 -->
+	<result column="loan_period" property="loanPeriod"/><!-- 借款期限 -->
+	<result column="loan_interest_rate" property="loanInterestRate"/><!-- 借款利率 -->
+	<result column="loan_service_rate" property="loanServiceRate"/><!-- 借款服务费率 -->
+	<result column="loan_service_rate2" property="loanServiceRate2"/><!-- 借款服务费率2 -->
+	<result column="start_date" property="startDate"/><!-- 开始日期 -->
+	<result column="end_date" property="endDate"/><!-- 结束日期 -->
+	<result column="lend_app_id" property="lendAppId"/><!-- 出借申请号 -->
+	<result column="contract_type" property="contractType"/><!-- 合同类型 -->
+	<result column="repay_method" property="repayMethod"/><!-- 还款方式 -->
+	<result column="lend_name" property="lendName"/><!-- 出借人姓名 -->
+	<result column="lend_id_type" property="lendIdType"/><!-- 出借人证件类型 -->
+	<result column="lend_id_no" property="lendIdNo"/><!-- 出借人证件号码 -->
+	<result column="create_date" property="createDate"/><!-- 合同生成日期 -->
+	<result column="sign_date" property="signDate"/><!-- 合同签约日期 -->
+	<result column="ext1" property="ext1"/><!-- 抵押物ID -->
+	<result column="bank_province" property="bankProvince"/><!-- 开户行省 -->
+	<result column="bank_city" property="bankCity"/><!-- 开户行市 -->
+	<result column="bank_county" property="bankCounty"/><!-- 开户行区 -->
+	<result column="bank_name" property="bankName"/><!-- 开户行名称 -->
+	<result column="bank_code" property="bankCode"/><!-- 开户行代码 -->
+	<result column="bank_branch" property="bankBranch"/><!-- 分行名称 -->
+	<result column="bank_account_name" property="bankAccountName"/><!-- 账户名 -->
+	<result column="bank_account" property="bankAccount"/><!-- 卡号 -->
+	<result column="bank_mobile" property="bankMobile"/><!-- 银行卡 绑定手机 -->
+	<result column="lending_date" property="lendingDate"/><!-- 放款时间 -->
+	<result column="download_time" property="downloadTime"/><!-- 下载时间 -->
+	<result column="sign_province" property="signProvince"/><!-- 签约省 -->
+	<result column="sign_city" property="signCity"/><!-- 签约市 -->
+	<result column="sign_county" property="signCounty"/><!-- 签约区 -->
+	<result column="sign_address" property="signAddress"/><!-- 签约地址 -->
+	<result column="channel_type" property="channelType"/><!-- 渠道类型（0:本地，1:积木盒子...） -->
+	<result column="channel_key_id" property="channelKeyId"/><!-- 渠道关联ID -->
+	<result column="channel_state" property="channelState"/><!-- 渠道状态 -->
+	<result column="channel_remark" property="channelRemark"/><!-- 渠道状态 -->
+	<result column="channel_time" property="channelTime"/><!-- 渠道放款时间 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+		
+	<result column="NO_PERIOD_NUM" property="noPeriodNum"/><!--未还期数 -->
+	<result column="DEFAULT_PERIOD_NUM" property="defaultPeriodNum"/><!--违约期数-->
+
+</resultMap>
+       
+<!-- T_CONTRACT table all fields -->
+<sql id="Column_List" >
+	 id,contract_no,contract_class,loan_app_id,loan_name,loan_id_type,loan_id_no,loan_product,loan_amount,loan_period,loan_interest_rate,loan_service_rate,loan_service_rate2,start_date,end_date,lend_app_id,contract_type,repay_method,lend_name,lend_id_type,lend_id_no,create_date,sign_date,ext1,bank_province,bank_city,bank_county,bank_name,bank_code,bank_branch,bank_account_name,bank_account,bank_mobile,lending_date,download_time,sign_province,sign_city,sign_county,sign_address,channel_type,channel_key_id,channel_state,channel_remark,channel_time,state,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="contractNo != null and contractNo != ''" >
+	    and contract_no =  #{contractNo}
+	</if>
+<if test="contractClass != null and contractClass != ''" >
+	    and contract_class =  #{contractClass}
+	</if>
+<if test="loanAppId != null and loanAppId != ''" >
+	    and loan_app_id =  #{loanAppId}
+	</if>
+<if test="loanName != null and loanName != ''" >
+	    and loan_name =  #{loanName}
+	</if>
+<if test="loanIdType != null and loanIdType != ''" >
+	    and loan_id_type =  #{loanIdType}
+	</if>
+<if test="loanIdNo != null and loanIdNo != ''" >
+	    and loan_id_no =  #{loanIdNo}
+	</if>
+<if test="loanProduct != null and loanProduct != ''" >
+	    and loan_product =  #{loanProduct}
+	</if>
+<if test="loanAmount != null and loanAmount != ''" >
+	    and loan_amount =  #{loanAmount}
+	</if>
+<if test="loanPeriod != null and loanPeriod != ''" >
+	    and loan_period =  #{loanPeriod}
+	</if>
+<if test="loanInterestRate != null and loanInterestRate != ''" >
+	    and loan_interest_rate =  #{loanInterestRate}
+	</if>
+<if test="loanServiceRate != null and loanServiceRate != ''" >
+	    and loan_service_rate =  #{loanServiceRate}
+	</if>
+<if test="loanServiceRate2 != null and loanServiceRate2 != ''" >
+	    and loan_service_rate2 =  #{loanServiceRate2}
+	</if>
+<if test="startDate != null and startDate != ''" >
+	    and start_date =  #{startDate}
+	</if>
+<if test="endDate != null and endDate != ''" >
+	    and end_date =  #{endDate}
+	</if>
+<if test="lendAppId != null and lendAppId != ''" >
+	    and lend_app_id =  #{lendAppId}
+	</if>
+<if test="contractType != null and contractType != ''" >
+	    and contract_type =  #{contractType}
+	</if>
+<if test="repayMethod != null and repayMethod != ''" >
+	    and repay_method =  #{repayMethod}
+	</if>
+<if test="lendName != null and lendName != ''" >
+	    and lend_name =  #{lendName}
+	</if>
+<if test="lendIdType != null and lendIdType != ''" >
+	    and lend_id_type =  #{lendIdType}
+	</if>
+<if test="lendIdNo != null and lendIdNo != ''" >
+	    and lend_id_no =  #{lendIdNo}
+	</if>
+<if test="createDate != null and createDate != ''" >
+	    and create_date =  #{createDate}
+	</if>
+<if test="signDate != null and signDate != ''" >
+	    and sign_date =  #{signDate}
+	</if>
+<if test="ext1 != null and ext1 != ''" >
+	    and ext1 =  #{ext1}
+	</if>
+<if test="bankProvince != null and bankProvince != ''" >
+	    and bank_province =  #{bankProvince}
+	</if>
+<if test="bankCity != null and bankCity != ''" >
+	    and bank_city =  #{bankCity}
+	</if>
+<if test="bankCounty != null and bankCounty != ''" >
+	    and bank_county =  #{bankCounty}
+	</if>
+<if test="bankName != null and bankName != ''" >
+	    and bank_name =  #{bankName}
+	</if>
+<if test="bankCode != null and bankCode != ''" >
+	    and bank_code =  #{bankCode}
+	</if>
+<if test="bankBranch != null and bankBranch != ''" >
+	    and bank_branch =  #{bankBranch}
+	</if>
+<if test="bankAccountName != null and bankAccountName != ''" >
+	    and bank_account_name =  #{bankAccountName}
+	</if>
+<if test="bankAccount != null and bankAccount != ''" >
+	    and bank_account =  #{bankAccount}
+	</if>
+<if test="bankMobile != null and bankMobile != ''" >
+	    and bank_mobile =  #{bankMobile}
+	</if>
+<if test="lendingDate != null and lendingDate != ''" >
+	    and lending_date =  #{lendingDate}
+	</if>
+<if test="downloadTime != null and downloadTime != ''" >
+	    and download_time =  #{downloadTime}
+	</if>
+<if test="signProvince != null and signProvince != ''" >
+	    and sign_province =  #{signProvince}
+	</if>
+<if test="signCity != null and signCity != ''" >
+	    and sign_city =  #{signCity}
+	</if>
+<if test="signCounty != null and signCounty != ''" >
+	    and sign_county =  #{signCounty}
+	</if>
+<if test="signAddress != null and signAddress != ''" >
+	    and sign_address =  #{signAddress}
+	</if>
+<if test="channelType != null and channelType != ''" >
+	    and channel_type =  #{channelType}
+	</if>
+<if test="channelKeyId != null and channelKeyId != ''" >
+	    and channel_key_id =  #{channelKeyId}
+	</if>
+<if test="channelState != null and channelState != ''" >
+	    and channel_state =  #{channelState}
+	</if>
+<if test="channelRemark != null and channelRemark != ''" >
+	    and channel_remark =  #{channelRemark}
+	</if>
+<if test="channelTime != null and channelTime != ''" >
+	    and channel_time =  #{channelTime}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_CONTRACT_SEQ') From dual
+			<!-- Select T_CONTRACT_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_CONTRACT(id,contract_no,contract_class,loan_app_id,loan_name,loan_id_type,loan_id_no,loan_product,loan_amount,loan_period,loan_interest_rate,loan_service_rate,loan_service_rate2,start_date,end_date,lend_app_id,contract_type,repay_method,lend_name,lend_id_type,lend_id_no,create_date,sign_date,ext1,bank_province,bank_city,bank_county,bank_name,bank_code,bank_branch,bank_account_name,bank_account,bank_mobile,lending_date,download_time,sign_province,sign_city,sign_county,sign_address,channel_type,channel_key_id,channel_state,channel_remark,channel_time,state,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{contractNo, jdbcType=VARCHAR},#{contractClass, jdbcType=VARCHAR},#{loanAppId, jdbcType=VARCHAR},#{loanName, jdbcType=VARCHAR},#{loanIdType, jdbcType=VARCHAR},#{loanIdNo, jdbcType=VARCHAR},#{loanProduct, jdbcType=VARCHAR},#{loanAmount, jdbcType=DOUBLE},#{loanPeriod, jdbcType=INTEGER},#{loanInterestRate, jdbcType=DOUBLE},#{loanServiceRate, jdbcType=DOUBLE},#{loanServiceRate2, jdbcType=DOUBLE},#{startDate, jdbcType=DATE},#{endDate, jdbcType=DATE},#{lendAppId, jdbcType=VARCHAR},#{contractType, jdbcType=VARCHAR},#{repayMethod, jdbcType=VARCHAR},#{lendName, jdbcType=VARCHAR},#{lendIdType, jdbcType=VARCHAR},#{lendIdNo, jdbcType=VARCHAR},#{createDate, jdbcType=DATE},#{signDate, jdbcType=DATE},#{ext1, jdbcType=INTEGER},#{bankProvince, jdbcType=VARCHAR},#{bankCity, jdbcType=VARCHAR},#{bankCounty, jdbcType=VARCHAR},#{bankName, jdbcType=VARCHAR},#{bankCode, jdbcType=VARCHAR},#{bankBranch, jdbcType=VARCHAR},#{bankAccountName, jdbcType=VARCHAR},#{bankAccount, jdbcType=VARCHAR},#{bankMobile, jdbcType=VARCHAR},#{lendingDate, jdbcType=DATE},#{downloadTime, jdbcType=TIMESTAMP},#{signProvince, jdbcType=VARCHAR},#{signCity, jdbcType=VARCHAR},#{signCounty, jdbcType=VARCHAR},#{signAddress, jdbcType=VARCHAR},#{channelType, jdbcType=VARCHAR},#{channelKeyId, jdbcType=VARCHAR},#{channelState, jdbcType=VARCHAR},#{channelRemark, jdbcType=VARCHAR},#{channelTime, jdbcType=TIMESTAMP},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_CONTRACT set 
+	<trim  suffixOverrides="," >
+	contract_no =  #{contractNo, jdbcType=VARCHAR},
+	contract_class =  #{contractClass, jdbcType=VARCHAR},
+	loan_app_id =  #{loanAppId, jdbcType=VARCHAR},
+	loan_name =  #{loanName, jdbcType=VARCHAR},
+	loan_id_type =  #{loanIdType, jdbcType=VARCHAR},
+	loan_id_no =  #{loanIdNo, jdbcType=VARCHAR},
+	loan_product =  #{loanProduct, jdbcType=VARCHAR},
+	loan_amount =  #{loanAmount, jdbcType=DOUBLE},
+	loan_period =  #{loanPeriod, jdbcType=INTEGER},
+	loan_interest_rate =  #{loanInterestRate, jdbcType=DOUBLE},
+	loan_service_rate =  #{loanServiceRate, jdbcType=DOUBLE},
+	loan_service_rate2 =  #{loanServiceRate2, jdbcType=DOUBLE},
+	start_date =  #{startDate, jdbcType=DATE},
+	end_date =  #{endDate, jdbcType=DATE},
+	lend_app_id =  #{lendAppId, jdbcType=VARCHAR},
+	contract_type =  #{contractType, jdbcType=VARCHAR},
+	repay_method =  #{repayMethod, jdbcType=VARCHAR},
+	lend_name =  #{lendName, jdbcType=VARCHAR},
+	lend_id_type =  #{lendIdType, jdbcType=VARCHAR},
+	lend_id_no =  #{lendIdNo, jdbcType=VARCHAR},
+	create_date =  #{createDate, jdbcType=DATE},
+	sign_date =  #{signDate, jdbcType=DATE},
+	ext1 =  #{ext1, jdbcType=INTEGER},
+	bank_province =  #{bankProvince, jdbcType=VARCHAR},
+	bank_city =  #{bankCity, jdbcType=VARCHAR},
+	bank_county =  #{bankCounty, jdbcType=VARCHAR},
+	bank_name =  #{bankName, jdbcType=VARCHAR},
+	bank_code =  #{bankCode, jdbcType=VARCHAR},
+	bank_branch =  #{bankBranch, jdbcType=VARCHAR},
+	bank_account_name =  #{bankAccountName, jdbcType=VARCHAR},
+	bank_account =  #{bankAccount, jdbcType=VARCHAR},
+	bank_mobile =  #{bankMobile, jdbcType=VARCHAR},
+	lending_date =  #{lendingDate, jdbcType=DATE},
+	download_time =  #{downloadTime, jdbcType=TIMESTAMP},
+	sign_province =  #{signProvince, jdbcType=VARCHAR},
+	sign_city =  #{signCity, jdbcType=VARCHAR},
+	sign_county =  #{signCounty, jdbcType=VARCHAR},
+	sign_address =  #{signAddress, jdbcType=VARCHAR},
+	channel_type =  #{channelType, jdbcType=VARCHAR},
+	channel_key_id =  #{channelKeyId, jdbcType=VARCHAR},
+	channel_state =  #{channelState, jdbcType=VARCHAR},
+	channel_remark =  #{channelRemark, jdbcType=VARCHAR},
+	channel_time =  #{channelTime, jdbcType=TIMESTAMP},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_CONTRACT  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_CONTRACT set 
+	<trim  suffixOverrides="," >
+
+	<if test="contractNo != null and contractNo != '' " >
+	    contract_no =  #{contractNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractClass != null and contractClass != '' " >
+	    contract_class =  #{contractClass, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanAppId != null and loanAppId != '' " >
+	    loan_app_id =  #{loanAppId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanName != null and loanName != '' " >
+	    loan_name =  #{loanName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanIdType != null and loanIdType != '' " >
+	    loan_id_type =  #{loanIdType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanIdNo != null and loanIdNo != '' " >
+	    loan_id_no =  #{loanIdNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanProduct != null and loanProduct != '' " >
+	    loan_product =  #{loanProduct, jdbcType=VARCHAR},
+	</if>
+
+	<if test="loanAmount != null and loanAmount != ''" >
+	    loan_amount =  #{loanAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanPeriod != null and loanPeriod != ''" >
+	    loan_period =  #{loanPeriod, jdbcType=INTEGER},
+	</if>
+
+	<if test="loanInterestRate != null and loanInterestRate != ''" >
+	    loan_interest_rate =  #{loanInterestRate, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanServiceRate != null and loanServiceRate != ''" >
+	    loan_service_rate =  #{loanServiceRate, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanServiceRate2 != null and loanServiceRate2 != ''" >
+	    loan_service_rate2 =  #{loanServiceRate2, jdbcType=DOUBLE},
+	</if>
+
+	<if test="startDate != null and startDate != '' " >
+	    start_date =  #{startDate, jdbcType=DATE},
+	</if>
+
+	<if test="endDate != null and endDate != '' " >
+	    end_date =  #{endDate, jdbcType=DATE},
+	</if>
+
+	<if test="lendAppId != null and lendAppId != '' " >
+	    lend_app_id =  #{lendAppId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractType != null and contractType != '' " >
+	    contract_type =  #{contractType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="repayMethod != null and repayMethod != '' " >
+	    repay_method =  #{repayMethod, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lendName != null and lendName != '' " >
+	    lend_name =  #{lendName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lendIdType != null and lendIdType != '' " >
+	    lend_id_type =  #{lendIdType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lendIdNo != null and lendIdNo != '' " >
+	    lend_id_no =  #{lendIdNo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createDate != null and createDate != '' " >
+	    create_date =  #{createDate, jdbcType=DATE},
+	</if>
+
+	<if test="signDate != null and signDate != '' " >
+	    sign_date =  #{signDate, jdbcType=DATE},
+	</if>
+
+	<if test="ext1 != null and ext1 != ''" >
+	    ext1 =  #{ext1, jdbcType=INTEGER},
+	</if>
+
+	<if test="bankProvince != null and bankProvince != '' " >
+	    bank_province =  #{bankProvince, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bankCity != null and bankCity != '' " >
+	    bank_city =  #{bankCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bankCounty != null and bankCounty != '' " >
+	    bank_county =  #{bankCounty, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bankName != null and bankName != '' " >
+	    bank_name =  #{bankName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bankCode != null and bankCode != '' " >
+	    bank_code =  #{bankCode, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bankBranch != null and bankBranch != '' " >
+	    bank_branch =  #{bankBranch, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bankAccountName != null and bankAccountName != '' " >
+	    bank_account_name =  #{bankAccountName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bankAccount != null and bankAccount != '' " >
+	    bank_account =  #{bankAccount, jdbcType=VARCHAR},
+	</if>
+
+	<if test="bankMobile != null and bankMobile != '' " >
+	    bank_mobile =  #{bankMobile, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lendingDate != null and lendingDate != '' " >
+	    lending_date =  #{lendingDate, jdbcType=DATE},
+	</if>
+
+	<if test="downloadTime != null and downloadTime != '' " >
+	    download_time =  #{downloadTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="signProvince != null and signProvince != '' " >
+	    sign_province =  #{signProvince, jdbcType=VARCHAR},
+	</if>
+
+	<if test="signCity != null and signCity != '' " >
+	    sign_city =  #{signCity, jdbcType=VARCHAR},
+	</if>
+
+	<if test="signCounty != null and signCounty != '' " >
+	    sign_county =  #{signCounty, jdbcType=VARCHAR},
+	</if>
+
+	<if test="signAddress != null and signAddress != '' " >
+	    sign_address =  #{signAddress, jdbcType=VARCHAR},
+	</if>
+
+	<if test="channelType != null and channelType != '' " >
+	    channel_type =  #{channelType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="channelKeyId != null and channelKeyId != '' " >
+	    channel_key_id =  #{channelKeyId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="channelState != null and channelState != '' " >
+	    channel_state =  #{channelState, jdbcType=VARCHAR},
+	</if>
+
+	<if test="channelRemark != null and channelRemark != '' " >
+	    channel_remark =  #{channelRemark, jdbcType=VARCHAR},
+	</if>
+	
+	<if test="channelTime != null and channelTime != '' " >
+	    channel_time =  #{channelTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operator != null and operator != '' " >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 合同表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CONTRACT  where id = #{id}
+</select>
+
+<!-- 杨长收天价根据appid查询 合同表 -->
+<select id="queryByAppId"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CONTRACT  where contract_class ='01' and loan_app_id = #{loanAppId}
+</select>
+
+<!-- 合同表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CONTRACT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询合同表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_CONTRACT 
+	<include refid="Where_Clause"/>
+	<if test="states != null and states != '' " >
+		AND STATE in
+		<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<select id="getContractCode" resultType="string">
+ 	SELECT LPAD (nextval('T_CONTRACT_DALIY_SEQ'),4,'0') FROM DUAL
+</select>	
+ <!-- 根据appId查询 撮合结果 -->
+<select id="getContractByAppId"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from t_contract where  1=1
+	 <if test="loanAppId != null and loanAppId != ''" >
+	   AND loan_app_id =  #{loanAppId}
+	</if>
+	<if test="contractClass != null and contractClass != ''" >
+	   AND contract_class =  #{contractClass}
+	</if>
+	 <if test="ext1 != null and ext1 != ''" >
+	    and ext1 =  #{ext1}
+	</if>
+	 
+</select>
+
+<!-- 查询还款计划历史记录-->
+<select id="queryHistoryList" resultMap="ResultMap"  parameterType="Object">
+ SELECT a.CONTRACT_NO contractNo, a.LOAN_PERIOD loanPeriod,
+(SELECT COUNT(*) FROM t_loan_repay_plan t WHERE t.CONTRACT_NO = a.CONTRACT_NO AND t.STATE = '1') notReturnPeriod,
+(SELECT COUNT(*) FROM t_loan_repay_plan t WHERE t.CONTRACT_NO = a.CONTRACT_NO AND t.PENALTY_RECEIVABLE > 0 ) exceedPeriod,
+(SELECT SUM(t.INTEREST_RECEIVABLE+t.PRINCIPAL_RECEIVABLE) FROM t_loan_repay_plan t WHERE t.CONTRACT_NO = a.CONTRACT_NO AND t.STATE = '1') restPrincipalReceived,
+loan_amount contractMoney
+FROM t_contract a 
+WHERE   EXISTS (
+	SELECT * FROM t_credit_app b, t_credit_app c  WHERE b.app_id = a.loan_app_id 
+	AND b.NAME = c.NAME
+	AND b.id_type = c.id_type
+	AND b.ID_NO = c.ID_NO
+	AND c.APP_ID = #{appId}
+ );
+</select>
+
+
+<select id="queryContractRepayPlanCount" resultType="java.lang.Integer"  parameterType="map">
+	SELECT COUNT(1)
+	 FROM  t_contract t WHERE 1=1 AND t.`STATE`='2'
+		<if test="contractNo != null and contractNo != ''" >
+		 	AND t.`CONTRACT_NO`=#{contractNo}
+		</if>
+		<if test="orgId != null and orgId != ''" >
+		 	AND t.ORG_ID = #{orgId}
+		</if>
+		<if test="loanProduct != null and loanProduct != ''" >
+		 	AND t.LOAN_PRODUCT = #{loanProduct}
+		</if>
+		<if test="bankAccountName != null and bankAccountName != ''" >
+		 	AND t.BANK_ACCOUNT_NAME = #{bankAccountName}
+		</if>
+		<if test="loanIdNo != null and loanIdNo != ''" >
+		 	AND t.LOAN_ID_NO = #{loanIdNo}
+		</if>
+		<!-- 是否逾期 -->
+		<if test="isOverdue != null and isOverdue != ''" >
+			<if test="isOverdue == 'overdue'" >
+				AND EXISTS
+				 (
+				 SELECT 1 FROM t_loan_repay_plan a WHERE a.contract_no= t.contract_no <![CDATA[AND a.PENALTY_RECEIVABLE > 0]]> 
+				 )
+			</if>
+			<if test="isOverdue == 'noOverdue'" >
+				AND NOT EXISTS
+				 (
+				 SELECT 1 FROM t_loan_repay_plan a WHERE a.contract_no= t.contract_no <![CDATA[AND a.PENALTY_RECEIVABLE > 0]]> 
+				 )
+			</if>
+		</if>
+		<!-- 还款日期 -->
+		<if test="repayMentDate != null and repayMentDate != ''" >
+			AND EXISTS
+			 (
+			 SELECT 1 FROM t_loan_repay_plan a WHERE a.contract_no= t.contract_no AND a. REPAYMENT_DATE = #{repayMentDate}
+			 )
+		</if>
+</select>
+<select id="queryContractRepayPlanList" resultMap="ResultMap"  parameterType="map">
+		SELECT 
+		t.ID,
+		t.CONTRACT_NO,
+		t.CONTRACT_CLASS,
+		t.LOAN_APP_ID,
+		t.LOAN_NAME,
+		t.LOAN_ID_TYPE,
+		t.LOAN_ID_NO,
+		t.LOAN_PRODUCT,
+		t.LOAN_AMOUNT,
+		t.LOAN_PERIOD,
+		t.LOAN_INTEREST_RATE,
+		t.LOAN_SERVICE_RATE,
+		t.LOAN_SERVICE_RATE2,
+		t.START_DATE,
+		t.END_DATE,
+		t.LEND_APP_ID,
+		t.CONTRACT_TYPE,
+		t.REPAY_METHOD,
+		t.LEND_NAME,
+		t.LEND_ID_TYPE,
+		t.LEND_ID_NO,
+		t.CREATE_DATE,
+		t.SIGN_DATE,
+		t.EXT1,
+		t.BANK_PROVINCE,
+		t.BANK_CITY,
+		t.BANK_COUNTY,
+		t.BANK_NAME,
+		t.BANK_CODE,
+		t.BANK_BRANCH,
+		t.BANK_ACCOUNT_NAME,
+		t.BANK_ACCOUNT,
+		t.LENDING_DATE,
+		t.DOWNLOAD_TIME,
+		t.SIGN_PROVINCE,
+		t.SIGN_CITY,
+		t.SIGN_COUNTY,
+		t.SIGN_ADDRESS,
+		t.STATE,
+		t.OPERATOR,
+		t.CREATE_TIME,
+		t.UPDATE_TIME,
+		(SELECT o.`ORG_NAME` FROM t_org o WHERE o.`ORG_ID` = t.`ORG_ID`) orgId,
+		(SELECT COUNT(*) FROM t_loan_repay_plan a WHERE a.contract_no= t.contract_no AND a.state IN('1','3')) noPeriodNum,
+		(SELECT COUNT(*) FROM t_loan_repay_plan b WHERE b.contract_no= t.contract_no AND b.PENALTY_RECEIVABLE > 0) defaultPeriodNum
+	 FROM  t_contract t WHERE 1=1 AND t.`STATE`='2'
+	<if test="contractNo != null and contractNo != ''" >
+	 	AND t.`CONTRACT_NO`=#{contractNo}
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	 	AND t.ORG_ID = #{orgId}
+	</if>
+	<if test="loanProduct != null and loanProduct != ''" >
+	 	AND t.LOAN_PRODUCT = #{loanProduct}
+	</if>
+	<if test="bankAccountName != null and bankAccountName != ''" >
+	 	AND t.BANK_ACCOUNT_NAME = #{bankAccountName}
+	</if>
+	<if test="loanIdNo != null and loanIdNo != ''" >
+	 	AND t.LOAN_ID_NO = #{loanIdNo}
+	</if>
+	<!-- 是否逾期 -->
+	<if test="isOverdue != null and isOverdue != ''" >
+		<if test="isOverdue == 'overdue'" >
+			AND EXISTS
+			 (
+			 SELECT 1 FROM t_loan_repay_plan a WHERE a.contract_no= t.contract_no <![CDATA[AND a.PENALTY_RECEIVABLE > 0]]> 
+			 )
+		</if>
+		<if test="isOverdue == 'noOverdue'" >
+			AND NOT EXISTS
+			 (
+			 SELECT 1 FROM t_loan_repay_plan a WHERE a.contract_no= t.contract_no <![CDATA[AND a.PENALTY_RECEIVABLE > 0]]> 
+			 )
+		</if>
+	</if>
+	<!-- 还款日期 -->
+	<if test="repayMentDate != null and repayMentDate != ''" >
+		AND EXISTS
+		 (
+		 SELECT 1 FROM t_loan_repay_plan a WHERE a.contract_no= t.contract_no AND a. REPAYMENT_DATE = #{repayMentDate}
+		 )
+	</if>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 功能区拒贷 列表查询-->
+<select id="queryCreditRepelLoanList" resultMap="ResultMap"  parameterType="map">
+
+SELECT 
+	con.*,
+	a.id			 appId,
+	a.app_id   		 loanAppId, 
+	a.name   		 appName, 
+	a.input_time	 inputTime, 
+	a.amount		 appAmount,
+	a.belong_channel appChannel,
+	(SELECT ct.`CHANNEL_NAME` FROM t_channel_total ct WHERE ct.`CHANNEL_CODE` = a.belong_channel) appChannelName,
+	a.product		 appProduct,
+	a.period		 appPeriod,
+	b.update_time 	 decisionDate, 
+	b.belong_channel decisionChannel,
+	(SELECT ct.`CHANNEL_NAME` FROM t_channel_total ct WHERE ct.`CHANNEL_CODE` = b.belong_channel) decisionChannelName,
+	b.product 		 loanProduct, 
+	b.period 		 loanPeriod, 
+	b.amount 		 decisionAmount, 
+	(SELECT r.INTEREST_RECEIVABLE + r.PRINCIPAL_RECEIVABLE FROM t_loan_repay_plan r, t_contract c1  WHERE r.CONTRACT_NO = c1.CONTRACT_NO AND c1.loan_app_id = a.app_id ORDER BY r.id LIMIT 1) methodAmount,
+   	con.loan_amount	 loanAmount,
+	a.state			 appState,
+	(SELECT o.`ORG_NAME` FROM t_org o WHERE o.`ORG_ID` = a.`ORG_ID`) orgName
+FROM t_contract con
+LEFT JOIN t_credit_app a ON con.loan_app_id = a.app_id LEFT JOIN t_credit_decision b ON a.app_id = b.app_id AND b.type = 0
+LEFT JOIN t_bpm_task c ON  a.app_id = c.BIZ_KEY WHERE 1=1 AND c.STATE = '放款' and con.state != '0' and a.state = '20' 
+	<if test="name!=null and name!=''">
+		AND a.NAME =#{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	<if test="appId!=null and appId!=''">
+		AND a.APP_ID =#{appId}
+	</if>
+	<if test="inputTimeMin!=null and inputTimeMin!=''">
+		<![CDATA[AND a.INPUT_TIME >= #{inputTimeMin}]]>
+	</if>
+	<if test="inputTimeMax!=null and inputTimeMax!=''">
+		<![CDATA[AND a.INPUT_TIME < #{inputTimeMax}]]>
+	</if>
+	<if test="product!=null and product!=''">
+		AND a.PRODUCT =#{product}
+	</if>
+	<if test="orgId != null and orgId != '' " >
+		AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	<if test="platformName!=null and platformName!=''">
+		AND b.PRODUCT LIKE CONCAT('%', #{platformName})
+	</if>
+	<if test="rowS != null and rowE != null " >
+		limit #{rowS} , #{rowE}
+	</if>
+	<if test="_skiprows != null and _pagesize != null " >
+      	LIMIT #{_skiprows}, #{_pagesize}
+    </if>
+</select>
+  <!-- 功能区拒贷 列表总量-->
+<select id="queryCreditRepelLoanCount" resultType="java.lang.Integer" parameterType="map">
+	SELECT 
+	COUNT(1)
+FROM t_contract con
+LEFT JOIN t_credit_app a ON con.loan_app_id = a.app_id LEFT JOIN t_credit_decision b ON a.app_id = b.app_id AND b.type = 0
+LEFT JOIN t_bpm_task c ON  a.app_id = c.BIZ_KEY WHERE 1=1 AND c.STATE = '放款' and con.state != '0' and a.state = '20' 
+	<if test="name!=null and name!=''">
+		AND a.NAME =#{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		AND a.ID_NO =#{idNo}
+	</if>
+	<if test="appId!=null and appId!=''">
+		AND a.APP_ID =#{appId}
+	</if>
+	<if test="inputTimeMin!=null and inputTimeMin!=''">
+		<![CDATA[AND a.INPUT_TIME >= #{inputTimeMin}]]>
+	</if>
+	<if test="inputTimeMax!=null and inputTimeMax!=''">
+		<![CDATA[AND a.INPUT_TIME < #{inputTimeMax}]]>
+	</if>
+	<if test="product!=null and product!=''">
+		AND a.PRODUCT =#{product}
+	</if>
+	<if test="orgId != null and orgId != '' " >
+		AND a.ORG_ID LIKE CONCAT(#{orgId},'%')
+	</if>
+	<if test="platformName!=null and platformName!=''">
+		AND b.PRODUCT LIKE CONCAT('%', #{platformName})
+	</if>
+</select>
+
+
+
+<!-- 功能区拒贷 列表查询-->
+<select id="queryManageList" resultMap="ResultMap"  parameterType="map">
+SELECT 
+	c.* , 
+	a.id appId,
+	a.NAME appName,
+	a.AMOUNT appAmount,
+	(SELECT p.belong_channel FROM t_product p WHERE p.name= c.loan_product ) decisionChannel,
+	(SELECT ct.`CHANNEL_NAME` FROM t_channel_total ct WHERE ct.`CHANNEL_CODE` = c.`CHANNEL_TYPE` ) decisionChannelName,
+	a.PRODUCT appProduct,
+	a.PERIOD appPeriod,
+  	a.INPUT_TIME inputTime,
+	d.CREATE_TIME decisionDate,
+	d.AMOUNT decisionAmount,
+	a.STATE appState,
+	(SELECT o.ORG_NAME FROM t_org o WHERE o.ORG_ID = a.ORG_ID) orgName
+FROM t_contract c ,t_credit_app a,t_credit_decision d 
+WHERE       
+	a.APP_ID=c.LOAN_APP_ID AND d.APP_ID=a.APP_ID AND d.TYPE='0'
+	
+	<if test="appStates != null and appStates != '' " >
+		AND a.STATE IN 
+		<foreach item="item" index="index" collection="appStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="contractStates != null and contractStates != '' " >
+		AND c.STATE IN 
+		<foreach item="item" index="index" collection="contractStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="appId != null and appId != '' " >
+		AND a.APP_ID=#{appId}
+	</if>
+	<if test="orgId != null and orgId != '' " >
+		AND a.ORG_ID=#{orgId}
+	</if>
+	<if test="contractNo != null and contractNo != '' " >
+		AND c.CONTRACT_NO=#{contractNo}
+	</if>
+	<if test="name != null and name != '' " >
+		AND c.LOAN_NAME=#{name}
+	</if>
+	<if test="idNo != null and idNo != '' " >
+		AND c.LOAN_ID_NO=#{idNo}
+	</if>
+	<if test="rowS != null and rowE != null " >
+		limit #{rowS} , #{rowE}
+	</if>
+	<if test="_skiprows != null and _pagesize != null " >
+      	LIMIT #{_skiprows}, #{_pagesize}
+    </if>
+</select>
+
+<select id="queryManageCount" resultType="java.lang.Integer" parameterType="map">
+SELECT COUNT(1) 
+FROM t_contract c ,t_credit_app a,t_credit_decision d 
+WHERE       
+	a.APP_ID=c.LOAN_APP_ID AND d.APP_ID=a.APP_ID AND d.TYPE='0'
+	<if test="appStates != null and appStates != '' " >
+		AND a.STATE IN 
+		<foreach item="item" index="index" collection="appStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="contractStates != null and contractStates != '' " >
+		AND c.STATE IN 
+		<foreach item="item" index="index" collection="contractStates" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+	<if test="appId != null and appId != '' " >
+		AND a.APP_ID=#{appId}
+	</if>
+	<if test="orgId != null and orgId != '' " >
+		AND a.ORG_ID=#{orgId}
+	</if>
+	<if test="contractNo != null and contractNo != '' " >
+		AND c.CONTRACT_NO=#{contractNo}
+	</if>
+	<if test="name != null and name != '' " >
+		AND c.LOAN_NAME=#{name}
+	</if>
+	<if test="idNo != null and idNo != '' " >
+		AND c.LOAN_ID_NO=#{idNo}
+	</if>
+</select>
+
+
+
+
+
+
+
+</mapper>

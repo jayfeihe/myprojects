@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.tera.audit.query.dao.IntegratedQueryDao">
+	
+	<select id="integratedQueryList" parameterType="map" 
+			resultType="com.tera.audit.query.model.IntegratedQueryBean">
+		
+		SELECT 
+			t1.ID id,
+			t1.LOAN_ID loanId,
+			t1.NAME name,
+			t1.ID_NO idNo,
+			t1.LOAN_AMT loanAmt,
+			t1.IS_RENEW isRenew,
+			t1.RENEW_NUM renewNum,
+			t1.IS_ENOUGH isEnough,
+			t1.INPUT_TIME inputTime,
+			t1.BRANCH_AUDIT_TIME branchAuditTime,
+			t1.RISK_FIRST_TIME riskFirstTime,
+			t1.RISK_CHECK_TIME riskCheckTime,
+			t1.MEET_FIRST_TIME meetFirstTime,
+			t1.MEET_CHECK_TIME meetCheckTime, 
+			t1.LAW_TIME lawTime,
+			t1.CASH_TIME cashTime,
+			t1.ACCT_TIME acctTime,
+			t1.LOAN_TIME loanTime,
+			(SELECT d.KEY_VALUE FROM t_data_dictionary d WHERE t1.PRODUCT = d.KEY_PROP AND d.KEY_NAME = 'productType') productName,
+			(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = t1.SALESMAN) salesman,
+			c.CONTRACT_ID contractId,
+			(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = b.PROCESSER) processerName,
+			
+			<!-- 关联分公司审批 -->
+			<if test="branchBpmState != null and branchBpmState != ''">
+				(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = br.OPERATOR) branchAuditUser,
+			</if>
+			
+			<!-- 关联风控初审 -->
+			<if test="riskFirstBpmState != null and riskFirstBpmState != ''">
+				(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = rf.OPERATOR) riskFirstAuditUser,
+			</if>
+			
+			<!-- 关联风控复核 -->
+			<if test="riskCheckBpmState != null and riskCheckBpmState != ''">
+				(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = rc.OPERATOR) riskCheckUser,
+			</if>
+			
+			<!-- 关联评审会初审 -->
+			<if test="meetFirstBpmState != null and meetFirstBpmState != ''">
+				 (SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = mf.OPERATOR) meetFirstAuditUser,
+			</if>
+			
+			<!-- 关联评审会复核 -->
+			<if test="meetCheckBpmState != null and meetCheckBpmState != ''">
+				(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = mc.OPERATOR) meetCheckUser,
+			</if>
+			
+			<!-- 关联法务内勤 -->
+			<if test="lawInsideBpmState != null and lawInsideBpmState != ''">
+				(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = laInside.OPERATOR) lawInsideUser,
+			</if>
+			<!-- 关联法务初审 -->
+			<if test="lawFirstBpmState != null and lawFirstBpmState != ''">
+				(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = laFirst.OPERATOR) lawFirstUser,
+			</if>
+			<!-- 关联法务复核 -->
+			<if test="lawReviewBpmState != null and lawReviewBpmState != ''">
+				(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = laReview.OPERATOR) lawReviewUser,
+			</if>
+			
+			<!-- 关联出纳贷前核帐 -->
+			<if test="cashBpmState != null and cashBpmState != ''">
+				(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = ca.OPERATOR) cashUser,
+			</if>
+			
+			<!-- 关联财务核帐 -->
+			<if test="acctBpmState != null and acctBpmState != ''">
+				(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = ac.OPERATOR) acctUser,
+			</if>
+			
+			<!-- 关联放款 -->
+			<if test="loanBpmState != null and loanBpmState != ''">
+				(SELECT u.NAME FROM t_user u WHERE u.LOGIN_ID = lo.OPERATOR) loanUser,
+			</if>
+			
+			(SELECT o.ORG_NAME FROM t_org o WHERE o.ORG_ID = t1.ORG) orgName,
+			b.STATE bpmState,
+			CONCAT(t1.STATE_1ST,t1.STATE_2ND) appState
+		
+		FROM t_loan_base t1
+		INNER JOIN t_bpm_task b ON t1.loan_id = b.biz_key
+		LEFT JOIN t_contract c ON c.LOAN_ID = t1.LOAN_ID
+		
+		<!-- 关联分公司审批 -->
+		<if test="branchBpmState != null and branchBpmState != ''">
+			LEFT JOIN 
+			(SELECT C.BIZ_KEY,C.OPERATORS OPERATOR FROM T_Bpm_Def A, T_Bpm_Task B, T_Bpm_Log C
+			 WHERE A.Id = B.Def_id And B.Id = C.Task_id 
+			 AND A.Process_name = #{processName} AND C.STATE = #{branchBpmState}
+			 AND c.OUTTIME = (SELECT MAX(l.OUTTIME) from t_bpm_log l WHERE l.biz_key = C.BIZ_KEY AND l.STATE = #{branchBpmState})
+			) br ON t1.LOAN_ID = br.BIZ_KEY
+		</if>
+		
+		<!-- 关联风控初审 -->
+		<if test="riskFirstBpmState != null and riskFirstBpmState != ''">
+			LEFT JOIN 
+			(SELECT C.BIZ_KEY,C.OPERATORS OPERATOR FROM T_Bpm_Def A, T_Bpm_Task B, T_Bpm_Log C
+			 WHERE A.Id = B.Def_id And B.Id = C.Task_id 
+			 AND A.Process_name = #{processName} AND C.STATE = #{riskFirstBpmState}
+			 AND c.OUTTIME = (SELECT MAX(l.OUTTIME) from t_bpm_log l WHERE l.biz_key = C.BIZ_KEY AND l.STATE = #{riskFirstBpmState})
+			) rf ON t1.LOAN_ID = rf.BIZ_KEY
+		</if>
+		
+		<!-- 关联风控复核 -->
+		<if test="riskCheckBpmState != null and riskCheckBpmState != ''">
+			LEFT JOIN 
+			(SELECT C.BIZ_KEY,C.OPERATORS OPERATOR FROM T_Bpm_Def A, T_Bpm_Task B, T_Bpm_Log C
+			 WHERE A.Id = B.Def_id And B.Id = C.Task_id 
+			 AND A.Process_name = #{processName} AND C.STATE = #{riskCheckBpmState}
+			 AND c.OUTTIME = (SELECT MAX(l.OUTTIME) from t_bpm_log l WHERE l.biz_key = C.BIZ_KEY AND l.STATE = #{riskCheckBpmState})
+			) rc ON t1.LOAN_ID = rc.BIZ_KEY
+		</if>
+		
+		<!-- 关联评审会初审 -->
+		<if test="meetFirstBpmState != null and meetFirstBpmState != ''">
+			LEFT JOIN 
+			(SELECT C.BIZ_KEY,C.OPERATORS OPERATOR FROM T_Bpm_Def A, T_Bpm_Task B, T_Bpm_Log C
+			 WHERE A.Id = B.Def_id And B.Id = C.Task_id 
+			 AND A.Process_name = #{processName} AND C.STATE = #{meetFirstBpmState}
+			 AND c.OUTTIME = (SELECT MAX(l.OUTTIME) from t_bpm_log l WHERE l.biz_key = C.BIZ_KEY AND l.STATE = #{meetFirstBpmState})
+			) mf ON t1.LOAN_ID = mf.BIZ_KEY
+		</if>
+		
+		<!-- 关联评审会复核 -->
+		<if test="meetCheckBpmState != null and meetCheckBpmState != ''">
+			LEFT JOIN 
+			(SELECT C.BIZ_KEY,C.OPERATORS OPERATOR FROM T_Bpm_Def A, T_Bpm_Task B, T_Bpm_Log C
+			 WHERE A.Id = B.Def_id And B.Id = C.Task_id 
+			 AND A.Process_name = #{processName} AND C.STATE = #{meetCheckBpmState}
+			 AND c.OUTTIME = (SELECT MAX(l.OUTTIME) from t_bpm_log l WHERE l.biz_key = C.BIZ_KEY AND l.STATE = #{meetCheckBpmState})
+			) mc ON t1.LOAN_ID = mc.BIZ_KEY
+		</if>
+		
+		<!-- 关联法务内勤 -->
+		<if test="lawInsideBpmState != null and lawInsideBpmState != ''">
+			LEFT JOIN 
+			(SELECT C.BIZ_KEY,C.OPERATORS OPERATOR FROM T_Bpm_Def A, T_Bpm_Task B, T_Bpm_Log C
+			 WHERE A.Id = B.Def_id And B.Id = C.Task_id 
+			 AND A.Process_name = #{processName} AND C.STATE = #{lawInsideBpmState}
+			 AND c.OUTTIME = (SELECT MAX(l.OUTTIME) from t_bpm_log l WHERE l.biz_key = C.BIZ_KEY AND l.STATE = #{lawInsideBpmState})
+			) laInside ON t1.LOAN_ID = laInside.BIZ_KEY
+		</if>
+		
+		<!-- 关联法务初审 -->
+		<if test="lawFirstBpmState != null and lawFirstBpmState != ''">
+			LEFT JOIN 
+			(SELECT C.BIZ_KEY,C.OPERATORS OPERATOR FROM T_Bpm_Def A, T_Bpm_Task B, T_Bpm_Log C
+			 WHERE A.Id = B.Def_id And B.Id = C.Task_id 
+			 AND A.Process_name = #{processName} AND C.STATE = #{lawFirstBpmState}
+			 AND c.OUTTIME = (SELECT MAX(l.OUTTIME) from t_bpm_log l WHERE l.biz_key = C.BIZ_KEY AND l.STATE = #{lawFirstBpmState})
+			) laFirst ON t1.LOAN_ID = laFirst.BIZ_KEY
+		</if>
+		
+		<!-- 关联法务复核 -->
+		<if test="lawReviewBpmState != null and lawReviewBpmState != ''">
+			LEFT JOIN 
+			(SELECT C.BIZ_KEY,C.OPERATORS OPERATOR FROM T_Bpm_Def A, T_Bpm_Task B, T_Bpm_Log C
+			 WHERE A.Id = B.Def_id And B.Id = C.Task_id 
+			 AND A.Process_name = #{processName} AND C.STATE = #{lawReviewBpmState}
+			 AND c.OUTTIME = (SELECT MAX(l.OUTTIME) from t_bpm_log l WHERE l.biz_key = C.BIZ_KEY AND l.STATE = #{lawReviewBpmState})
+			) laReview ON t1.LOAN_ID = laReview.BIZ_KEY
+		</if>
+		
+		<!-- 关联出纳贷前核帐 -->
+		<if test="cashBpmState != null and cashBpmState != ''">
+			LEFT JOIN 
+			(SELECT C.BIZ_KEY,C.OPERATORS OPERATOR FROM T_Bpm_Def A, T_Bpm_Task B, T_Bpm_Log C
+			 WHERE A.Id = B.Def_id And B.Id = C.Task_id 
+			 AND A.Process_name = #{processName} AND C.STATE = #{cashBpmState}
+			 AND c.OUTTIME = (SELECT MAX(l.OUTTIME) from t_bpm_log l WHERE l.biz_key = C.BIZ_KEY AND l.STATE = #{cashBpmState})
+			) ca ON t1.LOAN_ID = ca.BIZ_KEY
+		</if>
+		
+		<!-- 关联财务核帐 -->
+		<if test="acctBpmState != null and acctBpmState != ''">
+			LEFT JOIN 
+			(SELECT C.BIZ_KEY,C.OPERATORS OPERATOR FROM T_Bpm_Def A, T_Bpm_Task B, T_Bpm_Log C
+			 WHERE A.Id = B.Def_id And B.Id = C.Task_id 
+			 AND A.Process_name = #{processName} AND C.STATE = #{acctBpmState}
+			 AND c.OUTTIME = (SELECT MAX(l.OUTTIME) from t_bpm_log l WHERE l.biz_key = C.BIZ_KEY AND l.STATE = #{acctBpmState})
+			) ac ON t1.LOAN_ID = ac.BIZ_KEY
+		</if>
+		
+		<!-- 关联放款 -->
+		<if test="loanBpmState != null and loanBpmState != ''">
+			LEFT JOIN 
+			(SELECT C.BIZ_KEY,C.OPERATORS OPERATOR FROM T_Bpm_Def A, T_Bpm_Task B, T_Bpm_Log C
+			 WHERE A.Id = B.Def_id And B.Id = C.Task_id 
+			 AND A.Process_name = #{processName} AND C.STATE = #{loanBpmState}
+			 AND c.OUTTIME = (SELECT MAX(l.OUTTIME) from t_bpm_log l WHERE l.biz_key = C.BIZ_KEY AND l.STATE = #{loanBpmState})
+			) lo ON t1.LOAN_ID = lo.BIZ_KEY
+		</if>
+		
+	<where>
+		1=1
+		<if test="loanId != null and loanId != ''" >
+		    AND t1.LOAN_ID =  #{loanId}
+		</if>
+		<if test="name != null and name != ''" >
+		    AND t1.NAME =  #{name}
+		</if>
+		<if test="idNo != null and idNo != ''" >
+		    AND t1.ID_NO =  #{idNo}
+		</if>
+		<if test="product != null and product != ''" >
+		    AND t1.PRODUCT =  #{product}
+		</if>
+		<if test="state1st != null and state1st != ''" >
+		    AND STATE_1ST =  #{state1st}
+		</if>
+		
+		<if test="bpmState != null and bpmState != ''">
+			AND b.STATE = #{bpmState}
+		</if>
+		<if test="orgId != null and orgId != ''">
+			AND t1.ORG LIKE CONCAT(#{orgId},'%')
+		</if>
+		<if test="salesman != null and salesman != ''">
+			AND t1.salesman = #{salesman}
+		</if>
+		
+		<!-- 录入时间 -->
+		<if test="inputTimeMin != null and inputTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.INPUT_TIME,'YYYY-MM-DD') >= #{inputTimeMin} ]]>
+		</if>
+		<if test="inputTimeMax != null and inputTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.INPUT_TIME,'YYYY-MM-DD') <= #{inputTimeMax} ]]>
+		</if>
+		
+		<!-- 提交分公司审核时间 -->
+		<if test="branchAuditTimeMin != null and branchAuditTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.BRANCH_AUDIT_TIME,'YYYY-MM-DD') >= #{branchAuditTimeMin} ]]>
+		</if>
+		<if test="branchAuditTimeMax != null and branchAuditTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.BRANCH_AUDIT_TIME,'YYYY-MM-DD') <= #{branchAuditTimeMax} ]]>
+		</if>
+		
+		<!-- 提交风控初审时间 -->
+		<if test="riskAuditTimeMin != null and riskAuditTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.RISK_FIRST_TIME,'YYYY-MM-DD') >= #{riskAuditTimeMin} ]]>
+		</if>
+		<if test="riskAuditTimeMax != null and riskAuditTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.RISK_FIRST_TIME,'YYYY-MM-DD') <= #{riskAuditTimeMax} ]]>
+		</if>
+		
+		<!-- 提交评审会初审时间 -->
+		<if test="meetFirstTimeMin != null and meetFirstTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.MEET_FIRST_TIME,'YYYY-MM-DD') >= #{meetFirstTimeMin} ]]>
+		</if>
+		<if test="meetFirstTimeMax != null and meetFirstTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.MEET_FIRST_TIME,'YYYY-MM-DD') <= #{meetFirstTimeMax} ]]>
+		</if>
+		
+		<!-- 提交评审会复核时间 -->
+		<if test="meetCheckTimeMin != null and meetCheckTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.MEET_CHECK_TIME,'YYYY-MM-DD') >= #{meetCheckTimeMin} ]]>
+		</if>
+		<if test="meetCheckTimeMax != null and meetCheckTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.MEET_CHECK_TIME,'YYYY-MM-DD') <= #{meetCheckTimeMax} ]]>
+		</if>
+		
+		<!-- 提交风控复核时间 -->
+		<if test="riskCheckTimeMin != null and riskCheckTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.RISK_CHECK_TIME,'YYYY-MM-DD') >= #{riskCheckTimeMin} ]]>
+		</if>
+		<if test="riskCheckTimeMax != null and riskCheckTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.RISK_CHECK_TIME,'YYYY-MM-DD') <= #{riskCheckTimeMax} ]]>
+		</if>
+		
+		<!-- 提交法务初审时间 -->
+		<if test="lawTimeMin != null and lawTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.LAW_TIME,'YYYY-MM-DD') >= #{lawTimeMin} ]]>
+		</if>
+		<if test="lawTimeMax != null and lawTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.LAW_TIME,'YYYY-MM-DD') <= #{lawTimeMax} ]]>
+		</if>
+		
+		<!-- 提交出纳时间 -->
+		<if test="cashTimeMin != null and cashTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.CASH_TIME,'YYYY-MM-DD') >= #{cashTimeMin} ]]>
+		</if>
+		<if test="cashTimeMax != null and cashTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.CASH_TIME,'YYYY-MM-DD') <= #{cashTimeMax} ]]>
+		</if>
+		
+		<!-- 提交财务时间 -->
+		<if test="acctTimeMin != null and acctTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.ACCT_TIME,'YYYY-MM-DD') >= #{acctTimeMin} ]]>
+		</if>
+		<if test="acctTimeMax != null and acctTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.ACCT_TIME,'YYYY-MM-DD') <= #{acctTimeMax} ]]>
+		</if>
+		
+		<!-- 放款时间 -->
+		<if test="loanTimeMin != null and loanTimeMin != ''">
+			<![CDATA[AND TO_CHAR(t1.LOAN_TIME,'YYYY-MM-DD') >= #{loanTimeMin} ]]>
+		</if>
+		<if test="loanTimeMax != null and loanTimeMax != ''">
+			<![CDATA[AND TO_CHAR(t1.LOAN_TIME,'YYYY-MM-DD') <= #{loanTimeMax} ]]>
+		</if>
+		
+		<if test="salesmanName != null and salesmanName != ''">
+			AND t1.salesman IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{salesmanName})
+		</if>
+		
+		<!-- 关联分公司审批 -->
+		<if test="branchBpmState != null and branchBpmState != ''">
+			<if test="branchAuditUser != null and branchAuditUser != ''">
+				AND br.OPERATOR IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{branchAuditUser})
+			</if>
+		</if>
+		
+		<!-- 关联风控初审 -->
+		<if test="riskFirstBpmState != null and riskFirstBpmState != ''">
+			<if test="riskFirstAuditUser != null and riskFirstAuditUser != ''">
+				AND rf.OPERATOR IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{riskFirstAuditUser})
+			</if>
+		</if>
+		
+		<!-- 关联风控复核 -->
+		<if test="riskCheckBpmState != null and riskCheckBpmState != ''">
+			<if test="riskCheckUser != null and riskCheckUser != ''">
+				AND rc.OPERATOR IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{riskCheckUser})
+			</if>
+		</if>
+		
+		<!-- 关联评审会初审 -->
+		<if test="meetFirstBpmState != null and meetFirstBpmState != ''">
+			<if test="meetFirstAuditUser != null and meetFirstAuditUser != ''">
+				 AND mf.OPERATOR IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{meetFirstAuditUser})
+			</if>
+		</if>
+		
+		<!-- 关联评审会复核 -->
+		<if test="meetCheckBpmState != null and meetCheckBpmState != ''">
+			<if test="meetCheckUser != null and meetCheckUser != ''">
+				AND mc.OPERATOR IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{meetCheckUser})
+			</if>
+		</if>
+		
+		<!-- 关联法务内勤 -->
+		<if test="lawInsideBpmState != null and lawInsideBpmState != ''">
+			<if test="lawInsideUser != null and lawInsideUser != ''">
+				AND laInside.OPERATOR IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{lawUser})
+			</if>
+		</if>
+		
+		<!-- 关联法务初审 -->
+		<if test="lawFirstBpmState != null and lawFirstBpmState != ''">
+			<if test="lawFirstUser != null and lawFirstUser != ''">
+				AND laFirst.OPERATOR IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{lawFirstUser})
+			</if>
+		</if>
+		
+		<!-- 关联法务复核 -->
+		<if test="lawReviewBpmState != null and lawReviewBpmState != ''">
+			<if test="lawReviewUser != null and lawReviewUser != ''">
+				AND laReview.OPERATOR IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{lawReviewUser})
+			</if>
+		</if>
+		
+		<!-- 关联出纳贷前核帐 -->
+		<if test="cashBpmState != null and cashBpmState != ''">
+			<if test="cashUser != null and cashUser != ''">
+				AND ca.OPERATOR IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{cashUser})
+			</if>
+		</if>
+		
+		<!-- 关联财务核帐 -->
+		<if test="acctBpmState != null and acctBpmState != ''">
+			<if test="acctUser != null and acctUser != ''">
+				AND ac.OPERATOR IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{acctUser})
+			</if>	
+		</if>
+		
+		<!-- 关联放款 -->
+		<if test="loanBpmState != null and loanBpmState != ''">
+			<if test="loanUser != null and loanUser != ''">
+				AND lo.OPERATOR IN (SELECT LOGIN_ID FROM T_USER U WHERE U.NAME = #{loanUser})
+			</if>
+		</if>
+		
+		ORDER BY t1.INPUT_TIME
+	</where>
+	</select>
+	
+</mapper>

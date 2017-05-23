@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.credit.dao.CreditReportDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.credit.model.CreditReport" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="type" property="type"/><!-- 类型 -->
+	<result column="credit_card_exception" property="creditCardException"/><!-- 信用卡近12个月异常 -->
+	<result column="query_six_count" property="querySixCount"/><!-- 6个月查询次数 -->
+	<result column="max_default" property="maxDefault"/><!-- 最大账龄（月） -->
+	<result column="amount" property="amount"/><!-- 最高额度/总额 -->
+	<result column="default_amount" property="defaultAmount"/><!-- 逾期总额 -->
+	<result column="default_count" property="defaultCount"/><!-- 逾期的 笔数/数量 -->
+	<result column="default_max_count" property="defaultMaxCount"/><!-- 最大逾期次数 -->
+	<result column="default_ninety_count" property="defaultNinetyCount"/><!-- 90天以上逾期次数 -->
+	<result column="expire_loan" property="expireLoan"/><!-- 一个月内到期的贷款笔数 -->
+	<result column="expire_housing" property="expireHousing"/><!-- 个人住房贷款笔数 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+	<result column="used_amount" property="usedAmount"/><!-- 已用额度 -->
+</resultMap>
+       
+<!-- T_CREDIT_REPORT table all fields -->
+<sql id="Column_List" >
+	 id,app_id,type,credit_card_exception,query_six_count,max_default,amount,default_amount,default_count,default_max_count,default_ninety_count,expire_loan,expire_housing,state,operator,org_id,create_time,update_time,used_amount
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="creditCardException != null and creditCardException != ''" >
+	    and credit_card_exception =  #{creditCardException}
+	</if>
+<if test="querySixCount != null and querySixCount != ''" >
+	    and query_six_count =  #{querySixCount}
+	</if>
+<if test="maxDefault != null and maxDefault != ''" >
+	    and max_default =  #{maxDefault}
+	</if>
+<if test="amount != null and amount != ''" >
+	    and amount =  #{amount}
+	</if>
+<if test="defaultAmount != null and defaultAmount != ''" >
+	    and default_amount =  #{defaultAmount}
+	</if>
+<if test="defaultCount != null and defaultCount != ''" >
+	    and default_count =  #{defaultCount}
+	</if>
+<if test="defaultMaxCount != null and defaultMaxCount != ''" >
+	    and default_max_count =  #{defaultMaxCount}
+	</if>
+<if test="defaultNinetyCount != null and defaultNinetyCount != ''" >
+	    and default_ninety_count =  #{defaultNinetyCount}
+	</if>
+<if test="expireLoan != null and expireLoan != ''" >
+	    and expire_loan =  #{expireLoan}
+	</if>
+<if test="expireHousing != null and expireHousing != ''" >
+	    and expire_housing =  #{expireHousing}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+<if test="usedAmount != null and usedAmount != ''" >
+	    and used_amount =  #{usedAmount}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_CREDIT_REPORT_SEQ') From dual
+			<!-- Select T_CREDIT_REPORT_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_CREDIT_REPORT(id,app_id,type,credit_card_exception,query_six_count,max_default,amount,default_amount,default_count,default_max_count,default_ninety_count,expire_loan,expire_housing,state,operator,org_id,create_time,update_time,used_amount)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{creditCardException, jdbcType=INTEGER},#{querySixCount, jdbcType=INTEGER},#{maxDefault, jdbcType=INTEGER},#{amount, jdbcType=DOUBLE},#{defaultAmount, jdbcType=DOUBLE},#{defaultCount, jdbcType=INTEGER},#{defaultMaxCount, jdbcType=INTEGER},#{defaultNinetyCount, jdbcType=INTEGER},#{expireLoan, jdbcType=INTEGER},#{expireHousing, jdbcType=INTEGER},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP},#{usedAmount, jdbcType=DOUBLE})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_CREDIT_REPORT set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	credit_card_exception =  #{creditCardException, jdbcType=INTEGER},
+	query_six_count =  #{querySixCount, jdbcType=INTEGER},
+	max_default =  #{maxDefault, jdbcType=INTEGER},
+	amount =  #{amount, jdbcType=DOUBLE},
+	default_amount =  #{defaultAmount, jdbcType=DOUBLE},
+	default_count =  #{defaultCount, jdbcType=INTEGER},
+	default_max_count =  #{defaultMaxCount, jdbcType=INTEGER},
+	default_ninety_count =  #{defaultNinetyCount, jdbcType=INTEGER},
+	expire_loan =  #{expireLoan, jdbcType=INTEGER},
+	expire_housing =  #{expireHousing, jdbcType=INTEGER},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	used_amount =  #{usedAmount, jdbcType=DOUBLE},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_CREDIT_REPORT  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_CREDIT_REPORT set 
+	<trim  suffixOverrides="," >
+	<if test="appId != null and appId != ''" >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+	<if test="type != null and type != ''" >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+	<if test="creditCardException != null and creditCardException != ''" >
+	    credit_card_exception =  #{creditCardException, jdbcType=INTEGER},
+	</if>
+	<if test="querySixCount != null and querySixCount != ''" >
+	    query_six_count =  #{querySixCount, jdbcType=INTEGER},
+	</if>
+	<if test="maxDefault != null and maxDefault != ''" >
+	    max_default =  #{maxDefault, jdbcType=INTEGER},
+	</if>
+	<if test="amount != null and amount != ''" >
+	    amount =  #{amount, jdbcType=DOUBLE},
+	</if>
+	<if test="defaultAmount != null and defaultAmount != ''" >
+	    default_amount =  #{defaultAmount, jdbcType=DOUBLE},
+	</if>
+	<if test="defaultCount != null and defaultCount != ''" >
+	    default_count =  #{defaultCount, jdbcType=INTEGER},
+	</if>
+	<if test="defaultMaxCount != null and defaultMaxCount != ''" >
+	    default_max_count =  #{defaultMaxCount, jdbcType=INTEGER},
+	</if>
+	<if test="defaultNinetyCount != null and defaultNinetyCount != ''" >
+	    default_ninety_count =  #{defaultNinetyCount, jdbcType=INTEGER},
+	</if>
+	<if test="expireLoan != null and expireLoan != ''" >
+	    expire_loan =  #{expireLoan, jdbcType=INTEGER},
+	</if>
+	<if test="expireHousing != null and expireHousing != ''" >
+	    expire_housing =  #{expireHousing, jdbcType=INTEGER},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="usedAmount != null and usedAmount != ''" >
+	    used_amount =  #{usedAmount, jdbcType=DOUBLE},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 信用贷款申请人行信息 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CREDIT_REPORT  where id = #{id}
+</select>
+
+<!-- 信用贷款申请人行信息 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CREDIT_REPORT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询信用贷款申请人行信息列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_CREDIT_REPORT 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

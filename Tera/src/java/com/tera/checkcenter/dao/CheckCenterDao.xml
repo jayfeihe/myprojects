@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.checkcenter.dao.CheckCenterDao" > 
+
+<!-- 查询 进账的总额 -->
+<select id="queryTotalReceipts"  resultType="java.lang.Double" parameterType="Object">
+	SELECT SUM(ACTUAL_AMOUNT) AS totalReceipts FROM t_payment WHERE SUBJECT = "出借资金" AND STATE = 5;
+</select>
+
+<!-- 查询 未撮合金额 -->
+<select id="queryDisMatchAmount"  resultType="java.lang.Double" parameterType="Object">
+	SELECT SUM(LEND_AMOUNT) AS disMatchAmount FROM t_lend_2match WHERE state = '1';
+</select>
+
+<!-- 出借人资金锁定金额 -->
+<select id="queryLendLockAmount"  resultType="java.lang.Double" parameterType="Object">
+	SELECT PARAM_VALUE AS lendLockAmount FROM t_parameter WHERE PARAM_NAME = 'lendLockAmount';
+</select>
+
+<!-- 查询 撮合占用金额 -->
+<select id="queryMatchOccupyAmount"  resultType="java.lang.Double" parameterType="Object">
+	SELECT SUM(loan_amount) AS matchOccupyAmount FROM t_contract WHERE STATE IN (1,2) AND CHANNEL_TYPE = 'HD';
+</select>
+
+</mapper>   

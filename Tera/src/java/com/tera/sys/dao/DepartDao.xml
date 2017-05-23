@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.sys.dao.DepartDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.sys.model.Depart" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="depart_code" property="departCode"/><!-- 组织代码 -->
+	<result column="depart_name" property="departName"/><!-- 组织名称 -->
+	<result column="remarks" property="remarks"/><!-- 说明 -->
+	<result column="level" property="level"/><!-- 级别 -->
+	<result column="order_num" property="orderNum"/><!-- 排序 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+	<result column="parent_id" property="parentId"/><!-- 父组织ID -->
+	<result column="org_id" property="orgId"/><!-- 数据权限ID -->
+</resultMap>
+       
+<!-- T_DEPART table all fields -->
+<sql id="Column_List" >
+	 id,depart_code,depart_name,remarks,level,order_num,operator,state,create_time,update_time,parent_id,org_id
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="departCode != null and departCode != ''" >
+	    and depart_code =  #{departCode}
+	</if>
+<if test="departName != null and departName != ''" >
+	    and depart_name =  #{departName}
+	</if>
+<if test="remarks != null and remarks != ''" >
+	    and remarks =  #{remarks}
+	</if>
+<if test="level != null and level != ''" >
+	    and level =  #{level}
+	</if>
+<if test="orderNum != null and orderNum != ''" >
+	    and order_num =  #{orderNum}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+<if test="parentId != null and parentId != ''" >
+	    and parent_id =  #{parentId}
+	</if>
+<if test="noId != null and noId != ''" >
+	    and id !=  #{noId}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_DEPART_SEQ') From dual
+			<!-- Select T_DEPART_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_DEPART(id,depart_code,depart_name,remarks,level,order_num,operator,state,create_time,update_time,parent_id,org_id)
+ values( #{id, jdbcType=INTEGER}, CONCAT(#{departCode},#{id}),#{departName, jdbcType=VARCHAR},#{remarks, jdbcType=VARCHAR},#{level, jdbcType=VARCHAR},#{orderNum, jdbcType=INTEGER},#{operator, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP},#{parentId, jdbcType=INTEGER},#{orgId, jdbcType=VARCHAR})
+</insert>
+
+<insert id="addUserDepart" parameterType="map" >
+	insert into T_USER_DEPART_REL (LOGIN_ID,DEPART_ID) values (#{loginId, jdbcType=VARCHAR},#{departId, jdbcType=INTEGER})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_DEPART set 
+	<trim  suffixOverrides="," >
+	depart_code =  #{departCode, jdbcType=VARCHAR},
+	depart_name =  #{departName, jdbcType=VARCHAR},
+	remarks =  #{remarks, jdbcType=VARCHAR},
+	level =  #{level, jdbcType=VARCHAR},
+	order_num =  #{orderNum, jdbcType=INTEGER},
+	operator =  #{operator, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	parent_id =  #{parentId, jdbcType=INTEGER},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_DEPART  where id = #{id}
+</delete>
+
+<!-- 删除本身节点及以下的子孩子 -->
+<delete id="deleteOneselfAndChildren" parameterType="map">
+	update T_DEPART set state = 0 where depart_code LIKE CONCAT(#{departCode},'%')
+</delete>
+
+<!-- 根据用户LoginId删除记录 -->
+<delete id="deleteUserDepart" parameterType="Object">
+	delete from T_USER_DEPART_REL  where login_id = #{loginId}
+</delete>
+
+<!-- 修改本身节点及以下的子孩子的组织代码 -->
+<update id="updateDepartCode" parameterType="map">
+	UPDATE t_depart d SET d.DEPART_CODE=REPLACE(d.DEPART_CODE, #{oldCode}, #{departCode}), d.ORG_ID = #{orgId} WHERE d.DEPART_CODE LIKE CONCAT(#{oldCode},'%')
+</update>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_DEPART set 
+	<trim  suffixOverrides="," >
+	<if test="departCode != null and departCode != ''" >
+	    depart_code =  #{departCode, jdbcType=VARCHAR},
+	</if>
+	<if test="departName != null and departName != ''" >
+	    depart_name =  #{departName, jdbcType=VARCHAR},
+	</if>
+	<if test="remarks != null and remarks != ''" >
+	    remarks =  #{remarks, jdbcType=VARCHAR},
+	</if>
+	<if test="level != null and level != ''" >
+	    level =  #{level, jdbcType=VARCHAR},
+	</if>
+	<if test="orderNum != null and orderNum != ''" >
+	    order_num =  #{orderNum, jdbcType=INTEGER},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="parentId != null and parentId != ''" >
+	    parent_id =  #{parentId, jdbcType=INTEGER},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 组织管理 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_DEPART  where id = #{id}
+</select>
+
+<!-- 组织管理 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_DEPART 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询组织管理列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_DEPART 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+    order by level asc
+</select>
+<select id="queryListByOrg" parameterType="map" resultType="com.tera.sys.model.form.DepartTreeBean">
+	SELECT 
+		id AS uId,
+		org_id AS id,
+		depart_name AS text,
+		level AS level,
+		parent_id AS parentId
+	FROM T_DEPART 
+	WHERE <![CDATA[level <= #{level}]]>
+	AND state = '1'
+	AND org_id = #{orgId}
+</select>
+
+<select id="queryListByLevel" parameterType="map" resultType="com.tera.sys.model.form.DepartTreeBean">
+	SELECT 
+		id AS uId,
+		org_id AS id,
+		depart_name AS text,
+		level AS level,
+		parent_id AS parentId
+	FROM T_DEPART 
+	WHERE <![CDATA[level <= #{level}]]>
+	AND state = '1'
+	<if test="parentId != null and parentId != ''">
+		AND parent_id = #{parentId}
+	</if>
+</select>
+<!-- 根据用户loginId查找所属的组织机构id -->
+<select id="queryUserDepartByLoginId" parameterType="string" resultType="string">
+	select depart_id from T_USER_DEPART_REL where login_id = #{loginId}
+</select>
+</mapper>   

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.img.dao.ImgDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.img.model.Img" >
+	<result column="id" property="id"/>
+	<result column="app_id" property="appId"/>
+	<result column="category" property="category"/>
+	<result column="sub_category" property="subCategory"/>
+	<result column="file_name" property="fileName"/>
+	<result column="img_path" property="imgPath"/>
+	<result column="contract" property="contract"/>
+	<result column="process_state" property="processState"/>
+	<result column="operator" property="operator"/>
+	<result column="org_id" property="orgId"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+</resultMap>
+       
+<!-- T_IMG table all fields -->
+<sql id="Column_List" >
+	 id,app_id,category,sub_category,file_name,img_path,contract,process_state,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="category != null and category != ''" >
+	    and category =  #{category}
+	</if>
+<if test="subCategory != null and subCategory != ''" >
+	    and sub_category =  #{subCategory}
+	</if>
+<if test="fileName != null and fileName != ''" >
+	    and file_name =  #{fileName}
+	</if>
+<if test="imgPath != null and imgPath != ''" >
+	    and img_path =  #{imgPath}
+	</if>
+<if test="contract != null and contract != ''" >
+	    and contract =  #{contract}
+	</if>
+<if test="processState != null and processState != ''" >
+	    and process_state =  #{processState}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_IMG_SEQ') From dual
+			<!-- Select T_IMG_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_IMG(id,app_id,category,sub_category,file_name,img_path,contract,process_state,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{category, jdbcType=VARCHAR},#{subCategory, jdbcType=VARCHAR},#{fileName, jdbcType=VARCHAR},#{imgPath, jdbcType=VARCHAR},#{contract, jdbcType=VARCHAR},#{processState, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_IMG set 
+	<trim  suffixOverrides="," >
+	id =  #{id, jdbcType=INTEGER},
+	app_id =  #{appId, jdbcType=VARCHAR},
+	category =  #{category, jdbcType=VARCHAR},
+	sub_category =  #{subCategory, jdbcType=VARCHAR},
+	file_name =  #{fileName, jdbcType=VARCHAR},
+	img_path =  #{imgPath, jdbcType=VARCHAR},
+	contract =  #{contract, jdbcType=VARCHAR},
+	process_state =  #{processState, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_IMG  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_IMG set 
+	<trim  suffixOverrides="," >
+	<if test="appId != null and appId != ''" >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+	<if test="category != null and category != ''" >
+	    category =  #{category, jdbcType=VARCHAR},
+	</if>
+	<if test="subCategory != null and subCategory != ''" >
+	    sub_category =  #{subCategory, jdbcType=VARCHAR},
+	</if>
+	<if test="fileName != null and fileName != ''" >
+	    file_name =  #{fileName, jdbcType=VARCHAR},
+	</if>
+	<if test="imgPath != null and imgPath != ''" >
+	    img_path =  #{imgPath, jdbcType=VARCHAR},
+	</if>
+	<if test="contract != null and contract != ''" >
+	    contract =  #{contract, jdbcType=VARCHAR},
+	</if>
+	<if test="processState != null and processState != ''" >
+	    process_state =  #{processState, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 影像表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_IMG  where id = #{id}
+</select>
+
+<!-- 影像表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_IMG 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询影像表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_IMG 
+	<include refid="Where_Clause"/> 
+		order by file_name
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+<!-- 查找各大类影像的个数 -->
+<select id="queryCategoryCount" resultType="com.tera.img.model.Img" parameterType="map">
+	select category, count(id) AS categoryCount from t_img <include refid="Where_Clause"/>  group by category
+</select>
+</mapper>   

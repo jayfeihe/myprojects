@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.sys.dao.UserDao" > 
+	<!-- Result Map-->
+	<resultMap id="ResultMap" type="com.tera.sys.model.User" >
+		<id column="id" property="id"/>
+		<result column="login_id" property="loginId"/>
+		<result column="name" property="name"/>
+		<result column="password" property="password"/>
+		<result column="gender" property="gender"/>
+		<result column="email" property="email"/>
+		<result column="phone" property="phone"/>
+		<result column="mobile" property="mobile"/>
+		<result column="is_admin" property="isAdmin"/>
+		<result column="state" property="state"/>
+		<result column="role_id" property="roleId"/><!--角色id  add by wangyongliang 20150610-->
+		<result column="org_id" property="orgId"/><!--机构id  add by wangyongliang 20150610-->
+		
+	</resultMap>
+	
+	<!-- t_user table all fields -->
+	<sql id="Column_List" >
+		 id,login_id,name,password,gender,email,phone,mobile,is_admin,state
+	</sql>
+	<!-- 查询条件 -->
+	<sql id="Where_Clause">
+		where 1=1
+		<trim  suffixOverrides="," >
+			<if test="id != null" >
+			    and id =  #{id}
+			</if>
+			 	<if test="loginId != null and loginId != ''" >
+			    and login_id =  #{loginId}
+			</if>
+			 	<if test="name != null and name != ''" >
+			    and name =  #{name}
+			</if>
+			<if test="password != null and password != ''" >
+			    and password =  #{password}
+			</if>
+			 	<if test="gender != null and gender != ''" >
+			    and gender =  #{gender}
+			</if>
+			 	<if test="email != null and email != ''" >
+			    and email =  #{email}
+			</if>
+			 	<if test="phone != null and phone != ''" >
+			    and phone =  #{phone}
+			</if>
+			 	<if test="mobile != null and mobile != ''" >
+			    and mobile =  #{mobile}
+			</if>
+			<if test="isAdmin != null and isAdmin != ''" >
+			    and is_admin =  #{isAdmin}
+			</if>
+			 	<if test="state != null and state != ''" >
+			    and state =  #{state}
+			</if>
+	</trim>
+	</sql>
+	  
+	<!-- 添加用户  -->
+	<insert id="addUser" parameterType="Object">
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+<!-- 			Select nextval('T_USER_SEQ') From dual -->
+			Select T_USER_SEQ.nextval From dual
+		</selectKey>
+		insert into t_user(<include refid="Column_List" />)
+ 		values( #{id, jdbcType=INTEGER},#{loginId, jdbcType=VARCHAR},#{name, jdbcType=VARCHAR},
+	 		#{password, jdbcType=VARCHAR},#{gender, jdbcType=VARCHAR},
+	 		#{email, jdbcType=VARCHAR},	#{phone, jdbcType=VARCHAR},#{mobile, jdbcType=VARCHAR},
+	 		#{isAdmin, jdbcType=INTEGER},#{state, jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 登录 -->
+	<select id="checkUser" parameterType="map" resultMap="ResultMap">
+	Select * From t_User Where 
+			LOGIN_ID = #{loginId, jdbcType=VARCHAR}
+		 	And password = #{password, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 查询用户信息表列表 -->
+	<select id="queryUserList" resultMap="ResultMap"  parameterType="map">
+		select 
+		<include refid="Column_List"/>
+		from t_user 
+		<include refid="Where_Clause"/>
+		<if test="orgId != null and orgId != ''" >
+			    and LOGIN_ID IN 
+			    (SELECT ext.LOGIN_ID FROM t_user_ext ext INNER JOIN t_org org ON ext.ORG_ID=org.ORG_ID 
+			    WHERE org.ORG_ID LIKE CONCAT(#{orgId},'%'))
+		</if>
+		<if test="roleId != null and roleId != ''" >
+			    and LOGIN_ID IN (SELECT LOGIN_ID FROM t_user_ext WHERE ROLE_ID = #{roleId})
+		</if>
+		order by id
+	</select>
+	
+	<!-- 根据登录名称查询 用户信息表 -->
+	<select id="getUser" parameterType="String" resultMap="ResultMap" >
+		Select <include refid="Column_List"/>
+		from t_user where LOGIN_ID=#{loginId}
+	</select>
+	<!-- 根据 标识列  用户信息表 -->
+	<select id="getUserById" parameterType="int" resultMap="ResultMap" >
+		Select <include refid="Column_List"/>
+		from t_user where id=#{id}
+	</select>
+	<!-- 根据 表示集合  用户信息列表 -->
+	<select id="getUserByIDs" parameterType="Map" resultMap="ResultMap" >
+		Select <include refid="Column_List"/>
+		from t_user where id In
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="updateUser" parameterType="Object" >
+	  update t_user set login_id=#{loginId, jdbcType=VARCHAR}, name=#{name, jdbcType=VARCHAR}, 
+	  	  password=#{password, jdbcType=VARCHAR}, 
+		  gender=#{gender, jdbcType=VARCHAR}, email=#{email, jdbcType=VARCHAR}, 
+		  phone=#{phone, jdbcType=VARCHAR}, mobile=#{mobile, jdbcType=VARCHAR}, 
+		  is_admin=#{isAdmin, jdbcType=INTEGER}, state=#{state, 
+		  jdbcType=VARCHAR}	  where id=#{id}
+	 </update>
+	
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from t_user where id=#{id}
+	</delete>
+	
+	<delete id="deleteUserByIDs" parameterType="Map">
+		delete from t_user where id in
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	<!-- 用户信息表 列表总数-->
+	<select id="getUserCount" resultType="java.lang.Integer"  parameterType="map">
+		select count(1) from t_user 
+		<include refid="Where_Clause"/>
+	</select>
+  	<update id="updateUserMyself" parameterType="Object">
+	  update t_user set login_id=#{loginId, jdbcType=VARCHAR}, name=#{name, jdbcType=VARCHAR},
+	  	  password=#{password, jdbcType=VARCHAR}, 
+		  gender=#{gender, jdbcType=VARCHAR}, email=#{email, jdbcType=VARCHAR}, 
+		  phone=#{phone, jdbcType=VARCHAR}, mobile=#{mobile, jdbcType=VARCHAR}, 
+		  is_admin=#{isAdmin, jdbcType=INTEGER}, state=#{state,jdbcType=VARCHAR}
+	  where  id=#{id}
+	</update>
+	
+	<select id="getUserByOrgAndRole" resultMap="ResultMap"  parameterType="map">
+		SELECT DISTINCT u.*
+		FROM t_user u 
+		LEFT JOIN t_user_ext e ON u.login_id = e.login_id
+		LEFT JOIN t_org o ON e.org_id = o.org_id
+		LEFT JOIN t_role r ON e.role_id = r.id
+		
+		<if test="dataOrgIds != null and dataOrgIds != ''">
+			LEFT JOIN t_role_data_rel rd ON rd.ROLE_ID = r.ID AND rd.LOGIN_ID = u.LOGIN_ID
+		</if>
+		
+		WHERE 1=1
+		<if test="orgId !=null and orgId !=''">
+			AND o.org_id = #{orgId}
+		</if>
+		<if test="states !=null and states.length!=0">
+			AND u.state IN 
+			<foreach item="item" index="index" collection="states" open="(" separator="," close=")">
+					#{item}
+			</foreach>
+		</if>
+		<if test="roleNames !=null and roleNames.length!=0">
+			 AND r.name IN 
+			<foreach item="item" index="index" collection="roleNames" open="(" separator="," close=")">
+					#{item}
+			</foreach>
+		</if>
+		
+		<if test="dataFlag != null and dataFlag != ''">
+			AND r.flag = #{dataFlag}
+		</if>
+		
+		<if test="dataOrgIds != null and dataOrgIds != ''">
+			AND rd.ORG_ID IN 
+			<foreach item="item" index="index" collection="dataOrgIds" open="(" separator="," close=")">
+					#{item}
+			</foreach>
+		</if>
+	</select>
+	
+</mapper>   

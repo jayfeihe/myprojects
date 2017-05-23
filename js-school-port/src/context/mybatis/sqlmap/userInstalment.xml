@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.UserInstalmentDAO">
+	<resultMap type="com.hikootech.mqcash.po.UserInstalment" id="userInstalmentMap">
+		<result column="instalment_id" property="instalmentId" />
+		<result column="config_instalment_id" property="configInstalmentId" />
+		<result column="instalment_amount" property="instalmentAmount" />
+		<result column="instalment_count" property="instalmentCount" />
+		<result column="per_service_rate" property="perServiceRate" />
+		<result column="bank_card_id" property="bankCardId" />
+		<result column="bind_mobile" property="bindMobile" />
+		<result column="partner_order_amount" property="partnerOrderAmount" />
+		<result column="user_id" property="userId" />
+		<result column="province_id" property="provinceId" />
+		<result column="city_id" property="cityId" />
+		<result column="area_id" property="areaId" />
+		<result column="home_address" property="homeAddress" />
+		<result column="company_name" property="companyName" />
+		<result column="company_address" property="companyAddress" />
+		<result column="config_overdue_id" property="configOverdueId" />
+		<result column="overdue_rate" property="overdueRate" />
+		<result column="instalment_status" property="instalmentStatus" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	
+	<select id="queryInstalmentById" parameterType="java.util.Map"  resultMap="userInstalmentMap">
+		select * from t_user_instalment t 
+			where t.instalment_id=#{instalmentId} and t.user_id =#{userId}
+	</select>
+	
+	<!--更改分期单状态 -->
+	<update id="modifyInstalmentStatus" parameterType="java.util.Map"  >
+		update 	t_user_instalment set instalment_status=#{instalmentStatus} where  instalment_id=#{instalmentId}  
+	</update>
+	
+</mapper>

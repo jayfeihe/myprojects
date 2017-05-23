@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="财富端流程">
+	<start name="开始">
+		<transition to="录入申请" comment="录入申请" />
+	</start>
+	<state name="录入申请" comment="录入申请" role="财富客户经理">
+		<transition to="结束" comment="结束"/>
+		<transition to="结算" comment="结算"/>
+		<transition to="人工撮合" comment="人工撮合"/>
+	</state>
+	<state name="结算" comment="结算" role="系统">
+		<transition to="自动撮合" comment="自动撮合"/>
+	</state>
+	<state name="自动撮合" comment="人工撮合" role="系统">
+		<transition to="人工撮合" comment="人工撮合"/>
+		<transition to="交割" comment="交割"/>
+	</state>
+	<state name="人工撮合" comment="人工撮合" role="人工撮合专员">
+		<transition to="自动撮合" comment="自动撮合"/>
+		<transition to="人工撮合审批" comment="人工撮合审批"/>
+	</state>
+	<state name="人工撮合审批" comment="人工撮合审批" role="人工撮合审批人">
+		<transition to="人工撮合" comment="人工撮合"/>
+		<transition to="交割" comment="交割"/>
+	</state>
+	<state name="交割" comment="交割" role="系统">
+		<transition to="结束" comment="结束"/>
+	</state>
+	<end name="结束" comment="结束"/>
+</process>

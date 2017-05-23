@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.echarts.dao.EChartDao">
+	
+	<!-- 广告相关查询sql -->
+	<sql id="advertSql">
+		select
+			count(DISTINCT t.landing_url) count, 
+			<if test="confirmTimeMin == confirmTimeMax">
+				DATE_FORMAT(t.confirm_time, '%H') confirm_time
+			</if>
+			<if test="confirmTimeMin != confirmTimeMax">
+				DATE_FORMAT(t.confirm_time, '%Y-%m-%d') confirm_time
+			</if>
+		from t_data_record t <include refid="conditions"/>
+		<if test="confirmTimeMin == confirmTimeMax">
+			group by DATE_FORMAT(t.confirm_time, '%Y-%m-%d %H')
+		</if>
+		<if test="confirmTimeMin != confirmTimeMax">
+			group by DATE_FORMAT(t.confirm_time, '%Y-%m-%d')
+		</if>
+		order by t.confirm_time
+	</sql>
+	
+	<!-- 查询广告活动数量 -->
+	<select id="queryAdvertCountList" parameterType="map" resultType="com.greenkoo.echarts.model.form.CountBean">
+		<include refid="advertSql"/>
+	</select>
+	
+	<!-- 查询广告活动最大值 -->
+	<select id="queryMaxAdvertCount" parameterType="map" resultType="Integer">
+		select max(count) from (<include refid="advertSql"/>) tt
+	</select>
+	
+	<!-- 创意相关查询sql -->
+	<sql id="creativeSql">
+		select 
+			count(t.confirm_time) count, 
+			<if test="confirmTimeMin == confirmTimeMax">
+				DATE_FORMAT(t.confirm_time, '%H') confirm_time
+			</if>
+			<if test="confirmTimeMin != confirmTimeMax">
+				DATE_FORMAT(t.confirm_time, '%Y-%m-%d') confirm_time
+			</if>
+		from 
+			t_data_record t <include refid="conditions"/>
+		<if test="confirmTimeMin == confirmTimeMax">
+			group by DATE_FORMAT(t.confirm_time, '%Y-%m-%d %H')
+		</if>
+		<if test="confirmTimeMin != confirmTimeMax">
+			group by DATE_FORMAT(t.confirm_time, '%Y-%m-%d')
+		</if>
+		order by t.confirm_time
+	</sql>
+	
+	<!-- 查询创意数量 -->
+	<select id="queryCreativeCountList" parameterType="map" resultType="com.greenkoo.echarts.model.form.CountBean">
+		<include refid="creativeSql"/>
+	</select>
+	
+	<!-- 查询创意最大值 -->
+	<select id="queryMaxCreativeCount" parameterType="map" resultType="Integer">
+		select max(count) from (<include refid="creativeSql"/>) tt
+	</select>
+	
+	<!-- 媒体相关查询sql -->
+	<sql id="mediaSql">
+		select 
+			count(DISTINCT t.media_url) count, 
+			<if test="confirmTimeMin == confirmTimeMax">
+				DATE_FORMAT(t.confirm_time, '%H') confirm_time
+			</if>
+			<if test="confirmTimeMin != confirmTimeMax">
+				DATE_FORMAT(t.confirm_time, '%Y-%m-%d') confirm_time
+			</if>
+		from 
+			t_data_record t <include refid="conditions"/>
+		<if test="confirmTimeMin == confirmTimeMax">
+			group by DATE_FORMAT(t.confirm_time, '%Y-%m-%d %H')
+		</if>
+		<if test="confirmTimeMin != confirmTimeMax">
+			group by DATE_FORMAT(t.confirm_time, '%Y-%m-%d')
+		</if>
+		order by t.confirm_time
+	</sql>
+	
+	<!-- 查询媒体数量 -->
+	<select id="queryMediaCountList" parameterType="map" resultType="com.greenkoo.echarts.model.form.CountBean">
+		<include refid="mediaSql"/>
+	</select>
+	
+	<!-- 查询媒体最大值 -->
+	<select id="queryMaxMediaCount" parameterType="map" resultType="Integer">
+		select max(count) from (<include refid="mediaSql"/>) tt
+	</select>
+	
+	<!-- 广告主相关查询sql -->
+	<sql id="advertiserSql">
+		select 
+			count(DISTINCT t.advertiser_url) count, 
+			<if test="confirmTimeMin == confirmTimeMax">
+				DATE_FORMAT(t.confirm_time, '%H') confirm_time
+			</if>
+			<if test="confirmTimeMin != confirmTimeMax">
+				DATE_FORMAT(t.confirm_time, '%Y-%m-%d') confirm_time
+			</if>
+		from 
+			t_data_record t <include refid="conditions"/>
+		<if test="confirmTimeMin == confirmTimeMax">
+			group by DATE_FORMAT(t.confirm_time, '%Y-%m-%d %H')
+		</if>
+		<if test="confirmTimeMin != confirmTimeMax">
+			group by DATE_FORMAT(t.confirm_time, '%Y-%m-%d')
+		</if>
+		order by t.confirm_time
+	</sql>
+	
+	<!-- 查询广告主数量 -->
+	<select id="queryAdvertiserCountList" parameterType="map" resultType="com.greenkoo.echarts.model.form.CountBean">
+		<include refid="advertiserSql"/>
+	</select>
+	
+	<!-- 查询广告主最大值 -->
+	<select id="queryMaxAdvertiserCount" parameterType="map" resultType="Integer">
+		select max(count) from (<include refid="advertiserSql"/>) tt
+	</select>
+	
+	<!-- 总体已整改相关查询sql -->
+	<sql id="allCorrectSql">
+		select 
+			count(*) count, 
+			<if test="confirmTimeMin == confirmTimeMax">
+				DATE_FORMAT(t.confirm_time, '%H') confirm_time
+			</if>
+			<if test="confirmTimeMin != confirmTimeMax">
+				DATE_FORMAT(t.confirm_time, '%Y-%m-%d') confirm_time
+			</if>
+		from 
+			t_data_record t 
+		<include refid="conditions"/>
+		and t.info_id in (select info_id from t_ad_feedback where `status` = 1)
+		<if test="confirmTimeMin == confirmTimeMax">
+			group by DATE_FORMAT(t.confirm_time, '%Y-%m-%d %H')
+		</if>
+		<if test="confirmTimeMin != confirmTimeMax">
+			group by DATE_FORMAT(t.confirm_time, '%Y-%m-%d')
+		</if>
+		order by t.confirm_time
+	</sql>
+	
+	<!-- 查询总体已整改数量 -->
+	<select id="queryAllCorrectCountList" parameterType="map" resultType="com.greenkoo.echarts.model.form.CountBean">
+		<include refid="allCorrectSql"/>
+	</select>
+	
+	<!-- 查询总体已整改最大值 -->
+	<select id="queryMaxAllCorrectCount" parameterType="map" resultType="Integer">
+		select max(count) from (<include refid="allCorrectSql"/>) tt
+	</select>
+	
+	<!-- 我方已整改相关查询sql -->
+	<sql id="selfCorrectSql">
+		select 
+			count(*) count, 
+			<if test="confirmTimeMin == confirmTimeMax">
+				DATE_FORMAT(t.confirm_time, '%H') confirm_time
+			</if>
+			<if test="confirmTimeMin != confirmTimeMax">
+				DATE_FORMAT(t.confirm_time, '%Y-%m-%d') confirm_time
+			</if>
+		from 
+			t_data_record t 
+		<include refid="conditions"/>
+		and t.info_id in (select info_id from t_ad_feedback where `status` = 1 and role_url = #{roleUrl})
+		<if test="confirmTimeMin == confirmTimeMax">
+			group by DATE_FORMAT(t.confirm_time, '%Y-%m-%d %H')
+		</if>
+		<if test="confirmTimeMin != confirmTimeMax">
+			group by DATE_FORMAT(t.confirm_time, '%Y-%m-%d')
+		</if>
+		order by t.confirm_time
+	</sql>
+	
+	<!-- 查询我方已整改数量 -->
+	<select id="querySelfCorrectCountList" parameterType="map" resultType="com.greenkoo.echarts.model.form.CountBean">
+		<include refid="selfCorrectSql"/>
+	</select>
+	
+	<!-- 查询我方已整改最大值 -->
+	<select id="queryMaxSelfCorrectCount" parameterType="map" resultType="Integer">
+		select max(count) from (<include refid="selfCorrectSql"/>) tt
+	</select>
+	
+	<!-- 违法程度占比sql -->
+	<sql id="propSql">
+		select
+			ROUND(a.ad_level/b.ad_total*100,2) prop,
+			a.date_level confirmTime
+		from
+			(select 
+				count(distinct landing_url) ad_level,
+				<if test="confirmTimeMin == confirmTimeMax">
+					DATE_FORMAT(confirm_time, '%H') date_level 
+				</if>
+				<if test="confirmTimeMin != confirmTimeMax">
+					DATE_FORMAT(confirm_time, '%Y-%m-%d') date_level 
+				</if>
+				
+			from t_data_record 
+				<include refid="conditions"/> and `level`= #{propLevel}
+				<if test="confirmTimeMin == confirmTimeMax">
+					group by DATE_FORMAT(confirm_time, '%Y-%m-%d %H')
+				</if>
+				<if test="confirmTimeMin != confirmTimeMax">
+					group by DATE_FORMAT(confirm_time, '%Y-%m-%d')
+				</if>
+			) a,
+			
+			(select 
+				count(distinct landing_url) ad_total,
+				<if test="confirmTimeMin == confirmTimeMax">
+					DATE_FORMAT(confirm_time, '%H') date_total 
+				</if>
+				<if test="confirmTimeMin != confirmTimeMax">
+					DATE_FORMAT(confirm_time, '%Y-%m-%d') date_total
+				</if>
+			from t_data_record 
+				<include refid="conditions"/>
+				<if test="confirmTimeMin == confirmTimeMax">
+					group by DATE_FORMAT(confirm_time, '%Y-%m-%d %H')
+				</if>
+				<if test="confirmTimeMin != confirmTimeMax">
+					group by DATE_FORMAT(confirm_time, '%Y-%m-%d')
+				</if>
+			) b
+		where 
+			a.date_level=b.date_total
+	</sql>
+	
+	<!-- 查询各违法程度占比 -->
+	<select id="queryPropByLevel" parameterType="map" resultType="com.greenkoo.echarts.model.form.CountBean">
+		<include refid="propSql"/>
+	</select>
+	<!-- 查询各违法程度占比最大值 -->
+	<select id="queryMaxPropByLevel" parameterType="map" resultType="Integer">
+		select max(ROUND(prop)) from (<include refid="propSql"/>) tt
+	</select>
+	
+	<!-- 条件语句 -->
+	<sql id="conditions">
+		<where>
+			<if test="advertiserUrl != null and advertiserUrl != ''">
+				and advertiser_url = #{advertiserUrl}
+			</if>
+			<if test="mediaUrl != null and mediaUrl != ''">
+				and media_url = #{mediaUrl}
+			</if>
+			<if test="level != null and level != ''">
+				and level = #{level}
+			</if>
+			<if test="confirmTimeMin != null and confirmTimeMin != ''">
+				and DATE_FORMAT(confirm_time,'%Y-%m-%d') <![CDATA[>=]]> #{confirmTimeMin}
+			</if>
+			<if test="confirmTimeMax != null and confirmTimeMax != ''">
+				and DATE_FORMAT(confirm_time,'%Y-%m-%d') <![CDATA[<=]]> #{confirmTimeMax}
+			</if>
+		</where> 
+	</sql>
+</mapper>

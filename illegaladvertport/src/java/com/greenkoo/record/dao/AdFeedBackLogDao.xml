@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenkoo.record.dao.AdFeedBackLogDao">
+	
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.String" order="BEFORE" keyProperty="id">
+			Select UUID() From dual
+		</selectKey>
+		insert into t_ad_feedback_log (<include refid="columns"/>)
+		values (#{id},
+				#{correctionId},
+				#{status},
+				#{remark},
+				#{correctionTime},
+				#{createTime},
+				#{operator})
+	</insert>
+	
+	<sql id="columns">
+		id,
+		correction_id,
+		status,
+		remark,
+		correction_time,
+		create_time,
+		operator
+	</sql>
+</mapper>

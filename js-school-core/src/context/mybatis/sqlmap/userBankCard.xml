@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.UserBankCardDAO">
+	
+	<resultMap type="com.hikootech.mqcash.po.UserBankCard" id="userBankCardMap">
+		<result column="bank_card_id" property="bankCardId" />
+		<result column="third_pary_binding_id" property="thirdParyBindingId" />
+		<result column="user_id" property="userId" />
+		<result column="relation_bank_id" property="relationBankId" />
+		<result column="owner_id_card" property="ownerIdCard" />
+		<result column="owner_name" property="ownerName" />
+		<result column="card_type" property="cardType" />
+		<result column="card_number" property="cardNumber" />
+		<result column="reserve_mobile" property="reserveMobile" />
+		<result column="bind_status" property="bindStatus" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	<resultMap type="com.hikootech.mqcash.po.UserBankCard" id="bankCardInfoMap">
+		<result column="bank_card_id" property="bankCardId" />
+		<result column="third_pary_binding_id" property="thirdParyBindingId" />
+		<result column="user_id" property="userId" />
+		<result column="relation_bank_id" property="relationBankId" />
+		<result column="owner_id_card" property="ownerIdCard" />
+		<result column="owner_name" property="ownerName" />
+		<result column="card_type" property="cardType" />
+		<result column="card_number" property="cardNumber" />
+		<result column="reserve_mobile" property="reserveMobile" />
+		<result column="bind_status" property="bindStatus" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="bank_name" property="bankName" />
+		<result column="third_party_bank_id" property="thirdPartyBankId" />
+	</resultMap>
+
+	<select id="queryUserBankCard" resultMap="userBankCardMap" parameterType="com.hikootech.mqcash.dto.UserBankCardDTO">
+		select * from t_user_bank_card 
+		<where>
+			<if test="bindStatus!=null"> and bind_status = #{bindStatus}</if>
+			<if test="startCreateTime!=null"> and create_time &gt;= #{startCreateTime}</if>
+			<if test="endCreateTime!=null"> and create_time &lt;= #{endCreateTime}</if>
+		</where>
+	</select>
+	
+	<update id="updateUserBankCardBindStatus">
+		update t_user_bank_card set bind_status = #{bindStatus} 
+			where bank_card_id = #{bankCardId} 
+				and third_pary_binding_id = #{thirdParyBindingId}
+				and bind_status = #{preBindStatus}
+	</update>
+	
+	<!-- 修改点击发送验证码次数 -->
+	<update id="updateValidateCardLimit" parameterType="com.hikootech.mqcash.po.UserValidateCardLimit">
+		UPDATE t_user_validate_card_limit
+		SET
+			cur_times=#{curTimes},
+			update_time=#{updateTime},
+			operator=#{operator}
+		WHERE id_card=#{idCard}
+	</update>
+	<select id="queryBankCardByKey" resultMap="bankCardInfoMap">
+		SELECT a.*,b.bank_name,c.third_party_bank_id 
+		FROM t_user_bank_card a 
+		JOIN t_relation_config_bank c ON a.relation_bank_id=c.relation_bank_id
+		JOIN t_config_bank b ON c.bank_id=b.bank_id
+		where a.bank_card_id=#{value}  
+	</select>
+</mapper>

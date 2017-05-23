@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="减免流程">
+	<start name="开始">
+		<transition to="减免复核" comment="减免复核" />
+		<transition to="结束" comment="结束"/>
+	</start>
+	<state name="减免复核" comment="减免复核" role="减免复核专员">
+		<transition to="减免审批" comment="减免审批"/>
+		<transition to="减免高级审批" comment="减免高级审批"/>
+		<transition to="结束" comment="结束"/>
+	</state>
+	<state name="减免审批" comment="减免审批" role="减免审批专员">
+		<transition to="结束" comment="结束"/>
+	</state>
+	<state name="减免高级审批" comment="减免高级审批" role="减免高级审批专员">
+		<transition to="结束" comment="结束"/>
+	</state>
+	<end name="结束" comment="结束"/>
+</process>

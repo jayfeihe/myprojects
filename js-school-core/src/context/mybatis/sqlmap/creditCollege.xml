@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.CreditCollegeDAO">
+
+	<resultMap type="com.hikootech.mqcash.po.DistrictInfo" id="DistrictInfoMap">
+		<result property="districtId" column="district_id"/>
+		<result property="collegeId" column="college_id"/>
+		<result property="collegeCode" column="college_code"/>
+		<result property="districtName" column="district_name"/>
+		<result property="districtScore" column="district_score"/>
+		<result property="city" column="city"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
+	<resultMap type="com.hikootech.mqcash.po.DepartmentInfo" id="DepartmentMap">
+		<result property="departmentId" column="department_id"/>
+		<result property="collegeId" column="college_id"/>
+		<result property="collegeCode" column="college_code"/>
+		<result property="departmentName" column="department_name"/>
+		<result property="departmentScore" column="department_score"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
+
+
+	<select id="queryBlackUser" resultType="com.hikootech.mqcash.po.UserCreditRecord" >
+   		select credit_id creditId ,create_time createTime,reason reason from t_user_credit_record t where ( t.reason = '201020' or t.reason = '213020') and  t.id_card = #{idCard} and t.name =#{name}  order by t.create_time desc limit 1
+   </select>
+   
+	<select id="queryIsQhBlackUser" resultType="com.hikootech.mqcash.po.UserQhzxBlackList" >
+   		SELECT t.id,er_code erCode FROM t_user_qhzx_blacklist t where t.id_no = #{idCard} and t.`name` = #{name} order by t.create_time desc 
+   </select>
+   
+	<select id="queryIsBrBlackUser" resultType="com.hikootech.mqcash.po.UserBrSpeciallistC" >
+   		SELECT
+			t.id,
+			s.bank_bad,
+			s.bank_overdue,
+			s.bank_fraud,
+			s.bank_lost,
+			s.bank_refuse,
+			s.credit_bad,
+			s.p2p_bad,
+			s.p2p_overdue,
+			s.p2p_fraud,
+			s.p2p_lost,
+			s.p2p_refuse,
+			s.phone_overdue,
+			s.insurance_fraud,
+			s.court_bad,
+			s.court_executed
+		FROM
+			t_user_br_request t
+		INNER JOIN t_user_br_speciallist_c s ON t.id = s.br_req_id
+		AND s.`type` = 0  
+		where t.id_card = #{idCard} and t.`name` = #{name}
+		order by t.create_time desc 
+   </select>
+   
+	<select id="queryJyCreditResult" resultType="java.lang.String" >
+   		SELECT
+			t.credit_checking_result
+		FROM
+			t_user_credit_record s 
+		join 
+			t_user_credit_model_record t
+		on s.credit_id = t.credit_id
+		WHERE
+		t.credit_model = '102'
+		AND t.credit_model_type = '102001'
+		AND t.is_effective = 1
+		and s.info_id = #{busId}
+   </select>
+	
+	<select id="querySchoolDistrict" resultMap="DistrictInfoMap" >
+		SELECT
+			district_id,
+			college_id,
+			college_code,
+			district_name,
+			district_score,
+			city,
+			create_time,
+			update_time
+		FROM
+			t_district_info 
+		where district_name = #{districtName}
+   </select>
+   
+	<select id="querySchoolDepartment" resultMap="DepartmentMap" >
+		SELECT
+			department_id,
+			college_id,
+			college_code,
+			department_name,
+			department_score,
+			create_time,
+			update_time
+		FROM
+			t_department_info
+		where department_name = #{departmentName} and college_id = #{collegeId}
+   </select>
+   
+	<insert id="saveEducationScore" >
+		INSERT INTO t_jsschool_education_score (
+		id,
+		bus_id,
+		educate_score,
+		grade_score,
+		educate_result,
+		educate_reason,
+		create_time,
+		update_time
+	)
+	VALUES
+		(
+		#{id},
+		#{busId},
+		#{educateScore},
+		#{gradeScore},
+		#{educateResult},
+		#{educateReason},
+		#{createTime},
+		#{updateTime}
+	 )
+   </insert>
+	<update id="updateJsSchoolBusCreditResult" >
+		UPDATE t_jsschool_service_apply
+		SET
+			credit_reason=#{creditReason}
+		WHERE bus_id=#{busId}
+
+    </update>
+	
+</mapper>

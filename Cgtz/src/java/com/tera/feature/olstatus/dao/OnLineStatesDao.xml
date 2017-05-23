@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.olstatus.dao.OnLineStatesDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.olstatus.model.OnLineStates" >
+</resultMap>
+<sql id="Column_List" >
+	os.CONTRACT_ID contractId,
+	os.LOAN_ID loanId,
+	os.STATE,
+	os.IS_CUR isCur,
+	os.remarks,
+	os.log_time logTime,
+	os.create_time createTime,
+	CON.ORG,
+	(
+		SELECT
+			ORGS.ORG_NAME
+		FROM
+			T_ORG orgs
+		WHERE
+			ORGS.ORG_ID = CON.ORG
+	) orgName,
+	CON.LOAN_AMT loanAmt,
+	CON.STATE conState,
+	(
+		SELECT
+			BASE. NAME
+		FROM
+			T_LOAN_BASE base
+		WHERE
+			BASE.LOAN_ID = os.loan_id
+	)loanName
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and os.id =  #{id}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and os.contract_id =  #{contractId}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and os.loan_id =  #{loanId}
+	</if>
+<if test="org != null and org != ''" >
+	    and con.org like  concat(#{org},'%')
+	</if>
+<if test="state != null and state != ''" >
+	    and os.state like  concat('%',concat(#{state},'%'))
+	</if>
+<if test="conState != null and conState != ''" >
+	    and con.state =  #{conState}
+	</if>
+<if test="isCur != null and isCur != ''" >
+		and is_cur =  #{isCur}
+	</if>	
+<if test="minLogDate != null and minLogDate != ''" >
+<![CDATA[and os.log_time >=  #{minLogDate}]]>	    
+	</if>
+<if test="maxLogDate != null and maxLogDate != ''" >
+<![CDATA[and os.log_time <=  #{maxLogDate}+1]]>	
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+   <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_WAREHOUSE_SEQ') From dual -->
+			Select T_ONLINE_STATES_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_ONLINE_STATES(id,loan_id,contract_id,is_cur,state,log_time,remarks,create_time)
+ values( #{id, jdbcType=INTEGER},#{loanId, jdbcType=VARCHAR},#{contractId, jdbcType=VARCHAR},#{isCur, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{logTime, jdbcType=TIMESTAMP},#{remarks, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP}})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_ONLINE_STATES set 
+	<trim  suffixOverrides="," >
+	<if test="contractId != null and contractId != ''" >
+	   contract_id =  #{contractId,jdbcType=VARCHAR},
+	</if>
+	<if test="loanId != null and loanId != ''" >
+	   loan_id =  #{loanId,jdbcType=VARCHAR},
+		</if>
+	<if test="isCur != null and isCur != ''" >
+		is_cur =  #{isCur,jdbcType=VARCHAR},
+		</if>
+	<if test="state != null and state != ''" >
+		state =  #{state,jdbcType=VARCHAR},
+		</if>
+	<if test="logTime != null and logTime != ''" >
+		log_time =  #{logTime,jdbcType=TIMESTAMP},
+		</if>
+	<if test="remarks != null and remarks != ''" >
+		remarks =  #{remarks,jdbcType=VARCHAR},
+		</if>	
+	</trim>
+ 	where  id= #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_ONLINE_STATES  where  id= #{id}
+</delete>
+
+
+<!-- 根据id查询 T_ONLINE_STATES -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_ONLINE_STATES  where  id= #{id}
+</select>
+  	
+<!-- 查询T_ONLINE_STATES列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_ONLINE_STATES os
+         LEFT JOIN T_CONTRACT con ON con.contract_id = os.contract_id
+	<include refid="Where_Clause"/> 
+	order by os.LOG_TIME desc
+</select>
+
+
+  	
+</mapper>   

@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.feature.check.dao.OverdueAcceptDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.feature.check.model.OverdueAccept" >
+	<result column="id" property="id"/><!--  -->
+	<result column="loan_id" property="loanId"/><!--申请id  -->
+	<result column="contract_id" property="contractId"/><!-- 合同id -->
+	<result column="num" property="num"/><!-- 期数 -->
+	<result column="dept" property="dept"/><!-- 部门 -->
+	<result column="reg_date" property="regDate"/><!-- 日期 -->
+	<result column="bus_name" property="busName"/><!-- 业务经办人 -->
+	<result column="tel" property="tel"/><!-- 联系方式 -->
+	<result column="property" property="property"/><!-- 性质(本金逾期，利息逾期) -->
+	<result column="dept_owner" property="deptOwner"/><!-- 部门负责人 -->
+	<result column="audit_mem" property="auditMem"/><!-- 评审成员 -->
+	<result column="risk_name" property="riskName"/><!-- 风控人员 -->
+	<result column="law_name" property="lawName"/><!-- 法务人员 -->
+	<result column="pro_type" property="proType"/><!-- 产品类型 -->
+	<result column="late_date" property="lateDate"/><!-- 逾期时间 -->
+	<result column="amt" property="amt"/><!-- 金额 -->
+	<result column="loan_info" property="loanInfo"/><!-- 借款人的基本情况 -->
+	<result column="report_summary" property="reportSummary"/><!-- 逾期报告摘要 -->
+	<result column="dept_audit_adv" property="deptAuditAdv"/><!-- 部门经理审核意见 -->
+	<result column="bus_adv" property="busAdv"/><!-- 承办人审核意见 -->
+	<result column="check_adv" property="checkAdv"/><!-- 稽查部门负责人意见 -->
+	<result column="keep_adv" property="keepAdv"/><!-- 保全小组意见 -->
+	<result column="leader_adv" property="leaderAdv"/><!-- 领导意见 -->
+	<result column="state" property="state"/><!-- 状态（1可以修改2存档） -->
+	<result column="create_uid" property="createUid"/><!-- 创建人 -->
+	<result column="create_time" property="createTime"/><!-- 创建时间 -->
+	<result column="update_uid" property="updateUid"/><!-- 修改人 -->
+	<result column="update_time" property="updateTime"/><!-- 修改时间 -->
+</resultMap>
+       
+<!-- T_OVERDUE_ACCEPT table all fields -->
+<sql id="Column_List" >
+	 id,loan_id,contract_id,num,dept,reg_date,bus_name,tel,property,dept_owner,audit_mem,risk_name,law_name,pro_type,late_date,amt,loan_info,report_summary,dept_audit_adv,bus_adv,check_adv,keep_adv,leader_adv,state,create_uid,create_time,update_uid,update_time
+</sql>
+      
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="loanId != null and loanId != ''" >
+	    and loan_id =  #{loanId}
+	</if>
+<if test="contractId != null and contractId != ''" >
+	    and contract_id =  #{contractId}
+	</if>
+<if test="num != null and num != ''" >
+	    and num =  #{num}
+	</if>
+<if test="dept != null and dept != ''" >
+	    and dept =  #{dept}
+	</if>
+<if test="regDate != null and regDate != ''" >
+	    and reg_date =  #{regDate}
+	</if>
+<if test="busName != null and busName != ''" >
+	    and bus_name =  #{busName}
+	</if>
+<if test="tel != null and tel != ''" >
+	    and tel =  #{tel}
+	</if>
+<if test="property != null and property != ''" >
+	    and property =  #{property}
+	</if>
+<if test="deptOwner != null and deptOwner != ''" >
+	    and dept_owner =  #{deptOwner}
+	</if>
+<if test="auditMem != null and auditMem != ''" >
+	    and audit_mem =  #{auditMem}
+	</if>
+<if test="riskName != null and riskName != ''" >
+	    and risk_name =  #{riskName}
+	</if>
+<if test="lawName != null and lawName != ''" >
+	    and law_name =  #{lawName}
+	</if>
+<if test="proType != null and proType != ''" >
+	    and pro_type =  #{proType}
+	</if>
+<if test="lateDate != null and lateDate != ''" >
+	    and late_date =  #{lateDate}
+	</if>
+<if test="amt != null and amt != ''" >
+	    and amt =  #{amt}
+	</if>
+<if test="loanInfo != null and loanInfo != ''" >
+	    and loan_info =  #{loanInfo}
+	</if>
+<if test="reportSummary != null and reportSummary != ''" >
+	    and report_summary =  #{reportSummary}
+	</if>
+<if test="deptAuditAdv != null and deptAuditAdv != ''" >
+	    and dept_audit_adv =  #{deptAuditAdv}
+	</if>
+<if test="busAdv != null and busAdv != ''" >
+	    and bus_adv =  #{busAdv}
+	</if>
+<if test="checkAdv != null and checkAdv != ''" >
+	    and check_adv =  #{checkAdv}
+	</if>
+<if test="keepAdv != null and keepAdv != ''" >
+	    and keep_adv =  #{keepAdv}
+	</if>
+<if test="leaderAdv != null and leaderAdv != ''" >
+	    and leader_adv =  #{leaderAdv}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="createUid != null and createUid != ''" >
+	    and create_uid =  #{createUid}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateUid != null and updateUid != ''" >
+	    and update_uid =  #{updateUid}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			<!-- Select nextval('T_OVERDUE_ACCEPT_SEQ') From dual -->
+			Select T_OVERDUE_ACCEPT_SEQ.Nextval From Dual
+  </selectKey>
+	insert into T_OVERDUE_ACCEPT(id,loan_id,contract_id,num,dept,reg_date,bus_name,tel,property,dept_owner,audit_mem,risk_name,law_name,pro_type,late_date,amt,loan_info,report_summary,dept_audit_adv,bus_adv,check_adv,keep_adv,leader_adv,state,create_uid,create_time,update_uid,update_time)
+ values( #{id, jdbcType=INTEGER},#{loanId, jdbcType=VARCHAR},#{contractId, jdbcType=VARCHAR},#{num, jdbcType=INTEGER},#{dept, jdbcType=VARCHAR},#{regDate, jdbcType=DATE},#{busName, jdbcType=VARCHAR},#{tel, jdbcType=VARCHAR},#{property, jdbcType=VARCHAR},#{deptOwner, jdbcType=VARCHAR},#{auditMem, jdbcType=VARCHAR},#{riskName, jdbcType=VARCHAR},#{lawName, jdbcType=VARCHAR},#{proType, jdbcType=VARCHAR},#{lateDate, jdbcType=DATE},#{amt, jdbcType=DOUBLE},#{loanInfo, jdbcType=VARCHAR},#{reportSummary, jdbcType=VARCHAR},#{deptAuditAdv, jdbcType=VARCHAR},#{busAdv, jdbcType=VARCHAR},#{checkAdv, jdbcType=VARCHAR},#{keepAdv, jdbcType=VARCHAR},#{leaderAdv, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{createUid, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateUid, jdbcType=VARCHAR},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_OVERDUE_ACCEPT set 
+	<trim  suffixOverrides="," >
+	loan_id =  #{loanId, jdbcType=VARCHAR},
+	contract_id =  #{contractId, jdbcType=VARCHAR},
+	num =  #{num, jdbcType=INTEGER},
+	dept =  #{dept, jdbcType=VARCHAR},
+	reg_date =  #{regDate, jdbcType=DATE},
+	bus_name =  #{busName, jdbcType=VARCHAR},
+	tel =  #{tel, jdbcType=VARCHAR},
+	property =  #{property, jdbcType=VARCHAR},
+	dept_owner =  #{deptOwner, jdbcType=VARCHAR},
+	audit_mem =  #{auditMem, jdbcType=VARCHAR},
+	risk_name =  #{riskName, jdbcType=VARCHAR},
+	law_name =  #{lawName, jdbcType=VARCHAR},
+	pro_type =  #{proType, jdbcType=VARCHAR},
+	late_date =  #{lateDate, jdbcType=DATE},
+	amt =  #{amt, jdbcType=DOUBLE},
+	loan_info =  #{loanInfo, jdbcType=VARCHAR},
+	report_summary =  #{reportSummary, jdbcType=VARCHAR},
+	dept_audit_adv =  #{deptAuditAdv, jdbcType=VARCHAR},
+	bus_adv =  #{busAdv, jdbcType=VARCHAR},
+	check_adv =  #{checkAdv, jdbcType=VARCHAR},
+	keep_adv =  #{keepAdv, jdbcType=VARCHAR},
+	leader_adv =  #{leaderAdv, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	create_uid =  #{createUid, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_uid =  #{updateUid, jdbcType=VARCHAR},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_OVERDUE_ACCEPT  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_OVERDUE_ACCEPT set 
+	<trim  suffixOverrides="," >
+
+	<if test="loanId != null and loanId != '' " >
+	    loan_id =  #{loanId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="contractId != null and contractId != '' " >
+	    contract_id =  #{contractId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="num != null and num != ''  or num==0" >
+	    num =  #{num, jdbcType=INTEGER},
+	</if>
+
+	<if test="dept != null and dept != '' " >
+	    dept =  #{dept, jdbcType=VARCHAR},
+	</if>
+
+	<if test="regDate != null and regDate != '' " >
+	    reg_date =  #{regDate, jdbcType=DATE},
+	</if>
+
+	<if test="busName != null and busName != '' " >
+	    bus_name =  #{busName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="tel != null and tel != '' " >
+	    tel =  #{tel, jdbcType=VARCHAR},
+	</if>
+
+	<if test="property != null and property != '' " >
+	    property =  #{property, jdbcType=VARCHAR},
+	</if>
+
+	<if test="deptOwner != null and deptOwner != '' " >
+	    dept_owner =  #{deptOwner, jdbcType=VARCHAR},
+	</if>
+
+	<if test="auditMem != null and auditMem != '' " >
+	    audit_mem =  #{auditMem, jdbcType=VARCHAR},
+	</if>
+
+	<if test="riskName != null and riskName != '' " >
+	    risk_name =  #{riskName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lawName != null and lawName != '' " >
+	    law_name =  #{lawName, jdbcType=VARCHAR},
+	</if>
+
+	<if test="proType != null and proType != '' " >
+	    pro_type =  #{proType, jdbcType=VARCHAR},
+	</if>
+
+	<if test="lateDate != null and lateDate != '' " >
+	    late_date =  #{lateDate, jdbcType=DATE},
+	</if>
+
+	<if test="amt != null and amt != ''  or amt==0" >
+	    amt =  #{amt, jdbcType=DOUBLE},
+	</if>
+
+	<if test="loanInfo != null and loanInfo != '' " >
+	    loan_info =  #{loanInfo, jdbcType=VARCHAR},
+	</if>
+
+	<if test="reportSummary != null and reportSummary != '' " >
+	    report_summary =  #{reportSummary, jdbcType=VARCHAR},
+	</if>
+
+	<if test="deptAuditAdv != null and deptAuditAdv != '' " >
+	    dept_audit_adv =  #{deptAuditAdv, jdbcType=VARCHAR},
+	</if>
+
+	<if test="busAdv != null and busAdv != '' " >
+	    bus_adv =  #{busAdv, jdbcType=VARCHAR},
+	</if>
+
+	<if test="checkAdv != null and checkAdv != '' " >
+	    check_adv =  #{checkAdv, jdbcType=VARCHAR},
+	</if>
+
+	<if test="keepAdv != null and keepAdv != '' " >
+	    keep_adv =  #{keepAdv, jdbcType=VARCHAR},
+	</if>
+
+	<if test="leaderAdv != null and leaderAdv != '' " >
+	    leader_adv =  #{leaderAdv, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createUid != null and createUid != '' " >
+	    create_uid =  #{createUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateUid != null and updateUid != '' " >
+	    update_uid =  #{updateUid, jdbcType=VARCHAR},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 逾期受理登记表 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_OVERDUE_ACCEPT  where id = #{id}
+</select>
+
+<!-- 逾期受理登记表 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_OVERDUE_ACCEPT 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询逾期受理登记表列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_OVERDUE_ACCEPT 
+	<include refid="Where_Clause"/>
+	
+</select>
+  	
+</mapper>   

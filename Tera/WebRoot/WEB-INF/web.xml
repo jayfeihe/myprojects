@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app id="ascweb" version="2.4"
+	xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/applicationContext.xml,/WEB-INF/daoContext.xml
+		</param-value>
+	</context-param>
+	<!-- 
+			,/WEB-INF/xfireContext.xml
+			,classpath:org/codehaus/xfire/spring/xfire.xml
+	
+	<context-param> 
+		<param-name>log4jConfigLocation</param-name> 
+		<param-value>WEB-INF/log4j.properties</param-value> 
+	</context-param> 
+	
+	<context-param> 
+		<param-name>log4jRefreshInterval</param-name> 
+		<param-value>50000</param-value> 
+	</context-param> 
+
+	<listener>  
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class> 
+	</listener> 
+  -->
+
+	
+
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	
+	<!-- session listener -->
+	<listener>
+		<listener-class>
+			com.tera.sys.listenner.TeraSessionListener
+		</listener-class>
+	</listener>
+	
+	<listener>
+		<listener-class>
+			com.tera.sys.listenner.InitListener
+		</listener-class>
+	</listener>
+	
+	
+
+	<!-- =================== servlet 配置==================== -->
+
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/webContext.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>paycenter</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/paycenterWebContext.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>paycenter</servlet-name>
+		<url-pattern>/paycenter/*</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!-- =================== servlet 配置==================== -->
+	
+	<!-- =================== Druid 配置==================== -->
+	<!-- 判断规则：deny优先于allow，如果在deny列表中，就算在allow列表中，也会被拒绝。如果allow没有配置或者为空，则允许所有访问  -->
+	<servlet>
+		<servlet-name>DruidStatView</servlet-name>
+		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+		<init-param>
+			<param-name>allow</param-name>
+			<param-value></param-value>
+		</init-param>
+		<init-param>
+			<param-name>deny</param-name>
+			<param-value>192.168.1.106</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DruidStatView</servlet-name>
+		<url-pattern>/druid/*</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<filter-name>DruidWebStatFilter</filter-name>
+		<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+		<init-param>
+			<param-name>exclusions</param-name>
+			<param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
+		</init-param>
+		<init-param>
+		    <param-name>profileEnable</param-name>
+		    <param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>DruidWebStatFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- =================== Druid 配置==================== -->
+	
+	
+	<!-- =================== filter 配置==================== -->
+	<filter>
+		<filter-name>Encoding</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>	
+	</filter>
+	
+	<filter>
+		<filter-name>AccessFilter</filter-name>
+		<filter-class>com.tera.sys.filter.AccessFilter</filter-class>
+	</filter>
+	
+<!-- 	Payment  客户支付  专用过滤器 start-->
+	<filter>
+		<filter-name>paycenterFilter</filter-name>
+		<filter-class>com.tera.payment.filter.PaymentFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>paycenterFilter</filter-name>
+		<url-pattern>/paycenter/*</url-pattern>
+	</filter-mapping>
+<!-- 	Payment  客户支付  专用过滤器 end -->	
+	<filter-mapping>
+		<filter-name>Encoding</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>AccessFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>AccessFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+
+	<!-- =================== filter 配置==================== -->
+
+	<jsp-config>
+	  	<taglib>
+		    <taglib-uri>/ta</taglib-uri>
+		    <taglib-location>/WEB-INF/tlds/tera-tag.tld</taglib-location>
+	  	</taglib>
+	</jsp-config>
+
+	<welcome-file-list>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.do</welcome-file>
+	</welcome-file-list>
+
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+
+</web-app>

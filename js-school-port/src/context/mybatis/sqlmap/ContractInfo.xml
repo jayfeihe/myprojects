@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.ContractInfoDAO">
+	<resultMap type="com.hikootech.mqcash.dto.BankDTO" id="bankDTOMap">
+		<result column="relation_bank_id" property="relationBankId" />
+		<result column="bank_id" property="bankId" />
+		<result column="third_party_bank_id" property="thirdPartyBankId" />
+		<result column="bank_code" property="bankCode" />
+		<result column="bank_name" property="bankName" />
+		<result column="bank_type" property="bankType" />
+		<result column="bank_img_url" property="bankImgUrl" />
+	</resultMap>
+	
+	<select id="queryInstalmentOrderInfoList" parameterType="java.util.Map"  resultType="com.hikootech.mqcash.dto.ContractInfoDTO">
+		SELECT
+	z.instalment_id instalmentId,
+	date_format(z.create_time, '%Y-%m-%d') loanDate,
+	z.instalment_count periodMax,
+	po.partner_order_id partnerOrderId,
+	z.product_name productName,
+	pof.product_count productNum,
+	z.partner_order_amount productPrice,
+	cgd.product_img_url productImgUrl,
+	ccp.partner_name partnerName,
+	ccp.partner_img_url partnerLogoUrl,
+	t.bank_card_id bankCardId,
+	z.protocol_amount loanAmount,
+	z.protocol_status protocolStatus,
+	bank.card_number bankCardNum
+	FROM
+	t_user_protocol z
+	JOIN t_user_instalment t on z.instalment_id=t.instalment_id
+	JOIN t_partner_user_order po ON po.instalment_id = t.instalment_id
+	JOIN t_order_item pof ON pof.user_order_id = po.user_order_id
+	JOIN t_user_bank_card bank ON bank.bank_card_id = t.bank_card_id
+	JOIN t_config_cooperative_partner ccp ON ccp.partner_id = po.partner_id
+	left JOIN t_config_product cgd ON cgd.partner_id = po.partner_id
+	AND cgd.product_id = pof.product_id
+	   where  t.user_id=#{userId}
+	   <if test="protocolStatus!=null and protocolStatus!=''">
+			and z.protocol_status in 
+			<foreach item="item" index="index" collection="protocolStatus"
+		      open="(" separator="," close=")">
+		        #{item}
+		  </foreach>
+		</if>
+	   <if test="queryNum!=null and queryNum!=''">
+	     	and (t.instalment_id = #{queryNum}  or po.partner_order_id = #{queryNum} )
+	    </if>
+	   
+	   order by t.instalment_status asc,t.create_time desc 
+	</select>
+	
+	<select id="getEffectiveBankList" resultMap="bankDTOMap">
+		select rcb.relation_bank_id,rcb.bank_id,rcb.third_party_bank_id,cb.bank_code,cb.bank_name,cb.bank_type,cb.bank_img_url from t_relation_config_bank rcb 
+			join t_config_bank cb on rcb.bank_id = cb.bank_id
+		<where>
+			rcb.status = 1 and cb.status = 1
+			<if test="relationBankId!=null and relationBankId!=''"> and rcb.relation_bank_id = #{relationBankId}</if>
+			<if test="thirdPartyId!=null and thirdPartyId!=''"> and rcb.third_party_id = #{thirdPartyId}</if>
+			<if test="bankType!=null"> and cb.bank_type = #{bankType}</if>
+		</where>
+	</select>
+	
+	<update id="modifyBankCardOfInstalment" parameterType="java.util.Map">
+		update t_user_instalment t set t.bank_card_id=#{bankCardId} where t.instalment_id=#{instalmentId} and t.user_id=#{userId} 
+	</update>
+</mapper>

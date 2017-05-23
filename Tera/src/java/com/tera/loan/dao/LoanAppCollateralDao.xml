@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.loan.dao.LoanAppCollateralDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.loan.model.LoanAppCollateral" >
+	<result column="id" property="id"/>
+	<result column="app_id" property="appId"/>
+	<result column="seq_flag" property="seqFlag"/>
+	<result column="main_flag" property="mainFlag"/>
+	<result column="type" property="type"/>
+	<result column="certificate1" property="certificate1"/>
+	<result column="certificate2" property="certificate2"/>
+	<result column="appraisal_amount" property="appraisalAmount"/>
+	<result column="house_size" property="houseSize"/>
+	<result column="house_toward" property="houseToward"/>
+	<result column="use_years" property="useYears"/>
+	<result column="appraisal_company" property="appraisalCompany"/>
+	<result column="add_provice" property="addProvice"/>
+	<result column="add_city" property="addCity"/>
+	<result column="add_county" property="addCounty"/>
+	<result column="address" property="address"/>
+	<result column="postcode" property="postcode"/>
+	<result column="holding_company" property="holdingCompany"/>
+	<result column="holding_type" property="holdingType"/>
+	<result column="id_type" property="idType"/>
+	<result column="id_no" property="idNo"/>
+	<result column="operator" property="operator"/>
+	<result column="org_id" property="orgId"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+</resultMap>
+       
+<!-- T_LOAN_APP_COLLATERAL table all fields -->
+<sql id="Column_List" >
+	 id,app_id,seq_flag,main_flag,type,certificate1,certificate2,appraisal_amount,house_size,house_toward,use_years,appraisal_company,add_provice,add_city,add_county,address,postcode,holding_company,holding_type,id_type,id_no,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="seqFlag != null and seqFlag != ''" >
+	    and seq_flag =  #{seqFlag}
+	</if>
+<if test="mainFlag != null and mainFlag != ''" >
+	    and main_flag =  #{mainFlag}
+	</if>
+<if test="type != null and type != ''" >
+	    and type =  #{type}
+	</if>
+<if test="certificate1 != null and certificate1 != ''" >
+	    and certificate1 =  #{certificate1}
+	</if>
+<if test="certificate2 != null and certificate2 != ''" >
+	    and certificate2 =  #{certificate2}
+	</if>
+<if test="appraisalAmount != null and appraisalAmount != ''" >
+	    and appraisal_amount =  #{appraisalAmount}
+	</if>
+<if test="houseSize != null and houseSize != ''" >
+	    and house_size =  #{houseSize}
+	</if>
+<if test="houseToward != null and houseToward != ''" >
+	    and house_toward =  #{houseToward}
+	</if>
+<if test="useYears != null and useYears != ''" >
+	    and use_years =  #{useYears}
+	</if>
+<if test="appraisalCompany != null and appraisalCompany != ''" >
+	    and appraisal_company =  #{appraisalCompany}
+	</if>
+<if test="addProvice != null and addProvice != ''" >
+	    and add_provice =  #{addProvice}
+	</if>
+<if test="addCity != null and addCity != ''" >
+	    and add_city =  #{addCity}
+	</if>
+<if test="addCounty != null and addCounty != ''" >
+	    and add_county =  #{addCounty}
+	</if>
+<if test="address != null and address != ''" >
+	    and address =  #{address}
+	</if>
+<if test="postcode != null and postcode != ''" >
+	    and postcode =  #{postcode}
+	</if>
+<if test="holdingCompany != null and holdingCompany != ''" >
+	    and holding_company =  #{holdingCompany}
+	</if>
+<if test="holdingType != null and holdingType != ''" >
+	    and holding_type =  #{holdingType}
+	</if>
+<if test="idType != null and idType != ''" >
+	    and id_type =  #{idType}
+	</if>
+<if test="idNo != null and idNo != ''" >
+	    and id_no =  #{idNo}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_LOAN_APP_COLLATERAL_SEQ') From dual
+			<!-- Select T_LOAN_APP_COLLATERAL_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_LOAN_APP_COLLATERAL(id,app_id,seq_flag,main_flag,type,certificate1,certificate2,appraisal_amount,house_size,house_toward,use_years,appraisal_company,add_provice,add_city,add_county,address,postcode,holding_company,holding_type,id_type,id_no,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{seqFlag, jdbcType=INTEGER},#{mainFlag, jdbcType=VARCHAR},#{type, jdbcType=VARCHAR},#{certificate1, jdbcType=VARCHAR},#{certificate2, jdbcType=VARCHAR},#{appraisalAmount, jdbcType=DOUBLE},#{houseSize, jdbcType=DOUBLE},#{houseToward, jdbcType=VARCHAR},#{useYears, jdbcType=DOUBLE},#{appraisalCompany, jdbcType=VARCHAR},#{addProvice, jdbcType=VARCHAR},#{addCity, jdbcType=VARCHAR},#{addCounty, jdbcType=VARCHAR},#{address, jdbcType=VARCHAR},#{postcode, jdbcType=VARCHAR},#{holdingCompany, jdbcType=VARCHAR},#{holdingType, jdbcType=VARCHAR},#{idType, jdbcType=VARCHAR},#{idNo, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_LOAN_APP_COLLATERAL set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	seq_flag =  #{seqFlag, jdbcType=INTEGER},
+	main_flag =  #{mainFlag, jdbcType=VARCHAR},
+	type =  #{type, jdbcType=VARCHAR},
+	certificate1 =  #{certificate1, jdbcType=VARCHAR},
+	certificate2 =  #{certificate2, jdbcType=VARCHAR},
+	appraisal_amount =  #{appraisalAmount, jdbcType=DOUBLE},
+	house_size =  #{houseSize, jdbcType=DOUBLE},
+	house_toward =  #{houseToward, jdbcType=VARCHAR},
+	use_years =  #{useYears, jdbcType=DOUBLE},
+	appraisal_company =  #{appraisalCompany, jdbcType=VARCHAR},
+	add_provice =  #{addProvice, jdbcType=VARCHAR},
+	add_city =  #{addCity, jdbcType=VARCHAR},
+	add_county =  #{addCounty, jdbcType=VARCHAR},
+	address =  #{address, jdbcType=VARCHAR},
+	postcode =  #{postcode, jdbcType=VARCHAR},
+	holding_company =  #{holdingCompany, jdbcType=VARCHAR},
+	holding_type =  #{holdingType, jdbcType=VARCHAR},
+	id_type =  #{idType, jdbcType=VARCHAR},
+	id_no =  #{idNo, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_LOAN_APP_COLLATERAL  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_LOAN_APP_COLLATERAL set 
+	<trim  suffixOverrides="," >
+	<if test="appId != null and appId != ''" >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+	<if test="seqFlag != null and seqFlag != ''" >
+	    seq_flag =  #{seqFlag, jdbcType=INTEGER},
+	</if>
+	<if test="mainFlag != null and mainFlag != ''" >
+	    main_flag =  #{mainFlag, jdbcType=VARCHAR},
+	</if>
+	<if test="type != null and type != ''" >
+	    type =  #{type, jdbcType=VARCHAR},
+	</if>
+	<if test="certificate1 != null and certificate1 != ''" >
+	    certificate1 =  #{certificate1, jdbcType=VARCHAR},
+	</if>
+	<if test="certificate2 != null and certificate2 != ''" >
+	    certificate2 =  #{certificate2, jdbcType=VARCHAR},
+	</if>
+	<if test="appraisalAmount != null and appraisalAmount != ''" >
+	    appraisal_amount =  #{appraisalAmount, jdbcType=DOUBLE},
+	</if>
+	<if test="houseSize != null and houseSize != ''" >
+	    house_size =  #{houseSize, jdbcType=DOUBLE},
+	</if>
+	<if test="houseToward != null and houseToward != ''" >
+	    house_toward =  #{houseToward, jdbcType=VARCHAR},
+	</if>
+	<if test="useYears != null and useYears != ''" >
+	    use_years =  #{useYears, jdbcType=DOUBLE},
+	</if>
+	<if test="appraisalCompany != null and appraisalCompany != ''" >
+	    appraisal_company =  #{appraisalCompany, jdbcType=VARCHAR},
+	</if>
+	<if test="addProvice != null and addProvice != ''" >
+	    add_provice =  #{addProvice, jdbcType=VARCHAR},
+	</if>
+	<if test="addCity != null and addCity != ''" >
+	    add_city =  #{addCity, jdbcType=VARCHAR},
+	</if>
+	<if test="addCounty != null and addCounty != ''" >
+	    add_county =  #{addCounty, jdbcType=VARCHAR},
+	</if>
+	<if test="address != null and address != ''" >
+	    address =  #{address, jdbcType=VARCHAR},
+	</if>
+	<if test="postcode != null and postcode != ''" >
+	    postcode =  #{postcode, jdbcType=VARCHAR},
+	</if>
+	<if test="holdingCompany != null and holdingCompany != ''" >
+	    holding_company =  #{holdingCompany, jdbcType=VARCHAR},
+	</if>
+	<if test="holdingType != null and holdingType != ''" >
+	    holding_type =  #{holdingType, jdbcType=VARCHAR},
+	</if>
+	<if test="idType != null and idType != ''" >
+	    id_type =  #{idType, jdbcType=VARCHAR},
+	</if>
+	<if test="idNo != null and idNo != ''" >
+	    id_no =  #{idNo, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 借款抵押物 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_LOAN_APP_COLLATERAL  where id = #{id}
+</select>
+
+<!-- 借款抵押物 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_LOAN_APP_COLLATERAL 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询借款抵押物列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_LOAN_APP_COLLATERAL 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+
+<!-- 查询借款抵押物列表 -->
+<select id="queryListByAppId" resultMap="ResultMap"  parameterType="map">
+	select * from T_LOAN_APP_COLLATERAL 
+	where 1=1 
+	<if test="appId != null " >
+		and APP_ID=#{appId}
+    </if>
+	<if test="type != null " >
+		and type=#{type}
+    </if>
+	order by SEQ_FLAG
+</select>
+
+
+  	
+</mapper>   

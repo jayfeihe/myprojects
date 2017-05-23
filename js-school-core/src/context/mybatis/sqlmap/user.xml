@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.hikootech.mqcash.dao.UserDAO">
+	
+	<resultMap type="com.hikootech.mqcash.po.UserInfo" id="userInfoMap">
+		<result property="userId" column="user_id"/>
+		<result property="idCard" column="id_card"/>
+		<result property="name" column="name"/>
+		<result property="idCardAddress" column="id_card_address"/>
+		<result property="contactPhone" column="contact_phone"/>
+		<result property="pwd" column="pwd"/>
+		<result property="sex" column="sex"/>
+		<result property="birthday" column="birthday"/>
+		<result property="provinceId" column="province_id"/>
+		<result property="cityId" column="city_id"/>
+		<result property="areaId" column="area_id"/>
+		<result property="bindMobile" column="bind_mobile"/>
+		<result property="homeAddress" column="home_address"/>
+		<result property="companyName" column="company_name"/>
+		<result property="companyAddress" column="company_address"/>
+		<result property="interesting" column="interesting"/>
+		<result property="headImgUrl" column="head_img_url"/>
+		<result property="status" column="status"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
+	
+	
+	<sql id="sql_userInfo">
+		user_id, id_card, name, id_card_address, contact_phone, 
+		pwd, sex, birthday, province_id, city_id, area_id, bind_mobile, 
+		home_address, company_name, company_address, 
+		interesting, head_img_url, status
+	</sql>
+
+	
+	<select id="queryUserTotalInfo" resultType="com.hikootech.mqcash.po.UserTotalInfo">
+		select bank_card_number bankCardNumber,reserve_mobile reserveMobile ,bank_card_id bankCardId  from t_user_total_info where bind_status = 1
+			and id_card=#{idCard} and  contact_phone = #{contactPhone}
+		 order by bind_time desc limit 1 
+	</select>
+	
+	<select id="queryExistUserTotalInfo" resultType="java.lang.Integer">
+		select count(*)  from t_user_total_info where 
+			 id_card=#{idCard} and  contact_phone = #{contactPhone}
+	</select>
+	
+	<update id="updateUserTotalInfoCredit" >
+		UPDATE t_user_total_info
+	SET
+		name = #{name},
+		id_card_address = #{idCardAddress},
+		cust_ip=#{custIp},
+		cust_id=#{custId},
+		pd_inst_id=#{pdInstId},
+		source=#{source},
+		product_id=#{productId},
+		product_name=#{productName},
+		product_desc=#{productDesc},
+		product_price=#{productPrice},
+		product_count=#{productCount},
+		plan_type=#{planType},
+		plan_price=#{planPrice},
+		update_time=#{updateTime},
+		operator=#{operator}
+	WHERE  id_card=#{idCard} and  contact_phone = #{contactPhone}
+	</update>
+	<select id="queryUserThirdPartCreditStatus" resultType="java.lang.Integer">
+	select IFNULL( third_part_credit_status ,0) 
+	from t_user_total_info 
+	where  info_id=#{value}
+	</select>
+	<update id="modifyUserThirdPartCreditStatus" parameterType="java.util.Map">
+		 update t_user_total_info  set third_part_credit_status=#{thirdPartCreditStatus} 
+		 where  info_id=#{infoId}
+	</update>
+</mapper>

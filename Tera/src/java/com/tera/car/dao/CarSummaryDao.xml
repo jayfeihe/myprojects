@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.car.dao.CarSummaryDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.car.model.CarSummary" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="validte_divorce_flag" property="validteDivorceFlag"/><!-- 有效性_离婚证 -->
+	<result column="validte_divorce_remark" property="validteDivorceRemark"/><!-- 有效性_离婚证备注 -->
+	<result column="validte_idno_flag" property="validteIdnoFlag"/><!-- 有效性_身份证 -->
+	<result column="validte_idno_remark" property="validteIdnoRemark"/><!-- 有效性_身份证备注 -->
+	<result column="validte_house_flag" property="validteHouseFlag"/><!-- 有效性_房产证 -->
+	<result column="validte_house_remark" property="validteHouseRemark"/><!-- 有效性_房产证备注 -->
+	<result column="validte_debit_flag" property="validteDebitFlag"/><!-- 有效性_常用借记卡流水 -->
+	<result column="validte_debit_remark" property="validteDebitRemark"/><!-- 有效性_常用借记卡流水备注 -->
+	<result column="validte_wage_flag" property="validteWageFlag"/><!-- 有效性_工资卡流水 -->
+	<result column="validte_wage_remark" property="validteWageRemark"/><!-- 有效性_工资卡流水备注 -->
+	<result column="credit_card" property="creditCard"/><!-- 是否有信用卡 -->
+	<result column="is_loan" property="isLoan"/><!-- 否有贷款 -->
+	<result column="query_count" property="queryCount"/><!-- 近12个月贷后管理查询次数 -->
+	<result column="social_com_name" property="socialComName"/><!-- 社保单位名称 -->
+	<result column="social_code" property="socialCode"/><!-- 社保卡号 -->
+	<result column="social_amount" property="socialAmount"/><!-- 社保月基纳金额 -->
+	<result column="social_date" property="socialDate"/><!-- 社保最近基纳时间 -->
+	<result column="social_months" property="socialMonths"/><!-- 社保已基纳时间 -->
+	<result column="public_com_name" property="publicComName"/><!-- 公积金单位名称 -->
+	<result column="public_amount" property="publicAmount"/><!-- 公积金月基纳金额 -->
+	<result column="public_date" property="publicDate"/><!-- 公积金最近基纳时间 -->
+	<result column="public_months" property="publicMonths"/><!-- 公积金已基纳时间 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="remarks" property="remarks"/><!-- 备注 -->
+	<result column="wage_flow_remarks" property="wageFlowRemarks"/><!-- 工资流水备注 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->	
+</resultMap>
+       
+<!-- T_CAR_SUMMARY table all fields -->
+<sql id="Column_List" >
+	 id,app_id,validte_divorce_flag,validte_divorce_remark,validte_idno_flag,validte_idno_remark,validte_house_flag,validte_house_remark,validte_debit_flag,validte_debit_remark,validte_wage_flag,validte_wage_remark,credit_card,is_loan,query_count,social_com_name,social_code,social_amount,social_date,social_months,public_com_name,public_amount,public_date,public_months,state,remarks,wage_flow_remarks,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="validteDivorceFlag != null and validteDivorceFlag != ''" >
+	    and validte_divorce_flag =  #{validteDivorceFlag}
+	</if>
+<if test="validteDivorceRemark != null and validteDivorceRemark != ''" >
+	    and validte_divorce_remark =  #{validteDivorceRemark}
+	</if>
+<if test="validteIdnoFlag != null and validteIdnoFlag != ''" >
+	    and validte_idno_flag =  #{validteIdnoFlag}
+	</if>
+<if test="validteIdnoRemark != null and validteIdnoRemark != ''" >
+	    and validte_idno_remark =  #{validteIdnoRemark}
+	</if>
+<if test="validteHouseFlag != null and validteHouseFlag != ''" >
+	    and validte_house_flag =  #{validteHouseFlag}
+	</if>
+<if test="validteHouseRemark != null and validteHouseRemark != ''" >
+	    and validte_house_remark =  #{validteHouseRemark}
+	</if>
+<if test="validteDebitFlag != null and validteDebitFlag != ''" >
+	    and validte_debit_flag =  #{validteDebitFlag}
+	</if>
+<if test="validteDebitRemark != null and validteDebitRemark != ''" >
+	    and validte_debit_remark =  #{validteDebitRemark}
+	</if>
+<if test="validteWageFlag != null and validteWageFlag != ''" >
+	    and validte_wage_flag =  #{validteWageFlag}
+	</if>
+<if test="validteWageRemark != null and validteWageRemark != ''" >
+	    and validte_wage_remark =  #{validteWageRemark}
+	</if>
+<if test="creditCard != null and creditCard != ''" >
+	    and credit_card =  #{creditCard}
+	</if>
+<if test="isLoan != null and isLoan != ''" >
+	    and is_loan =  #{isLoan}
+	</if>
+<if test="queryCount != null and queryCount != ''" >
+	    and query_count =  #{queryCount}
+	</if>
+<if test="socialComName != null and socialComName != ''" >
+	    and social_com_name =  #{socialComName}
+	</if>
+<if test="socialCode != null and socialCode != ''" >
+	    and social_code =  #{socialCode}
+	</if>
+<if test="socialAmount != null and socialAmount != ''" >
+	    and social_amount =  #{socialAmount}
+	</if>
+<if test="socialDate != null and socialDate != ''" >
+	    and social_date =  #{socialDate}
+	</if>
+<if test="socialMonths != null and socialMonths != ''" >
+	    and social_months =  #{socialMonths}
+	</if>
+<if test="publicComName != null and publicComName != ''" >
+	    and public_com_name =  #{publicComName}
+	</if>
+<if test="publicAmount != null and publicAmount != ''" >
+	    and public_amount =  #{publicAmount}
+	</if>
+<if test="publicDate != null and publicDate != ''" >
+	    and public_date =  #{publicDate}
+	</if>
+<if test="publicMonths != null and publicMonths != ''" >
+	    and public_months =  #{publicMonths}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="remarks != null and remarks != ''" >
+	    and remarks =  #{remarks}
+	</if>
+<if test="wageFlowRemarks != null and wageFlowRemarks != ''" >
+	    and wage_flow_remarks =  #{wageFlowRemarks}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_CAR_SUMMARY_SEQ') From dual
+			<!-- Select T_CAR_SUMMARY_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_CAR_SUMMARY(id,app_id,validte_divorce_flag,validte_divorce_remark,validte_idno_flag,validte_idno_remark,validte_house_flag,validte_house_remark,validte_debit_flag,validte_debit_remark,validte_wage_flag,validte_wage_remark,credit_card,is_loan,query_count,social_com_name,social_code,social_amount,social_date,social_months,public_com_name,public_amount,public_date,public_months,state,remarks,wage_flow_remarks,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER}, #{appId, jdbcType=VARCHAR}, #{validteDivorceFlag, jdbcType=VARCHAR}, #{validteDivorceRemark, jdbcType=VARCHAR},#{validteIdnoFlag, jdbcType=VARCHAR},#{validteIdnoRemark, jdbcType=VARCHAR}, #{validteHouseFlag, jdbcType=VARCHAR}, #{validteHouseRemark, jdbcType=VARCHAR}, #{validteDebitFlag, jdbcType=VARCHAR}, #{validteDebitRemark, jdbcType=VARCHAR}, #{validteWageFlag, jdbcType=VARCHAR}, #{validteWageRemark, jdbcType=VARCHAR}, #{creditCard, jdbcType=INTEGER}, #{isLoan, jdbcType=INTEGER}, #{queryCount, jdbcType=INTEGER}, #{socialComName, jdbcType=VARCHAR}, #{socialCode, jdbcType=VARCHAR}, #{socialAmount, jdbcType=VARCHAR}, #{socialDate, jdbcType=DATE}, #{socialMonths, jdbcType=INTEGER}, #{publicComName, jdbcType=VARCHAR}, #{publicAmount, jdbcType=VARCHAR}, #{publicDate, jdbcType=DATE}, #{publicMonths, jdbcType=INTEGER}, #{state, jdbcType=VARCHAR}, #{remarks, jdbcType=VARCHAR}, #{wageFlowRemarks, jdbcType=VARCHAR}, #{operator, jdbcType=VARCHAR}, #{orgId, jdbcType=VARCHAR}, #{createTime, jdbcType=TIMESTAMP}, #{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_CAR_SUMMARY set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	validte_divorce_flag =  #{validteDivorceFlag, jdbcType=VARCHAR},
+	validte_divorce_remark =  #{validteDivorceRemark, jdbcType=VARCHAR},
+	validte_idno_flag =  #{validteIdnoFlag, jdbcType=VARCHAR},
+	validte_idno_remark =  #{validteIdnoRemark, jdbcType=VARCHAR},
+	validte_house_flag =  #{validteHouseFlag, jdbcType=VARCHAR},
+	validte_house_remark =  #{validteHouseRemark, jdbcType=VARCHAR},
+	validte_debit_flag =  #{validteDebitFlag, jdbcType=VARCHAR},
+	validte_debit_remark =  #{validteDebitRemark, jdbcType=VARCHAR},
+	validte_wage_flag =  #{validteWageFlag, jdbcType=VARCHAR},
+	validte_wage_remark =  #{validteWageRemark, jdbcType=VARCHAR},
+	credit_card =  #{creditCard, jdbcType=INTEGER},
+	is_loan =  #{isLoan, jdbcType=INTEGER},
+	query_count =  #{queryCount, jdbcType=INTEGER},
+	social_com_name =  #{socialComName, jdbcType=VARCHAR},
+	social_code =  #{socialCode, jdbcType=VARCHAR},
+	social_amount =  #{socialAmount, jdbcType=VARCHAR},
+	social_date =  #{socialDate, jdbcType=DATE},
+	social_months =  #{socialMonths, jdbcType=INTEGER},
+	public_com_name =  #{publicComName, jdbcType=VARCHAR},
+	public_amount =  #{publicAmount, jdbcType=VARCHAR},
+	public_date =  #{publicDate, jdbcType=DATE},
+	public_months =  #{publicMonths, jdbcType=INTEGER},
+	state =  #{state, jdbcType=VARCHAR},
+	remarks =  #{remarks, jdbcType=VARCHAR},
+	wage_flow_remarks =  #{wageFlowRemarks, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},	
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_CAR_SUMMARY  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_CAR_SUMMARY set 
+	<trim  suffixOverrides="," >
+	<if test="appId != null and appId != ''" >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+	<if test="validteDivorceFlag != null and validteDivorceFlag != ''" >
+	    validte_divorce_flag =  #{validteDivorceFlag, jdbcType=VARCHAR},
+	</if>
+	<if test="validteDivorceRemark != null and validteDivorceRemark != ''" >
+	    validte_divorce_remark =  #{validteDivorceRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="validteIdnoFlag != null and validteIdnoFlag != ''" >
+	    validte_idno_flag =  #{validteIdnoFlag, jdbcType=VARCHAR},
+	</if>
+	<if test="validteIdnoRemark != null and validteIdnoRemark != ''" >
+	    validte_idno_remark =  #{validteIdnoRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="validteHouseFlag != null and validteHouseFlag != ''" >
+	    validte_house_flag =  #{validteHouseFlag, jdbcType=VARCHAR},
+	</if>
+	<if test="validteHouseRemark != null and validteHouseRemark != ''" >
+	    validte_house_remark =  #{validteHouseRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="validteDebitFlag != null and validteDebitFlag != ''" >
+	    validte_debit_flag =  #{validteDebitFlag, jdbcType=VARCHAR},
+	</if>
+	<if test="validteDebitRemark != null and validteDebitRemark != ''" >
+	    validte_debit_remark =  #{validteDebitRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="validteWageFlag != null and validteWageFlag != ''" >
+	    validte_wage_flag =  #{validteWageFlag, jdbcType=VARCHAR},
+	</if>
+	<if test="validteWageRemark != null and validteWageRemark != ''" >
+	    validte_wage_remark =  #{validteWageRemark, jdbcType=VARCHAR},
+	</if>
+	<if test="creditCard != null and creditCard != ''" >
+	    credit_card =  #{creditCard, jdbcType=INTEGER},
+	</if>
+	<if test="isLoan != null and isLoan != ''" >
+	    is_loan =  #{isLoan, jdbcType=INTEGER},
+	</if>
+	<if test="queryCount != null and queryCount != ''" >
+	    query_count =  #{queryCount, jdbcType=INTEGER},
+	</if>
+	<if test="socialComName != null and socialComName != ''" >
+	    social_com_name =  #{socialComName, jdbcType=VARCHAR},
+	</if>
+	<if test="socialCode != null and socialCode != ''" >
+	    social_code =  #{socialCode, jdbcType=VARCHAR},
+	</if>
+	<if test="socialAmount != null and socialAmount != ''" >
+	    social_amount =  #{socialAmount, jdbcType=VARCHAR},
+	</if>
+	<if test="socialDate != null and socialDate != ''" >
+	    social_date =  #{socialDate, jdbcType=DATE},
+	</if>
+	<if test="socialMonths != null and socialMonths != ''" >
+	    social_months =  #{socialMonths, jdbcType=INTEGER},
+	</if>
+	<if test="publicComName != null and publicComName != ''" >
+	    public_com_name =  #{publicComName, jdbcType=VARCHAR},
+	</if>
+	<if test="publicAmount != null and publicAmount != ''" >
+	    public_amount =  #{publicAmount, jdbcType=VARCHAR},
+	</if>
+	<if test="publicDate != null and publicDate != ''" >
+	    public_date =  #{publicDate, jdbcType=DATE},
+	</if>
+	<if test="publicMonths != null and publicMonths != ''" >
+	    public_months =  #{publicMonths, jdbcType=INTEGER},
+	</if>
+	<if test="state != null and state != ''" >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+	<if test="remarks != null and remarks != ''" >
+	    remarks =  #{remarks, jdbcType=VARCHAR},
+	</if>
+	<if test="wageFlowRemarks != null and wageFlowRemarks != ''" >
+	    wage_flow_remarks =  #{wageFlowRemarks, jdbcType=VARCHAR},
+	</if>
+	<if test="operator != null and operator != ''" >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+	<if test="orgId != null and orgId != ''" >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+	<if test="createTime != null and createTime != ''" >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+	<if test="updateTime != null and updateTime != ''" >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>	
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 信用贷款申请影像摘要 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_CAR_SUMMARY  where id = #{id}
+</select>
+
+<!-- 信用贷款申请影像摘要 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_CAR_SUMMARY 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询信用贷款申请影像摘要列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_CAR_SUMMARY 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.renhang.dao.RhPublicDetailDao" > 
+<!-- Result Map-->
+<resultMap id="ResultMap" type="com.tera.renhang.model.RhPublicDetail" >
+	<result column="id" property="id"/><!-- ID -->
+	<result column="app_id" property="appId"/><!-- 申请ID -->
+	<result column="fund_place" property="fundPlace"/><!-- 公积金参缴地 -->
+	<result column="fund_start_date" property="fundStartDate"/><!-- 公积金参缴日期 -->
+	<result column="fund_first_date" property="fundFirstDate"/><!-- 公积金初缴月份 -->
+	<result column="fund_paid_date" property="fundPaidDate"/><!-- 公积金缴至月份 -->
+	<result column="fund_state" property="fundState"/><!-- 公积金缴费状态 -->
+	<result column="fund_amount" property="fundAmount"/><!-- 公积金月缴存额 -->
+	<result column="fund_person_percent" property="fundPersonPercent"/><!-- 公积金个人缴存比例 -->
+	<result column="fund_com_percent" property="fundComPercent"/><!-- 公积金单位缴存比例 -->
+	<result column="fund_company" property="fundCompany"/><!-- 公积金缴费单位 -->
+	<result column="fund_update_date" property="fundUpdateDate"/><!-- 公积金信息更新日期 -->
+	<result column="pension_place" property="pensionPlace"/><!-- 养老保险参保地 -->
+	<result column="pension_start_date" property="pensionStartDate"/><!-- 养老保险参保日期 -->
+	<result column="pension_pay_month" property="pensionPayMonth"/><!-- 养老保险缴费月数 -->
+	<result column="pension_work_date" property="pensionWorkDate"/><!-- 养老保险参加工作月份 -->
+	<result column="pension_state" property="pensionState"/><!-- 养老保险缴费状态 -->
+	<result column="pension_base_amount" property="pensionBaseAmount"/><!-- 养老保险个人缴费基数 -->
+	<result column="pension_pay_amount" property="pensionPayAmount"/><!-- 养老保险本月缴费金额 -->
+	<result column="pension_update_date" property="pensionUpdateDate"/><!-- 养老保险信息更新日期 -->
+	<result column="pension_company" property="pensionCompany"/><!-- 养老保险缴费单位 -->
+	<result column="pension_interrupt_reason" property="pensionInterruptReason"/><!-- 养老保险中断终止原因 -->
+	<result column="remarks" property="remarks"/><!-- 备注 -->
+	<result column="state" property="state"/><!-- 状态 -->
+	<result column="operator" property="operator"/><!-- 操作员 -->
+	<result column="org_id" property="orgId"/><!-- 所属机构 -->
+	<result column="create_time" property="createTime"/><!-- 创建日期 -->
+	<result column="update_time" property="updateTime"/><!-- 修改日期 -->
+</resultMap>
+       
+<!-- T_RH_PUBLIC_DETAIL table all fields -->
+<sql id="Column_List" >
+	 id,app_id,fund_place,fund_start_date,fund_first_date,fund_paid_date,fund_state,fund_amount,fund_person_percent,fund_com_percent,fund_company,fund_update_date,pension_place,pension_start_date,pension_pay_month,pension_work_date,pension_state,pension_base_amount,pension_pay_amount,pension_update_date,pension_company,pension_interrupt_reason,remarks,state,operator,org_id,create_time,update_time
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+<if test="id != null and id != ''" >
+	    and id =  #{id}
+	</if>
+<if test="appId != null and appId != ''" >
+	    and app_id =  #{appId}
+	</if>
+<if test="fundPlace != null and fundPlace != ''" >
+	    and fund_place =  #{fundPlace}
+	</if>
+<if test="fundStartDate != null and fundStartDate != ''" >
+	    and fund_start_date =  #{fundStartDate}
+	</if>
+<if test="fundFirstDate != null and fundFirstDate != ''" >
+	    and fund_first_date =  #{fundFirstDate}
+	</if>
+<if test="fundPaidDate != null and fundPaidDate != ''" >
+	    and fund_paid_date =  #{fundPaidDate}
+	</if>
+<if test="fundState != null and fundState != ''" >
+	    and fund_state =  #{fundState}
+	</if>
+<if test="fundAmount != null and fundAmount != ''" >
+	    and fund_amount =  #{fundAmount}
+	</if>
+<if test="fundPersonPercent != null and fundPersonPercent != ''" >
+	    and fund_person_percent =  #{fundPersonPercent}
+	</if>
+<if test="fundComPercent != null and fundComPercent != ''" >
+	    and fund_com_percent =  #{fundComPercent}
+	</if>
+<if test="fundCompany != null and fundCompany != ''" >
+	    and fund_company =  #{fundCompany}
+	</if>
+<if test="fundUpdateDate != null and fundUpdateDate != ''" >
+	    and fund_update_date =  #{fundUpdateDate}
+	</if>
+<if test="pensionPlace != null and pensionPlace != ''" >
+	    and pension_place =  #{pensionPlace}
+	</if>
+<if test="pensionStartDate != null and pensionStartDate != ''" >
+	    and pension_start_date =  #{pensionStartDate}
+	</if>
+<if test="pensionPayMonth != null and pensionPayMonth != ''" >
+	    and pension_pay_month =  #{pensionPayMonth}
+	</if>
+<if test="pensionWorkDate != null and pensionWorkDate != ''" >
+	    and pension_work_date =  #{pensionWorkDate}
+	</if>
+<if test="pensionState != null and pensionState != ''" >
+	    and pension_state =  #{pensionState}
+	</if>
+<if test="pensionBaseAmount != null and pensionBaseAmount != ''" >
+	    and pension_base_amount =  #{pensionBaseAmount}
+	</if>
+<if test="pensionPayAmount != null and pensionPayAmount != ''" >
+	    and pension_pay_amount =  #{pensionPayAmount}
+	</if>
+<if test="pensionUpdateDate != null and pensionUpdateDate != ''" >
+	    and pension_update_date =  #{pensionUpdateDate}
+	</if>
+<if test="pensionCompany != null and pensionCompany != ''" >
+	    and pension_company =  #{pensionCompany}
+	</if>
+<if test="pensionInterruptReason != null and pensionInterruptReason != ''" >
+	    and pension_interrupt_reason =  #{pensionInterruptReason}
+	</if>
+<if test="remarks != null and remarks != ''" >
+	    and remarks =  #{remarks}
+	</if>
+<if test="state != null and state != ''" >
+	    and state =  #{state}
+	</if>
+<if test="operator != null and operator != ''" >
+	    and operator =  #{operator}
+	</if>
+<if test="orgId != null and orgId != ''" >
+	    and org_id =  #{orgId}
+	</if>
+<if test="createTime != null and createTime != ''" >
+	    and create_time =  #{createTime}
+	</if>
+<if test="updateTime != null and updateTime != ''" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 // 主键生成方式 01:UUID 02:自增 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id" >
+			Select nextval('T_RH_PUBLIC_DETAIL_SEQ') From dual
+			<!-- Select T_RH_PUBLIC_DETAIL_SEQ.Nextval From Dual -->
+  </selectKey>
+	insert into T_RH_PUBLIC_DETAIL(id,app_id,fund_place,fund_start_date,fund_first_date,fund_paid_date,fund_state,fund_amount,fund_person_percent,fund_com_percent,fund_company,fund_update_date,pension_place,pension_start_date,pension_pay_month,pension_work_date,pension_state,pension_base_amount,pension_pay_amount,pension_update_date,pension_company,pension_interrupt_reason,remarks,state,operator,org_id,create_time,update_time)
+ values( #{id, jdbcType=INTEGER},#{appId, jdbcType=VARCHAR},#{fundPlace, jdbcType=VARCHAR},#{fundStartDate, jdbcType=DATE},#{fundFirstDate, jdbcType=DATE},#{fundPaidDate, jdbcType=DATE},#{fundState, jdbcType=VARCHAR},#{fundAmount, jdbcType=DOUBLE},#{fundPersonPercent, jdbcType=DOUBLE},#{fundComPercent, jdbcType=DOUBLE},#{fundCompany, jdbcType=VARCHAR},#{fundUpdateDate, jdbcType=DATE},#{pensionPlace, jdbcType=VARCHAR},#{pensionStartDate, jdbcType=DATE},#{pensionPayMonth, jdbcType=INTEGER},#{pensionWorkDate, jdbcType=DATE},#{pensionState, jdbcType=VARCHAR},#{pensionBaseAmount, jdbcType=DOUBLE},#{pensionPayAmount, jdbcType=DOUBLE},#{pensionUpdateDate, jdbcType=DATE},#{pensionCompany, jdbcType=VARCHAR},#{pensionInterruptReason, jdbcType=VARCHAR},#{remarks, jdbcType=VARCHAR},#{state, jdbcType=VARCHAR},#{operator, jdbcType=VARCHAR},#{orgId, jdbcType=VARCHAR},#{createTime, jdbcType=TIMESTAMP},#{updateTime, jdbcType=TIMESTAMP})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+ 	update T_RH_PUBLIC_DETAIL set 
+	<trim  suffixOverrides="," >
+	app_id =  #{appId, jdbcType=VARCHAR},
+	fund_place =  #{fundPlace, jdbcType=VARCHAR},
+	fund_start_date =  #{fundStartDate, jdbcType=DATE},
+	fund_first_date =  #{fundFirstDate, jdbcType=DATE},
+	fund_paid_date =  #{fundPaidDate, jdbcType=DATE},
+	fund_state =  #{fundState, jdbcType=VARCHAR},
+	fund_amount =  #{fundAmount, jdbcType=DOUBLE},
+	fund_person_percent =  #{fundPersonPercent, jdbcType=DOUBLE},
+	fund_com_percent =  #{fundComPercent, jdbcType=DOUBLE},
+	fund_company =  #{fundCompany, jdbcType=VARCHAR},
+	fund_update_date =  #{fundUpdateDate, jdbcType=DATE},
+	pension_place =  #{pensionPlace, jdbcType=VARCHAR},
+	pension_start_date =  #{pensionStartDate, jdbcType=DATE},
+	pension_pay_month =  #{pensionPayMonth, jdbcType=INTEGER},
+	pension_work_date =  #{pensionWorkDate, jdbcType=DATE},
+	pension_state =  #{pensionState, jdbcType=VARCHAR},
+	pension_base_amount =  #{pensionBaseAmount, jdbcType=DOUBLE},
+	pension_pay_amount =  #{pensionPayAmount, jdbcType=DOUBLE},
+	pension_update_date =  #{pensionUpdateDate, jdbcType=DATE},
+	pension_company =  #{pensionCompany, jdbcType=VARCHAR},
+	pension_interrupt_reason =  #{pensionInterruptReason, jdbcType=VARCHAR},
+	remarks =  #{remarks, jdbcType=VARCHAR},
+	state =  #{state, jdbcType=VARCHAR},
+	operator =  #{operator, jdbcType=VARCHAR},
+	org_id =  #{orgId, jdbcType=VARCHAR},
+	create_time =  #{createTime, jdbcType=TIMESTAMP},
+	update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</trim>
+ 	where id = #{id}
+ </update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete from T_RH_PUBLIC_DETAIL  where id = #{id}
+</delete>
+
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateOnlyChanged" parameterType="Object" >
+	update T_RH_PUBLIC_DETAIL set 
+	<trim  suffixOverrides="," >
+
+	<if test="appId != null and appId != '' " >
+	    app_id =  #{appId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="fundPlace != null and fundPlace != '' " >
+	    fund_place =  #{fundPlace, jdbcType=VARCHAR},
+	</if>
+
+	<if test="fundStartDate != null and fundStartDate != '' " >
+	    fund_start_date =  #{fundStartDate, jdbcType=DATE},
+	</if>
+
+	<if test="fundFirstDate != null and fundFirstDate != '' " >
+	    fund_first_date =  #{fundFirstDate, jdbcType=DATE},
+	</if>
+
+	<if test="fundPaidDate != null and fundPaidDate != '' " >
+	    fund_paid_date =  #{fundPaidDate, jdbcType=DATE},
+	</if>
+
+	<if test="fundState != null and fundState != '' " >
+	    fund_state =  #{fundState, jdbcType=VARCHAR},
+	</if>
+
+	<if test="fundAmount != null and fundAmount != ''  or fundAmount==0" >
+	    fund_amount =  #{fundAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="fundPersonPercent != null and fundPersonPercent != ''  or fundPersonPercent==0" >
+	    fund_person_percent =  #{fundPersonPercent, jdbcType=DOUBLE},
+	</if>
+
+	<if test="fundComPercent != null and fundComPercent != ''  or fundComPercent==0" >
+	    fund_com_percent =  #{fundComPercent, jdbcType=DOUBLE},
+	</if>
+
+	<if test="fundCompany != null and fundCompany != '' " >
+	    fund_company =  #{fundCompany, jdbcType=VARCHAR},
+	</if>
+
+	<if test="fundUpdateDate != null and fundUpdateDate != '' " >
+	    fund_update_date =  #{fundUpdateDate, jdbcType=DATE},
+	</if>
+
+	<if test="pensionPlace != null and pensionPlace != '' " >
+	    pension_place =  #{pensionPlace, jdbcType=VARCHAR},
+	</if>
+
+	<if test="pensionStartDate != null and pensionStartDate != '' " >
+	    pension_start_date =  #{pensionStartDate, jdbcType=DATE},
+	</if>
+
+	<if test="pensionPayMonth != null and pensionPayMonth != ''  or pensionPayMonth==0" >
+	    pension_pay_month =  #{pensionPayMonth, jdbcType=INTEGER},
+	</if>
+
+	<if test="pensionWorkDate != null and pensionWorkDate != '' " >
+	    pension_work_date =  #{pensionWorkDate, jdbcType=DATE},
+	</if>
+
+	<if test="pensionState != null and pensionState != '' " >
+	    pension_state =  #{pensionState, jdbcType=VARCHAR},
+	</if>
+
+	<if test="pensionBaseAmount != null and pensionBaseAmount != ''  or pensionBaseAmount==0" >
+	    pension_base_amount =  #{pensionBaseAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="pensionPayAmount != null and pensionPayAmount != ''  or pensionPayAmount==0" >
+	    pension_pay_amount =  #{pensionPayAmount, jdbcType=DOUBLE},
+	</if>
+
+	<if test="pensionUpdateDate != null and pensionUpdateDate != '' " >
+	    pension_update_date =  #{pensionUpdateDate, jdbcType=DATE},
+	</if>
+
+	<if test="pensionCompany != null and pensionCompany != '' " >
+	    pension_company =  #{pensionCompany, jdbcType=VARCHAR},
+	</if>
+
+	<if test="pensionInterruptReason != null and pensionInterruptReason != '' " >
+	    pension_interrupt_reason =  #{pensionInterruptReason, jdbcType=VARCHAR},
+	</if>
+
+	<if test="remarks != null and remarks != '' " >
+	    remarks =  #{remarks, jdbcType=VARCHAR},
+	</if>
+
+	<if test="state != null and state != '' " >
+	    state =  #{state, jdbcType=VARCHAR},
+	</if>
+
+	<if test="operator != null and operator != '' " >
+	    operator =  #{operator, jdbcType=VARCHAR},
+	</if>
+
+	<if test="orgId != null and orgId != '' " >
+	    org_id =  #{orgId, jdbcType=VARCHAR},
+	</if>
+
+	<if test="createTime != null and createTime != '' " >
+	    create_time =  #{createTime, jdbcType=TIMESTAMP},
+	</if>
+
+	<if test="updateTime != null and updateTime != '' " >
+	    update_time =  #{updateTime, jdbcType=TIMESTAMP},
+	</if>
+
+	</trim>
+	where id = #{id}
+</update>
+
+<!-- 根据id查询 信用贷款人行报告公共信息明细 -->
+<select id="queryByKey"  resultMap="ResultMap" parameterType="Object">
+	select <include refid="Column_List" /> 
+	 from T_RH_PUBLIC_DETAIL  where id = #{id}
+</select>
+
+<!-- 信用贷款人行报告公共信息明细 列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="map">
+	select count(1) from T_RH_PUBLIC_DETAIL 
+	<include refid="Where_Clause"/>
+</select>
+  	
+<!-- 查询信用贷款人行报告公共信息明细列表 -->
+<select id="queryList" resultMap="ResultMap"  parameterType="map">
+	select 
+	<include refid="Column_List"/>
+	from T_RH_PUBLIC_DETAIL 
+	<include refid="Where_Clause"/>
+	<if test="rowS != null and rowE != null " >
+      limit #{rowS} , #{rowE}
+    </if>
+</select>
+  	
+</mapper>   

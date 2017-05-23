@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tera.cooperation.dinxuan.dao.CeilingAmountDao">
+<!-- 统计本周审批额度 -->
+	<select id="countApprovalPassAmountOfWeek" resultType="double">
+		SELECT IFNULL(SUM(d.CONTRACT_AMOUNT),0.0) AS passAmountOfWeek
+		FROM t_credit_decision d
+		WHERE d.TYPE = '0' 
+		AND BELONG_CHANNEL = 'DX'
+		AND DATE_FORMAT(d.CREATE_TIME,"%u")= DATE_FORMAT(NOW(),"%u")
+	</select>
+<!-- 统计本周签约额度-->
+	<select id="countSignPassAmountOfWeek" resultType="double">
+		SELECT IFNULL(SUM(tmp.LOAN_AMOUNT),0.0) AS signAmountOfWeek
+		FROM (
+				SELECT c.LOAN_AMOUNT,c.LOAN_APP_ID,
+				(
+					SELECT
+						ll.INTIME
+					FROM
+						t_bpm_log ll
+					WHERE
+						ll.BIZ_KEY = l.BIZ_KEY
+					AND ll.STATE = '复核'
+					ORDER BY
+						ll.INTIME
+					LIMIT 1
+				) CREATE_TIME,
+				c.LOAN_PRODUCT,l.STATE,c.CHANNEL_TYPE 
+				FROM t_contract c
+				LEFT JOIN t_bpm_log l ON c.LOAN_APP_ID = l.BIZ_KEY
+				WHERE l.STATE != '结束'
+				AND l.INTIME = (SELECT MAX(ll.INTIME) 
+								FROM t_bpm_log ll 
+								WHERE ll.BIZ_KEY = l.BIZ_KEY)
+			  ) tmp 
+		WHERE tmp.STATE in ('签约','复核','放款') 
+		AND tmp.CHANNEL_TYPE = 'DX'
+		AND DATE_FORMAT(tmp.CREATE_TIME,"%u")= DATE_FORMAT(NOW(),"%u")
+	</select>
+	
+</mapper>

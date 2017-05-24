@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  ">
+
+	<!-- 引入dao和service配置文件 -->
+	<import resource="classpath:config/applicationContext-dao.xml" />
+	<import resource="classpath:config/applicationContext-redis.xml"/>
+	<import resource="classpath:config/applicationContext-service.xml" />
+	
+	<!-- 注册异常切面处理类 -->
+	<bean class="com.gome.bi.monitor.common.aop.ServiceExceptionAdvisor" />
+	<bean class="com.gome.bi.monitor.common.aop.WebExceptionAdvisor" />
+	
+	<!-- 开启切面自动代理 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+</beans>
